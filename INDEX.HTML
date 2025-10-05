@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance Personnelle Pro</title>
+<style>
+.warning-box {
+  background:#fef3c7;          /* Jaune clair */
+  border-left:6px solid #f59e0b; /* Bordure orange à gauche */
+  padding:15px 20px;
+  border-radius:8px;
+  margin:20px 0;
+  color:#92400e;               /* Texte brun/orangé */
+  font-size:0.95em;
+}
+.warning-box strong {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:1em;
+}
+
+#tab-apropos .warning-box {
+  display: none;
+}
+
+.danger-box {
+  background:#fee2e2;             /* rouge très pâle */
+  border-left:6px solid #dc2626;  /* rouge foncé */
+  padding:15px 20px;
+  border-radius:8px;
+  margin:20px 0;
+  color:#991b1b;                  /* texte rouge foncé */
+  font-size:0.95em;
+}
+.danger-box strong {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:1.05em;
+}
+.danger-box ul {
+  margin:10px 0 0 20px;
+  list-style:disc;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f3f4f6;color:#1f2937}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+header{background:linear-gradient(135deg,#2563eb 0%,#1e40af 100%);color:white;padding:30px 20px}
+.btn-export {
+  background:#10b981;
+  color:white;
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+header h1{font-size:2em;margin-bottom:10px}
+.nav{background:white;padding:15px 20px;margin-bottom:30px;display:flex;gap:10px;overflow-x:auto;flex-wrap:wrap}
+.nav button{padding:10px 20px;border:none;background:#e5e7eb;color:#374151;border-radius:8px;cursor:pointer;font-size:14px}
+.nav button.active{background:#2563eb;color:white}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.card{background:white;padding:25px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-bottom:30px}
+.stat-card{background:white;padding:25px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.stat-label{font-size:0.875em;color:#6b7280;margin-bottom:8px}
+.stat-value{font-size:2em;font-weight:bold}
+.blue{color:#2563eb}
+.green{color:#10b981}
+.red{color:#ef4444}
+.purple{color:#8b5cf6}
+.orange{color:#f97316}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:25px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:0.875em;font-weight:500;color:#374151;margin-bottom:8px}
+.form-group input,.form-group select{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:8px;font-size:1em}
+.total-row{padding-top:20px;border-top:2px solid #e5e7eb;margin-top:20px;display:flex;justify-content:space-between;font-weight:600}
+.total-row .value{font-size:1.5em}
+.summary-box{background:#eff6ff;padding:20px;border-radius:10px;margin-top:25px}
+.summary-row{display:flex;justify-content:space-between;padding:10px 0}
+.result-box{padding:20px;border-radius:10px;margin-bottom:15px}
+.result-box.blue{background:#dbeafe}
+.result-box.red{background:#fee2e2}
+.result-box.orange{background:#fed7aa}
+.result-box.purple{background:#ede9fe}
+.result-box.green{background:#d1fae5}
+.result-box.yellow{background:#fef3c7}
+.progress-bar{background:#e5e7eb;height:20px;border-radius:10px;overflow:hidden;margin-top:10px}
+.progress-fill{background:#10b981;height:100%;transition:width 0.3s}
+.section-title{font-size:1.3em;color:#1f2937;margin:30px 0 15px 0;font-weight:600;border-bottom:2px solid #e5e7eb;padding-bottom:10px}
+.hidden{display:none}
+footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:50px}
+</style>
+</head>
+<body>
+<header>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+    <div>
+      <h1>💰 Finance Personnelle Pro</h1>
+      <p>Gérez vos finances intelligemment</p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn-export" onclick="exporterCSV()">📥 Exporter CSV</button>
+      <button class="btn-export" style="background:#2563eb" onclick="window.print()">🖨️ Exporter PDF</button>
+    </div>
+  </div>
+</header>
+
+<div class="nav">
+<button onclick="changeTab('dashboard')" id="btn-dashboard" class="active">Tableau de bord</button>
+<button onclick="changeTab('bilan')" id="btn-bilan">Bilan</button>
+<button onclick="changeTab('budget')" id="btn-budget">Budget</button>
+<button onclick="changeTab('impots')" id="btn-impots">Impôts</button>
+<button onclick="changeTab('objectifs')" id="btn-objectifs">Objectifs</button>
+<button onclick="changeTab('apropos')" id="btn-apropos">À propos</button>
+</div>
+
+<div class="container">
+<div class="warning-box">
+  <strong>⚠️ Avertissement</strong>
+  <p>
+    Cet outil est à des fins éducatives et ludiques seulement. 
+    Les calculs sont des estimations simplifiées et ne constituent pas des conseils financiers professionnels. 
+    Consultez toujours un conseiller financier qualifié pour des décisions importantes concernant vos finances personnelles.
+  </p>
+</div>
+
+<div id="tab-dashboard" class="tab-content active">
+  <h2>Tableau de bord financier</h2>
+
+  <div class="stats">
+    <div class="stat-card"><div class="stat-label">Valeur nette</div><div class="stat-value blue" id="dash-valeur">0 $</div></div>
+    <div class="stat-card"><div class="stat-label">Actifs totaux</div><div class="stat-value green" id="dash-actifs">0 $</div></div>
+    <div class="stat-card"><div class="stat-label">Passifs totaux</div><div class="stat-value red" id="dash-passifs">0 $</div></div>
+    <div class="stat-card"><div class="stat-label">Taux épargne</div><div class="stat-value purple" id="dash-taux">0%</div></div>
+  </div>
+
+  <div class="card">
+    <h3>Diagnostic financier</h3>
+    <div id="diagnostic-global">Entrez vos données pour un diagnostic</div>
+  </div>
+
+  <!-- Bandeau inspirant -->
+  <div style="background:linear-gradient(135deg,#2563eb 0%,#1e40af 100%);
+              color:white;
+              padding:40px;
+              border-radius:12px;
+              margin-top:20px;
+              text-align:center;">
+    <h3 style="font-size:1.8em;font-weight:bold;">« Parce que derrière chaque projet, il y a une vision à réaliser. »</h3>
+    <p style="margin-top:15px;font-size:1.1em;">
+      Merci de faire partie de cette aventure. Continue à construire, apprendre et avancer —
+      une décision éclairée à la fois.
+    </p>
+  </div>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3695467180266092"
+     crossorigin="anonymous"></script>
+
+</div>
+
+<div id="tab-bilan" class="tab-content">
+<h2>Bilan personnel</h2>
+<div class="grid-2">
+<div class="card">
+<h3 class="green">ACTIFS</h3>
+<div class="form-group"><label>Compte bancaire</label><input type="number" id="cb" value="0" onchange="calc()"></div>
+<div class="form-group"><label>CELI</label><input type="number" id="celi" value="0" onchange="calc()"></div>
+<div class="form-group"><label>CELIAPP</label><input type="number" id="celiapp" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Compte non enregistre</label><input type="number" id="cne" value="0" onchange="calc()"></div>
+<div class="form-group"><label>REER</label><input type="number" id="reer" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Immobilisations</label><input type="number" id="immob" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Autre</label><input type="number" id="autre-actif" value="0" onchange="calc()"></div>
+<div class="total-row green"><span>Total actifs</span><span class="value" id="ta">0 $</span></div>
+</div>
+<div class="card">
+<h3 class="red">PASSIFS</h3>
+<div class="form-group"><label>Cartes de credit</label><input type="number" id="cc" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Marge de credit</label><input type="number" id="mc" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Pret automobile</label><input type="number" id="pa" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Hypotheque</label><input type="number" id="hypo" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Autre</label><input type="number" id="autre-passif" value="0" onchange="calc()"></div>
+<div class="total-row red"><span>Total passifs</span><span class="value" id="tp">0 $</span></div>
+<div class="summary-box"><div class="summary-row"><strong>Valeur nette</strong><strong class="blue" style="font-size:1.5em" id="vn">0 $</strong></div></div>
+</div>
+</div>
+</div>
+
+<div id="tab-budget" class="tab-content">
+<h2>Budget mensuel</h2>
+<div class="grid-2">
+<div class="card">
+<h3>Revenus</h3>
+<div class="form-group"><label>Revenu mensuel net</label><input type="number" id="revenu" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Revenu de loyer</label><input type="number" id="rev-loyer" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Autre revenu</label><input type="number" id="autre-revenu" value="0" onchange="calc()"></div>
+<h4 style="margin-top:20px">Depenses</h4>
+<div class="form-group">
+<label>Statut residentiel</label>
+<select id="statut-resid" onchange="toggleHypotheque()">
+<option value="locataire">Locataire</option>
+<option value="proprio">Proprietaire</option>
+</select>
+</div>
+<div class="form-group" id="loyer-group"><label>Loyer</label><input type="number" id="loyer" value="0" onchange="calc()"></div>
+<div class="form-group hidden" id="hypo-group"><label>Paiement hypothecaire</label><input type="number" id="paiement-hypo" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Alimentation</label><input type="number" id="d2" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Transport</label><input type="number" id="d3" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Assurances</label><input type="number" id="d4" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Loisirs</label><input type="number" id="d5" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Autres</label><input type="number" id="d6" value="0" onchange="calc()"></div>
+</div>
+<div class="card">
+<h3>Resume</h3>
+<div class="summary-box">
+<div class="summary-row"><span>Revenus totaux</span><strong id="rt">0 $</strong></div>
+<div class="summary-row"><span>Total depenses</span><strong id="td">0 $</strong></div>
+<div class="summary-row"><span>Epargne nette</span><strong class="green" id="en">0 $</strong></div>
+<div class="summary-row"><span>Taux epargne</span><strong class="blue" id="te">0%</strong></div>
+</div>
+</div>
+</div>
+<div class="card">
+<h3>Analyse budget 50-20-30</h3>
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Regle 50-20-30: 50% besoins essentiels, 20% epargne, 30% loisirs/desirs</p>
+<div id="analyse-503020"></div>
+</div>
+<div class="card">
+<h3>Fonds d'urgence</h3>
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Objectif: 3 à 6 mois de depenses en compte bancaire</p>
+<div id="resultat-fonds-urgence"></div>
+</div>
+</div>
+
+<div id="tab-impots" class="tab-content">
+  <div class="danger-box">
+    <strong>⚠️ Avertissement important</strong>
+    <p>Le calcul ci-dessous est simplifié et ne tient pas compte des éléments suivants :</p>
+    <ul>
+      <li>Abattement du Québec (16.5%)</li>
+      <li>Crédits d’impôt de base</li>
+      <li>Cotisations RRQ, RQAP, Assurance-emploi</li>
+      <li>Déductions spécifiques (frais médicaux, frais de garde, etc.)</li>
+    </ul>
+    <p><strong>👉 Il est recommandé de consulter un comptable ou un fiscaliste pour obtenir des calculs précis et adaptés à votre situation.</strong></p>
+  </div>
+
+  <h2>Calculateur d’impôts</h2>
+  <p>Entrez vos informations pour estimer vos impôts :</p>
+
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Calculs basés sur les tranches d'imposition fédérales et provinciales du Québec pour 2025.</p>
+<div class="grid-2">
+<div class="card">
+<h3>Informations</h3>
+<div class="form-group"><label>Revenu brut annuel</label><input type="number" id="rb" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Contribution REER</label><input type="number" id="cr" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Autres déductions</label><input type="number" id="ad" value="0" onchange="calc()"></div>
+</div>
+<div class="card">
+<h3>Résultats</h3>
+<div class="result-box blue"><div>Revenu imposable</div><div style="font-size:1.8em;font-weight:bold" id="ri">0 $</div></div>
+<div class="result-box red"><div>Impôt fédéral</div><div style="font-size:1.8em;font-weight:bold" id="impf">0 $</div></div>
+<div class="result-box orange"><div>Impôt provincial (QC)</div><div style="font-size:1.8em;font-weight:bold" id="impp">0 $</div></div>
+<div class="result-box purple"><div>Impôt total</div><div style="font-size:1.8em;font-weight:bold" id="impt">0 $</div></div>
+<div class="result-box green"><div>Revenu net</div><div style="font-size:1.8em;font-weight:bold" id="rn">0 $</div></div>
+</div>
+</div>
+</div>
+
+<div id="tab-objectifs" class="tab-content">
+<h2>Objectifs et Projections</h2>
+
+<div class="section-title">Achat d'une maison</div>
+<div class="card">
+  <div class="form-group">
+    <label>Revenu brut annuel ménage ($)</label>
+    <input type="number" id="revenu-brut-menage" value="0" onchange="calcImmobilier()">
+  </div>
+ <div class="form-group">
+  <label>Mise de fonds (%)</label>
+  <select id="mise-de-fonds-pct" onchange="calcImmobilier()">
+    <option value="5">5%</option>
+    <option value="10">10%</option>
+    <option value="15">15%</option>
+    <option value="20" selected>20%</option>
+  </select>
+</div> 
+  <div class="form-group">
+    <label>Taux hypothécaire (%)</label>
+    <input type="number" id="taux-hypo" value="5" step="0.1" onchange="calcImmobilier()">
+  </div>
+<div class="form-group">
+  <label>Période d'amortissement (années)</label>
+  <select id="amortissement" onchange="calcImmobilier()">
+    <option value="25" selected>25 ans</option>
+    <option value="26">26 ans</option>
+    <option value="27">27 ans</option>
+    <option value="28">28 ans</option>
+    <option value="29">29 ans</option>
+    <option value="30">30 ans</option>
+  </select>
+</div>
+
+  <div class="form-group">
+    <label>Prix de la maison envisagée ($)</label>
+    <input type="number" id="prix-maison" value="0" onchange="calcImmobilier()">
+  </div>
+
+  <div id="resultat-immobilier"></div>
+</div>
+
+<div class="section-title">Epargne pour projet personnel</div>
+<div class="card">
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Voyage, achat voiture, annee sabbatique, etudes... Calculez combien epargner mensuellement pour realiser votre projet.</p>
+<div class="form-group"><label>Montant cible ($)</label><input type="number" id="obj-montant" value="50000" onchange="calc()"></div>
+<div class="form-group"><label>Date cible</label><input type="date" id="obj-date" onchange="calc()"></div>
+<div class="form-group">
+  <label>Taux de rendement annuel (%)</label>
+  <input type="number" id="taux-rendement-objectif" value="3" step="0.1" min="0" max="10" onchange="calc()">
+  <small style="display:block;margin-top:5px;color:#6b7280;">Ex: 3% pour un compte épargne, 5-6% pour un placement équilibré</small>
+</div>
+<div id="resultat-objectif"></div>
+</div>
+
+<div class="section-title">Capital necessaire a la retraite</div>
+<div class="card">
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Calculez le capital necessaire selon votre taux de retrait. Le revenu desire est ajuste automatiquement pour l'inflation (2% annuel).</p>
+<div class="form-group"><label>Annees avant la retraite</label><input type="number" id="annees-retraite" value="30" onchange="calcRetraite()"></div>
+<div class="form-group">
+  <label>Âge prévu à la retraite</label>
+  <input type="number" id="age-retraite" value="65" min="55" max="70" onchange="calcRetraite()">
+</div>
+<div class="form-group">
+  <label>Revenu de pension estimé (RRQ + PSV)</label>
+  <input type="number" id="pension-publique" value="0" onchange="calcRetraite()">
+  <small style="display:block;margin-top:5px;color:#6b7280;">
+    Estimation 2025 : RRQ max ~15 600$/an, PSV ~8 600$/an (si 65 ans+)
+  </small>
+</div>
+<div class="form-group">
+  <label>Rente de fonds de pension (employeur)</label>
+  <input type="number" id="rente-pension" value="0" onchange="calcRetraite()">
+  <small style="display:block;margin-top:5px;color:#6b7280;">
+    Revenu annuel estimé de votre régime de retraite d'employeur (si applicable)
+  </small>
+</div>
+<div class="form-group"><label>Revenu annuel desire (en dollars d'aujourd'hui)</label><input type="number" id="revenu-retraite" value="50000" onchange="calcRetraite()"></div>
+<div class="form-group"><label>Taux de retrait (%)</label><input type="number" step="0.5" id="taux-retrait" value="4" min="3" max="8" onchange="calcRetraite()"></div>
+<div id="resultat-retraite"></div>
+</div>
+</div>
+
+</div>
+
+<!-- Onglet À propos -->
+<div id="tab-apropos" class="tab-content">
+  <h2>À propos</h2>
+
+<div class="card" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+  <img src="Aziz Guellouz.jpg" alt="Photo de Aziz Guellouz" 
+       style="width:180px;height:180px;object-fit:cover;border-radius:50%;border:4px solid #2563eb;">
+  
+  <div>
+    <h3 style="color:#92400e;">Bienvenue</h3>
+    <p style="margin-top:10px;">
+      Je m'appelle <strong>Aziz Guellouz</strong> et je me passionne pour tout ce qui touche à la 
+      <strong>finance, la stratégie et l'accompagnement des entrepreneurs</strong>.
+      <br><br>
+      Depuis plusieurs années, j'évolue au cœur du développement économique de Montréal, où j'ai accompagné 
+      de nombreuses entreprises à structurer leurs projets, renforcer leur gestion financière 
+      et accéder aux bons leviers de financement.
+      <br><br>
+      Mon approche est simple : allier <strong>rigueur</strong>, <strong>clarté</strong> et 
+      <strong>impact concret</strong> pour aider les gens à transformer leurs ambitions en résultats durables.
+    </p>
+  </div>
+</div>
+
+
+  <div class="card" style="background:#eff6ff;">
+    <h3 style="color:#1e3a8a;">Mes valeurs</h3>
+    <ul style="margin-top:10px;line-height:1.8em;">
+      <li><strong>Rigueur</strong> – Parce qu'un bon conseil repose sur des faits solides.</li>
+      <li><strong>Transparence</strong> – Dire les choses telles qu'elles sont, avec respect et honnêteté.</li>
+      <li><strong>Impact local</strong> – Contribuer concrètement à la vitalité économique de Montréal.</li>
+      <li><strong>Innovation utile</strong> – Créer des outils simples qui font gagner du temps et de la clarté.</li>
+    </ul>
+  </div>
+
+  
+</div>
+
+<footer><p>Finance Personnelle Pro</p></footer>
+
+<script>
+var DATA={};
+
+function changeTab(t){
+var tabs=document.querySelectorAll('.tab-content');
+for(var i=0;i<tabs.length;i++){tabs[i].classList.remove('active');}
+document.getElementById('tab-'+t).classList.add('active');
+var btns=document.querySelectorAll('.nav button');
+for(var i=0;i<btns.length;i++){btns[i].classList.remove('active');}
+document.getElementById('btn-'+t).classList.add('active');
+
+// Cacher/afficher le bandeau d'avertissement
+var warningBox = document.querySelector('.warning-box');
+if(warningBox) {
+  if(t === 'apropos') {
+    warningBox.style.display = 'none';
+  } else {
+    warningBox.style.display = 'block';
+  }
+}
+}
+function fmt(n){return Math.round(n).toLocaleString('fr-CA');}
+
+function toggleHypotheque(){
+var statut=document.getElementById('statut-resid').value;
+if(statut==='proprio'){
+document.getElementById('loyer-group').classList.add('hidden');
+document.getElementById('hypo-group').classList.remove('hidden');
+}else{
+document.getElementById('loyer-group').classList.remove('hidden');
+document.getElementById('hypo-group').classList.add('hidden');
+}
+calc();
+}
+
+function calc(){
+var a1=parseFloat(document.getElementById('cb').value)||0;
+var a2=parseFloat(document.getElementById('celi').value)||0;
+var a2b=parseFloat(document.getElementById('celiapp').value)||0;
+var a3=parseFloat(document.getElementById('cne').value)||0;
+var a3=parseFloat(document.getElementById('cne').value)||0;
+var a4=parseFloat(document.getElementById('reer').value)||0;
+var a5=parseFloat(document.getElementById('immob').value)||0;
+var a6=parseFloat(document.getElementById('autre-actif').value)||0;
+var p1=parseFloat(document.getElementById('cc').value)||0;
+var p2=parseFloat(document.getElementById('mc').value)||0;
+var p3=parseFloat(document.getElementById('pa').value)||0;
+var p4=parseFloat(document.getElementById('hypo').value)||0;
+var p5=parseFloat(document.getElementById('autre-passif').value)||0;
+DATA.totalA=a1+a2+a2b+a3+a4+a5+a6;
+DATA.totalP=p1+p2+p3+p4+p5;
+DATA.vn=DATA.totalA-DATA.totalP;
+DATA.cb=a1;
+DATA.liquidite=a1+a2+a2b;
+
+document.getElementById('ta').textContent=fmt(DATA.totalA)+' $';
+document.getElementById('tp').textContent=fmt(DATA.totalP)+' $';
+document.getElementById('vn').textContent=fmt(DATA.vn)+' $';
+document.getElementById('dash-valeur').textContent=fmt(DATA.vn)+' $';
+document.getElementById('dash-actifs').textContent=fmt(DATA.totalA)+' $';
+document.getElementById('dash-passifs').textContent=fmt(DATA.totalP)+' $';
+
+if(a4 > 0){
+  var tauxMarginal = 0.40;
+  var impotLatent = a4 * tauxMarginal;
+  var reerNet = a4 - impotLatent;
+  var valeurNetteAjustee = DATA.vn - impotLatent;
+  
+  var htmlReer = '<div class="result-box yellow" style="margin-top:15px;">';
+  htmlReer += '<strong>💡 Impôt latent sur REER</strong><br>';
+  htmlReer += '<small style="display:block;margin:8px 0;line-height:1.6;">Les retraits REER sont imposés comme du revenu ordinaire. Voici une estimation de l\'impact fiscal :</small>';
+  htmlReer += '<p style="margin:5px 0;">REER brut: ' + fmt(a4) + ' $</p>';
+  htmlReer += '<p style="margin:5px 0;color:#dc2626;">Impôt estimé (40%): -' + fmt(impotLatent) + ' $</p>';
+  htmlReer += '<p style="margin:5px 0;font-weight:bold;color:#047857;">Valeur REER nette estimée: ' + fmt(reerNet) + ' $</p>';
+  htmlReer += '<p style="margin:10px 0;padding-top:10px;border-top:1px solid #f59e0b;font-weight:bold;color:#1e40af;">Valeur nette ajustée: ' + fmt(valeurNetteAjustee) + ' $</p>';
+  htmlReer += '<small style="display:block;margin-top:8px;color:#78350f;">Cette estimation suppose un taux marginal de 40%. Le taux réel dépendra de votre revenu et stratégie de retrait à la retraite.</small>';
+  htmlReer += '</div>';
+  
+  // Insérer dans le DOM (après la summary-box de valeur nette)
+  var summaryBox = document.querySelector('#tab-bilan .summary-box');
+  if(summaryBox && !document.getElementById('info-reer')){
+    var infoDiv = document.createElement('div');
+    infoDiv.id = 'info-reer';
+    infoDiv.innerHTML = htmlReer;
+    summaryBox.parentNode.insertBefore(infoDiv, summaryBox.nextSibling);
+  } else if(document.getElementById('info-reer')) {
+    document.getElementById('info-reer').innerHTML = htmlReer;
+  }
+} else {
+  // Supprimer l'info si REER = 0
+  var infoReer = document.getElementById('info-reer');
+  if(infoReer) infoReer.remove();
+}
+var rev=parseFloat(document.getElementById('revenu').value)||0;
+var revLoyer=parseFloat(document.getElementById('rev-loyer').value)||0;
+var autreRev=parseFloat(document.getElementById('autre-revenu').value)||0;
+DATA.revenuTotal=rev+revLoyer+autreRev;
+
+var statut=document.getElementById('statut-resid').value;
+var d1=statut==='proprio'?(parseFloat(document.getElementById('paiement-hypo').value)||0):(parseFloat(document.getElementById('loyer').value)||0);
+var d2=parseFloat(document.getElementById('d2').value)||0;
+var d3=parseFloat(document.getElementById('d3').value)||0;
+var d4=parseFloat(document.getElementById('d4').value)||0;
+var d5=parseFloat(document.getElementById('d5').value)||0;
+var d6=parseFloat(document.getElementById('d6').value)||0;
+DATA.totalD=d1+d2+d3+d4+d5+d6;
+DATA.epargne=DATA.revenuTotal-DATA.totalD;
+DATA.taux=DATA.revenuTotal>0?((DATA.epargne/DATA.revenuTotal)*100).toFixed(1):0;
+
+document.getElementById('rt').textContent=fmt(DATA.revenuTotal)+' $';
+document.getElementById('td').textContent=fmt(DATA.totalD)+' $';
+document.getElementById('en').textContent=fmt(DATA.epargne)+' $';
+document.getElementById('te').textContent=DATA.taux+'%';
+document.getElementById('dash-taux').textContent=DATA.taux+'%';
+
+calcImpots();
+calcObjectif();
+calcRetraite();
+calcImmobilier();
+calcFondsUrgence();
+calc503020();
+genererDiagnostic();
+}
+
+function calcImpots(){
+var rb=parseFloat(document.getElementById('rb').value)||0;
+var cr=parseFloat(document.getElementById('cr').value)||0;
+var ad=parseFloat(document.getElementById('ad').value)||0;
+var ri=Math.max(0,rb-cr-ad);
+var impf=0;
+if(ri>246752){impf=(ri-246752)*0.33+66233+35729+15729+10707;}
+else if(ri>173205){impf=(ri-173205)*0.29+35729+15729+10707;}
+else if(ri>111733){impf=(ri-111733)*0.26+15729+10707;}
+else if(ri>55867){impf=(ri-55867)*0.205+10707;}
+else if(ri>0){impf=ri*0.15;}
+var impp=0;
+if(ri>119910){impp=(ri-119910)*0.2575+16389+9648+7151;}
+else if(ri>98540){impp=(ri-98540)*0.24+9648+7151;}
+else if(ri>51780){impp=(ri-51780)*0.20+7151;}
+else if(ri>0){impp=ri*0.14;}
+var impt=impf+impp;
+var rn=rb-impt;
+document.getElementById('ri').textContent=fmt(ri)+' $';
+document.getElementById('impf').textContent=fmt(impf)+' $';
+document.getElementById('impp').textContent=fmt(impp)+' $';
+document.getElementById('impt').textContent=fmt(impt)+' $';
+document.getElementById('rn').textContent=fmt(rn)+' $';
+}
+
+function calc503020(){
+var rev=DATA.revenuTotal||0;
+if(rev<=0){
+document.getElementById('analyse-503020').innerHTML='<p>Entrez votre revenu mensuel dans l\'onglet Budget.</p>';
+return;
+}
+var besoin50=rev*0.5;
+var epargne20=rev*0.2;
+var desirs30=rev*0.3;
+var html='<div style="margin:20px 0">';
+html+='<div style="margin:10px 0"><strong>Besoins (50%):</strong> '+fmt(besoin50)+' $ recommandés</div>';
+html+='<div class="progress-bar"><div class="progress-fill" style="width:50%;background:#3b82f6"></div></div>';
+html+='<div style="margin:10px 0;margin-top:20px"><strong>Épargne (20%):</strong> '+fmt(epargne20)+' $ recommandés';
+var epargneActuelle=DATA.epargne||0;
+var pourc=rev>0?(epargneActuelle/rev*100):0;
+html+=' (Actuel: '+fmt(epargneActuelle)+' $ = '+pourc.toFixed(1)+'%)</div>';
+html+='<div class="progress-bar"><div class="progress-fill" style="width:20%;background:#10b981"></div></div>';
+html+='<div style="margin:10px 0;margin-top:20px"><strong>Désirs (30%):</strong> '+fmt(desirs30)+' $ recommandés</div>';
+html+='<div class="progress-bar"><div class="progress-fill" style="width:30%;background:#f59e0b"></div></div>';
+html+='</div>';
+if(epargneActuelle>=epargne20){
+html+='<div class="result-box green">✅ Félicitations! Vous atteignez l\'objectif d\'épargne de 20%.</div>';
+}else{
+var deficit=epargne20-epargneActuelle;
+html+='<div class="result-box orange">⚠️ Attention: Il vous manque '+fmt(deficit)+' $ pour atteindre les 20% d\'épargne recommandés.</div>';
+}
+document.getElementById('analyse-503020').innerHTML=html;
+}
+
+function calcFondsUrgence(){
+var fonds=DATA.liquidite||0;
+var depenses=DATA.totalD||1;
+var mois=fonds/depenses;
+var c3=depenses*3;
+var c6=depenses*6;
+var html='<div class="result-box '+(mois>=6?'green':mois>=3?'orange':'red')+'">';
+html+='Fonds actuel: '+fmt(fonds)+' $ ('+mois.toFixed(1)+' mois)</div>';
+html+='<div class="result-box blue">Objectif min (3 mois): '+fmt(c3)+' $<br>Objectif optimal (6 mois): '+fmt(c6)+' $';
+var prog=(fonds/c6*100);
+html+='<div class="progress-bar" style="margin-top:10px"><div class="progress-fill" style="width:'+Math.min(prog,100)+'%"></div></div></div>';
+document.getElementById('resultat-fonds-urgence').innerHTML=html;
+}
+
+function calcRetraite(){
+var revRet=parseFloat(document.getElementById('revenu-retraite').value)||50000;
+var tauxRetrait=parseFloat(document.getElementById('taux-retrait').value)||4;
+var annees=parseFloat(document.getElementById('annees-retraite').value)||30;
+var ageRetraite=parseFloat(document.getElementById('age-retraite').value)||65;
+var pensionPublique=parseFloat(document.getElementById('pension-publique').value)||0;
+var rentePension=parseFloat(document.getElementById('rente-pension').value)||0;
+
+var tauxInflation=0.02;
+var revenuAjuste=revRet*Math.pow(1+tauxInflation,annees);
+var pensionAjustee=pensionPublique*Math.pow(1+tauxInflation,annees);
+
+// Revenu à combler par l'épargne personnelle
+var rentePensionAjustee=rentePension*Math.pow(1+tauxInflation,annees);
+var revenuACombler=Math.max(0, revenuAjuste-pensionAjustee-rentePensionAjustee);
+var cap=revenuACombler/(tauxRetrait/100);
+
+var capAct=DATA.totalA||0;
+var prog=(capAct/cap*100);
+
+var html='<div class="result-box green">Capital necessaire: <span style="font-size:1.8em">'+fmt(cap)+' $</span></div>';
+html+='<p style="margin:10px 0;font-size:0.9em;color:#6b7280">';
+html+='Revenu désiré: '+fmt(revRet)+' $ → Ajusté inflation: '+fmt(revenuAjuste)+' $<br>';
+if(pensionPublique>0 || rentePension>0){
+  if(pensionPublique>0) html+='Pension publique (RRQ+PSV): '+fmt(pensionPublique)+' $ → Ajustée: '+fmt(pensionAjustee)+' $<br>';
+  if(rentePension>0) html+='Rente de pension (employeur): '+fmt(rentePension)+' $ → Ajustée: '+fmt(rentePensionAjustee)+' $<br>';
+  html+='<strong>Revenu à combler par épargne: '+fmt(revenuACombler)+' $</strong><br>';
+}
+html+='Taux de retrait: '+tauxRetrait+'%';
+html+='</p>';
+
+html+='<div class="result-box blue">Votre progression: '+prog.toFixed(1)+'%';
+html+='<div class="progress-bar"><div class="progress-fill" style="width:'+Math.min(prog,100)+'%"></div></div>';
+html+='<p style="margin-top:8px;font-size:0.9em">'+fmt(capAct)+' $ / '+fmt(cap)+' $</p></div>';
+
+if(prog<100){
+  html+='<div class="result-box orange">Il manque: '+fmt(cap-capAct)+' $</div>';
+}
+
+// Avertissement si retraite avant 65 ans
+if(ageRetraite<65 && pensionPublique>0){
+  html+='<div class="result-box yellow">⚠️ Attention: La PSV n\'est disponible qu\'à partir de 65 ans. La RRQ peut être prise dès 60 ans mais avec une réduction permanente de 36%.</div>';
+}
+
+document.getElementById('resultat-retraite').innerHTML=html;
+}
+
+function calcImmobilier() {
+  var revBrut = parseFloat(document.getElementById('revenu-brut-menage').value) || 0;
+  // Vérification si revenu est 0
+  if(revBrut === 0) {
+    document.getElementById('resultat-immobilier').innerHTML = '<div class="result-box red">⚠️ Veuillez entrer un revenu brut annuel pour calculer votre capacité d\'achat immobilier.</div>';
+    return;
+  }
+  var tauxHypo = (parseFloat(document.getElementById('taux-hypo').value) || 5) / 100;
+  var amortissement = (parseFloat(document.getElementById('amortissement').value) || 25) * 12;
+  var tauxMensuel = tauxHypo / 12;
+  var miseDeFondsPct = parseFloat(document.getElementById('mise-de-fonds-pct').value) / 100;
+  
+  // Calcul des frais SCHL selon la mise de fonds
+  function calculerFraisSCHL(prixMaison, miseDeFondsPct) {
+    if (miseDeFondsPct >= 0.20) return 0;
+    
+    var ratioEmprunt = 1 - miseDeFondsPct;
+    var tauxPrime;
+    
+    if (ratioEmprunt > 0.95) tauxPrime = 0.04; // 5% de mise de fonds
+    else if (ratioEmprunt > 0.90) tauxPrime = 0.031; // 10% de mise de fonds
+    else if (ratioEmprunt > 0.85) tauxPrime = 0.028; // 15% de mise de fonds
+    else tauxPrime = 0.024; // 20% de mise de fonds
+    
+    var montantEmprunt = prixMaison * ratioEmprunt;
+    return montantEmprunt * tauxPrime;
+  }
+  
+  // Calcul de la taxe de bienvenue (droits de mutation au Québec)
+  function calculerTaxeBienvenue(prixMaison) {
+    var taxe = 0;
+    if (prixMaison <= 58900) {
+      taxe = prixMaison * 0.005;
+    } else if (prixMaison <= 294600) {
+      taxe = 58900 * 0.005 + (prixMaison - 58900) * 0.01;
+    } else {
+      taxe = 58900 * 0.005 + (294600 - 58900) * 0.01 + (prixMaison - 294600) * 0.015;
+    }
+    return taxe;
+  }
+  
+  // Approche 1 : Règle traditionnelle (4x le revenu)
+  var prixRegleSimple = revBrut * 4;
+  var miseFondsSimple = prixRegleSimple * miseDeFondsPct;
+  var empruntSimple = prixRegleSimple - miseFondsSimple;
+  var fraisSCHLSimple = calculerFraisSCHL(prixRegleSimple, miseDeFondsPct);
+  var empruntTotalSimple = empruntSimple + fraisSCHLSimple;
+  var paiementSimple = (empruntTotalSimple * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -amortissement));
+  var taxeBienvenueSimple = calculerTaxeBienvenue(prixRegleSimple);
+  
+  // Approche 2 : Capacité réelle selon les institutions (32% du revenu)
+  var maxLog = revBrut * 0.32 / 12;
+  var maxTot = revBrut * 0.40 / 12;
+  
+  // Calcul itératif pour trouver le prix max tenant compte des frais SCHL
+  var prixMaxMaison = 0;
+  var tentative = revBrut * 4;
+  for (var i = 0; i < 10; i++) {
+    var miseFondsMax = tentative * miseDeFondsPct;
+    var empruntMax = tentative - miseFondsMax;
+    var fraisSCHLMax = calculerFraisSCHL(tentative, miseDeFondsPct);
+    var empruntTotalMax = empruntMax + fraisSCHLMax;
+    var paiementMax = (empruntTotalMax * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -amortissement));
+    if (paiementMax <= maxLog) {
+      prixMaxMaison = tentative;
+      tentative *= 1.05;
+    } else {
+      tentative *= 0.95;
+    }
+  }
+  
+  var miseFondsMaxFinal = prixMaxMaison * miseDeFondsPct;
+  var fraisSCHLMaxFinal = calculerFraisSCHL(prixMaxMaison, miseDeFondsPct);
+  var taxeBienvenueMax = calculerTaxeBienvenue(prixMaxMaison);
+
+  var html = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:20px;">
+      
+      <div style="background:#e0f2fe;padding:20px;border-radius:12px;border-left:4px solid #0284c7;">
+        <h4 style="color:#075985;margin-bottom:15px;">📘 Règle traditionnelle (4x revenu)</h4>
+        <p style="margin:8px 0;"><strong>Prix suggéré :</strong> ${fmt(prixRegleSimple)} $</p>
+        <p style="margin:8px 0;"><strong>Mise de fonds (${(miseDeFondsPct*100).toFixed(0)}%) :</strong> ${fmt(miseFondsSimple)} $</p>
+        ${fraisSCHLSimple > 0 ? `<p style="margin:8px 0;color:#dc2626;"><strong>Frais SCHL :</strong> ${fmt(fraisSCHLSimple)} $</p>` : ''}
+        <p style="margin:8px 0;color:#7c3aed;"><strong>Taxe de bienvenue :</strong> ${fmt(taxeBienvenueSimple)} $</p>
+        <p style="margin:8px 0;font-size:1.1em;color:#047857;font-weight:bold;">
+          💰 Paiement mensuel : ${fmt(paiementSimple)} $/mois
+        </p>
+        <p style="margin-top:10px;font-size:0.85em;color:#64748b;">
+          Règle empirique simple qui ne tient pas compte du taux d'intérêt actuel.
+        </p>
+      </div>
+
+      <div style="background:#dcfce7;padding:20px;border-radius:12px;border-left:4px solid #16a34a;">
+        <h4 style="color:#15803d;margin-bottom:15px;">🏦 Capacité réelle (selon institutions)</h4>
+        <p style="margin:8px 0;"><strong>Prix maximal :</strong> ${fmt(prixMaxMaison)} $</p>
+        <p style="margin:8px 0;"><strong>Mise de fonds (${(miseDeFondsPct*100).toFixed(0)}%) :</strong> ${fmt(miseFondsMaxFinal)} $</p>
+        ${fraisSCHLMaxFinal > 0 ? `<p style="margin:8px 0;color:#dc2626;"><strong>Frais SCHL :</strong> ${fmt(fraisSCHLMaxFinal)} $</p>` : ''}
+        <p style="margin:8px 0;color:#7c3aed;"><strong>Taxe de bienvenue :</strong> ${fmt(taxeBienvenueMax)} $</p>
+        <p style="margin:8px 0;font-size:1.1em;color:#047857;font-weight:bold;">
+          💰 Paiement mensuel : ${fmt(maxLog)} $/mois
+        </p>
+        <p style="margin-top:10px;font-size:0.85em;color:#64748b;">
+          Basé sur 32% du revenu brut et le taux actuel de ${(tauxHypo * 100).toFixed(2)}%.
+        </p>
+      </div>
+    </div>
+
+    ${miseDeFondsPct < 0.20 ? `
+    <div style="background:#fef2f2;padding:18px 20px;border-left:6px solid #dc2626;border-radius:10px;margin:20px 0;">
+      <h4 style="margin:0 0 10px 0;color:#991b1b;">⚠️ Mise de fonds inférieure à 20%</h4>
+      <p style="margin:0;color:#7f1d1d;font-size:0.95em;line-height:1.7;">
+        Avec une mise de fonds de ${(miseDeFondsPct*100).toFixed(0)}%, vous devrez payer une assurance prêt hypothécaire SCHL. 
+        Cette prime est ajoutée à votre emprunt et augmente vos paiements mensuels.
+      </p>
+    </div>
+    ` : ''}
+
+    <div style="background:#fef3c7;padding:18px 20px;border-left:6px solid #f59e0b;border-radius:10px;margin:20px 0;">
+      <h4 style="margin:0 0 10px 0;color:#92400e;">💡 Comparaison des deux approches</h4>
+      <p style="margin:0;color:#78350f;font-size:0.95em;line-height:1.7;">
+        ${prixMaxMaison > prixRegleSimple 
+          ? `Avec le taux actuel de ${(tauxHypo * 100).toFixed(2)}%, vous pourriez emprunter <strong>${fmt(prixMaxMaison - prixRegleSimple)} $ de plus</strong> que la règle traditionnelle. Attention à ne pas vous surendetter!`
+          : `Avec le taux actuel de ${(tauxHypo * 100).toFixed(2)}%, votre capacité réelle est <strong>${fmt(prixRegleSimple - prixMaxMaison)} $ inférieure</strong> à la règle traditionnelle. Les taux élevés réduisent votre pouvoir d'achat.`
+        }
+      </p>
+    </div>
+    
+    <div style="background:#eef6ff;padding:18px 20px;border-left:6px solid #2563eb;border-radius:10px;margin:20px 0;font-family:system-ui,Segoe UI,Roboto,sans-serif;">
+      <h3 style="margin:0;color:#1e3a8a;font-size:1.1em;">📘 Règle de qualification hypothécaire</h3>
+      <p style="margin:10px 0 0 0;color:#374151;font-size:0.95em;line-height:1.7;">
+        Les institutions financières appliquent généralement les règles suivantes :
+        <br><strong>• 32 %</strong> du revenu brut peut être consacré au logement (<em>paiement hypothécaire, taxes, chauffage</em>);
+        <br><strong>• 40 %</strong> du revenu brut peut être consacré à l'ensemble des dettes (<em>logement + autres emprunts</em>).
+      </p>
+    </div>
+  `;
+
+  var prixMaison = parseFloat(document.getElementById('prix-maison').value) || 0;
+  if (prixMaison > 0) {
+    var miseFonds = prixMaison * miseDeFondsPct;
+    var montantEmprunte = prixMaison - miseFonds;
+    var fraisSCHL = calculerFraisSCHL(prixMaison, miseDeFondsPct);
+    var empruntTotal = montantEmprunte + fraisSCHL;
+    var paiementReel = (empruntTotal * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -amortissement));
+    var taxeBienvenue = calculerTaxeBienvenue(prixMaison);
+    var argentRequis = miseFonds + taxeBienvenue;
+    var ecartReel = prixMaison - prixMaxMaison;
+    var ecartRegle = prixMaison - prixRegleSimple;
+    var conformeInstitution = paiementReel <= maxLog;
+    
+    html += `
+      <div class="result-box ${conformeInstitution ? 'green' : 'red'}">
+        <h4 style="margin:0 0 10px 0;">Maison envisagée : ${fmt(prixMaison)} $</h4>
+        <p style="margin:5px 0;"><strong>Mise de fonds (${(miseDeFondsPct*100).toFixed(0)}%) :</strong> ${fmt(miseFonds)} $</p>
+        ${fraisSCHL > 0 ? `<p style="margin:5px 0;color:#dc2626;"><strong>Frais SCHL :</strong> ${fmt(fraisSCHL)} $</p>` : ''}
+        <p style="margin:5px 0;color:#7c3aed;"><strong>Taxe de bienvenue :</strong> ${fmt(taxeBienvenue)} $</p>
+        <p style="margin:5px 0;font-size:1.1em;font-weight:bold;color:#1e40af;"><strong>💵 Argent requis au comptant :</strong> ${fmt(argentRequis)} $</p>
+        <p style="margin:5px 0;"><strong>Paiement mensuel :</strong> ${fmt(paiementReel)} $ / mois</p>
+        <p style="margin:10px 0;font-weight:bold;">
+          ${conformeInstitution ? '✅ Conforme à la règle du 32%' : '❌ Dépasse la règle du 32% - Risque de refus bancaire'}
+        </p>
+      </div>
+    `;
+    
+    // Analyse par rapport aux deux approches
+    if (conformeInstitution && Math.abs(ecartRegle / prixRegleSimple * 100) < 10) {
+      html += `<div class="result-box green">✅ Le prix envisagé est raisonnable selon les deux approches (règle traditionnelle et capacité réelle).</div>`;
+    } else if (!conformeInstitution) {
+      html += `<div class="result-box red">❌ Le prix envisagé dépasse votre capacité de paiement mensuel de ${fmt(paiementReel - maxLog)} $/mois. Les institutions financières risquent de refuser ce montant.</div>`;
+    } else {
+      html += `<div class="result-box orange">⚠️ Le prix envisagé utilise toute votre capacité d'emprunt. Budget serré mais acceptable.</div>`;
+    }
+  }
+
+  document.getElementById('resultat-immobilier').innerHTML = html;
+}
+
+function calcObjectif(){
+  var montant=parseFloat(document.getElementById('obj-montant').value)||50000;
+  var date=document.getElementById('obj-date').value;
+  var tauxAnnuel=(parseFloat(document.getElementById('taux-rendement-objectif').value)||0)/100;
+  var tauxMensuel=tauxAnnuel/12;
+  
+  if(!date){
+    document.getElementById('resultat-objectif').innerHTML='Selectionnez une date';
+    return;
+  }
+  
+  var aujourd=new Date();
+  var dateCible=new Date(date);
+  var mois=Math.max(1,(dateCible-aujourd)/(1000*60*60*24*30));
+  var epargneAct=DATA.liquidite||0;
+  
+  var html='<div class="result-box blue">Objectif: '+fmt(montant)+' $<br>Temps: '+Math.round(mois)+' mois<br>Epargne liquide actuelle: '+fmt(epargneAct)+' $</div>';
+  
+  if(epargneAct>=montant){
+    html+='<div class="result-box green">✅ Objectif atteint!</div>';
+  } else {
+    var manque=montant-epargneAct;
+    
+    if(tauxMensuel>0){
+      // Calcul avec intérêts composés
+      var facteur=Math.pow(1+tauxMensuel,mois);
+      var valeurFutureActuelle=epargneAct*facteur;
+      var manqueFutur=montant-valeurFutureActuelle;
+      
+      if(manqueFutur<=0){
+        html+='<div class="result-box green">✅ Votre épargne actuelle, avec les intérêts, atteindra '+fmt(valeurFutureActuelle)+' $ à la date cible. Objectif déjà atteint!</div>';
+      } else {
+        var mensuel=manqueFutur/(((facteur-1)/tauxMensuel));
+        var totalVerse=mensuel*mois;
+        var totalInterets=montant-epargneAct-totalVerse;
+        
+        html+='<div class="result-box orange">Avec un rendement de '+fmt(tauxAnnuel*100)+'% par année:<br>';
+        html+='<span style="font-size:1.8em;font-weight:bold">'+fmt(mensuel)+' $/mois</span><br>';
+        html+='<small style="display:block;margin-top:10px;color:#6b7280;">';
+        html+='Total versé: '+fmt(totalVerse)+' $ | Intérêts gagnés: '+fmt(totalInterets)+' $';
+        html+='</small></div>';
+      }
+      
+      // Comparaison sans intérêts
+      var mensuelSansInteret=manque/mois;
+      if(mensuel<mensuelSansInteret){
+        var economie=mensuelSansInteret-mensuel;
+        html+='<div class="result-box blue">💡 Grâce aux intérêts composés, vous épargnez '+fmt(economie)+' $/mois de moins qu\'un compte sans rendement ('+fmt(mensuelSansInteret)+' $/mois).</div>';
+      }
+      
+    } else {
+      // Calcul sans intérêts (taux = 0%)
+      var mensuel=manque/mois;
+      html+='<div class="result-box orange">Epargne mensuelle necessaire: <span style="font-size:1.8em">'+fmt(mensuel)+' $/mois</span></div>';
+    }
+  }
+  
+  document.getElementById('resultat-objectif').innerHTML=html;
+}
+
+
+function genererDiagnostic(){
+if(!DATA.totalA && !DATA.totalP && !DATA.revenuTotal){
+document.getElementById('diagnostic-global').innerHTML='Entrez vos donnees';return;
+}
+var score=0;
+var mois=(DATA.cb||0)/(DATA.totalD||1);
+var taux=parseFloat(DATA.taux)||0;
+var ratio=DATA.totalA>0?(DATA.totalP/DATA.totalA*100):100;
+var ratioDetteRevenu=DATA.revenuTotal>0?(DATA.totalD/DATA.revenuTotal*100):100;
+var html='<div class="result-box '+(mois>=6?'green':mois>=3?'orange':'red')+'">Fonds urgence: '+mois.toFixed(1)+' mois';
+if(mois>=6){html+=' - Excellent';score++;}else if(mois>=3){html+=' - Correct';}
+html+='</div>';
+html+='<div class="result-box '+(taux>=20?'green':taux>=10?'orange':'red')+'">Taux epargne: '+taux+'%';
+if(taux>=20){html+=' - Excellent';score++;}else if(taux>=10){html+=' - Correct';}
+if(taux<20 && DATA.revenuTotal>0){
+  html+='<p style="font-size:0.9em;margin-top:5px;">💡 Pour atteindre 20%, augmentez votre épargne de ' + fmt((DATA.revenuTotal * 0.20) - DATA.epargne) + ' $/mois</p>';
+}
+html+='</div>';
+html+='<div class="result-box '+(DATA.totalA==0&&DATA.totalP>0?'red':ratio<=30?'green':ratio<=50?'orange':'red')+'">Endettement: '+(DATA.totalA>0?ratio.toFixed(1)+'%':'N/A');
+if(DATA.totalA==0&&DATA.totalP>0){html+=' - Critique: dettes sans actifs';}else if(ratio<=30){html+=' - Excellent';score++;}else if(ratio<=50){html+=' - Modéré';}
+html+='</div>';
+html+='<div class="result-box '+(ratioDetteRevenu<=35?'green':ratioDetteRevenu<=50?'orange':'red')+'">Ratio dettes/revenus: '+ratioDetteRevenu.toFixed(1)+'%';
+if(ratioDetteRevenu<=35){html+=' - Excellent';score++;}else if(ratioDetteRevenu<=50){html+=' - Acceptable';}else{html+=' - Trop élevé';}
+html+='</div>';
+html+='<div class="result-box '+(DATA.vn>0?'green':'red')+'">Valeur nette: '+fmt(DATA.vn)+' $';
+if(DATA.vn>100000){score+=2;}else if(DATA.vn>50000){score++;}
+html+='</div>';
+html+='<div class="result-box blue">Score: '+score+'/6';
+html+='<div class="progress-bar"><div class="progress-fill" style="width:'+Math.round(score/6*100)+'%"></div></div></div>';
+document.getElementById('diagnostic-global').innerHTML=html;
+}
+
+function exporterCSV() {
+  const rows = [
+    ["Section","Clé","Valeur"],
+    ["Actifs","Compte bancaire", document.getElementById('cb').value],
+    ["Actifs","CELI", document.getElementById('celi').value],
+    ["Actifs","Compte non enregistré", document.getElementById('cne').value],
+    ["Actifs","REER", document.getElementById('reer').value],
+    ["Actifs","Immobilisations", document.getElementById('immob').value],
+    ["Actifs","Autres actifs", document.getElementById('autre-actif').value],
+    ["Passifs","Cartes de crédit", document.getElementById('cc').value],
+    ["Passifs","Marge de crédit", document.getElementById('mc').value],
+    ["Passifs","Prêt auto", document.getElementById('pa').value],
+    ["Passifs","Hypothèque", document.getElementById('hypo').value],
+    ["Passifs","Autres passifs", document.getElementById('autre-passif').value],
+    ["Résumé","Total actifs", DATA.totalA||0],
+    ["Résumé","Total passifs", DATA.totalP||0],
+    ["Résumé","Valeur nette", DATA.vn||0],
+    ["Budget","Revenu mensuel net", document.getElementById('revenu').value],
+    ["Budget","Revenu de loyer", document.getElementById('rev-loyer').value],
+    ["Budget","Autre revenu", document.getElementById('autre-revenu').value],
+    ["Budget","Revenus totaux", DATA.revenuTotal||0],
+    ["Budget","Total dépenses", DATA.totalD||0],
+    ["Budget","Épargne mensuelle", DATA.epargne||0],
+    ["Budget","Taux d'épargne (%)", DATA.taux||0],
+    ["Impôts","Revenu brut annuel", document.getElementById('rb').value],
+    ["Impôts","Contribution REER", document.getElementById('cr').value],
+    ["Impôts","Autres déductions", document.getElementById('ad').value],
+    ["Objectifs","Montant cible", document.getElementById('obj-montant').value],
+    ["Objectifs","Date cible", document.getElementById('obj-date').value],
+  ];
+
+  let csvContent = rows.map(e => e.join(";")).join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", "finance_personnelle.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+</script>
+</body>
+</html>
