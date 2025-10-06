@@ -1,5 +1,4 @@
-module.exports = function (eleventyConfig) {
-  // Dossiers ou fichiers à copier tels quels
+module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("admin");
   eleventyConfig.addPassthroughCopy("Aziz Guellouz.jpg");
   eleventyConfig.addPassthroughCopy("ads.txt");
