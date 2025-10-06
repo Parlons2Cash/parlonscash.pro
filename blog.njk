@@ -1,9 +1,13 @@
+---
+layout: none
+---
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog – Parlons Cash</title>
+  <title>Le Blog de Parlons Cash</title>
   <style>
     body {
       font-family: 'Segoe UI', Roboto, Arial, sans-serif;
@@ -13,19 +17,26 @@
       padding: 0;
       line-height: 1.6;
     }
+
     header {
-      background-color: #A84300; /* Couleur chaleureuse */
+      background-color: #B85C2E; /* couleur plus chaleureuse */
       color: white;
-      padding: 20px 10%;
+      padding: 25px 10%;
       text-align: center;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    header h1 { margin: 0; font-size: 2rem; }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
     main {
       max-width: 900px;
       margin: 40px auto;
       padding: 0 20px;
     }
+
     article {
       background-color: white;
       margin-bottom: 25px;
@@ -34,20 +45,37 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+
     article:hover {
       transform: translateY(-3px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    h2 { color: #A84300; margin-bottom: 5px; }
-    .date { color: #6c757d; font-size: 0.9rem; }
-    a { color: #A84300; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+
+    h2 {
+      color: #B85C2E;
+      margin-bottom: 5px;
+    }
+
+    .date {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
       margin-top: 40px;
       font-size: 0.9rem;
       color: #6c757d;
+    }
+
+    a {
+      color: #B85C2E;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -58,19 +86,19 @@
   </header>
 
   <main>
-    <section>
-      {% for post in collections.all %}
-        {% if post.url contains "/blog/" %}
+    {% for post in collections.all %}
+      {% if post.url contains "/blog/" %}
         <article>
           <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
           <p class="date">Publié le {{ post.date | date: "%d %B %Y" }}</p>
           <p>{{ post.data.description }}</p>
         </article>
-        {% endif %}
-      {% endfor %}
-    </section>
+      {% endif %}
+    {% endfor %}
   </main>
 
-  <footer>© 2025 Parlons Cash – Tous droits réservés</footer>
+  <footer>
+    © 2025 Parlons Cash – Tous droits réservés
+  </footer>
 </body>
 </html>
