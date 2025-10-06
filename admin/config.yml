@@ -1,14 +1,14 @@
 backend:
   name: github
-  repo: Parlons2Cash/parlonscash.pro   # remplace par ton dépôt exact si différent
-  branch: main
+  repo: Parlons2Cash/parlonscash.pro   # ton dépôt exact
+  branch: main                         # la branche principale
 
-media_folder: "static/uploads"   # où les images seront enregistrées
+media_folder: "static/uploads"          # où les images seront stockées
 public_folder: "/uploads"
 
 collections:
   - name: "blog"
-    label: "Articles de blog"
+    label: "Articles du blog"
     folder: "blog"
     create: true
     slug: "{{slug}}"
