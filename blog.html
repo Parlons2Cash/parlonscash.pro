@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - Parlons Cash</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    h1 { color: #2563eb; }
+    .post { margin-bottom: 40px; padding-bottom: 10px; border-bottom: 1px solid #ddd; }
+    .post h2 { color: #92400e; }
+    .post p { line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <h1>Articles du blog</h1>
+  <div id="blog-container">Chargement des articles...</div>
+
+  <script>
+  async function loadBlog() {
+    const response = await fetch('https://api.github.com/repos/Parlons2Cash/parlonscash.pro/contents/blog');
+    const posts = await response.json();
+    const container = document.getElementById('blog-container');
+    container.innerHTML = '';
+
+    for (const post of posts) {
+      if (post.name.endsWith('.md')) {
+        const file = await fetch(post.download_url);
+        const text = await file.text();
+        const title = post.name.replace('.md', '').replace(/-/g, ' ');
+        container.innerHTML += `<div class="post"><h2>${title}</h2><p>${text.substring(0, 200)}...</p></div>`;
+      }
+    }
+  }
+  loadBlog();
+  </script>
+
+</body>
+</html>
