@@ -7,109 +7,99 @@
   <style>
     body {
       font-family: "Segoe UI", Roboto, sans-serif;
+      background-color: #f8f9fb;
       margin: 0;
       padding: 0;
-      background-color: #f8f9fb;
-      color: #333;
-      line-height: 1.6;
     }
-
     header {
       background-color: #2563eb;
       color: white;
-      padding: 30px 15px;
       text-align: center;
+      padding: 30px 15px;
     }
-
     header h1 {
       margin: 0;
-      font-size: 2.2em;
     }
-
     main {
-      max-width: 900px;
+      max-width: 850px;
       margin: 40px auto;
       padding: 0 20px;
     }
-
     .article {
       background: white;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       padding: 25px;
       margin-bottom: 25px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-
-    .article:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-    }
-
     .article h2 {
       color: #2563eb;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
-
-    .article p {
-      color: #444;
-    }
-
     .meta {
       font-size: 0.9em;
       color: #777;
       margin-bottom: 12px;
     }
-
-    a.read-more {
-      display: inline-block;
-      margin-top: 10px;
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    a.read-more:hover {
-      text-decoration: underline;
-    }
-
     footer {
       background: #2563eb;
       color: white;
       text-align: center;
       padding: 20px;
-      margin-top: 40px;
       font-size: 0.9em;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
-
   <header>
     <h1>Le blog de Parlons Cash</h1>
-    <p>L’espace où l’on parle finance personnelle et décisions éclairées, sans jargon inutile.</p>
+    <p>Des outils simples pour des décisions financières éclairées.</p>
   </header>
 
-  <main>
-    <div class="article">
-      <h2>Bienvenue sur le blog de Parlons Cash</h2>
-      <div class="meta">Publié le 5 octobre 2025</div>
-      <p>Bienvenue sur le blog de Parlons Cash — un espace où l’on parle concrètement de finance, d’entrepreneuriat et de stratégie, sans détour ni jargon.</p>
-      <p>Ici, chaque article a pour objectif de rendre les notions financières accessibles, utiles et directement applicables à votre vie quotidienne.</p>
-      <a href="#" class="read-more">Lire l’article</a>
-    </div>
-
-    <div class="article">
-      <h2>Premier article de test</h2>
-      <div class="meta">Publié le 5 octobre 2025</div>
-      <p>Ceci est un exemple d’article publié sur Parlons Cash. Vous y trouverez bientôt des conseils pratiques, des outils et des analyses claires pour vous aider à mieux comprendre votre argent et vos décisions financières.</p>
-      <a href="#" class="read-more">Lire l’article</a>
-    </div>
+  <main id="articles">
+    <p>Chargement des articles...</p>
   </main>
 
   <footer>
-    <p>&copy; 2025 Parlons Cash — Des outils simples pour des décisions financières éclairées.</p>
+    <p>&copy; 2025 Parlons Cash</p>
   </footer>
 
+  <script>
+    async function chargerArticles() {
+      const dossiers = [
+        "blog/investir-sans-stress.md",
+        "blog/modele-article.md"
+      ];
+
+      const conteneur = document.getElementById("articles");
+      conteneur.innerHTML = "";
+
+      for (const chemin of dossiers) {
+        try {
+          const r = await fetch(chemin);
+          const texte = await r.text();
+
+          const titre = texte.match(/title:\s*"(.*?)"/)?.[1] || "Article sans titre";
+          const date = texte.match(/date:\s*(\d{4}-\d{2}-\d{2})/)?.[1] || "";
+          const description = texte.match(/description:\s*"(.*?)"/)?.[1] || "";
+          const contenu = texte.split("---")[2]?.trim() || "";
+
+          const bloc = document.createElement("div");
+          bloc.className = "article";
+          bloc.innerHTML = `
+            <h2>${titre}</h2>
+            <div class="meta">${date}</div>
+            <p>${description}</p>
+            <div>${contenu}</div>
+          `;
+          conteneur.appendChild(bloc);
+        } catch (err) {
+          console.error("Erreur lors du chargement de", chemin, err);
+        }
+      }
+    }
+    chargerArticles();
+  </script>
 </body>
 </html>
