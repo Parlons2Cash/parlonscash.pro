@@ -13,26 +13,19 @@
       padding: 0;
       line-height: 1.6;
     }
-
     header {
-      background-color: #2E7D32;
+      background-color: #A84300; /* Couleur chaleureuse */
       color: white;
       padding: 20px 10%;
       text-align: center;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-
+    header h1 { margin: 0; font-size: 2rem; }
     main {
       max-width: 900px;
       margin: 40px auto;
       padding: 0 20px;
     }
-
     article {
       background-color: white;
       margin-bottom: 25px;
@@ -41,37 +34,20 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-
     article:hover {
       transform: translateY(-3px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-
-    h2 {
-      color: #2E7D32;
-      margin-bottom: 5px;
-    }
-
-    .date {
-      color: #6c757d;
-      font-size: 0.9rem;
-    }
-
+    h2 { color: #A84300; margin-bottom: 5px; }
+    .date { color: #6c757d; font-size: 0.9rem; }
+    a { color: #A84300; text-decoration: none; }
+    a:hover { text-decoration: underline; }
     footer {
       text-align: center;
       padding: 20px;
       margin-top: 40px;
       font-size: 0.9rem;
       color: #6c757d;
-    }
-
-    a {
-      color: #2E7D32;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
@@ -83,22 +59,18 @@
 
   <main>
     <section>
-      <article>
-        <h2><a href="blog/premier-article.html">Bienvenue sur le blog Parlons Cash</a></h2>
-        <p class="date">Publié le 6 octobre 2025</p>
-        <p>Bienvenue sur le blog de Parlons Cash — l’espace où l’on parle concrètement finance, entrepreneuriat et stratégie d’affaires sans jargon inutile, sans détour.</p>
-      </article>
-
-      <article>
-        <h2><a href="blog/second-article.html">Comment simplifier sa gestion financière</a></h2>
-        <p class="date">Publié le 12 octobre 2025</p>
-        <p>Apprenez à structurer vos finances avec des outils simples et concrets. Ici, on évite les théories compliquées : place à l’action et à la clarté.</p>
-      </article>
+      {% for post in collections.all %}
+        {% if post.url contains "/blog/" %}
+        <article>
+          <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
+          <p class="date">Publié le {{ post.date | date: "%d %B %Y" }}</p>
+          <p>{{ post.data.description }}</p>
+        </article>
+        {% endif %}
+      {% endfor %}
     </section>
   </main>
 
-  <footer>
-    © 2025 Parlons Cash – Tous droits réservés
-  </footer>
+  <footer>© 2025 Parlons Cash – Tous droits réservés</footer>
 </body>
 </html>
