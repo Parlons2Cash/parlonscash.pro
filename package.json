@@ -1,6 +1,7 @@
 {
-  "name": "parlonscash-blog",
+  "name": "parlonscash",
   "version": "1.0.0",
+  "description": "Blog Parlons Cash – outils et articles de finance personnelle",
   "scripts": {
     "build": "eleventy"
   },
