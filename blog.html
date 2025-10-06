@@ -3,103 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog | Parlons Cash</title>
+  <title>Blog – Parlons Cash</title>
   <style>
     body {
-      font-family: "Segoe UI", Roboto, sans-serif;
-      background-color: #f8f9fb;
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #212529;
       margin: 0;
       padding: 0;
+      line-height: 1.6;
     }
+
     header {
-      background-color: #2563eb;
+      background-color: #2E7D32;
       color: white;
+      padding: 20px 10%;
       text-align: center;
-      padding: 30px 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+
     header h1 {
       margin: 0;
+      font-size: 2rem;
     }
+
     main {
-      max-width: 850px;
+      max-width: 900px;
       margin: 40px auto;
       padding: 0 20px;
     }
-    .article {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      padding: 25px;
+
+    article {
+      background-color: white;
       margin-bottom: 25px;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .article h2 {
-      color: #2563eb;
+
+    article:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #2E7D32;
       margin-bottom: 5px;
     }
-    .meta {
-      font-size: 0.9em;
-      color: #777;
-      margin-bottom: 12px;
+
+    .date {
+      color: #6c757d;
+      font-size: 0.9rem;
     }
+
     footer {
-      background: #2563eb;
-      color: white;
       text-align: center;
       padding: 20px;
-      font-size: 0.9em;
       margin-top: 40px;
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+
+    a {
+      color: #2E7D32;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Le blog de Parlons Cash</h1>
-    <p>Des outils simples pour des décisions financières éclairées.</p>
+    <h1>Le Blog de Parlons Cash</h1>
+    <p>Des outils simples pour des décisions financières éclairées 💡</p>
   </header>
 
-  <main id="articles">
-    <p>Chargement des articles...</p>
+  <main>
+    <section>
+      <article>
+        <h2><a href="blog/premier-article.html">Bienvenue sur le blog Parlons Cash</a></h2>
+        <p class="date">Publié le 6 octobre 2025</p>
+        <p>Bienvenue sur le blog de Parlons Cash — l’espace où l’on parle concrètement finance, entrepreneuriat et stratégie d’affaires sans jargon inutile, sans détour.</p>
+      </article>
+
+      <article>
+        <h2><a href="blog/second-article.html">Comment simplifier sa gestion financière</a></h2>
+        <p class="date">Publié le 12 octobre 2025</p>
+        <p>Apprenez à structurer vos finances avec des outils simples et concrets. Ici, on évite les théories compliquées : place à l’action et à la clarté.</p>
+      </article>
+    </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 Parlons Cash</p>
+    © 2025 Parlons Cash – Tous droits réservés
   </footer>
-
-  <script>
-    async function chargerArticles() {
-      const dossiers = [
-        "blog/investir-sans-stress.md",
-        "blog/modele-article.md"
-      ];
-
-      const conteneur = document.getElementById("articles");
-      conteneur.innerHTML = "";
-
-      for (const chemin of dossiers) {
-        try {
-          const r = await fetch(chemin);
-          const texte = await r.text();
-
-          const titre = texte.match(/title:\s*"(.*?)"/)?.[1] || "Article sans titre";
-          const date = texte.match(/date:\s*(\d{4}-\d{2}-\d{2})/)?.[1] || "";
-          const description = texte.match(/description:\s*"(.*?)"/)?.[1] || "";
-          const contenu = texte.split("---")[2]?.trim() || "";
-
-          const bloc = document.createElement("div");
-          bloc.className = "article";
-          bloc.innerHTML = `
-            <h2>${titre}</h2>
-            <div class="meta">${date}</div>
-            <p>${description}</p>
-            <div>${contenu}</div>
-          `;
-          conteneur.appendChild(bloc);
-        } catch (err) {
-          console.error("Erreur lors du chargement de", chemin, err);
-        }
-      }
-    }
-    chargerArticles();
-  </script>
 </body>
 </html>
