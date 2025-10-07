@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /
+Sitemap: https://parlonscash.pro/sitemap.xml
