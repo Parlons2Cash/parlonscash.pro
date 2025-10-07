@@ -525,17 +525,33 @@ var rb=parseFloat(document.getElementById('rb').value)||0;
 var cr=parseFloat(document.getElementById('cr').value)||0;
 var ad=parseFloat(document.getElementById('ad').value)||0;
 var ri=Math.max(0,rb-cr-ad);
+
+// IMPÔT FÉDÉRAL 2025 (tranches corrigées)
 var impf=0;
-if(ri>246752){impf=(ri-246752)*0.33+66233+35729+15729+10707;}
-else if(ri>173205){impf=(ri-173205)*0.29+35729+15729+10707;}
-else if(ri>111733){impf=(ri-111733)*0.26+15729+10707;}
-else if(ri>55867){impf=(ri-55867)*0.205+10707;}
-else if(ri>0){impf=ri*0.15;}
+if(ri<=55867){
+  impf=ri*0.15;
+}else if(ri<=111733){
+  impf=55867*0.15+(ri-55867)*0.205;
+}else if(ri<=173205){
+  impf=55867*0.15+(111733-55867)*0.205+(ri-111733)*0.26;
+}else if(ri<=246752){
+  impf=55867*0.15+(111733-55867)*0.205+(173205-111733)*0.26+(ri-173205)*0.29;
+}else{
+  impf=55867*0.15+(111733-55867)*0.205+(173205-111733)*0.26+(246752-173205)*0.29+(ri-246752)*0.33;
+}
+
+// IMPÔT PROVINCIAL QUÉBEC 2025 (tranches corrigées)
 var impp=0;
-if(ri>119910){impp=(ri-119910)*0.2575+16389+9648+7151;}
-else if(ri>98540){impp=(ri-98540)*0.24+9648+7151;}
-else if(ri>51780){impp=(ri-51780)*0.20+7151;}
-else if(ri>0){impp=ri*0.14;}
+if(ri<=51780){
+  impp=ri*0.14;
+}else if(ri<=103545){
+  impp=51780*0.14+(ri-51780)*0.19;
+}else if(ri<=126000){
+  impp=51780*0.14+(103545-51780)*0.19+(ri-103545)*0.24;
+}else{
+  impp=51780*0.14+(103545-51780)*0.19+(126000-103545)*0.24+(ri-126000)*0.2575;
+}
+
 var impt=impf+impp;
 var rn=rb-impt;
 document.getElementById('ri').textContent=fmt(ri)+' $';
