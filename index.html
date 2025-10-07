@@ -368,9 +368,14 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
 </div>
 <div class="form-group"><label>Revenu annuel desire (en dollars d'aujourd'hui)</label><input type="number" id="revenu-retraite" value="50000" onchange="calcRetraite()"></div>
 <div class="form-group"><label>Taux de retrait (%)</label><input type="number" step="0.5" id="taux-retrait" value="4" min="3" max="8" onchange="calcRetraite()"></div>
-<div class="form-group" style="display:flex;align-items:center;gap:10px;">
-  <input type="checkbox" id="retrait-indexe" onchange="calcRetraite()" checked>
-  <label for="retrait-indexe" style="margin:0;cursor:pointer;">Indexer les retraits à l'inflation (2% annuel)</label>
+<div class="form-group">
+  <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+    <input type="checkbox" id="retrait-indexe" onchange="calcRetraite()" checked style="width:auto;">
+    <span>Indexer les retraits à l'inflation (2% annuel)</span>
+  </label>
+  <small style="display:block;margin-top:5px;color:#6b7280;">
+    Si coché, vos retraits augmenteront de 2% par an pour maintenir votre pouvoir d'achat
+  </small>
 </div>
 <div id="resultat-retraite"></div>
 </div>
@@ -458,7 +463,6 @@ var a1=parseFloat(document.getElementById('cb').value)||0;
 var a2=parseFloat(document.getElementById('celi').value)||0;
 var a2b=parseFloat(document.getElementById('celiapp').value)||0;
 var a3=parseFloat(document.getElementById('cne').value)||0;
-var a3=parseFloat(document.getElementById('cne').value)||0;
 var a4=parseFloat(document.getElementById('reer').value)||0;
 var a5=parseFloat(document.getElementById('immob').value)||0;
 var a6=parseFloat(document.getElementById('autre-actif').value)||0;
@@ -480,37 +484,47 @@ document.getElementById('dash-valeur').textContent=fmt(DATA.vn)+' $';
 document.getElementById('dash-actifs').textContent=fmt(DATA.totalA)+' $';
 document.getElementById('dash-passifs').textContent=fmt(DATA.totalP)+' $';
 
-if(a4 > 0){
+// Gestion de l'impôt latent sur le REER (version corrigée)
+var infoReer = document.getElementById('info-reer');
+
+// Créer le conteneur une seule fois sous la valeur nette
+if (!infoReer) {
+  infoReer = document.createElement('div');
+  infoReer.id = 'info-reer';
+  var summaryBox = document.querySelector('#tab-bilan .summary-box');
+  if (summaryBox) summaryBox.parentNode.insertBefore(infoReer, summaryBox.nextSibling);
+}
+
+// Si REER > 0 → afficher l’impôt latent
+if (a4 > 0) {
   var tauxMarginal = 0.40;
   var impotLatent = a4 * tauxMarginal;
   var reerNet = a4 - impotLatent;
   var valeurNetteAjustee = DATA.vn - impotLatent;
-  
-  var htmlReer = '<div class="result-box yellow" style="margin-top:15px;">';
-  htmlReer += '<strong>💡 Impôt latent sur REER</strong><br>';
-  htmlReer += '<small style="display:block;margin:8px 0;line-height:1.6;">Les retraits REER sont imposés comme du revenu ordinaire. Voici une estimation de l\'impact fiscal :</small>';
-  htmlReer += '<p style="margin:5px 0;">REER brut: ' + fmt(a4) + ' $</p>';
-  htmlReer += '<p style="margin:5px 0;color:#dc2626;">Impôt estimé (40%): -' + fmt(impotLatent) + ' $</p>';
-  htmlReer += '<p style="margin:5px 0;font-weight:bold;color:#047857;">Valeur REER nette estimée: ' + fmt(reerNet) + ' $</p>';
-  htmlReer += '<p style="margin:10px 0;padding-top:10px;border-top:1px solid #f59e0b;font-weight:bold;color:#1e40af;">Valeur nette ajustée: ' + fmt(valeurNetteAjustee) + ' $</p>';
-  htmlReer += '<small style="display:block;margin-top:8px;color:#78350f;">Cette estimation suppose un taux marginal de 40%. Le taux réel dépendra de votre revenu et stratégie de retrait à la retraite.</small>';
-  htmlReer += '</div>';
-  
-  // Insérer dans le DOM (après la summary-box de valeur nette)
-  var summaryBox = document.querySelector('#tab-bilan .summary-box');
-  if(summaryBox && !document.getElementById('info-reer')){
-    var infoDiv = document.createElement('div');
-    infoDiv.id = 'info-reer';
-    infoDiv.innerHTML = htmlReer;
-    summaryBox.parentNode.insertBefore(infoDiv, summaryBox.nextSibling);
-  } else if(document.getElementById('info-reer')) {
-    document.getElementById('info-reer').innerHTML = htmlReer;
-  }
-} else {
-  // Supprimer l'info si REER = 0
-  var infoReer = document.getElementById('info-reer');
-  if(infoReer) infoReer.remove();
+
+  infoReer.innerHTML = `
+    <div class="result-box yellow" style="margin-top:15px;">
+      <strong>💡 Impôt latent sur REER</strong><br>
+      <small style="display:block;margin:8px 0;line-height:1.6;">
+        Les retraits REER sont imposés comme du revenu ordinaire. Voici une estimation :
+      </small>
+      <p style="margin:5px 0;">REER brut : ${fmt(a4)} $</p>
+      <p style="margin:5px 0;color:#dc2626;">Impôt estimé (40%) : -${fmt(impotLatent)} $</p>
+      <p style="margin:5px 0;font-weight:bold;color:#047857;">Valeur REER nette : ${fmt(reerNet)} $</p>
+      <p style="margin:10px 0;padding-top:10px;border-top:1px solid #f59e0b;font-weight:bold;color:#1e40af;">
+        Valeur nette ajustée : ${fmt(valeurNetteAjustee)} $
+      </p>
+      <small style="display:block;margin-top:8px;color:#78350f;">
+        Cette estimation suppose un taux marginal de 40%. Le taux réel dépendra de votre revenu et de votre stratégie de retrait.
+      </small>
+    </div>
+  `;
 }
+// Sinon, supprimer le bloc s’il existe
+else {
+  if (infoReer) infoReer.remove();
+}
+
 var rev=parseFloat(document.getElementById('revenu').value)||0;
 var revLoyer=parseFloat(document.getElementById('rev-loyer').value)||0;
 var autreRev=parseFloat(document.getElementById('autre-revenu').value)||0;
@@ -575,7 +589,7 @@ if(ri<=51780){
 }
 
 var impt=impf+impp;
-var rn=rb-impt;
+var rn = rb - cr - ad - impt;
 document.getElementById('ri').textContent=fmt(ri)+' $';
 document.getElementById('impf').textContent=fmt(impf)+' $';
 document.getElementById('impp').textContent=fmt(impp)+' $';
@@ -596,8 +610,8 @@ var html='<div style="margin:20px 0">';
 html+='<div style="margin:10px 0"><strong>Besoins (50%):</strong> '+fmt(besoin50)+' $ recommandés</div>';
 html+='<div class="progress-bar"><div class="progress-fill" style="width:50%;background:#3b82f6"></div></div>';
 html+='<div style="margin:10px 0;margin-top:20px"><strong>Épargne (20%):</strong> '+fmt(epargne20)+' $ recommandés';
-var epargneActuelle=DATA.epargne||0;
-var pourc=rev>0?(epargneActuelle/rev*100):0;
+var revNet = DATA.revenuTotal * 0.8; // approx 20% impôts
+var pourc = revNet>0?(epargneActuelle/revNet*100):0;
 html+=' (Actuel: '+fmt(epargneActuelle)+' $ = '+pourc.toFixed(1)+'%)</div>';
 html+='<div class="progress-bar"><div class="progress-fill" style="width:20%;background:#10b981"></div></div>';
 html+='<div style="margin:10px 0;margin-top:20px"><strong>Désirs (30%):</strong> '+fmt(desirs30)+' $ recommandés</div>';
@@ -614,7 +628,7 @@ document.getElementById('analyse-503020').innerHTML=html;
 
 function calcFondsUrgence(){
 var fonds=DATA.liquidite||0;
-var depenses=DATA.totalD||1;
+var depenses=Math.max(1,DATA.totalD);
 var mois=fonds/depenses;
 var c3=depenses*3;
 var c6=depenses*6;
@@ -639,10 +653,15 @@ var retraitIndexe=document.getElementById('retrait-indexe').checked;
 
 var tauxInflation=0.02;
 var revenuAjuste=revRet*Math.pow(1+tauxInflation,annees);
-var pensionAjustee=pensionPublique*Math.pow(1+tauxInflation,annees);
-var rentePensionAjustee=rentePension*Math.pow(1+tauxInflation,annees);
+// Pension publique disponible seulement si retraite à 60 ans minimum
+var pensionDisponible = (ageRetraite >= 60) ? pensionPublique : 0;
+var pensionAjustee = pensionDisponible * Math.pow(1+tauxInflation,annees);
+
+// Rente de pension (employeur) - généralement disponible plus tôt
+var rentePensionAjustee = rentePension * Math.pow(1+tauxInflation,annees);
 var revenuACombler=Math.max(0, revenuAjuste-pensionAjustee-rentePensionAjustee);
-var cap=revenuACombler/(tauxRetraitInitial/100);
+var revenuACompleterActuel=Math.max(0, revRet-pensionDisponible-rentePension);
+var cap = revenuACompleterActuel * ((1 - Math.pow(1 + tauxRendementPendant, -(30))) / (tauxRendementPendant - tauxInflation));
 
 var capAct=DATA.totalA||0;
 var valeurFuture=capAct*Math.pow(1+tauxRendementAvant,annees);
@@ -652,7 +671,9 @@ var html='<div class="result-box green">Capital necessaire à la retraite: <span
 html+='<p style="margin:10px 0;font-size:0.9em;color:#6b7280">';
 html+='Revenu désiré: '+fmt(revRet)+' $ → Ajusté inflation: '+fmt(revenuAjuste)+' $<br>';
 if(pensionPublique>0 || rentePension>0){
-  if(pensionPublique>0) html+='Pension publique (RRQ+PSV): '+fmt(pensionPublique)+' $ → Ajustée: '+fmt(pensionAjustee)+' $<br>';
+  if(pensionPublique>0) html+='Pension publique (RRQ+PSV): '+fmt(pensionPublique)+' $ → Ajustée: '+fmt(pensionAjustee)+' $';
+  if(pensionPublique>0 && ageRetraite<60) html+=' <strong style="color:#dc2626;">(Non disponible avant 60 ans - non incluse dans le calcul)</strong>';
+  if(pensionPublique>0) html+='<br>';
   if(rentePension>0) html+='Rente de pension (employeur): '+fmt(rentePension)+' $ → Ajustée: '+fmt(rentePensionAjustee)+' $<br>';
   html+='<strong>Revenu à combler par épargne: '+fmt(revenuACombler)+' $</strong><br>';
 }
@@ -673,7 +694,7 @@ if(capAct>0){
 var prog=(valeurFuture/cap*100);
 html+='<div class="result-box '+(prog>=100?'green':'orange')+'">Progression vers l\'objectif: '+prog.toFixed(1)+'%';
 html+='<div class="progress-bar"><div class="progress-fill" style="width:'+Math.min(prog,100)+'%"></div></div>';
-html+='<p style="margin-top:8px;font-size:0.9em">'+fmt(valeurFuture)+' $ / '+fmt(cap)+' $</p></div>';
+html+='<p style="margin-top:8px;font-size:0.9em;">Valeur future: '+fmt(valeurFuture)+' $<br>Capital nécessaire: '+fmt(cap)+' $</p></div>';
 
 if(prog<100){
   var tauxMensuel=tauxRendementAvant/12;
@@ -705,13 +726,22 @@ if(prog<100){
 }
 
 // PROJECTION PENDANT LA RETRAITE
-var capitalDepart=Math.max(valeurFuture,cap);
+var capitalDepart=valeurFuture;
 var projection=[];
 var capitalRestant=capitalDepart;
-var retraitAnnuel=revenuACombler;
+var retraitAnnuel=revenuACompleterActuel;
 var ageActuel=ageRetraite;
 var ageMax=95;
 var ageEpuisement=null;
+
+// Ajouter l'année 0 (début de retraite)
+projection.push({
+  annee:0,
+  age:ageRetraite,
+  capital:capitalDepart,
+  retrait:0,
+  rendement:0
+});
 
 for(var i=0;i<=ageMax-ageRetraite && capitalRestant>0;i++){
   if(retraitIndexe && i>0){
@@ -743,11 +773,12 @@ html+='Rendement: '+fmt(tauxRendementPendant*100)+'%/an | ';
 html+='Retrait: '+(retraitIndexe?'Indexé à l\'inflation (2%)':'Fixe');
 html+='</p>';
 
+// Calculer le taux de croissance réel basé sur les 5 premières années
 var tauxCroissance=tauxRendementPendant-(tauxRetraitInitial/100)-(retraitIndexe?tauxInflation:0);
 if(tauxCroissance>0.001){
   html+='<div class="result-box green">✅ <strong>Capital en croissance perpétuelle</strong><br>';
   html+='Croissance nette: +'+fmt(tauxCroissance*100)+'%/an<br>';
-  html+='Votre capital augmentera indéfiniment. À 95 ans: ~'+fmt(projection[projection.length-1].capital)+' $';
+  if(projection.length>0) html+='Votre capital augmentera indéfiniment. À 95 ans: ~'+fmt(projection[projection.length-1].capital)+' $';
   html+='</div>';
 }else if(Math.abs(tauxCroissance)<0.001){
   html+='<div class="result-box blue">⚖️ <strong>Capital stable</strong><br>';
@@ -762,7 +793,7 @@ if(tauxCroissance>0.001){
   }else{
     html+='<div class="result-box orange">⚠️ <strong>Capital en décroissance</strong><br>';
     html+='Décroissance: -'+fmt(Math.abs(tauxCroissance)*100)+'%/an<br>';
-    html+='Capital à 95 ans: '+fmt(projection[projection.length-1].capital)+' $';
+    if(projection.length>0) html+='Capital à 95 ans: '+fmt(projection[projection.length-1].capital)+' $';
     html+='</div>';
   }
 }
@@ -786,6 +817,11 @@ if(projection.length>10){
 html+='</tbody></table>';
 html+='</div></div>';
 
+// Avertissement si retraite avant 60 ans avec pension publique
+if(ageRetraite < 60 && pensionPublique > 0){
+  html+='<div class="result-box red">⚠️ Attention: Vous avez entré une pension publique (RRQ/PSV) de '+fmt(pensionPublique)+' $ mais votre âge de retraite est '+ageRetraite+' ans. Le RRQ n\'est accessible qu\'à partir de 60 ans. Cette pension n\'est donc pas incluse dans le calcul.</div>';
+}
+
 if(ageRetraite<65 && pensionPublique>0){
   html+='<div class="result-box yellow">⚠️ Attention: La PSV n\'est disponible qu\'à partir de 65 ans. La RRQ peut être prise dès 60 ans mais avec une réduction permanente de 36%.</div>';
 }
@@ -795,176 +831,144 @@ document.getElementById('resultat-retraite').innerHTML=html;
 
 function calcImmobilier() {
   var revBrut = parseFloat(document.getElementById('revenu-brut-menage').value) || 0;
-  // Vérification si revenu est 0
-  if(revBrut === 0) {
-    document.getElementById('resultat-immobilier').innerHTML = '<div class="result-box red">⚠️ Veuillez entrer un revenu brut annuel pour calculer votre capacité d\'achat immobilier.</div>';
+  if (revBrut === 0) {
+    document.getElementById('resultat-immobilier').innerHTML =
+      '<div class="result-box red">⚠️ Veuillez entrer un revenu brut annuel pour calculer votre capacité d\'achat immobilier.</div>';
     return;
   }
+
+  // 🔧 Paramètres de base
   var tauxHypo = (parseFloat(document.getElementById('taux-hypo').value) || 5) / 100;
   var amortissement = (parseFloat(document.getElementById('amortissement').value) || 25) * 12;
   var tauxMensuel = tauxHypo / 12;
   var miseDeFondsPct = parseFloat(document.getElementById('mise-de-fonds-pct').value) / 100;
-  
-  // Calcul des frais SCHL selon la mise de fonds
+
+  // 🏦 Règles des institutions (ratios)
+  var maxLog = revBrut * 0.32 / 12; // maximum logement mensuel
+  var maxTot = revBrut * 0.40 / 12; // maximum dettes totales (non utilisé ici)
+
+  // 💰 Calcul frais SCHL
   function calculerFraisSCHL(prixMaison, miseDeFondsPct) {
     if (miseDeFondsPct >= 0.20) return 0;
-    
     var ratioEmprunt = 1 - miseDeFondsPct;
     var tauxPrime;
-    
-    if (ratioEmprunt > 0.95) tauxPrime = 0.04; // 5% de mise de fonds
-    else if (ratioEmprunt > 0.90) tauxPrime = 0.031; // 10% de mise de fonds
-    else if (ratioEmprunt > 0.85) tauxPrime = 0.028; // 15% de mise de fonds
-    else tauxPrime = 0.024; // 20% de mise de fonds
-    
+    if (ratioEmprunt > 0.95) tauxPrime = 0.04;
+    else if (ratioEmprunt > 0.90) tauxPrime = 0.031;
+    else if (ratioEmprunt > 0.85) tauxPrime = 0.028;
+    else tauxPrime = 0.024;
     var montantEmprunt = prixMaison * ratioEmprunt;
     return montantEmprunt * tauxPrime;
   }
-  
-  // Calcul de la taxe de bienvenue (droits de mutation au Québec)
+
+  // 🧾 Calcul taxe de bienvenue (Québec)
   function calculerTaxeBienvenue(prixMaison) {
     var taxe = 0;
-    if (prixMaison <= 58900) {
-      taxe = prixMaison * 0.005;
-    } else if (prixMaison <= 294600) {
+    if (prixMaison <= 58900) taxe = prixMaison * 0.005;
+    else if (prixMaison <= 294600)
       taxe = 58900 * 0.005 + (prixMaison - 58900) * 0.01;
-    } else {
+    else
       taxe = 58900 * 0.005 + (294600 - 58900) * 0.01 + (prixMaison - 294600) * 0.015;
-    }
     return taxe;
   }
-  
-  // Approche 1 : Règle traditionnelle (4x le revenu)
-  var prixRegleSimple = revBrut * 4;
-  var miseFondsSimple = prixRegleSimple * miseDeFondsPct;
-  var empruntSimple = prixRegleSimple - miseFondsSimple;
-  var fraisSCHLSimple = calculerFraisSCHL(prixRegleSimple, miseDeFondsPct);
-  var empruntTotalSimple = empruntSimple + fraisSCHLSimple;
-  var paiementSimple = (empruntTotalSimple * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -amortissement));
-  var taxeBienvenueSimple = calculerTaxeBienvenue(prixRegleSimple);
-  
-  // Approche 2 : Capacité réelle selon les institutions (32% du revenu)
-  var maxLog = revBrut * 0.32 / 12;
-  var maxTot = revBrut * 0.40 / 12;
-  
-  // Calcul itératif pour trouver le prix max tenant compte des frais SCHL
+
+  // 🧭 Recherche binaire pour trouver le prix maximal réaliste
+  var bas = 0;
+  var haut = revBrut * 10; // borne haute = 10x le revenu annuel
   var prixMaxMaison = 0;
-  var tentative = revBrut * 4;
-  for (var i = 0; i < 10; i++) {
-    var miseFondsMax = tentative * miseDeFondsPct;
-    var empruntMax = tentative - miseFondsMax;
-    var fraisSCHLMax = calculerFraisSCHL(tentative, miseDeFondsPct);
-    var empruntTotalMax = empruntMax + fraisSCHLMax;
-    var paiementMax = (empruntTotalMax * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -amortissement));
-    if (paiementMax <= maxLog) {
+
+  for (var i = 0; i < 30; i++) {
+    var tentative = (bas + haut) / 2;
+    var miseFonds = tentative * miseDeFondsPct;
+    var emprunt = tentative - miseFonds;
+    var fraisSCHL = calculerFraisSCHL(tentative, miseDeFondsPct);
+    var empruntTotal = emprunt + fraisSCHL;
+    var paiementMensuel = (empruntTotal * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -amortissement));
+
+    if (paiementMensuel <= maxLog) {
       prixMaxMaison = tentative;
-      tentative *= 1.05;
+      bas = tentative;
     } else {
-      tentative *= 0.95;
+      haut = tentative;
     }
   }
-  
-  var miseFondsMaxFinal = prixMaxMaison * miseDeFondsPct;
-  var fraisSCHLMaxFinal = calculerFraisSCHL(prixMaxMaison, miseDeFondsPct);
+
+  // 💬 Calculs associés
+  var miseFondsMax = prixMaxMaison * miseDeFondsPct;
+  var fraisSCHLMax = calculerFraisSCHL(prixMaxMaison, miseDeFondsPct);
   var taxeBienvenueMax = calculerTaxeBienvenue(prixMaxMaison);
 
+  // 💡 Règle traditionnelle
+  var prixRegleSimple = revBrut * 4;
+  var miseFondsSimple = prixRegleSimple * miseDeFondsPct;
+  var fraisSCHLSimple = calculerFraisSCHL(prixRegleSimple, miseDeFondsPct);
+  var empruntSimple = prixRegleSimple - miseFondsSimple + fraisSCHLSimple;
+  var paiementSimple = (empruntSimple * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -amortissement));
+  var taxeBienvenueSimple = calculerTaxeBienvenue(prixRegleSimple);
+
+  // 🧾 Génération du HTML
   var html = `
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:20px;">
-      
-      <div style="background:#e0f2fe;padding:20px;border-radius:12px;border-left:4px solid #0284c7;">
-        <h4 style="color:#075985;margin-bottom:15px;">📘 Règle traditionnelle (4x revenu)</h4>
-        <p style="margin:8px 0;"><strong>Prix suggéré :</strong> ${fmt(prixRegleSimple)} $</p>
-        <p style="margin:8px 0;"><strong>Mise de fonds (${(miseDeFondsPct*100).toFixed(0)}%) :</strong> ${fmt(miseFondsSimple)} $</p>
-        ${fraisSCHLSimple > 0 ? `<p style="margin:8px 0;color:#dc2626;"><strong>Frais SCHL :</strong> ${fmt(fraisSCHLSimple)} $</p>` : ''}
-        <p style="margin:8px 0;color:#7c3aed;"><strong>Taxe de bienvenue :</strong> ${fmt(taxeBienvenueSimple)} $</p>
-        <p style="margin:8px 0;font-size:1.1em;color:#047857;font-weight:bold;">
-          💰 Paiement mensuel : ${fmt(paiementSimple)} $/mois
-        </p>
-        <p style="margin-top:10px;font-size:0.85em;color:#64748b;">
-          Règle empirique simple qui ne tient pas compte du taux d'intérêt actuel.
-        </p>
-      </div>
-
-      <div style="background:#dcfce7;padding:20px;border-radius:12px;border-left:4px solid #16a34a;">
-        <h4 style="color:#15803d;margin-bottom:15px;">🏦 Capacité réelle (selon institutions)</h4>
-        <p style="margin:8px 0;"><strong>Prix maximal :</strong> ${fmt(prixMaxMaison)} $</p>
-        <p style="margin:8px 0;"><strong>Mise de fonds (${(miseDeFondsPct*100).toFixed(0)}%) :</strong> ${fmt(miseFondsMaxFinal)} $</p>
-        ${fraisSCHLMaxFinal > 0 ? `<p style="margin:8px 0;color:#dc2626;"><strong>Frais SCHL :</strong> ${fmt(fraisSCHLMaxFinal)} $</p>` : ''}
-        <p style="margin:8px 0;color:#7c3aed;"><strong>Taxe de bienvenue :</strong> ${fmt(taxeBienvenueMax)} $</p>
-        <p style="margin:8px 0;font-size:1.1em;color:#047857;font-weight:bold;">
-          💰 Paiement mensuel : ${fmt(maxLog)} $/mois
-        </p>
-        <p style="margin-top:10px;font-size:0.85em;color:#64748b;">
-          Basé sur 32% du revenu brut et le taux actuel de ${(tauxHypo * 100).toFixed(2)}%.
-        </p>
-      </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:20px;">
+    <div style="background:#e0f2fe;padding:20px;border-radius:12px;border-left:4px solid #0284c7;">
+      <h4 style="color:#075985;margin-bottom:15px;">📘 Règle traditionnelle (4x revenu)</h4>
+      <p><strong>Prix suggéré :</strong> ${fmt(prixRegleSimple)} $</p>
+      <p><strong>Mise de fonds (${(miseDeFondsPct*100).toFixed(0)}%) :</strong> ${fmt(miseFondsSimple)} $</p>
+      ${fraisSCHLSimple > 0 ? `<p style="color:#dc2626;"><strong>Frais SCHL :</strong> ${fmt(fraisSCHLSimple)} $</p>` : ''}
+      <p style="color:#7c3aed;"><strong>Taxe de bienvenue :</strong> ${fmt(taxeBienvenueSimple)} $</p>
+      <p style="font-weight:bold;color:#047857;">💰 Paiement mensuel : ${fmt(paiementSimple)} $</p>
     </div>
 
-    ${miseDeFondsPct < 0.20 ? `
-    <div style="background:#fef2f2;padding:18px 20px;border-left:6px solid #dc2626;border-radius:10px;margin:20px 0;">
-      <h4 style="margin:0 0 10px 0;color:#991b1b;">⚠️ Mise de fonds inférieure à 20%</h4>
-      <p style="margin:0;color:#7f1d1d;font-size:0.95em;line-height:1.7;">
-        Avec une mise de fonds de ${(miseDeFondsPct*100).toFixed(0)}%, vous devrez payer une assurance prêt hypothécaire SCHL. 
-        Cette prime est ajoutée à votre emprunt et augmente vos paiements mensuels.
-      </p>
+    <div style="background:#dcfce7;padding:20px;border-radius:12px;border-left:4px solid #16a34a;">
+      <h4 style="color:#15803d;margin-bottom:15px;">🏦 Capacité réelle (32% du revenu)</h4>
+      <p><strong>Prix maximal :</strong> ${fmt(prixMaxMaison)} $</p>
+      <p><strong>Mise de fonds (${(miseDeFondsPct*100).toFixed(0)}%) :</strong> ${fmt(miseFondsMax)} $</p>
+      ${fraisSCHLMax > 0 ? `<p style="color:#dc2626;"><strong>Frais SCHL :</strong> ${fmt(fraisSCHLMax)} $</p>` : ''}
+      <p style="color:#7c3aed;"><strong>Taxe de bienvenue :</strong> ${fmt(taxeBienvenueMax)} $</p>
+      <p style="font-weight:bold;color:#047857;">💰 Paiement mensuel : ${fmt(maxLog)} $ (32% du revenu)</p>
     </div>
-    ` : ''}
-
-    <div style="background:#fef3c7;padding:18px 20px;border-left:6px solid #f59e0b;border-radius:10px;margin:20px 0;">
-      <h4 style="margin:0 0 10px 0;color:#92400e;">💡 Comparaison des deux approches</h4>
-      <p style="margin:0;color:#78350f;font-size:0.95em;line-height:1.7;">
-        ${prixMaxMaison > prixRegleSimple 
-          ? `Avec le taux actuel de ${(tauxHypo * 100).toFixed(2)}%, vous pourriez emprunter <strong>${fmt(prixMaxMaison - prixRegleSimple)} $ de plus</strong> que la règle traditionnelle. Attention à ne pas vous surendetter!`
-          : `Avec le taux actuel de ${(tauxHypo * 100).toFixed(2)}%, votre capacité réelle est <strong>${fmt(prixRegleSimple - prixMaxMaison)} $ inférieure</strong> à la règle traditionnelle. Les taux élevés réduisent votre pouvoir d'achat.`
-        }
-      </p>
-    </div>
-    
-    <div style="background:#eef6ff;padding:18px 20px;border-left:6px solid #2563eb;border-radius:10px;margin:20px 0;font-family:system-ui,Segoe UI,Roboto,sans-serif;">
-      <h3 style="margin:0;color:#1e3a8a;font-size:1.1em;">📘 Règle de qualification hypothécaire</h3>
-      <p style="margin:10px 0 0 0;color:#374151;font-size:0.95em;line-height:1.7;">
-        Les institutions financières appliquent généralement les règles suivantes :
-        <br><strong>• 32 %</strong> du revenu brut peut être consacré au logement (<em>paiement hypothécaire, taxes, chauffage</em>);
-        <br><strong>• 40 %</strong> du revenu brut peut être consacré à l'ensemble des dettes (<em>logement + autres emprunts</em>).
-      </p>
-    </div>
+  </div>
   `;
 
+  // ⚠️ Si mise de fonds < 20 %
+  if (miseDeFondsPct < 0.20) {
+    html += `
+    <div style="background:#fef2f2;padding:18px 20px;border-left:6px solid #dc2626;border-radius:10px;margin:20px 0;">
+      <h4 style="color:#991b1b;">⚠️ Mise de fonds inférieure à 20%</h4>
+      <p style="color:#7f1d1d;">Vous devrez payer une assurance prêt hypothécaire SCHL, ajoutée à votre emprunt.</p>
+    </div>`;
+  }
+
+  // 🟨 Comparaison globale
+  html += `
+  <div style="background:#fef3c7;padding:18px 20px;border-left:6px solid #f59e0b;border-radius:10px;margin:20px 0;">
+    <h4 style="color:#92400e;">💡 Comparaison</h4>
+    <p style="color:#78350f;">
+      ${prixMaxMaison > prixRegleSimple 
+        ? `Avec le taux actuel de ${(tauxHypo * 100).toFixed(2)}%, vous pourriez emprunter <strong>${fmt(prixMaxMaison - prixRegleSimple)} $</strong> de plus que la règle traditionnelle.`
+        : `Avec le taux actuel de ${(tauxHypo * 100).toFixed(2)}%, votre capacité réelle est <strong>${fmt(prixRegleSimple - prixMaxMaison)} $</strong> inférieure à la règle traditionnelle.`}
+    </p>
+  </div>`;
+
+  // 🏡 Si un prix de maison est saisi par l’utilisateur
   var prixMaison = parseFloat(document.getElementById('prix-maison').value) || 0;
   if (prixMaison > 0) {
     var miseFonds = prixMaison * miseDeFondsPct;
-    var montantEmprunte = prixMaison - miseFonds;
     var fraisSCHL = calculerFraisSCHL(prixMaison, miseDeFondsPct);
-    var empruntTotal = montantEmprunte + fraisSCHL;
+    var empruntTotal = prixMaison - miseFonds + fraisSCHL;
     var paiementReel = (empruntTotal * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -amortissement));
     var taxeBienvenue = calculerTaxeBienvenue(prixMaison);
     var argentRequis = miseFonds + taxeBienvenue;
-    var ecartReel = prixMaison - prixMaxMaison;
-    var ecartRegle = prixMaison - prixRegleSimple;
-    var conformeInstitution = paiementReel <= maxLog;
-    
+    var conforme = paiementReel <= maxLog;
+
     html += `
-      <div class="result-box ${conformeInstitution ? 'green' : 'red'}">
-        <h4 style="margin:0 0 10px 0;">Maison envisagée : ${fmt(prixMaison)} $</h4>
-        <p style="margin:5px 0;"><strong>Mise de fonds (${(miseDeFondsPct*100).toFixed(0)}%) :</strong> ${fmt(miseFonds)} $</p>
-        ${fraisSCHL > 0 ? `<p style="margin:5px 0;color:#dc2626;"><strong>Frais SCHL :</strong> ${fmt(fraisSCHL)} $</p>` : ''}
-        <p style="margin:5px 0;color:#7c3aed;"><strong>Taxe de bienvenue :</strong> ${fmt(taxeBienvenue)} $</p>
-        <p style="margin:5px 0;font-size:1.1em;font-weight:bold;color:#1e40af;"><strong>💵 Argent requis au comptant :</strong> ${fmt(argentRequis)} $</p>
-        <p style="margin:5px 0;"><strong>Paiement mensuel :</strong> ${fmt(paiementReel)} $ / mois</p>
-        <p style="margin:10px 0;font-weight:bold;">
-          ${conformeInstitution ? '✅ Conforme à la règle du 32%' : '❌ Dépasse la règle du 32% - Risque de refus bancaire'}
-        </p>
-      </div>
-    `;
-    
-    // Analyse par rapport aux deux approches
-    if (conformeInstitution && Math.abs(ecartRegle / prixRegleSimple * 100) < 10) {
-      html += `<div class="result-box green">✅ Le prix envisagé est raisonnable selon les deux approches (règle traditionnelle et capacité réelle).</div>`;
-    } else if (!conformeInstitution) {
-      html += `<div class="result-box red">❌ Le prix envisagé dépasse votre capacité de paiement mensuel de ${fmt(paiementReel - maxLog)} $/mois. Les institutions financières risquent de refuser ce montant.</div>`;
-    } else {
-      html += `<div class="result-box orange">⚠️ Le prix envisagé utilise toute votre capacité d'emprunt. Budget serré mais acceptable.</div>`;
-    }
+    <div class="result-box ${conforme ? 'green' : 'red'}">
+      <h4>Maison envisagée : ${fmt(prixMaison)} $</h4>
+      <p><strong>Mise de fonds :</strong> ${fmt(miseFonds)} $</p>
+      ${fraisSCHL > 0 ? `<p style="color:#dc2626;"><strong>Frais SCHL :</strong> ${fmt(fraisSCHL)} $</p>` : ''}
+      <p style="color:#7c3aed;"><strong>Taxe de bienvenue :</strong> ${fmt(taxeBienvenue)} $</p>
+      <p style="font-weight:bold;color:#1e40af;">💵 Argent requis : ${fmt(argentRequis)} $</p>
+      <p><strong>Paiement mensuel :</strong> ${fmt(paiementReel)} $ / mois</p>
+      <p style="font-weight:bold;">${conforme ? '✅ Conforme à la règle du 32%' : '❌ Dépasse la règle du 32%'}</p>
+    </div>`;
   }
 
   document.getElementById('resultat-immobilier').innerHTML = html;
@@ -1004,7 +1008,7 @@ function calcObjectif(){
       } else {
         var mensuel=manqueFutur/(((facteur-1)/tauxMensuel));
         var totalVerse=mensuel*mois;
-        var totalInterets=montant-epargneAct-totalVerse;
+        var totalInterets = Math.max(0, montant - epargneAct - totalVerse);
         
         html+='<div class="result-box orange">Avec un rendement de '+fmt(tauxAnnuel*100)+'% par année:<br>';
         html+='<span style="font-size:1.8em;font-weight:bold">'+fmt(mensuel)+' $/mois</span><br>';
