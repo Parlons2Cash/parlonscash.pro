@@ -617,31 +617,27 @@ document.getElementById('resultat-fonds-urgence').innerHTML=html;
 
 function calcRetraite(){
 var revRet=parseFloat(document.getElementById('revenu-retraite').value)||50000;
-var tauxRetrait=parseFloat(document.getElementById('taux-retrait').value)||4;
+var tauxRetraitInitial=parseFloat(document.getElementById('taux-retrait').value)||4;
 var annees=parseFloat(document.getElementById('annees-retraite').value)||30;
 var ageRetraite=parseFloat(document.getElementById('age-retraite').value)||65;
 var pensionPublique=parseFloat(document.getElementById('pension-publique').value)||0;
 var rentePension=parseFloat(document.getElementById('rente-pension').value)||0;
-var tauxRendement=(parseFloat(document.getElementById('taux-rendement-retraite').value)||5)/100;
+var tauxRendementAvant=(parseFloat(document.getElementById('taux-rendement-avant-retraite').value)||5)/100;
+var tauxRendementPendant=(parseFloat(document.getElementById('taux-rendement-pendant-retraite').value)||5)/100;
+var retraitIndexe=document.getElementById('retrait-indexe').checked;
 
 var tauxInflation=0.02;
 var revenuAjuste=revRet*Math.pow(1+tauxInflation,annees);
 var pensionAjustee=pensionPublique*Math.pow(1+tauxInflation,annees);
-
-// Revenu à combler par l'épargne personnelle
 var rentePensionAjustee=rentePension*Math.pow(1+tauxInflation,annees);
 var revenuACombler=Math.max(0, revenuAjuste-pensionAjustee-rentePensionAjustee);
-var cap=revenuACombler/(tauxRetrait/100);
+var cap=revenuACombler/(tauxRetraitInitial/100);
 
 var capAct=DATA.totalA||0;
-
-// Valeur future du capital actuel avec rendement
-var valeurFuture=capAct*Math.pow(1+tauxRendement,annees);
-
-// Capital manquant après croissance
+var valeurFuture=capAct*Math.pow(1+tauxRendementAvant,annees);
 var ecart=Math.max(0, cap-valeurFuture);
 
-var html='<div class="result-box green">Capital necessaire: <span style="font-size:1.8em">'+fmt(cap)+' $</span></div>';
+var html='<div class="result-box green">Capital necessaire à la retraite: <span style="font-size:1.8em">'+fmt(cap)+' $</span></div>';
 html+='<p style="margin:10px 0;font-size:0.9em;color:#6b7280">';
 html+='Revenu désiré: '+fmt(revRet)+' $ → Ajusté inflation: '+fmt(revenuAjuste)+' $<br>';
 if(pensionPublique>0 || rentePension>0){
@@ -649,15 +645,14 @@ if(pensionPublique>0 || rentePension>0){
   if(rentePension>0) html+='Rente de pension (employeur): '+fmt(rentePension)+' $ → Ajustée: '+fmt(rentePensionAjustee)+' $<br>';
   html+='<strong>Revenu à combler par épargne: '+fmt(revenuACombler)+' $</strong><br>';
 }
-html+='Taux de retrait: '+tauxRetrait+'%';
+html+='Taux de retrait initial: '+tauxRetraitInitial+'%';
 html+='</p>';
 
-// Afficher la croissance du capital actuel
 if(capAct>0){
   html+='<div class="result-box blue">';
   html+='<strong>💰 Valeur future de votre capital actuel</strong><br>';
   html+='Capital actuel: '+fmt(capAct)+' $<br>';
-  html+='Rendement annuel: '+fmt(tauxRendement*100)+'%<br>';
+  html+='Rendement annuel: '+fmt(tauxRendementAvant*100)+'%<br>';
   html+='Valeur dans '+annees+' ans: <span style="font-size:1.5em;color:#047857;">'+fmt(valeurFuture)+' $</span><br>';
   var gainRendement=valeurFuture-capAct;
   html+='<small style="color:#6b7280;">Gain grâce aux rendements: '+fmt(gainRendement)+' $</small>';
@@ -670,28 +665,23 @@ html+='<div class="progress-bar"><div class="progress-fill" style="width:'+Math.
 html+='<p style="margin-top:8px;font-size:0.9em">'+fmt(valeurFuture)+' $ / '+fmt(cap)+' $</p></div>';
 
 if(prog<100){
-  // Calculer l'épargne mensuelle nécessaire
-  var tauxMensuel=tauxRendement/12;
+  var tauxMensuel=tauxRendementAvant/12;
   var mois=annees*12;
   var epargneRequise;
-  
   if(tauxMensuel>0){
-    // Formule de la valeur future d'une annuité
     epargneRequise=ecart/(((Math.pow(1+tauxMensuel,mois)-1)/tauxMensuel));
   }else{
     epargneRequise=ecart/mois;
   }
-  
   html+='<div class="result-box orange">';
   html+='<strong>📊 Épargne mensuelle nécessaire</strong><br>';
   html+='Il manque: '+fmt(ecart)+' $ à accumuler<br>';
   html+='<span style="font-size:1.8em;font-weight:bold;color:#ea580c;">'+fmt(epargneRequise)+' $/mois</span><br>';
   html+='<small style="display:block;margin-top:8px;color:#6b7280;">';
-  html+='Sur '+annees+' ans ('+mois+' mois) avec un rendement de '+fmt(tauxRendement*100)+'%/an';
+  html+='Sur '+annees+' ans avec un rendement de '+fmt(tauxRendementAvant*100)+'%/an';
   html+='</small>';
   html+='</div>';
   
-  // Comparaison avec épargne actuelle
   var epargneActuelle=DATA.epargne||0;
   if(epargneActuelle>0){
     var diff=epargneRequise-epargneActuelle;
@@ -701,20 +691,90 @@ if(prog<100){
       html+='<div class="result-box green">✅ Excellent! Votre épargne actuelle ('+fmt(epargneActuelle)+' $/mois) dépasse l\'objectif de '+fmt(Math.abs(diff))+' $/mois.</div>';
     }
   }
-  
-  // Comparaison sans rendement
-  if(tauxRendement>0){
-    var epagneSansRendement=ecart/mois;
-    var economie=epagneSansRendement-epargneRequise;
-    if(economie>0){
-      html+='<div class="result-box blue">💡 Grâce aux rendements composés, vous épargnez '+fmt(economie)+' $/mois de moins qu\'un compte sans rendement ('+fmt(epagneSansRendement)+' $/mois).</div>';
-    }
-  }
-}else{
-  html+='<div class="result-box green">✅ Félicitations! Votre capital actuel, avec les rendements prévus, dépassera votre objectif de retraite.</div>';
 }
 
-// Avertissement si retraite avant 65 ans
+// PROJECTION PENDANT LA RETRAITE
+var capitalDepart=Math.max(valeurFuture,cap);
+var projection=[];
+var capitalRestant=capitalDepart;
+var retraitAnnuel=revenuACombler;
+var ageActuel=ageRetraite;
+var ageMax=95;
+var ageEpuisement=null;
+
+for(var i=0;i<=ageMax-ageRetraite && capitalRestant>0;i++){
+  if(retraitIndexe && i>0){
+    retraitAnnuel*=(1+tauxInflation);
+  }
+  var gainRendement=capitalRestant*tauxRendementPendant;
+  capitalRestant=capitalRestant+gainRendement-retraitAnnuel;
+  
+  if(i<30 || i%5===0 || capitalRestant<=0){
+    projection.push({
+      annee:i,
+      age:ageRetraite+i,
+      capital:Math.max(0,capitalRestant),
+      retrait:retraitAnnuel,
+      rendement:gainRendement
+    });
+  }
+  
+  if(capitalRestant<=0 && ageEpuisement===null){
+    ageEpuisement=ageRetraite+i;
+    break;
+  }
+}
+
+html+='<div style="margin-top:30px;padding-top:20px;border-top:2px solid #e5e7eb;">';
+html+='<h3 style="color:#1f2937;margin-bottom:15px;">📈 Projection pendant la retraite</h3>';
+html+='<p style="font-size:0.9em;color:#6b7280;margin-bottom:15px;">';
+html+='Rendement: '+fmt(tauxRendementPendant*100)+'%/an | ';
+html+='Retrait: '+(retraitIndexe?'Indexé à l\'inflation (2%)':'Fixe');
+html+='</p>';
+
+var tauxCroissance=tauxRendementPendant-(tauxRetraitInitial/100)-(retraitIndexe?tauxInflation:0);
+if(tauxCroissance>0.001){
+  html+='<div class="result-box green">✅ <strong>Capital en croissance perpétuelle</strong><br>';
+  html+='Croissance nette: +'+fmt(tauxCroissance*100)+'%/an<br>';
+  html+='Votre capital augmentera indéfiniment. À 95 ans: ~'+fmt(projection[projection.length-1].capital)+' $';
+  html+='</div>';
+}else if(Math.abs(tauxCroissance)<0.001){
+  html+='<div class="result-box blue">⚖️ <strong>Capital stable</strong><br>';
+  html+='Rendement = Retraits. Votre capital restera autour de '+fmt(capitalDepart)+' $ indéfiniment.';
+  html+='</div>';
+}else{
+  if(ageEpuisement){
+    html+='<div class="result-box red">⚠️ <strong>Capital épuisé à '+ageEpuisement+' ans</strong><br>';
+    html+='Durée: '+(ageEpuisement-ageRetraite)+' ans après la retraite<br>';
+    html+='Décroissance: '+fmt(Math.abs(tauxCroissance)*100)+'%/an';
+    html+='</div>';
+  }else{
+    html+='<div class="result-box orange">⚠️ <strong>Capital en décroissance</strong><br>';
+    html+='Décroissance: -'+fmt(Math.abs(tauxCroissance)*100)+'%/an<br>';
+    html+='Capital à 95 ans: '+fmt(projection[projection.length-1].capital)+' $';
+    html+='</div>';
+  }
+}
+
+html+='<div style="margin-top:20px;overflow-x:auto;">';
+html+='<table style="width:100%;border-collapse:collapse;font-size:0.9em;">';
+html+='<thead><tr style="background:#f3f4f6;"><th style="padding:10px;text-align:left;">Âge</th><th style="padding:10px;text-align:right;">Capital</th><th style="padding:10px;text-align:right;">Retrait annuel</th><th style="padding:10px;text-align:right;">Rendement</th></tr></thead>';
+html+='<tbody>';
+for(var j=0;j<Math.min(projection.length,10);j++){
+  var p=projection[j];
+  html+='<tr style="border-bottom:1px solid #e5e7eb;">';
+  html+='<td style="padding:10px;">'+p.age+' ans</td>';
+  html+='<td style="padding:10px;text-align:right;font-weight:bold;">'+fmt(p.capital)+' $</td>';
+  html+='<td style="padding:10px;text-align:right;">'+fmt(p.retrait)+' $</td>';
+  html+='<td style="padding:10px;text-align:right;color:#10b981;">+'+fmt(p.rendement)+' $</td>';
+  html+='</tr>';
+}
+if(projection.length>10){
+  html+='<tr><td colspan="4" style="padding:10px;text-align:center;color:#6b7280;font-style:italic;">... (projection jusqu\'à '+(ageEpuisement||95)+' ans)</td></tr>';
+}
+html+='</tbody></table>';
+html+='</div></div>';
+
 if(ageRetraite<65 && pensionPublique>0){
   html+='<div class="result-box yellow">⚠️ Attention: La PSV n\'est disponible qu\'à partir de 65 ans. La RRQ peut être prise dès 60 ans mais avec une réduction permanente de 36%.</div>';
 }
