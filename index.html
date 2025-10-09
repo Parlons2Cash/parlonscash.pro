@@ -222,6 +222,13 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
 </div>
 <div class="form-group" id="loyer-group"><label>Loyer</label><input type="number" id="loyer" value="0" onchange="calc()"></div>
 <div class="form-group hidden" id="hypo-group"><label>Paiement hypothecaire</label><input type="number" id="paiement-hypo" value="0" onchange="calc()"></div>
+<div class="form-group hidden" id="taxes-proprio-group">
+  <label>Taxes et entretien (mensuels)</label>
+  <input type="number" id="taxes-entretien" value="0" onchange="calc()">
+  <small style="display:block;margin-top:5px;color:#6b7280;">
+    Taxes municipales + scolaires + entretien moyen
+  </small>
+</div>
 <div class="form-group"><label>Alimentation</label><input type="number" id="d2" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Transport</label><input type="number" id="d3" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Assurances</label><input type="number" id="d4" value="0" onchange="calc()"></div>
@@ -346,7 +353,7 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
 <div class="form-group"><label>Annees avant la retraite</label><input type="number" id="annees-retraite" value="30" onchange="calcRetraite()"></div>
 <div class="form-group">
   <label>Âge prévu à la retraite</label>
-  <input type="number" id="age-retraite" value="65" min="55" max="70" onchange="calcRetraite()">
+  <input type="number" id="age-retraite" value="65" onchange="calcRetraite()">
 </div>
 <div class="form-group">
   <label>Taux de rendement annuel avant retraite (%)</label>
@@ -377,14 +384,29 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
   </small>
 </div>
 <div class="form-group"><label>Revenu annuel desire (en dollars d'aujourd'hui)</label><input type="number" id="revenu-retraite" value="50000" onchange="calcRetraite()"></div>
-<div class="form-group"><label>Taux de retrait (%)</label><input type="number" step="0.5" id="taux-retrait" value="4" min="3" max="8" onchange="calcRetraite()"></div>
+<div class="form-group">
+  <label style="display:flex;align-items:center;gap:10px;">
+    <input type="checkbox" id="contribution-actuelle-toggle" onchange="toggleContributionActuelle()" style="width:auto;">
+    <span>💡 J'épargne déjà pour ma retraite</span>
+  </label>
+</div>
+
+<div id="contribution-actuelle-section" class="hidden" style="background:#f0f9ff;padding:15px;border-radius:8px;margin:10px 0;">
+  <div class="form-group">
+    <label>Contribution mensuelle actuelle ($)</label>
+    <input type="number" id="contribution-mensuelle-actuelle" value="0" onchange="calcRetraite()">
+    <small style="display:block;margin-top:5px;color:#6b7280;">
+      Combien épargnez-vous actuellement par mois pour votre retraite ?
+    </small>
+  </div>
+</div
 <div class="form-group">
   <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
     <input type="checkbox" id="retrait-indexe" onchange="calcRetraite()" checked style="width:auto;">
-    <span>Indexer les retraits à l'inflation (2% annuel)</span>
+    <span>Indexer les retraits à l'inflation (3% annuel)</span>
   </label>
   <small style="display:block;margin-top:5px;color:#6b7280;">
-    Si coché, vos retraits augmenteront de 2% par an pour maintenir votre pouvoir d'achat
+    Si coché, vos retraits augmenteront de 3% par an pour maintenir votre pouvoir d'achat
   </small>
 </div>
 <div id="resultat-retraite"></div>
@@ -459,11 +481,13 @@ function fmt(n){return Math.round(n).toLocaleString('fr-CA');}
 function toggleHypotheque(){
 var statut=document.getElementById('statut-resid').value;
 if(statut==='proprio'){
-document.getElementById('loyer-group').classList.add('hidden');
-document.getElementById('hypo-group').classList.remove('hidden');
+  document.getElementById('loyer-group').classList.add('hidden');
+  document.getElementById('hypo-group').classList.remove('hidden');
+  document.getElementById('taxes-proprio-group').classList.remove('hidden'); // ← AJOUTER
 }else{
-document.getElementById('loyer-group').classList.remove('hidden');
-document.getElementById('hypo-group').classList.add('hidden');
+  document.getElementById('loyer-group').classList.remove('hidden');
+  document.getElementById('hypo-group').classList.add('hidden');
+  document.getElementById('taxes-proprio-group').classList.add('hidden'); // ← AJOUTER
 }
 calc();
 }
@@ -532,7 +556,10 @@ var autreRev=parseFloat(document.getElementById('autre-revenu').value)||0;
 DATA.revenuTotal=rev+revLoyer+autreRev;
 
 var statut=document.getElementById('statut-resid').value;
-var d1=statut==='proprio'?(parseFloat(document.getElementById('paiement-hypo').value)||0):(parseFloat(document.getElementById('loyer').value)||0);
+var d1=statut==='proprio'?
+  ((parseFloat(document.getElementById('paiement-hypo').value)||0) + 
+   (parseFloat(document.getElementById('taxes-entretien').value)||0))
+  :(parseFloat(document.getElementById('loyer').value)||0);
 var d2=parseFloat(document.getElementById('d2').value)||0;
 var d3=parseFloat(document.getElementById('d3').value)||0;
 var d4=parseFloat(document.getElementById('d4').value)||0;
@@ -628,7 +655,7 @@ document.getElementById('analyse-503020').innerHTML=html;
 }
 
 function calcFondsUrgence(){
-var fonds=DATA.liquidite||0;
+var fonds=DATA.cb||0;
 var depenses=DATA.totalD||1;
 var mois=fonds/depenses;
 var c3=depenses*3;
@@ -641,9 +668,20 @@ html+='<div class="progress-bar" style="margin-top:10px"><div class="progress-fi
 document.getElementById('resultat-fonds-urgence').innerHTML=html;
 }
 
+function toggleContributionActuelle() {
+  var checked = document.getElementById('contribution-actuelle-toggle').checked;
+  var section = document.getElementById('contribution-actuelle-section');
+  if(checked) {
+    section.classList.remove('hidden');
+  } else {
+    section.classList.add('hidden');
+    document.getElementById('contribution-mensuelle-actuelle').value = 0;
+  }
+  calcRetraite();
+}
+
 function calcRetraite() {
   var revRet = parseFloat(document.getElementById('revenu-retraite').value) || 50000;
-  var tauxRetraitInitial = parseFloat(document.getElementById('taux-retrait').value) || 4;
   var annees = parseFloat(document.getElementById('annees-retraite').value) || 30;
   var ageRetraite = parseFloat(document.getElementById('age-retraite').value) || 65;
   var pensionPublique = parseFloat(document.getElementById('pension-publique').value) || 0;
@@ -652,7 +690,9 @@ function calcRetraite() {
   var tauxRendementPendant = (parseFloat(document.getElementById('taux-rendement-pendant-retraite').value) || 5) / 100;
   var retraitIndexe = document.getElementById('retrait-indexe').checked;
 
-  var tauxInflation = 0.02;
+  var tauxInflation = 0.03;
+  
+  // Ajustement du revenu pour l'inflation
   var revenuAjuste = revRet * Math.pow(1 + tauxInflation, annees);
 
   // Pension publique disponible seulement si retraite à 60 ans minimum
@@ -661,34 +701,87 @@ function calcRetraite() {
 
   // Rente de pension (employeur)
   var rentePensionAjustee = rentePension * Math.pow(1 + tauxInflation, annees);
+  
+  // Revenu à combler par l'épargne personnelle
   var revenuACombler = Math.max(0, revenuAjuste - pensionAjustee - rentePensionAjustee);
   var revenuACompleterActuel = Math.max(0, revRet - pensionDisponible - rentePension);
-  var cap = revenuACompleterActuel / (tauxRetraitInitial / 100);
 
-  // 🔹 Capital liquide seulement (CELI, CELIAPP, CNE, REER)
+  // CALCUL DU CAPITAL NÉCESSAIRE (formule de rente)
+  // On suppose une retraite de 30 ans (65 à 95 ans)
+  var dureeRetraite = 30;
+  var tauxReel = tauxRendementPendant - tauxInflation; // Taux réel après inflation
+  
+  var capitalNecessaire;
+  if (tauxReel > 0.001) {
+    // Formule de la valeur actualisée d'une rente croissante
+    if (retraitIndexe) {
+      // Avec indexation : les retraits augmentent avec l'inflation
+      capitalNecessaire = revenuACompleterActuel * ((1 - Math.pow(1 + tauxReel, -dureeRetraite)) / tauxReel);
+    } else {
+      // Sans indexation : retraits constants
+      var facteur = (1 - Math.pow(1 + tauxRendementPendant, -dureeRetraite)) / tauxRendementPendant;
+      capitalNecessaire = revenuACompleterActuel * facteur;
+    }
+  } else {
+    // Si taux réel ~ 0, calcul simple
+    capitalNecessaire = revenuACompleterActuel * dureeRetraite;
+  }
+
+  // Capital liquide actuel (CELI, CELIAPP, CNE, REER)
   var capAct = 
     (parseFloat(document.getElementById('celi').value) || 0) +
     (parseFloat(document.getElementById('celiapp').value) || 0) +
     (parseFloat(document.getElementById('cne').value) || 0) +
     (parseFloat(document.getElementById('reer').value) || 0);
 
-  var html = '';
-  html += '<div class="result-box green">Capital necessaire à la retraite: <span style="font-size:1.8em">' + fmt(cap) + ' $</span></div>';
-  html += '<p style="margin-top:6px;font-size:0.9em;color:#6b7280;">💡 Ce calcul considère uniquement vos actifs financiers liquides (CELI, CELIAPP, CNE, REER). Les immobilisations et le compte bancaire ne sont pas inclus, mais leur vente ou réallocation pourrait augmenter ce capital futur.</p>';
-
+  // Valeur future du capital actuel
   var valeurFuture = capAct * Math.pow(1 + tauxRendementAvant, annees);
-  var ecart = Math.max(0, cap - valeurFuture);
+// Contribution actuelle (optionnelle)
+var contributionMensuelle = parseFloat(document.getElementById('contribution-mensuelle-actuelle').value) || 0;
+var valeurFutureAvecContributions = valeurFuture;
+
+if(contributionMensuelle > 0) {
+  var tauxMensuel = tauxRendementAvant / 12;
+  var mois = annees * 12;
+  // Valeur future des contributions mensuelles
+  var valeurContributions = contributionMensuelle * ((Math.pow(1 + tauxMensuel, mois) - 1) / tauxMensuel);
+  valeurFutureAvecContributions = valeurFuture + valeurContributions;
+}
+  var ecart = Math.max(0, capitalNecessaire - valeurFuture);
+  var prog = (valeurFuture / capitalNecessaire * 100);
+
+  // SIMULATION ANNÉE PAR ANNÉE pour trouver l'âge d'épuisement
+  var capitalSimulation = valeurFuture;
+  var retraitAnnuel = revenuACompleterActuel;
+  var ageEpuisement = null;
+
+  for (var i = 0; i <= 95 - ageRetraite && capitalSimulation > 0; i++) {
+    if (retraitIndexe && i > 0) retraitAnnuel *= (1 + tauxInflation);
+    var gain = capitalSimulation * tauxRendementPendant;
+    capitalSimulation = capitalSimulation + gain - retraitAnnuel;
+    if (capitalSimulation <= 0 && ageEpuisement === null) {
+      ageEpuisement = ageRetraite + i;
+    }
+  }
+
+  // CONSTRUCTION DU HTML
+  var html = '';
+  html += '<div class="result-box green">Capital nécessaire à la retraite: <span style="font-size:1.8em">' + fmt(capitalNecessaire) + ' $</span></div>';
+  html += '<p style="margin-top:6px;font-size:0.9em;color:#6b7280;">💡 Ce calcul considère uniquement vos actifs financiers liquides (CELI, CELIAPP, CNE, REER). Les immobilisations et le compte bancaire ne sont pas inclus.</p>';
 
   html += '<p style="margin:10px 0;font-size:0.9em;color:#6b7280">';
   html += 'Revenu désiré: ' + fmt(revRet) + ' $ → Ajusté inflation: ' + fmt(revenuAjuste) + ' $<br>';
   if (pensionPublique > 0 || rentePension > 0) {
-    if (pensionPublique > 0) html += 'Pension publique (RRQ+PSV): ' + fmt(pensionPublique) + ' $ → Ajustée: ' + fmt(pensionAjustee) + ' $';
-    if (pensionPublique > 0 && ageRetraite < 60) html += ' <strong style="color:#dc2626;">(Non disponible avant 60 ans - non incluse dans le calcul)</strong>';
-    if (pensionPublique > 0) html += '<br>';
-    if (rentePension > 0) html += 'Rente de pension (employeur): ' + fmt(rentePension) + ' $ → Ajustée: ' + fmt(rentePensionAjustee) + ' $<br>';
-    html += '<strong>Revenu à combler par épargne: ' + fmt(revenuACombler) + ' $</strong><br>';
+    if (pensionPublique > 0) {
+      html += 'Pension publique (RRQ+PSV): ' + fmt(pensionPublique) + ' $';
+      if (ageRetraite < 60) html += ' <strong style="color:#dc2626;">(Non disponible avant 60 ans)</strong>';
+      html += '<br>';
+    }
+    if (rentePension > 0) html += 'Rente de pension (employeur): ' + fmt(rentePension) + ' $<br>';
+    html += '<strong>Revenu à combler par épargne: ' + fmt(revenuACompleterActuel) + ' $</strong><br>';
   }
-  html += 'Taux de retrait initial: ' + tauxRetraitInitial + '%';
+  html += 'Durée de retraite prévue: ' + dureeRetraite + ' ans (jusqu\'à ' + (ageRetraite + dureeRetraite) + ' ans)<br>';
+  html += 'Rendement pendant la retraite: ' + fmt(tauxRendementPendant * 100) + '%';
   html += '</p>';
 
   if (capAct > 0) {
@@ -702,10 +795,28 @@ function calcRetraite() {
     html += '</div>';
   }
 
-  var prog = (valeurFuture / cap * 100);
+if(contributionMensuelle > 0) {
+  var valeurContributions = valeurFutureAvecContributions - valeurFuture;
+  var progAvecContrib = (valeurFutureAvecContributions / capitalNecessaire * 100);
+  
+  html += '<div class="result-box blue">';
+  html += '<strong>📈 Impact de votre épargne actuelle</strong><br>';
+  html += 'Contribution mensuelle: ' + fmt(contributionMensuelle) + ' $/mois<br>';
+  html += 'Valeur future des contributions: <span style="font-size:1.3em;color:#047857;">' + fmt(valeurContributions) + ' $</span><br>';
+  html += '<strong style="font-size:1.1em;">Total dans ' + annees + ' ans: ' + fmt(valeurFutureAvecContributions) + ' $</strong><br>';
+  
+  if(progAvecContrib >= 100) {
+    html += '<p style="margin-top:10px;color:#047857;font-weight:bold;">✅ Avec vos contributions actuelles, vous atteindrez votre objectif !</p>';
+  } else {
+    var manqueEncore = capitalNecessaire - valeurFutureAvecContributions;
+    html += '<p style="margin-top:10px;color:#ea580c;">⚠️ Il manquera encore ' + fmt(manqueEncore) + ' $ à votre objectif.</p>';
+  }
+  html += '</div>';
+}
+
   html += '<div class="result-box ' + (prog >= 100 ? 'green' : 'orange') + '">Progression vers l\'objectif: ' + prog.toFixed(1) + '%';
   html += '<div class="progress-bar"><div class="progress-fill" style="width:' + Math.min(prog, 100) + '%"></div></div>';
-  html += '<p style="margin-top:8px;font-size:0.9em;">Valeur future: ' + fmt(valeurFuture) + ' $<br>Capital nécessaire: ' + fmt(cap) + ' $</p></div>';
+  html += '<p style="margin-top:8px;font-size:0.9em;">Valeur future: ' + fmt(valeurFuture) + ' $<br>Capital nécessaire: ' + fmt(capitalNecessaire) + ' $</p></div>';
 
   // Si capital insuffisant : calcul épargne mensuelle requise
   if (prog < 100) {
@@ -723,29 +834,9 @@ function calcRetraite() {
     html += '</div>';
   }
 
-  // =====================
-  // PROJECTION PENDANT LA RETRAITE
-  // =====================
-  var capitalDepart = valeurFuture;
-  var projection = [];
-  var capitalRestant = capitalDepart;
-  var retraitAnnuel = revenuACompleterActuel;
-  var ageEpuisement = null;
-
-  projection.push({ annee: 0, age: ageRetraite, capital: capitalDepart, retrait: 0, rendement: 0 });
-
-  for (var i = 0; i <= 95 - ageRetraite && capitalRestant > 0; i++) {
-    if (retraitIndexe && i > 0) retraitAnnuel *= (1 + tauxInflation);
-    var gain = capitalRestant * tauxRendementPendant;
-    capitalRestant = capitalRestant + gain - retraitAnnuel;
-    if (capitalRestant <= 0 && ageEpuisement === null) ageEpuisement = ageRetraite + i;
-  }
-
-  // =====================
-  // AFFICHAGE DU RÉSULTAT D'ÉPUISEMENT
-  // =====================
-  if (capitalDepart <= 0) {
-    html += '<div class="result-box red" style="margin-top:10px;">⚠️ Vous n\'avez actuellement aucun capital disponible pour la retraite. Le calcul d\'épuisement n\'est donc pas applicable.</div>';
+  // AFFICHAGE ÉPUISEMENT DU CAPITAL
+  if (valeurFuture <= 0) {
+    html += '<div class="result-box red" style="margin-top:10px;">⚠️ Vous n\'avez actuellement aucun capital disponible pour la retraite.</div>';
   } else if (ageEpuisement) {
     html += '<div class="result-box yellow" style="margin-top:10px;">⏳ <strong>Votre capital serait épuisé après environ ' +
             (ageEpuisement - ageRetraite) + ' ans de retraite</strong> (vers ' + ageEpuisement + ' ans).</div>';
@@ -755,7 +846,6 @@ function calcRetraite() {
 
   document.getElementById('resultat-retraite').innerHTML = html;
 }
-
 
 function calcImmobilier() {
   var revBrut = parseFloat(document.getElementById('revenu-brut-menage').value) || 0;
@@ -1004,27 +1094,122 @@ var mois=(DATA.cb||0)/(DATA.totalD||1);
 var taux=parseFloat(DATA.taux)||0;
 var ratio=DATA.totalA>0?(DATA.totalP/DATA.totalA*100):100;
 var ratioDetteRevenu=DATA.revenuTotal>0?(DATA.totalD/DATA.revenuTotal*100):100;
+
+var pointsFaibles = [];
+var recommandations = [];
+
 var html='<div class="result-box '+(mois>=6?'green':mois>=3?'orange':'red')+'">Fonds urgence: '+mois.toFixed(1)+' mois';
-if(mois>=6){html+=' - Excellent';score++;}else if(mois>=3){html+=' - Correct';}
+if(mois>=6){
+  html+=' - Excellent';
+  score++;
+}else if(mois>=3){
+  html+=' - Correct';
+}else{
+  pointsFaibles.push("fonds d'urgence insuffisant");
+  if(mois < 1) {
+    recommandations.push("🚨 <strong>Priorité #1 :</strong> Économisez au moins 1 000 $ en urgence le plus rapidement possible.");
+  } else {
+    recommandations.push("💰 <strong>Fonds d'urgence :</strong> Visez 3-6 mois de dépenses (" + fmt((DATA.totalD||0)*3) + " $ à " + fmt((DATA.totalD||0)*6) + " $).");
+  }
+}
 html+='</div>';
+
 html+='<div class="result-box '+(taux>=20?'green':taux>=10?'orange':'red')+'">Taux epargne: '+taux+'%';
-if(taux>=20){html+=' - Excellent';score++;}else if(taux>=10){html+=' - Correct';}
+if(taux>=20){
+  html+=' - Excellent';
+  score++;
+}else if(taux>=10){
+  html+=' - Correct';
+}else{
+  pointsFaibles.push("taux d'épargne faible");
+  if(DATA.revenuTotal>0){
+    var manqueEpargne = (DATA.revenuTotal * 0.20) - DATA.epargne;
+    recommandations.push("📊 <strong>Épargne :</strong> Pour atteindre 20%, augmentez votre épargne de " + fmt(manqueEpargne) + " $/mois. Astuce : automatisez un virement dès la réception de votre paie.");
+  }
+}
 if(taux<20 && DATA.revenuTotal>0){
   html+='<p style="font-size:0.9em;margin-top:5px;">💡 Pour atteindre 20%, augmentez votre épargne de ' + fmt((DATA.revenuTotal * 0.20) - DATA.epargne) + ' $/mois</p>';
 }
 html+='</div>';
+
 html+='<div class="result-box '+(DATA.totalA==0&&DATA.totalP>0?'red':ratio<=30?'green':ratio<=50?'orange':'red')+'">Endettement: '+(DATA.totalA>0?ratio.toFixed(1)+'%':'N/A');
-if(DATA.totalA==0&&DATA.totalP>0){html+=' - Critique: dettes sans actifs';}else if(ratio<=30){html+=' - Excellent';score++;}else if(ratio<=50){html+=' - Modéré';}
+if(DATA.totalA==0&&DATA.totalP>0){
+  html+=' - Critique: dettes sans actifs';
+  pointsFaibles.push("dettes sans actifs");
+  recommandations.push("🚨 <strong>Situation critique :</strong> Vous avez des dettes mais aucun actif. Établissez un plan de remboursement agressif en commençant par les dettes à taux d'intérêt élevé.");
+}else if(ratio<=30){
+  html+=' - Excellent';
+  score++;
+}else if(ratio<=50){
+  html+=' - Modéré';
+}else{
+  pointsFaibles.push("endettement élevé");
+  recommandations.push("💳 <strong>Endettement :</strong> Votre ratio dettes/actifs est élevé (" + ratio.toFixed(1) + "%). Priorisez le remboursement des dettes à taux élevé (cartes de crédit, marges).");
+}
 html+='</div>';
-html+='<div class="result-box '+(ratioDetteRevenu<=35?'green':ratioDetteRevenu<=50?'orange':'red')+'">Ratio dettes/revenus: '+ratioDetteRevenu.toFixed(1)+'%';
-if(ratioDetteRevenu<=35){html+=' - Excellent';score++;}else if(ratioDetteRevenu<=50){html+=' - Acceptable';}else{html+=' - Trop élevé';}
+
+if(DATA.revenuTotal > 0) {
+ html+='<div class="result-box '+(ratioDetteRevenu<=35?'green':ratioDetteRevenu<=50?'orange':'red')+'">Ratio dettes/revenus: '+ratioDetteRevenu.toFixed(1)+'%';
+if(ratioDetteRevenu<=35){
+  html+=' - Excellent';
+  score++;
+}else if(ratioDetteRevenu<=50){
+  html+=' - Acceptable';
+}else{
+  html+=' - Trop élevé';
+  pointsFaibles.push("ratio dettes/revenus trop élevé");
+  recommandations.push("⚠️ <strong>Dettes/revenus :</strong> Votre ratio est de " + ratioDetteRevenu.toFixed(1) + "% (idéal : sous 35%). Réduisez vos dépenses fixes ou augmentez vos revenus.");
+}
 html+='</div>';
+}
+html+='</div>';
+
 html+='<div class="result-box '+(DATA.vn>0?'green':'red')+'">Valeur nette: '+fmt(DATA.vn)+' $';
-if(DATA.vn>100000){score+=2;}else if(DATA.vn>50000){score++;}
+if(DATA.vn>100000){
+  score+=2;
+  html+=' - Excellent';
+}else if(DATA.vn>50000){
+  score++;
+  html+=' - Bon départ';
+}else if(DATA.vn>0){
+  html+=' - En construction';
+}else{
+  pointsFaibles.push("valeur nette négative");
+  recommandations.push("📉 <strong>Valeur nette négative :</strong> Vos dettes dépassent vos actifs. Concentrez-vous sur le remboursement de dettes et l'accumulation d'épargne.");
+}
 html+='</div>';
+
 html+='<div class="result-box blue">Score: '+score+'/6';
 html+='<div class="progress-bar"><div class="progress-fill" style="width:'+Math.round(score/6*100)+'%"></div></div></div>';
+
+// Commentaire selon le score
+if(score>=5){
+  html+='<div style="background:#d1fae5;padding:15px;border-radius:8px;margin-top:15px;color:#065f46;">🎉 Excellente santé financière ! Continuez sur cette lancée.</div>';
+}else if(score>=3){
+  html+='<div style="background:#dbeafe;padding:15px;border-radius:8px;margin-top:15px;color:#1e40af;">👍 Bonne base financière, mais place à amélioration.';
+  if(pointsFaibles.length>0){
+    html+='<br><small>Points à améliorer : ' + pointsFaibles.join(', ') + '.</small>';
+  }
+  html+='</div>';
+}else if(score>=1){
+  html+='<div style="background:#fed7aa;padding:15px;border-radius:8px;margin-top:15px;color:#92400e;">⚠️ Situation à améliorer avec discipline.</div>';
+}else{
+  html+='<div style="background:#fee2e2;padding:15px;border-radius:8px;margin-top:15px;color:#991b1b;">🚨 Situation critique - Agissez maintenant !</div>';
+}
+
+// Recommandations personnalisées
+if(recommandations.length>0){
+  html+='<div style="background:#eff6ff;padding:20px;border-radius:10px;margin-top:15px;">';
+  html+='<h4 style="color:#1e40af;margin:0 0 15px 0;">📋 Recommandations personnalisées</h4>';
+  html+='<div style="color:#374151;line-height:1.8;">';
+  for(var i=0;i<recommandations.length;i++){
+    html+='<p style="margin:8px 0;">'+recommandations[i]+'</p>';
+  }
+  html+='</div></div>';
+}
+
 document.getElementById('diagnostic-global').innerHTML=html;
+
 }
 
 function exporterCSV() {
