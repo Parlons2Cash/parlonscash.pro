@@ -130,20 +130,13 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
 <button onclick="changeTab('budget')" id="btn-budget">Budget</button>
 <button onclick="changeTab('impots')" id="btn-impots">Impôts</button>
 <button onclick="changeTab('objectifs')" id="btn-objectifs">Objectifs</button>
+<button onclick="changeTab('dettes')" id="btn-dettes">Remboursement dettes</button>
 <button onclick="changeTab('apropos')" id="btn-apropos">À propos</button>
 </div>
 
 <div class="container">
-<div class="warning-box">
-  <strong>⚠️ Avertissement</strong>
-  <p>
-    Cet outil est à des fins éducatives et ludiques seulement. 
-    Les calculs sont des estimations simplifiées et ne constituent pas des conseils financiers professionnels. 
-    Consultez toujours un conseiller financier qualifié pour des décisions importantes concernant vos finances personnelles.
-  </p>
-</div>
-
 <div id="tab-dashboard" class="tab-content active">
+
   <h2>Tableau de bord financier</h2>
 
   <div class="stats">
@@ -415,6 +408,44 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
 
 </div>
 
+</div> <!-- Fin de tab-objectifs -->
+
+<div id="tab-dettes" class="tab-content">
+   <h2>Calculateur de remboursement de dettes</h2>
+  
+  <p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:20px;">
+    Comparez deux stratégies populaires : <strong>Avalanche</strong> (rembourse d'abord les taux élevés - économise plus d'intérêts) 
+    et <strong>Boule de neige</strong> (rembourse d'abord les petits soldes - motivation psychologique).
+  </p>
+
+  <div class="card">
+    <h3>Vos dettes</h3>
+    <div id="liste-dettes-container"></div>
+    
+    <button onclick="ajouterLigneDette()" style="background:#2563eb;color:white;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;margin-top:15px;">
+      ➕ Ajouter une dette
+    </button>
+  </div>
+
+  <div class="card">
+    <h3>Paiement mensuel supplémentaire</h3>
+    <div class="form-group">
+      <label>Montant mensuel disponible (au-delà des minimums)</label>
+      <input type="number" id="paiement-extra" value="0" min="0" onchange="calculerStrategies()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Combien pouvez-vous allouer mensuellement en plus des paiements minimums ?
+      </small>
+    </div>
+    
+    <button onclick="calculerStrategies()" style="background:#10b981;color:white;padding:12px 30px;border:none;border-radius:8px;cursor:pointer;margin-top:15px;font-weight:bold;">
+      📊 Calculer les stratégies
+    </button>
+  </div>
+
+  <div id="resultats-strategies"></div>
+</div>
+</div>
+
 <!-- Onglet À propos -->
 <div id="tab-apropos" class="tab-content">
   <h2>À propos</h2>
@@ -453,7 +484,27 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
   
 </div>
 
-<footer><p>Finance Personnelle Pro</p></footer>
+<div style="background:#fef2f2;border-left:6px solid #dc2626;padding:25px;border-radius:12px;margin-bottom:30px;">
+  <strong style="color:#991b1b;font-size:1.1em;">⚠️ Avertissement important</strong>
+  
+ <p style="margin:10px 0 10px 0;padding:0;line-height:1.7;color:#7f1d1d;text-align:left;"><strong>Cet outil est à des fins éducatives et informatives seulement.</strong> Les calculs, projections et suggestions présentés sont des estimations simplifiées basées sur des principes financiers généralement reconnus. <strong>Ils ne constituent en aucun cas des conseils financiers, fiscaux ou juridiques personnalisés.</strong></p>
+
+<p style="margin:10px 0 10px 0;padding:0;line-height:1.7;color:#7f1d1d;text-align:left;">Chaque situation financière est unique. Avant de prendre toute décision financière importante, consultez un conseiller financier autorisé, un fiscaliste ou un planificateur financier certifié.</p>
+  
+  <p style="margin:10px 0 10px 0;padding:0;line-height:1.7;color:#7f1d1d;text-align:left;">
+    Chaque situation financière est unique. Avant de prendre toute décision financière importante, consultez un conseiller financier autorisé, un fiscaliste ou un planificateur financier certifié.
+  </p>
+  
+  <div style="margin-top:15px;padding-top:15px;border-top:1px solid #fca5a5;">
+    <strong style="color:#991b1b;">📚 Ressources officielles :</strong>
+    <ul style="margin:10px 0 0 20px;line-height:2;color:#7f1d1d;list-style-position:outside;padding-left:0;">
+      <li style="margin-bottom:8px;"><a href="https://www.retraitequebec.gouv.qc.ca/" target="_blank" style="color:#1e40af;text-decoration:underline;">Retraite Québec</a> - Informations sur le RRQ et la retraite</li>
+      <li style="margin-bottom:8px;"><a href="https://lautorite.qc.ca/" target="_blank" style="color:#1e40af;text-decoration:underline;">Autorité des marchés financiers (AMF)</a> - Éducation financière et protection</li>
+      <li style="margin-bottom:8px;"><a href="https://www.canada.ca/fr/services/prestations/pensionspubliques.html" target="_blank" style="color:#1e40af;text-decoration:underline;">Gouvernement du Canada</a> - Programmes de retraite publics</li>
+    </ul>
+  </div>
+</div>
+</footer>
 
 <script>
 var DATA={};
@@ -1106,11 +1157,11 @@ if(mois>=6){
   html+=' - Correct';
 }else{
   pointsFaibles.push("fonds d'urgence insuffisant");
-  if(mois < 1) {
-    recommandations.push("🚨 <strong>Priorité #1 :</strong> Économisez au moins 1 000 $ en urgence le plus rapidement possible.");
-  } else {
-    recommandations.push("💰 <strong>Fonds d'urgence :</strong> Visez 3-6 mois de dépenses (" + fmt((DATA.totalD||0)*3) + " $ à " + fmt((DATA.totalD||0)*6) + " $).");
-  }
+if(mois < 1) {
+  recommandations.push("🚨 <strong>Fonds d'urgence :</strong> Les experts financiers recommandent généralement un minimum de 1 000 $ en urgence pour faire face aux imprévus.");
+} else {
+  recommandations.push("💰 <strong>Fonds d'urgence :</strong> Selon les principes financiers reconnus, un fonds d'urgence devrait couvrir 3-6 mois de dépenses (" + fmt((DATA.totalD||0)*3) + " $ à " + fmt((DATA.totalD||0)*6) + " $).");
+}
 }
 html+='</div>';
 
@@ -1123,9 +1174,9 @@ if(taux>=20){
 }else{
   pointsFaibles.push("taux d'épargne faible");
   if(DATA.revenuTotal>0){
-    var manqueEpargne = (DATA.revenuTotal * 0.20) - DATA.epargne;
-    recommandations.push("📊 <strong>Épargne :</strong> Pour atteindre 20%, augmentez votre épargne de " + fmt(manqueEpargne) + " $/mois. Astuce : automatisez un virement dès la réception de votre paie.");
-  }
+  var manqueEpargne = (DATA.revenuTotal * 0.20) - DATA.epargne;
+  recommandations.push("📊 <strong>Taux d'épargne :</strong> La règle générale en finances personnelles suggère un taux d'épargne de 20%. Pour atteindre ce niveau, il faudrait épargner " + fmt(manqueEpargne) + " $/mois de plus. Astuce courante : automatiser l'épargne dès la réception du revenu.");
+}
 }
 if(taux<20 && DATA.revenuTotal>0){
   html+='<p style="font-size:0.9em;margin-top:5px;">💡 Pour atteindre 20%, augmentez votre épargne de ' + fmt((DATA.revenuTotal * 0.20) - DATA.epargne) + ' $/mois</p>';
@@ -1136,7 +1187,7 @@ html+='<div class="result-box '+(DATA.totalA==0&&DATA.totalP>0?'red':ratio<=30?'
 if(DATA.totalA==0&&DATA.totalP>0){
   html+=' - Critique: dettes sans actifs';
   pointsFaibles.push("dettes sans actifs");
-  recommandations.push("🚨 <strong>Situation critique :</strong> Vous avez des dettes mais aucun actif. Établissez un plan de remboursement agressif en commençant par les dettes à taux d'intérêt élevé.");
+  recommandations.push("🚨 <strong>Situation critique :</strong> Vos dettes dépassent vos actifs actuels. Les conseillers financiers recommandent généralement d'établir un plan de remboursement structuré en commençant par les dettes à taux d'intérêt élevé. Consultez un conseiller en crédit ou un planificateur financier.");
 }else if(ratio<=30){
   html+=' - Excellent';
   score++;
@@ -1144,7 +1195,7 @@ if(DATA.totalA==0&&DATA.totalP>0){
   html+=' - Modéré';
 }else{
   pointsFaibles.push("endettement élevé");
-  recommandations.push("💳 <strong>Endettement :</strong> Votre ratio dettes/actifs est élevé (" + ratio.toFixed(1) + "%). Priorisez le remboursement des dettes à taux élevé (cartes de crédit, marges).");
+  recommandations.push("💳 <strong>Endettement :</strong> Votre ratio dettes/actifs est de " + ratio.toFixed(1) + "%. Les experts financiers recommandent généralement de maintenir ce ratio sous 30%. La stratégie couramment conseillée est de rembourser en priorité les dettes à taux d'intérêt élevé (cartes de crédit, marges).");
 }
 html+='</div>';
 
@@ -1155,11 +1206,13 @@ if(ratioDetteRevenu<=35){
   score++;
 }else if(ratioDetteRevenu<=50){
   html+=' - Acceptable';
+
 }else{
   html+=' - Trop élevé';
   pointsFaibles.push("ratio dettes/revenus trop élevé");
-  recommandations.push("⚠️ <strong>Dettes/revenus :</strong> Votre ratio est de " + ratioDetteRevenu.toFixed(1) + "% (idéal : sous 35%). Réduisez vos dépenses fixes ou augmentez vos revenus.");
+  recommandations.push("⚠️ <strong>Dettes/revenus :</strong> Votre ratio est de " + ratioDetteRevenu.toFixed(1) + "% (les institutions financières recommandent généralement un ratio sous 35%). Les stratégies courantes incluent la réduction des dépenses fixes ou l'augmentation des revenus.");
 }
+
 html+='</div>';
 }
 html+='</div>';
@@ -1175,8 +1228,9 @@ if(DATA.vn>100000){
   html+=' - En construction';
 }else{
   pointsFaibles.push("valeur nette négative");
-  recommandations.push("📉 <strong>Valeur nette négative :</strong> Vos dettes dépassent vos actifs. Concentrez-vous sur le remboursement de dettes et l'accumulation d'épargne.");
+  recommandations.push("📉 <strong>Valeur nette négative :</strong> Vos dettes dépassent actuellement vos actifs. Les conseillers financiers recommandent généralement une approche combinée : remboursement structuré des dettes et accumulation progressive d'épargne. Un plan financier personnalisé avec un professionnel peut aider à prioriser ces actions.");
 }
+
 html+='</div>';
 
 html+='<div class="result-box blue">Score: '+score+'/6';
@@ -1191,10 +1245,13 @@ if(score>=5){
     html+='<br><small>Points à améliorer : ' + pointsFaibles.join(', ') + '.</small>';
   }
   html+='</div>';
+
 }else if(score>=1){
-  html+='<div style="background:#fed7aa;padding:15px;border-radius:8px;margin-top:15px;color:#92400e;">⚠️ Situation à améliorer avec discipline.</div>';
+  html+='<div style="background:#fed7aa;padding:15px;border-radius:8px;margin-top:15px;color:#92400e;"><h4 style="color:#92400e;margin:0 0 10px 0;">⚠️ Situation à améliorer</h4>';
+  html+='<p style="margin:0;color:#374151;line-height:1.6;">Votre situation financière présente plusieurs aspects à améliorer. Ne vous découragez pas ! Les experts recommandent une approche progressive : discipline budgétaire et plan d\'action structuré. Consultez un conseiller financier pour établir des priorités adaptées à votre situation.</p>';
 }else{
-  html+='<div style="background:#fee2e2;padding:15px;border-radius:8px;margin-top:15px;color:#991b1b;">🚨 Situation critique - Agissez maintenant !</div>';
+  html+='<div style="background:#fee2e2;padding:15px;border-radius:8px;margin-top:15px;border-left:4px solid #dc2626;"><h4 style="color:#991b1b;margin:0 0 10px 0;">🚨 Situation nécessitant attention</h4>';
+  html+='<p style="margin:0;color:#374151;line-height:1.6;">Votre situation financière nécessite une attention particulière. Les principes de base incluent : établir un budget réaliste, identifier les dépenses réductibles et créer un plan de remboursement. <strong>Il est fortement recommandé de consulter un conseiller financier autorisé ou un conseiller en crédit</strong> pour vous accompagner.</p>';
 }
 
 // Recommandations personnalisées
@@ -1252,6 +1309,292 @@ function exporterCSV() {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+}
+
+// Gestion des dettes - Version propre
+var listeDettes = [];
+var idCompteur = 0;
+
+function ajouterLigneDette() {
+  idCompteur++;
+  var id = idCompteur;
+  
+  listeDettes.push({
+    id: id,
+    nom: '',
+    solde: 0,
+    taux: 0,
+    paiementMin: 0
+  });
+  
+  afficherDettes();
+}
+
+function supprimerLigneDette(id) {
+  listeDettes = listeDettes.filter(function(d) { return d.id !== id; });
+  afficherDettes();
+  calculerStrategies();
+}
+
+function afficherDettes() {
+  var html = '';
+  
+  if(listeDettes.length === 0) {
+    html = '<p style="color:#6b7280;font-style:italic;">Aucune dette ajoutée. Cliquez sur "Ajouter une dette" pour commencer.</p>';
+  }
+  
+  for(var i = 0; i < listeDettes.length; i++) {
+    var dette = listeDettes[i];
+    html += '<div style="background:#f9fafb;padding:20px;border-radius:8px;margin-bottom:15px;border:1px solid #e5e7eb;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">';
+    html += '<h4 style="margin:0;color:#374151;">Dette #' + dette.id + '</h4>';
+    html += '<button onclick="supprimerLigneDette(' + dette.id + ')" style="background:#ef4444;color:white;padding:6px 12px;border:none;border-radius:6px;cursor:pointer;font-size:0.9em;">Supprimer</button>';
+    html += '</div>';
+    
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;">';
+    
+    html += '<div>';
+    html += '<label style="display:block;font-size:0.875em;font-weight:500;color:#374151;margin-bottom:8px;">Type de dette</label>';
+    html += '<select id="nom-' + dette.id + '" onchange="mettreAJourDette(' + dette.id + ')" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;">';
+    html += '<option value="Carte de crédit">Carte de crédit</option>';
+    html += '<option value="Prêt auto">Prêt auto</option>';
+    html += '<option value="Marge de crédit">Marge de crédit</option>';
+    html += '<option value="Prêt personnel">Prêt personnel</option>';
+    html += '<option value="Prêt étudiant">Prêt étudiant</option>';
+    html += '<option value="Autre">Autre</option>';
+    html += '</select>';
+    html += '</div>';
+    
+    html += '<div>';
+    html += '<label style="display:block;font-size:0.875em;font-weight:500;color:#374151;margin-bottom:8px;">Solde actuel ($)</label>';
+    html += '<input type="number" id="solde-' + dette.id + '" value="' + dette.solde + '" onchange="mettreAJourDette(' + dette.id + ')" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;" min="0">';
+    html += '</div>';
+    
+    html += '<div>';
+    html += '<label style="display:block;font-size:0.875em;font-weight:500;color:#374151;margin-bottom:8px;">Taux d\'intérêt annuel (%)</label>';
+    html += '<input type="number" id="taux-' + dette.id + '" value="' + dette.taux + '" onchange="mettreAJourDette(' + dette.id + ')" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;" min="0" step="0.1">';
+    html += '</div>';
+    
+    html += '<div>';
+    html += '<label style="display:block;font-size:0.875em;font-weight:500;color:#374151;margin-bottom:8px;">Paiement minimum ($)</label>';
+    html += '<input type="number" id="paiementMin-' + dette.id + '" value="' + dette.paiementMin + '" onchange="mettreAJourDette(' + dette.id + ')" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;" min="0">';
+    html += '</div>';
+    
+    html += '</div>';
+    html += '</div>';
+  }
+  
+  document.getElementById('liste-dettes-container').innerHTML = html;
+}
+
+function mettreAJourDette(id) {
+  for(var i = 0; i < listeDettes.length; i++) {
+    if(listeDettes[i].id === id) {
+      listeDettes[i].nom = document.getElementById('nom-' + id).value;
+      listeDettes[i].solde = parseFloat(document.getElementById('solde-' + id).value) || 0;
+      listeDettes[i].taux = parseFloat(document.getElementById('taux-' + id).value) || 0;
+      listeDettes[i].paiementMin = parseFloat(document.getElementById('paiementMin-' + id).value) || 0;
+      break;
+    }
+  }
+}
+
+function calculerStrategies() {
+  // Vérifier qu'il y a des dettes
+  if(listeDettes.length === 0) {
+    document.getElementById('resultats-strategies').innerHTML = '<div class="card"><p style="color:#6b7280;">Ajoutez au moins une dette pour voir les calculs.</p></div>';
+    return;
+  }
+  
+  // Vérifier que toutes les dettes ont des valeurs valides
+  var dettesValides = [];
+  for(var i = 0; i < listeDettes.length; i++) {
+    if(listeDettes[i].solde > 0) {
+      dettesValides.push({
+        nom: listeDettes[i].nom,
+        solde: listeDettes[i].solde,
+        taux: listeDettes[i].taux,
+        paiementMin: listeDettes[i].paiementMin
+      });
+    }
+  }
+  
+  if(dettesValides.length === 0) {
+    document.getElementById('resultats-strategies').innerHTML = '<div class="card"><p style="color:#dc2626;">Entrez au moins une dette avec un solde supérieur à 0.</p></div>';
+    return;
+  }
+  
+  var paiementExtra = parseFloat(document.getElementById('paiement-extra').value) || 0;
+  
+  // Calculer les deux stratégies
+  var avalanche = simulerStrategie(dettesValides, paiementExtra, 'avalanche');
+  var bouleNeige = simulerStrategie(dettesValides, paiementExtra, 'boule');
+  
+  // Afficher les résultats
+  afficherComparaison(avalanche, bouleNeige, dettesValides, paiementExtra);
+}
+
+function simulerStrategie(dettes, paiementExtra, type) {
+  // Copier les dettes
+  var dettesCopie = [];
+  for(var i = 0; i < dettes.length; i++) {
+    dettesCopie.push({
+      nom: dettes[i].nom,
+      solde: dettes[i].solde,
+      taux: dettes[i].taux,
+      paiementMin: dettes[i].paiementMin
+    });
+  }
+  
+  var mois = 0;
+  var interetsTotal = 0;
+  var ordreRemboursement = [];
+  
+  while(dettesCopie.length > 0 && mois < 600) {
+    mois++;
+    
+    // 1. Ajouter les intérêts mensuels
+    for(var i = 0; i < dettesCopie.length; i++) {
+      var tauxMensuel = dettesCopie[i].taux / 100 / 12;
+      var interetsMois = dettesCopie[i].solde * tauxMensuel;
+      dettesCopie[i].solde += interetsMois;
+      interetsTotal += interetsMois;
+    }
+    
+    // 2. Payer les minimums
+    for(var i = 0; i < dettesCopie.length; i++) {
+      var paiement = Math.min(dettesCopie[i].paiementMin, dettesCopie[i].solde);
+      dettesCopie[i].solde -= paiement;
+    }
+    
+    // 3. Trier selon la stratégie
+    if(type === 'avalanche') {
+      dettesCopie.sort(function(a, b) { return b.taux - a.taux; });
+    } else {
+      dettesCopie.sort(function(a, b) { return a.solde - b.solde; });
+    }
+    
+    // 4. Appliquer le paiement extra sur la première dette
+    var budgetRestant = paiementExtra;
+    for(var i = 0; i < dettesCopie.length && budgetRestant > 0; i++) {
+      if(dettesCopie[i].solde > 0) {
+        var paiement = Math.min(budgetRestant, dettesCopie[i].solde);
+        dettesCopie[i].solde -= paiement;
+        budgetRestant -= paiement;
+      }
+    }
+    
+    // 5. Enlever les dettes payées
+    for(var i = dettesCopie.length - 1; i >= 0; i--) {
+      if(dettesCopie[i].solde < 0.01) {
+        ordreRemboursement.push({
+          nom: dettesCopie[i].nom,
+          mois: mois
+        });
+        dettesCopie.splice(i, 1);
+      }
+    }
+  }
+  
+  return {
+    mois: mois,
+    annees: Math.round(mois / 12 * 10) / 10,
+    interetsTotal: interetsTotal,
+    ordre: ordreRemboursement
+  };
+}
+
+function afficherComparaison(avalanche, bouleNeige, dettes, paiementExtra) {
+  var totalDettes = 0;
+  var totalMin = 0;
+  
+  for(var i = 0; i < dettes.length; i++) {
+    totalDettes += dettes[i].solde;
+    totalMin += dettes[i].paiementMin;
+  }
+  
+  var html = '';
+  
+  // Résumé situation
+  html += '<div class="card" style="background:#f0f9ff;margin-top:20px;">';
+  html += '<h3 style="color:#1e40af;">📋 Votre situation</h3>';
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-top:15px;">';
+  html += '<div><p style="color:#6b7280;font-size:0.9em;margin:0;">Total des dettes</p><p style="font-size:1.5em;font-weight:bold;color:#1f2937;margin:5px 0 0 0;">' + fmt(totalDettes) + ' $</p></div>';
+  html += '<div><p style="color:#6b7280;font-size:0.9em;margin:0;">Paiements minimums</p><p style="font-size:1.5em;font-weight:bold;color:#1f2937;margin:5px 0 0 0;">' + fmt(totalMin) + ' $/mois</p></div>';
+  html += '<div><p style="color:#6b7280;font-size:0.9em;margin:0;">Paiement extra</p><p style="font-size:1.5em;font-weight:bold;color:#047857;margin:5px 0 0 0;">' + fmt(paiementExtra) + ' $/mois</p></div>';
+  html += '<div><p style="color:#6b7280;font-size:0.9em;margin:0;">Total mensuel</p><p style="font-size:1.5em;font-weight:bold;color:#2563eb;margin:5px 0 0 0;">' + fmt(totalMin + paiementExtra) + ' $/mois</p></div>';
+  html += '</div>';
+  html += '</div>';
+  
+  // Comparaison des deux méthodes
+  html += '<div class="grid-2" style="margin-top:20px;">';
+  
+  // Avalanche
+  html += '<div class="card" style="border-left:4px solid #dc2626;">';
+  html += '<h3 style="color:#dc2626;">🔥 Méthode Avalanche</h3>';
+  html += '<p style="background:#fef3c7;padding:10px;border-radius:6px;font-size:0.9em;margin-bottom:15px;">Priorité aux <strong>taux d\'intérêt élevés</strong></p>';
+  html += '<div class="result-box blue">Durée: <strong>' + avalanche.mois + ' mois</strong> (' + avalanche.annees + ' ans)</div>';
+  html += '<div class="result-box red">Intérêts payés: <strong>' + fmt(avalanche.interetsTotal) + ' $</strong></div>';
+  html += '<div class="result-box green">Total remboursé: <strong>' + fmt(totalDettes + avalanche.interetsTotal) + ' $</strong></div>';
+  html += '</div>';
+  
+  // Boule de neige
+  html += '<div class="card" style="border-left:4px solid #2563eb;">';
+  html += '<h3 style="color:#2563eb;">❄️ Méthode Boule de neige</h3>';
+  html += '<p style="background:#dbeafe;padding:10px;border-radius:6px;font-size:0.9em;margin-bottom:15px;">Priorité aux <strong>petits soldes</strong> (motivation)</p>';
+  html += '<div class="result-box blue">Durée: <strong>' + bouleNeige.mois + ' mois</strong> (' + bouleNeige.annees + ' ans)</div>';
+  html += '<div class="result-box red">Intérêts payés: <strong>' + fmt(bouleNeige.interetsTotal) + ' $</strong></div>';
+  html += '<div class="result-box green">Total remboursé: <strong>' + fmt(totalDettes + bouleNeige.interetsTotal) + ' $</strong></div>';
+  html += '</div>';
+  
+  html += '</div>';
+  
+  // Verdict
+  var diff = bouleNeige.interetsTotal - avalanche.interetsTotal;
+  var diffMois = bouleNeige.mois - avalanche.mois;
+  
+  html += '<div class="card" style="margin-top:20px;">';
+  html += '<h3>🏆 Verdict</h3>';
+  
+  if(Math.abs(diff) < 10) {
+    html += '<div class="result-box blue">Les deux méthodes donnent des résultats très similaires. Choisissez celle qui vous motive le plus !</div>';
+  } else if(diff > 0) {
+    html += '<div class="result-box green">';
+    html += '✅ La méthode <strong>Avalanche</strong> vous fait économiser <strong>' + fmt(diff) + ' $</strong> en intérêts ';
+    html += 'et vous libère <strong>' + Math.abs(diffMois) + ' mois plus tôt</strong> (' + Math.round(Math.abs(diffMois)/12*10)/10 + ' ans).';
+    html += '</div>';
+  } else {
+    html += '<div class="result-box green">';
+    html += '✅ La méthode <strong>Boule de neige</strong> est légèrement avantageuse dans votre cas.';
+    html += '</div>';
+  }
+  
+html += '<div style="background:#f0f9ff;padding:20px;border-radius:10px;margin-top:20px;border-left:4px solid #2563eb;">';
+html += '<h4 style="margin:0 0 15px 0;color:#1e40af;">📋 Plan d\'action recommandé</h4>';
+
+var meilleure = (diff >= 0) ? avalanche : bouleNeige;
+var methodeNom = (diff >= 0) ? 'Avalanche' : 'Boule de neige';
+
+html += '<p style="margin:0 0 10px 0;"><strong>Suivez la méthode ' + methodeNom + ' :</strong></p>';
+html += '<ol style="margin:0;padding-left:20px;line-height:2;">';
+
+for(var i = 0; i < meilleure.ordre.length; i++) {
+  html += '<li><strong>' + meilleure.ordre[i].nom + '</strong> - sera remboursée au mois ' + meilleure.ordre[i].mois;
+  if(i === 0) {
+    html += ' <span style="color:#047857;font-weight:bold;">← Concentrez votre paiement supplémentaire ici en premier</span>';
+  }
+  html += '</li>';
+}
+
+html += '</ol>';
+html += '<p style="margin:15px 0 0 0;padding-top:15px;border-top:1px solid #bfdbfe;color:#6b7280;font-size:0.9em;">';
+html += '💡 <strong>Astuce :</strong> Continuez à payer les minimums sur toutes les dettes, mais concentrez votre paiement supplémentaire de ' + fmt(paiementExtra) + ' $/mois sur la dette prioritaire selon cet ordre.';
+html += '</p>';
+html += '</div>';
+
+html += '</div>';
+
+  document.getElementById('resultats-strategies').innerHTML = html;
 }
 
 </script>
