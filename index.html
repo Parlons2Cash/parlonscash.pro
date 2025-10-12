@@ -668,7 +668,7 @@ if(ri<=51780){
 }
 
 var impt=impf+impp;
-var rn=rb-impt;
+var rn = ri - impt;
 document.getElementById('ri').textContent=fmt(ri)+' $';
 document.getElementById('impf').textContent=fmt(impf)+' $';
 document.getElementById('impp').textContent=fmt(impp)+' $';
@@ -1265,6 +1265,78 @@ if(recommandations.length>0){
   html+='</div></div>';
 }
 
+// Comparaison avec les statistiques québécoises
+html+='<div style="background:#f0fdf4;padding:20px;border-radius:10px;margin-top:20px;border-left:4px solid #10b981;">';
+html+='<h4 style="color:#047857;margin:0 0 15px 0;">📊 Comparaison avec les statistiques québécoises</h4>';
+
+// Taux d'épargne
+if(taux > 0) {
+  var tauxMoyen = 5;
+  html+='<div style="margin-bottom:15px;padding:10px;background:white;border-radius:6px;">';
+  html+='<strong>Taux d\'épargne</strong><br>';
+  html+='<span style="font-size:0.9em;color:#6b7280;">Vous : <strong style="color:#2563eb;">' + taux + '%</strong> | Moyenne québécoise : ~5-6%</span><br>';
+  if(taux >= 15) {
+    html+='<span style="color:#047857;">✅ Excellent ! Vous épargnez bien plus que la moyenne.</span>';
+  } else if(taux >= tauxMoyen) {
+    html+='<span style="color:#047857;">👍 Au-dessus de la moyenne québécoise.</span>';
+  } else {
+    html+='<span style="color:#ea580c;">⚠️ Sous la moyenne. Essayez d\'augmenter progressivement.</span>';
+  }
+  html+='</div>';
+}
+
+// Ratio dette/actifs
+if(DATA.totalA > 0) {
+  html+='<div style="margin-bottom:15px;padding:10px;background:white;border-radius:6px;">';
+  html+='<strong>Endettement (dette/actifs)</strong><br>';
+  html+='<span style="font-size:0.9em;color:#6b7280;">Vous : <strong style="color:#2563eb;">' + ratio.toFixed(1) + '%</strong> | Recommandé : sous 30%</span><br>';
+  if(ratio <= 20) {
+    html+='<span style="color:#047857;">✅ Excellent niveau d\'endettement.</span>';
+  } else if(ratio <= 30) {
+    html+='<span style="color:#047857;">👍 Endettement sain.</span>';
+  } else {
+    html+='<span style="color:#ea580c;">⚠️ Au-dessus du niveau recommandé.</span>';
+  }
+  html+='</div>';
+}
+
+// Fonds d'urgence
+html+='<div style="margin-bottom:15px;padding:10px;background:white;border-radius:6px;">';
+html+='<strong>Fonds d\'urgence</strong><br>';
+html+='<span style="font-size:0.9em;color:#6b7280;">Vous : <strong style="color:#2563eb;">' + mois.toFixed(1) + ' mois</strong> | Environ 40% des Canadiens n\'ont pas 3 mois d\'épargne</span><br>';
+if(mois >= 6) {
+  html+='<span style="color:#047857;">✅ Vous faites partie des 30% les mieux préparés !</span>';
+} else if(mois >= 3) {
+  html+='<span style="color:#047857;">👍 Mieux que 60% des Canadiens.</span>';
+} else {
+  html+='<span style="color:#ea580c;">⚠️ 60% des Canadiens ont au moins 3 mois. Continuez à bâtir votre fonds.</span>';
+}
+html+='</div>';
+
+// Valeur nette (optionnel - si l'utilisateur veut partager son âge)
+html+='<div style="margin-bottom:15px;padding:10px;background:white;border-radius:6px;">';
+html+='<strong>Valeur nette</strong><br>';
+html+='<span style="font-size:0.9em;color:#6b7280;">Vous : <strong style="color:#2563eb;">' + fmt(DATA.vn) + ' $</strong></span><br>';
+html+='<span style="font-size:0.85em;color:#6b7280;">Valeur nette médiane au Canada (selon l\'âge) :<br>';
+html+='• Moins de 35 ans : ~50 000$<br>';
+html+='• 35-44 ans : ~250 000$<br>';
+html+='• 45-54 ans : ~500 000$<br>';
+html+='• 55-64 ans : ~850 000$</span>';
+html+='</div>';
+
+// Liens vers sources officielles
+html+='<div style="margin-top:15px;padding-top:15px;border-top:1px solid #d1fae5;">';
+html+='<p style="font-size:0.85em;color:#6b7280;margin:0 0 8px 0;"><strong>📚 Sources officielles pour en savoir plus :</strong></p>';
+html+='<ul style="font-size:0.85em;color:#6b7280;margin:0;padding-left:20px;line-height:1.8;">';
+html+='<li><a href="https://www150.statcan.gc.ca/n1/fr/subjects/revenus_pensions_depenses_et_richesse" target="_blank" style="color:#2563eb;">Statistique Canada - Revenus et richesse</a></li>';
+html+='<li><a href="https://www.banqueducanada.ca/taux/indicateurs/capacite-et-besoins-financiers/ratios-dette-menages/" target="_blank" style="color:#2563eb;">Banque du Canada - Endettement des ménages</a></li>';
+html+='<li><a href="https://www.canada.ca/fr/agence-consommation-matiere-financiere/programmes/litteratie-financiere.html" target="_blank" style="color:#2563eb;">Gouvernement du Canada - Littératie financière</a></li>';
+html+='</ul>';
+html+='</div>';
+
+html+='</div>';
+
+document.getElementById('diagnostic-global').innerHTML=html;
 document.getElementById('diagnostic-global').innerHTML=html;
 
 }
@@ -1425,7 +1497,24 @@ function calculerStrategies() {
   }
   
   var paiementExtra = parseFloat(document.getElementById('paiement-extra').value) || 0;
-  
+ // Vérifier si le paiement extra est suffisant
+var totalMin = 0;
+var totalInteretsMensuels = 0;
+for(var i = 0; i < dettesValides.length; i++) {
+  totalMin += dettesValides[i].paiementMin;
+  totalInteretsMensuels += dettesValides[i].solde * (dettesValides[i].taux / 100 / 12);
+}
+
+if(paiementExtra <= 0) {
+  var html = '<div class="card" style="background:#fee2e2;border-left:4px solid #dc2626;margin-top:20px;">';
+  html += '<h3 style="color:#991b1b;">⚠️ Paiement supplémentaire requis</h3>';
+  html += '<p>Avec seulement les paiements minimums (' + fmt(totalMin) + ' $/mois), vos dettes ne seront jamais complètement remboursées car les intérêts s\'accumulent.</p>';
+  html += '<p style="margin-top:10px;"><strong>Vous devez ajouter un paiement mensuel supplémentaire d\'au moins ' + fmt(Math.ceil(totalInteretsMensuels - totalMin + 100)) + ' $/mois</strong> pour réduire progressivement vos dettes.</p>';
+  html += '</div>';
+  document.getElementById('resultats-strategies').innerHTML = html;
+  return;
+}
+
   // Calculer les deux stratégies
   var avalanche = simulerStrategie(dettesValides, paiementExtra, 'avalanche');
   var bouleNeige = simulerStrategie(dettesValides, paiementExtra, 'boule');
@@ -1435,7 +1524,7 @@ function calculerStrategies() {
 }
 
 function simulerStrategie(dettes, paiementExtra, type) {
-  // Copier les dettes
+  // Copier et trier les dettes UNE SEULE FOIS au début
   var dettesCopie = [];
   for(var i = 0; i < dettes.length; i++) {
     dettesCopie.push({
@@ -1444,6 +1533,13 @@ function simulerStrategie(dettes, paiementExtra, type) {
       taux: dettes[i].taux,
       paiementMin: dettes[i].paiementMin
     });
+  }
+  
+  // Trier selon la stratégie (UNE SEULE FOIS)
+  if(type === 'avalanche') {
+    dettesCopie.sort(function(a, b) { return b.taux - a.taux; });
+  } else {
+    dettesCopie.sort(function(a, b) { return a.solde - b.solde; });
   }
   
   var mois = 0;
@@ -1461,30 +1557,19 @@ function simulerStrategie(dettes, paiementExtra, type) {
       interetsTotal += interetsMois;
     }
     
-    // 2. Payer les minimums
+    // 2. Payer les minimums sur toutes les dettes
     for(var i = 0; i < dettesCopie.length; i++) {
       var paiement = Math.min(dettesCopie[i].paiementMin, dettesCopie[i].solde);
       dettesCopie[i].solde -= paiement;
     }
     
-    // 3. Trier selon la stratégie
-    if(type === 'avalanche') {
-      dettesCopie.sort(function(a, b) { return b.taux - a.taux; });
-    } else {
-      dettesCopie.sort(function(a, b) { return a.solde - b.solde; });
+    // 3. Appliquer le paiement extra sur la PREMIÈRE dette (prioritaire)
+    if(paiementExtra > 0 && dettesCopie.length > 0) {
+      var paiement = Math.min(paiementExtra, dettesCopie[0].solde);
+      dettesCopie[0].solde -= paiement;
     }
     
-    // 4. Appliquer le paiement extra sur la première dette
-    var budgetRestant = paiementExtra;
-    for(var i = 0; i < dettesCopie.length && budgetRestant > 0; i++) {
-      if(dettesCopie[i].solde > 0) {
-        var paiement = Math.min(budgetRestant, dettesCopie[i].solde);
-        dettesCopie[i].solde -= paiement;
-        budgetRestant -= paiement;
-      }
-    }
-    
-    // 5. Enlever les dettes payées
+    // 4. Enlever les dettes payées (de la fin vers le début pour éviter les problèmes d'index)
     for(var i = dettesCopie.length - 1; i >= 0; i--) {
       if(dettesCopie[i].solde < 0.01) {
         ordreRemboursement.push({
@@ -1535,7 +1620,6 @@ function afficherComparaison(avalanche, bouleNeige, dettes, paiementExtra) {
   html += '<p style="background:#fef3c7;padding:10px;border-radius:6px;font-size:0.9em;margin-bottom:15px;">Priorité aux <strong>taux d\'intérêt élevés</strong></p>';
   html += '<div class="result-box blue">Durée: <strong>' + avalanche.mois + ' mois</strong> (' + avalanche.annees + ' ans)</div>';
   html += '<div class="result-box red">Intérêts payés: <strong>' + fmt(avalanche.interetsTotal) + ' $</strong></div>';
-  html += '<div class="result-box green">Total remboursé: <strong>' + fmt(totalDettes + avalanche.interetsTotal) + ' $</strong></div>';
   html += '</div>';
   
   // Boule de neige
@@ -1544,7 +1628,6 @@ function afficherComparaison(avalanche, bouleNeige, dettes, paiementExtra) {
   html += '<p style="background:#dbeafe;padding:10px;border-radius:6px;font-size:0.9em;margin-bottom:15px;">Priorité aux <strong>petits soldes</strong> (motivation)</p>';
   html += '<div class="result-box blue">Durée: <strong>' + bouleNeige.mois + ' mois</strong> (' + bouleNeige.annees + ' ans)</div>';
   html += '<div class="result-box red">Intérêts payés: <strong>' + fmt(bouleNeige.interetsTotal) + ' $</strong></div>';
-  html += '<div class="result-box green">Total remboursé: <strong>' + fmt(totalDettes + bouleNeige.interetsTotal) + ' $</strong></div>';
   html += '</div>';
   
   html += '</div>';
