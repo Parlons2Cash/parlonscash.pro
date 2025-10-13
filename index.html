@@ -19,15 +19,14 @@
   <link rel="canonical" href="https://parlonscash.pro/">
 
 <style>
-.warning-box {
-  background:#fef3c7;          /* Jaune clair */
-  border-left:6px solid #f59e0b; /* Bordure orange à gauche */
-  padding:15px 20px;
-  border-radius:8px;
-  margin:20px 0;
-  color:#92400e;               /* Texte brun/orangé */
-  font-size:0.95em;
+body {
+  overflow-x: hidden;
 }
+
+.container {
+  overflow: hidden;
+}
+
 .warning-box strong {
   display:flex;
   align-items:center;
@@ -39,15 +38,6 @@
   display: none;
 }
 
-.danger-box {
-  background:#fee2e2;             /* rouge très pâle */
-  border-left:6px solid #dc2626;  /* rouge foncé */
-  padding:15px 20px;
-  border-radius:8px;
-  margin:20px 0;
-  color:#991b1b;                  /* texte rouge foncé */
-  font-size:0.95em;
-}
 .danger-box strong {
   display:flex;
   align-items:center;
@@ -62,7 +52,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:#f3f4f6;color:#1f2937}
 .container{max-width:1200px;margin:0 auto;padding:20px}
-header{background:linear-gradient(135deg,#2563eb 0%,#1e40af 100%);color:white;padding:30px 20px}
+header{background:linear-gradient(135deg,#1e40af 0%,#1e40af 100%);color:white;padding:30px 20px}
 .btn-export {
   background:#10b981;
   color:white;
@@ -108,6 +98,43 @@ header h1{font-size:2em;margin-bottom:10px}
 .section-title{font-size:1.3em;color:#1f2937;margin:30px 0 15px 0;font-weight:600;border-bottom:2px solid #e5e7eb;padding-bottom:10px}
 .hidden{display:none}
 footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:50px}
+
+<style>
+body {
+  font-family: system-ui, sans-serif;
+  color: #374151;
+  background: #f9fafb;
+}
+
+h2, h3 {
+  color: #1e3a8a;
+  font-weight: 600;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+button, .tab-button {
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+button:hover, .tab-button:hover {
+  transform: scale(1.03);
+  background-color: #1e3a8a;
+}
+
 </style>
 </head>
 <body>
@@ -132,6 +159,9 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
 <button onclick="changeTab('objectifs')" id="btn-objectifs">Objectifs</button>
 <button onclick="changeTab('dettes')" id="btn-dettes">Remboursement dettes</button>
 <button onclick="changeTab('apropos')" id="btn-apropos">À propos</button>
+<button onclick="changeTab('aide')" id="btn-aide">Aide à la décision</button>
+<button onclick="changeTab('confidentialite')" id="btn-confidentialite">Confidentialité</button>
+
 </div>
 
 <div class="container">
@@ -152,13 +182,13 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
   </div>
 
   <!-- Bandeau inspirant -->
-  <div style="background:linear-gradient(135deg,#2563eb 0%,#1e40af 100%);
+  <div style="background:linear-gradient(135deg,#1e40af 0%,#1e40af 100%);
               color:white;
               padding:40px;
               border-radius:12px;
               margin-top:20px;
               text-align:center;">
-    <h3 style="font-size:1.8em;font-weight:bold;">« Parce que derrière chaque projet, il y a une vision à réaliser. »</h3>
+    <h3 style="font-size:1.8em;font-weight:bold;color:white;">« Parce que derrière chaque projet, il y a une vision à réaliser. »</h3>
     <p style="margin-top:15px;font-size:1.1em;">
       Merci de faire partie de cette aventure. Continue à construire, apprendre et avancer —
       une décision éclairée à la fois.
@@ -251,39 +281,65 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
 </div>
 
 <div id="tab-impots" class="tab-content">
-  <div class="danger-box">
-    <strong>⚠️ Avertissement important</strong>
-    <p>Le calcul ci-dessous est simplifié et ne tient pas compte des éléments suivants :</p>
-    <ul>
-      <li>Abattement du Québec (16.5%)</li>
-      <li>Crédits d’impôt de base</li>
-      <li>Cotisations RRQ, RQAP, Assurance-emploi</li>
-      <li>Déductions spécifiques (frais médicaux, frais de garde, etc.)</li>
-    </ul>
-    <p><strong>👉 Il est recommandé de consulter un comptable ou un fiscaliste pour obtenir des calculs précis et adaptés à votre situation.</strong></p>
-  </div>
 
+  <!-- Encadré d’avertissement -->
+  <div style="
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    background:#fffaf0;
+    border:1px solid #fcd34d;
+    border-left:6px solid #f59e0b;
+    padding:18px 22px;
+    border-radius:10px;
+    box-shadow:0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom:25px;
+  ">
+    <div style="font-size:26px;line-height:1;">⚠️</div>
+    <div style="color:#92400e;font-family:system-ui;">
+      <strong style="font-size:1.1rem;">Avertissement important</strong><br>
+      <p style="margin:6px 0 10px 0;">
+        Le calcul ci-dessous est simplifié et ne tient pas compte des éléments suivants :
+      </p>
+      <ul style="margin:0 0 10px 20px; padding:0;">
+        <li>Abattement du Québec (16.5%)</li>
+        <li>Crédits d’impôt de base</li>
+        <li>Cotisations RRQ, RQAP, Assurance-emploi</li>
+        <li>Déductions spécifiques (frais médicaux, frais de garde, etc.)</li>
+      </ul>
+      <p style="margin:0;">
+        👉 Il est recommandé de consulter un <strong>comptable</strong> ou un <strong>fiscaliste</strong>
+        pour obtenir des calculs précis et adaptés à votre situation.
+      </p>
+    </div>
+  </div> <!-- ✅ ici tu fermes l’encadré SEULEMENT -->
+
+  <!-- Calculateur -->
   <h2>Calculateur d’impôts</h2>
   <p>Entrez vos informations pour estimer vos impôts :</p>
+  <p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">
+    Calculs basés sur les tranches d'imposition fédérales et provinciales du Québec pour 2025.
+  </p>
 
-<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Calculs basés sur les tranches d'imposition fédérales et provinciales du Québec pour 2025.</p>
-<div class="grid-2">
-<div class="card">
-<h3>Informations</h3>
-<div class="form-group"><label>Revenu brut annuel</label><input type="number" id="rb" value="0" onchange="calc()"></div>
-<div class="form-group"><label>Contribution REER</label><input type="number" id="cr" value="0" onchange="calc()"></div>
-<div class="form-group"><label>Autres déductions</label><input type="number" id="ad" value="0" onchange="calc()"></div>
-</div>
-<div class="card">
-<h3>Résultats</h3>
-<div class="result-box blue"><div>Revenu imposable</div><div style="font-size:1.8em;font-weight:bold" id="ri">0 $</div></div>
-<div class="result-box red"><div>Impôt fédéral</div><div style="font-size:1.8em;font-weight:bold" id="impf">0 $</div></div>
-<div class="result-box orange"><div>Impôt provincial (QC)</div><div style="font-size:1.8em;font-weight:bold" id="impp">0 $</div></div>
-<div class="result-box purple"><div>Impôt total</div><div style="font-size:1.8em;font-weight:bold" id="impt">0 $</div></div>
-<div class="result-box green"><div>Revenu net</div><div style="font-size:1.8em;font-weight:bold" id="rn">0 $</div></div>
-</div>
-</div>
-</div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Informations</h3>
+      <div class="form-group"><label>Revenu brut annuel</label><input type="number" id="rb" value="0" onchange="calc()"></div>
+      <div class="form-group"><label>Contribution REER</label><input type="number" id="cr" value="0" onchange="calc()"></div>
+      <div class="form-group"><label>Autres déductions</label><input type="number" id="ad" value="0" onchange="calc()"></div>
+    </div>
+
+    <div class="card">
+      <h3>Résultats</h3>
+      <div class="result-box blue"><div>Revenu imposable</div><div id="ri">0 $</div></div>
+      <div class="result-box red"><div>Impôt fédéral</div><div id="impf">0 $</div></div>
+      <div class="result-box orange"><div>Impôt provincial (QC)</div><div id="impp">0 $</div></div>
+      <div class="result-box purple"><div>Impôt total</div><div id="impt">0 $</div></div>
+      <div class="result-box green"><div>Revenu net</div><div id="rn">0 $</div></div>
+    </div>
+  </div>
+
+</div> <!-- ✅ ici tu fermes le tab-impots -->
 
 <div id="tab-objectifs" class="tab-content">
 <h2>Objectifs et Projections</h2>
@@ -470,7 +526,6 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
   </div>
 </div>
 
-
   <div class="card" style="background:#eff6ff;">
     <h3 style="color:#1e3a8a;">Mes valeurs</h3>
     <ul style="margin-top:10px;line-height:1.8em;">
@@ -480,19 +535,16 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
       <li><strong>Innovation utile</strong> – Créer des outils simples qui font gagner du temps et de la clarté.</li>
     </ul>
   </div>
-
   
 </div>
 
-<div style="background:#fef2f2;border-left:6px solid #dc2626;padding:25px;border-radius:12px;margin-bottom:30px;">
+<div class="warning-box" style="background:#fef2f2;border-left:6px solid #dc2626;padding:25px;border-radius:12px;margin-bottom:30px;overflow:hidden;">
   <strong style="color:#991b1b;font-size:1.1em;">⚠️ Avertissement important</strong>
   
  <p style="margin:10px 0 10px 0;padding:0;line-height:1.7;color:#7f1d1d;text-align:left;"><strong>Cet outil est à des fins éducatives et informatives seulement.</strong> Les calculs, projections et suggestions présentés sont des estimations simplifiées basées sur des principes financiers généralement reconnus. <strong>Ils ne constituent en aucun cas des conseils financiers, fiscaux ou juridiques personnalisés.</strong></p>
 
 <p style="margin:10px 0 10px 0;padding:0;line-height:1.7;color:#7f1d1d;text-align:left;">Chaque situation financière est unique. Avant de prendre toute décision financière importante, consultez un conseiller financier autorisé, un fiscaliste ou un planificateur financier certifié.</p>
   
-  <p style="margin:10px 0 10px 0;padding:0;line-height:1.7;color:#7f1d1d;text-align:left;">
-    Chaque situation financière est unique. Avant de prendre toute décision financière importante, consultez un conseiller financier autorisé, un fiscaliste ou un planificateur financier certifié.
   </p>
   
   <div style="margin-top:15px;padding-top:15px;border-top:1px solid #fca5a5;">
@@ -504,29 +556,206 @@ footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:
     </ul>
   </div>
 </div>
+
+<!-- Onglet : Aide à la décision -->
+<div id="tab-aide" class="tab-content">
+
+  <h2>💡 Aide à la décision : CELI ou REER ?</h2>
+
+  <p>Voici un aperçu comparatif des deux principaux régimes d’épargne au Canada.</p>
+
+  <table style="width:100%;border-collapse:collapse;margin-top:18px;font-size:0.95rem;">
+    <thead style="background:#f9fafb;">
+      <tr>
+        <th style="text-align:left;padding:10px;border-bottom:1px solid #e5e7eb;">Aspect</th>
+        <th style="text-align:left;padding:10px;border-bottom:1px solid #e5e7eb;">CELI</th>
+        <th style="text-align:left;padding:10px;border-bottom:1px solid #e5e7eb;">REER</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Objectif</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Croissance libre d’impôt — idéal pour flexibilité et retraits à court ou moyen terme.</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Report d’impôt — avantageux si votre taux d’imposition est plus bas à la retraite.</td>
+      </tr>
+      <tr>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Retraits</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Non imposables et sans impact fiscal.</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Imposables selon votre taux au moment du retrait.</td>
+      </tr>
+      <tr>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Cotisations</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Non déductibles, mais rendement non imposable.</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Déductibles du revenu imposable, réduisent l’impôt payé cette année.</td>
+      </tr>
+      <tr>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Plafond annuel (2025)</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">7 000 $ (droits cumulatifs si non utilisés).</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">18 % du revenu gagné, jusqu’à un maximum de 31 560 $.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top:20px;">
+    💬 <strong>Astuce :</strong> Comparez votre taux d’imposition actuel et celui anticipé à la retraite.
+    Si votre taux futur est plus élevé, le CELI peut être avantageux ; s’il est plus bas, le REER peut
+    offrir un meilleur report d’impôt.  
+    Ces informations visent à <strong>éclairer</strong> votre réflexion, pas à déterminer un choix.
+  </p>
+
+  <!-- ⚠️ Avertissement placé à la fin -->
+  <div style="
+    background:#fff8e1;
+    border:1px solid #fcd34d;
+    border-left:6px solid #f59e0b;
+    padding:18px 22px;
+    border-radius:10px;
+    margin-top:40px;
+    color:#78350f;
+    line-height:1.5;
+  ">
+    ⚠️ <strong>Avertissement :</strong> Les informations présentées sur cette page sont fournies
+    à titre informatif seulement et ne constituent pas des conseils financiers personnalisés.
+    Chaque situation est unique — consultez un professionnel avant de prendre une décision
+    d’investissement.
+  </div>
+
+</div>
+
+<div id="tab-confidentialite" class="tab-content">
+  <h2>Politique de confidentialité</h2>
+  
+  <div class="card">
+    <p style="margin-bottom:20px;"><em>Dernière mise à jour : Octobre 2025</em></p>
+    
+    <h3 style="color:#2563eb;margin-top:0;">Notre engagement</h3>
+    <p style="line-height:1.7;">
+      Finance Personnelle Pro respecte votre vie privée. Cette politique explique quelles données sont collectées 
+      lorsque vous utilisez notre site et comment elles sont utilisées.
+    </p>
+    
+    <h3 style="color:#2563eb;margin-top:30px;">💾 Vos données financières</h3>
+    <div style="background:#d1fae5;padding:15px;border-radius:8px;border-left:4px solid #10b981;margin:15px 0;">
+      <p style="margin:0;font-weight:600;color:#065f46;">
+        ✅ AUCUNE de vos données financières personnelles (revenus, dettes, actifs, etc.) n'est envoyée à nos serveurs ou stockée en ligne.
+      </p>
+    </div>
+    <p style="line-height:1.7;">
+      Toutes les données que vous entrez dans les calculateurs restent <strong>localement dans votre navigateur</strong>. 
+      Nous n'avons aucun accès à ces informations sensibles.
+    </p>
+    
+    <h3 style="color:#2563eb;margin-top:30px;">📊 Google Analytics</h3>
+    <p style="line-height:1.7;">
+      Nous utilisons Google Analytics pour comprendre comment les visiteurs utilisent notre site et l'améliorer. 
+      Les données collectées incluent :
+    </p>
+    <ul style="line-height:1.8;margin-left:20px;">
+      <li>Pages visitées et durée de visite</li>
+      <li>Localisation géographique approximative (ville/région)</li>
+      <li>Type d'appareil et navigateur utilisé</li>
+      <li>Adresse IP (anonymisée)</li>
+    </ul>
+    <p style="line-height:1.7;">
+      Ces données sont <strong>anonymes</strong> et ne permettent pas de vous identifier personnellement.
+    </p>
+    
+    <h3 style="color:#2563eb;margin-top:30px;">🎯 Publicité (Google AdSense)</h3>
+    <p style="line-height:1.7;">
+      Nous utilisons Google AdSense pour afficher des publicités qui financent ce site gratuit. 
+      Google et ses partenaires publicitaires utilisent des cookies pour :
+    </p>
+    <ul style="line-height:1.8;margin-left:20px;">
+      <li>Personnaliser les publicités selon vos centres d'intérêt</li>
+      <li>Mesurer l'efficacité des publicités</li>
+      <li>Limiter le nombre de fois qu'une publicité vous est montrée</li>
+    </ul>
+    <p style="line-height:1.7;">
+      Vous pouvez gérer vos préférences publicitaires sur 
+      <a href="https://adssettings.google.com" target="_blank" style="color:#2563eb;">Google Ads Settings</a>.
+    </p>
+    
+    <h3 style="color:#2563eb;margin-top:30px;">🍪 Cookies</h3>
+    <p style="line-height:1.7;">
+      Notre site utilise des cookies pour Google Analytics et AdSense. Vous pouvez bloquer ou supprimer les cookies 
+      via les paramètres de votre navigateur. Cela n'affectera pas le fonctionnement des calculateurs.
+    </p>
+    
+    <h3 style="color:#2563eb;margin-top:30px;">🔒 Sécurité</h3>
+    <p style="line-height:1.7;">
+      Comme nous ne collectons ni ne stockons vos données financières personnelles, il n'y a aucun risque de fuite 
+      de ces informations sensibles depuis notre site.
+    </p>
+    
+    <h3 style="color:#2563eb;margin-top:30px;">⚖️ Vos droits</h3>
+    <p style="line-height:1.7;">
+      Conformément aux lois canadiennes (LPRPDE) et européennes (RGPD), vous avez le droit de :
+    </p>
+    <ul style="line-height:1.8;margin-left:20px;">
+      <li>Refuser les cookies (via les paramètres de votre navigateur)</li>
+      <li>Demander l'accès aux données que nous détenons (Analytics anonyme uniquement)</li>
+      <li>Utiliser notre site sans accepter les cookies publicitaires</li>
+    </ul>
+    
+    <h3 style="color:#2563eb;margin-top:30px;">📧 Contact</h3>
+    <p style="line-height:1.7;">
+      Pour toute question concernant cette politique de confidentialité, vous pouvez nous contacter à : 
+      <a href="mailto:azizguellouz@gmail.com" style="color:#2563eb;">azizguellouz@gmail.com</a>
+    </p>
+    
+    <h3 style="color:#2563eb;margin-top:30px;">🔄 Modifications</h3>
+    <p style="line-height:1.7;">
+      Nous pouvons mettre à jour cette politique de confidentialité occasionnellement. 
+      La date de dernière mise à jour est indiquée en haut de cette page.
+    </p>
+  </div>
+  
+  <div class="card" style="background:#eff6ff;margin-top:20px;">
+    <h3 style="color:#1e40af;margin-top:0;">📚 Ressources utiles</h3>
+    <ul style="line-height:2;">
+      <li><a href="https://policies.google.com/privacy" target="_blank" style="color:#2563eb;">Politique de confidentialité de Google</a></li>
+      <li><a href="https://www.priv.gc.ca/fr/" target="_blank" style="color:#2563eb;">Commissariat à la protection de la vie privée du Canada</a></li>
+      <li><a href="https://support.google.com/analytics/answer/6004245" target="_blank" style="color:#2563eb;">Comment Google Analytics protège vos données</a></li>
+    </ul>
+  </div>
+</div>
+
+<footer style="background:#1f2937;color:white;padding:40px 20px;margin-top:50px;">
+  <div class="container">
+     <div style="text-align:center;color:#9ca3af;">
+      <p style="margin:0 0 10px 0;font-size:1em;">Finance Personnelle Pro</p>
+      <p style="margin:0;font-size:0.85em;">© 2025 Aziz Guellouz. Tous droits réservés.</p>
+      <p style="margin:10px 0 0 0;font-size:0.8em;">
+        Le code source et les calculateurs de ce site sont la propriété intellectuelle d'Aziz Guellouz. 
+        Toute reproduction ou utilisation non autorisée est interdite.
+      </p>
+    </div>
+  </div>
 </footer>
 
 <script>
 var DATA={};
 
 function changeTab(t){
-var tabs=document.querySelectorAll('.tab-content');
-for(var i=0;i<tabs.length;i++){tabs[i].classList.remove('active');}
-document.getElementById('tab-'+t).classList.add('active');
-var btns=document.querySelectorAll('.nav button');
-for(var i=0;i<btns.length;i++){btns[i].classList.remove('active');}
-document.getElementById('btn-'+t).classList.add('active');
+  var tabs=document.querySelectorAll('.tab-content');
+  for(var i=0;i<tabs.length;i++){tabs[i].classList.remove('active');}
+  document.getElementById('tab-'+t).classList.add('active');
 
-// Cacher/afficher le bandeau d'avertissement
-var warningBox = document.querySelector('.warning-box');
-if(warningBox) {
-  if(t === 'apropos') {
-    warningBox.style.display = 'none';
-  } else {
-    warningBox.style.display = 'block';
+  var btns=document.querySelectorAll('.nav button');
+  for(var i=0;i<btns.length;i++){btns[i].classList.remove('active');}
+  document.getElementById('btn-'+t).classList.add('active');
+
+  // 👇 AJOUT : cacher les bandeaux sur AIDE aussi
+  var warnings = document.querySelectorAll('.warning-box, .danger-box');
+  for(var i = 0; i < warnings.length; i++) {
+    if(t === 'apropos' || t === 'confidentialite' || t === 'aide') {
+      warnings[i].style.display = 'none';
+    } else {
+      warnings[i].style.display = 'block';
+    }
   }
 }
-}
+
 function fmt(n){return Math.round(n).toLocaleString('fr-CA');}
 
 function toggleHypotheque(){
@@ -1006,7 +1235,8 @@ function calcImmobilier() {
     </div>
 
     ${miseDeFondsPct < 0.20 ? `
-    <div style="background:#fef2f2;padding:18px 20px;border-left:6px solid #dc2626;border-radius:10px;margin:20px 0;">
+    <div style="background:#fef2f2;padding:18px 20px;border-left:6px solid #dc2626;border-radius:10px;margin:20px 0;overflow:hidden;">
+    <div class="warning-box" style="background:#fef2f2;border-left:6px solid #dc2626;padding:25px;border-radius:12px;margin-bottom:30px;overflow:hidden;">
       <h4 style="margin:0 0 10px 0;color:#991b1b;">⚠️ Mise de fonds inférieure à 20%</h4>
       <p style="margin:0;color:#7f1d1d;font-size:0.95em;line-height:1.7;">
         Avec une mise de fonds de ${(miseDeFondsPct*100).toFixed(0)}%, vous devrez payer une assurance prêt hypothécaire SCHL. 
