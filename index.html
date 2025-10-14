@@ -1702,120 +1702,145 @@ function mettreAJourDette(id) {
 }
 
 function calculerStrategies() {
-  // Vérifier qu'il y a des dettes
   if(listeDettes.length === 0) {
-    document.getElementById('resultats-strategies').innerHTML = '<div class="card"><p style="color:#6b7280;">Ajoutez au moins une dette pour voir les calculs.</p></div>';
+    document.getElementById('resultats-strategies').innerHTML =
+      '<div class="card"><p style="color:#6b7280;">Ajoutez au moins une dette pour voir les calculs.</p></div>';
     return;
   }
-  
-  // Vérifier que toutes les dettes ont des valeurs valides
+
+  // Filtrer uniquement les dettes avec un solde > 0
   var dettesValides = [];
-  for(var i = 0; i < listeDettes.length; i++) {
-    if(listeDettes[i].solde > 0) {
+  for (var i = 0; i < listeDettes.length; i++) {
+    if ((listeDettes[i].solde || 0) > 0) {
       dettesValides.push({
         nom: listeDettes[i].nom,
-        solde: listeDettes[i].solde,
-        taux: listeDettes[i].taux,
-        paiementMin: listeDettes[i].paiementMin
+        solde: Number(listeDettes[i].solde) || 0,
+        taux: Number(listeDettes[i].taux) || 0,
+        paiementMin: Math.max(0, Number(listeDettes[i].paiementMin) || 0)
       });
     }
   }
-  
+
   if(dettesValides.length === 0) {
-    document.getElementById('resultats-strategies').innerHTML = '<div class="card"><p style="color:#dc2626;">Entrez au moins une dette avec un solde supérieur à 0.</p></div>';
+    document.getElementById('resultats-strategies').innerHTML =
+      '<div class="card"><p style="color:#dc2626;">Entrez au moins une dette avec un solde supérieur à 0.</p></div>';
     return;
   }
-  
-  var paiementExtra = parseFloat(document.getElementById('paiement-extra').value) || 0;
- // Vérifier si le paiement extra est suffisant
-var totalMin = 0;
-var totalInteretsMensuels = 0;
-for(var i = 0; i < dettesValides.length; i++) {
-  totalMin += dettesValides[i].paiementMin;
-  totalInteretsMensuels += dettesValides[i].solde * (dettesValides[i].taux / 100 / 12);
-}
 
-if(paiementExtra <= 0) {
-  var html = '<div class="card" style="background:#fee2e2;border-left:4px solid #dc2626;margin-top:20px;">';
-  html += '<h3 style="color:#991b1b;">⚠️ Paiement supplémentaire requis</h3>';
-  html += '<p>Avec seulement les paiements minimums (' + fmt(totalMin) + ' $/mois), vos dettes ne seront jamais complètement remboursées car les intérêts s\'accumulent.</p>';
-  html += '<p style="margin-top:10px;"><strong>Vous devez ajouter un paiement mensuel supplémentaire d\'au moins ' + fmt(Math.ceil(totalInteretsMensuels - totalMin + 100)) + ' $/mois</strong> pour réduire progressivement vos dettes.</p>';
-  html += '</div>';
-  document.getElementById('resultats-strategies').innerHTML = html;
-  return;
-}
+  var paiementExtra = Math.max(0, Number(document.getElementById('paiement-extra').value) || 0);
 
-  // Calculer les deux stratégies
-  var avalanche = simulerStrategie(dettesValides, paiementExtra, 'avalanche');
+  // Diagnostique “amortisation négative” (les intérêts du mois > minimums)
+  var totalMin = 0, totalInteretsMensuels = 0;
+  for (var j = 0; j < dettesValides.length; j++) {
+    totalMin += dettesValides[j].paiementMin;
+    totalInteretsMensuels += dettesValides[j].solde * (dettesValides[j].taux / 100 / 12);
+  }
+
+  var avertissement = '';
+  if (totalMin + paiementExtra <= totalInteretsMensuels + 1e-6) {
+    var manque = Math.ceil(totalInteretsMensuels - (totalMin + paiementExtra) + 1);
+    avertissement = `
+      <div class="card" style="background:#fee2e2;border-left:4px solid #dc2626;margin-top:20px;">
+        <h3 style="color:#991b1b;">⚠️ Amortisation négative</h3>
+        <p>Vos intérêts mensuels (~${fmt(totalInteretsMensuels)} $) dépassent vos paiements (min + extra = ${fmt(totalMin + paiementExtra)} $).</p>
+        <p><strong>Ajoutez au moins ${fmt(manque)} $/mois</strong> pour commencer à réduire le capital.</p>
+      </div>`;
+  }
+
+  // Lancer les deux simulations (on ne bloque plus si extra = 0)
+  var avalanche  = simulerStrategie(dettesValides, paiementExtra, 'avalanche');
   var bouleNeige = simulerStrategie(dettesValides, paiementExtra, 'boule');
-  
-  // Afficher les résultats
+
+  // Affichage
   afficherComparaison(avalanche, bouleNeige, dettesValides, paiementExtra);
+
+  // Injecter l’avertissement éventuel (au-dessus des résultats)
+  if (avertissement) {
+    var cont = document.getElementById('resultats-strategies');
+    cont.innerHTML = avertissement + cont.innerHTML;
+  }
 }
 
 function simulerStrategie(dettes, paiementExtra, type) {
-  // Copier et trier les dettes UNE SEULE FOIS au début
-  var dettesCopie = [];
-  for(var i = 0; i < dettes.length; i++) {
-    dettesCopie.push({
-      nom: dettes[i].nom,
-      solde: dettes[i].solde,
-      taux: dettes[i].taux,
-      paiementMin: dettes[i].paiementMin
-    });
+  // Copie profonde
+  var dettesCopie = dettes.map(function(d){
+    return { nom:d.nom, solde:d.solde, taux:d.taux, paiementMin:d.paiementMin };
+  });
+
+  // Tri initial (une fois)
+  if (type === 'avalanche') {
+    dettesCopie.sort(function(a,b){ return b.taux - a.taux; });
+  } else { // 'boule'
+    dettesCopie.sort(function(a,b){ return a.solde - b.solde; });
   }
-  
-  // Trier selon la stratégie (UNE SEULE FOIS)
-  if(type === 'avalanche') {
-    dettesCopie.sort(function(a, b) { return b.taux - a.taux; });
-  } else {
-    dettesCopie.sort(function(a, b) { return a.solde - b.solde; });
-  }
-  
+
   var mois = 0;
   var interetsTotal = 0;
   var ordreRemboursement = [];
-  
-  while(dettesCopie.length > 0 && mois < 600) {
+
+  // Pour détecter les scénarios qui ne convergent pas
+  var previousTotal = dettesCopie.reduce((s,d)=>s+d.solde,0);
+
+  while (dettesCopie.length > 0 && mois < 1200) {
     mois++;
-    
-    // 1. Ajouter les intérêts mensuels
-    for(var i = 0; i < dettesCopie.length; i++) {
-      var tauxMensuel = dettesCopie[i].taux / 100 / 12;
-      var interetsMois = dettesCopie[i].solde * tauxMensuel;
+
+    // 1) Intérêts du mois
+    for (var i = 0; i < dettesCopie.length; i++) {
+      var r = dettesCopie[i].taux / 100 / 12;
+      var interetsMois = dettesCopie[i].solde * r;
       dettesCopie[i].solde += interetsMois;
       interetsTotal += interetsMois;
     }
-    
-    // 2. Payer les minimums sur toutes les dettes
-    for(var i = 0; i < dettesCopie.length; i++) {
-      var paiement = Math.min(dettesCopie[i].paiementMin, dettesCopie[i].solde);
-      dettesCopie[i].solde -= paiement;
+
+    // 2) Payer tous les minimums
+    for (var k = 0; k < dettesCopie.length; k++) {
+      var payMin = Math.min(dettesCopie[k].paiementMin, dettesCopie[k].solde);
+      dettesCopie[k].solde -= payMin;
     }
-    
-    // 3. Appliquer le paiement extra sur la PREMIÈRE dette (prioritaire)
-    if(paiementExtra > 0 && dettesCopie.length > 0) {
-      var paiement = Math.min(paiementExtra, dettesCopie[0].solde);
-      dettesCopie[0].solde -= paiement;
-    }
-    
-    // 4. Enlever les dettes payées (de la fin vers le début pour éviter les problèmes d'index)
-    for(var i = dettesCopie.length - 1; i >= 0; i--) {
-      if(dettesCopie[i].solde < 0.01) {
-        ordreRemboursement.push({
-          nom: dettesCopie[i].nom,
-          mois: mois
-        });
-        dettesCopie.splice(i, 1);
+
+    // 3) Appliquer le paiement EXTRA avec réallocation
+    var extraRestant = paiementExtra;
+    var idx = 0;
+    while (extraRestant > 0 && dettesCopie.length > 0 && idx < dettesCopie.length) {
+      var pay = Math.min(extraRestant, dettesCopie[idx].solde);
+      dettesCopie[idx].solde -= pay;
+      extraRestant -= pay;
+
+      // si cette dette est soldée, passer automatiquement à la suivante
+      if (dettesCopie[idx].solde < 0.01) {
+        ordreRemboursement.push({ nom: dettesCopie[idx].nom, mois: mois });
+        dettesCopie.splice(idx,1);
+        // pas d'idx++ ici, on retente même index (prochaine dette “prend la place”)
+      } else {
+        idx++; // continuer sur la prochaine seulement si celle-ci n'est pas soldée
       }
     }
+
+    // Supprimer les dettes soldées restantes (sécurité)
+    for (var m = dettesCopie.length - 1; m >= 0; m--) {
+      if (dettesCopie[m].solde < 0.01) {
+        ordreRemboursement.push({ nom: dettesCopie[m].nom, mois: mois });
+        dettesCopie.splice(m,1);
+      }
+    }
+
+    // Sécurité : si le total augmente sur 6 mois, on arrête (non convergent)
+    if (mois % 6 === 0) {
+      var totalNow = dettesCopie.reduce((s,d)=>s+d.solde,0);
+      if (totalNow > previousTotal + 0.01) {
+        // on renvoie un état “non convergent”
+        return { mois: Infinity, annees: Infinity, interetsTotal: interetsTotal, ordre: ordreRemboursement, nonConvergent: true };
+      }
+      previousTotal = totalNow;
+    }
   }
-  
+
   return {
     mois: mois,
     annees: Math.round(mois / 12 * 10) / 10,
     interetsTotal: interetsTotal,
-    ordre: ordreRemboursement
+    ordre: ordreRemboursement,
+    nonConvergent: false
   };
 }
 
