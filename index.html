@@ -188,7 +188,7 @@ button:hover, .tab-button:hover {
               border-radius:12px;
               margin-top:20px;
               text-align:center;">
-    <h3 style="font-size:1.8em;font-weight:bold;color:white;">« Parce que derrière chaque projet, il y a une vision à réaliser. »</h3>
+    <h3 style="font-size:1.8em;font-weight:bold;color:white;">« "Le succès est la somme de petits efforts répétés jour après jour." – Robert Collier »</h3>
     <p style="margin-top:15px;font-size:1.1em;">
       Merci de faire partie de cette aventure. Continue à construire, apprendre et avancer —
       une décision éclairée à la fois.
@@ -398,41 +398,44 @@ button:hover, .tab-button:hover {
 
 <div class="section-title">Capital necessaire a la retraite</div>
 <div class="card">
-<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Calculez le capital necessaire selon votre taux de retrait. Le revenu desire est ajuste automatiquement pour l'inflation (2% annuel).</p>
-<div class="form-group"><label>Annees avant la retraite</label><input type="number" id="annees-retraite" value="30" onchange="calcRetraite()"></div>
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Calculez le capital necessaire selon votre taux de retrait. Le revenu desire est ajuste automatiquement pour l'inflation (3% annuel).</p>
 <div class="form-group">
-  <label>Âge prévu à la retraite</label>
-  <input type="number" id="age-retraite" value="65" onchange="calcRetraite()">
+  <label>Votre âge actuel</label>
+  <input type="number" id="age-actuel" value="" oninput="calcRetraite()">
+</div>
+<div class="form-group">
+  <label>Âge de retraite souhaité</label>
+  <input type="number" id="age-retraite-souhaite" value="" oninput="calcRetraite()">
 </div>
 <div class="form-group">
   <label>Taux de rendement annuel avant retraite (%)</label>
-  <input type="number" id="taux-rendement-avant-retraite" value="5" step="0.5" min="0" max="12" onchange="calcRetraite()">
+  <input type="number" id="taux-rendement-avant-retraite" value="5" step="0.5" min="0" max="12" oninput="calcRetraite()">
   <small style="display:block;margin-top:5px;color:#6b7280;">
     Ex: 3-4% conservateur, 5-6% équilibré, 7-8% croissance
   </small>
 </div>
 <div class="form-group">
   <label>Taux de rendement pendant la retraite (%)</label>
-  <input type="number" id="taux-rendement-pendant-retraite" value="5" step="0.5" min="0" max="20" onchange="calcRetraite()">
+  <input type="number" id="taux-rendement-pendant-retraite" value="5" step="0.5" min="0" max="20" oninput="calcRetraite()">
   <small style="display:block;margin-top:5px;color:#6b7280;">
     Rendement prévu sur vos placements une fois à la retraite
   </small>
 </div>
 <div class="form-group">
   <label>Revenu de pension estimé (RRQ + PSV)</label>
-  <input type="number" id="pension-publique" value="0" onchange="calcRetraite()">
+  <input type="number" id="pension-publique" value="0" oninput="calcRetraite()">
   <small style="display:block;margin-top:5px;color:#6b7280;">
     Estimation 2025 : RRQ max ~15 600$/an, PSV ~8 600$/an (si 65 ans+)
   </small>
 </div>
 <div class="form-group">
   <label>Rente de fonds de pension (employeur)</label>
-  <input type="number" id="rente-pension" value="0" onchange="calcRetraite()">
+  <input type="number" id="rente-pension" value="0" oninput="calcRetraite()">
   <small style="display:block;margin-top:5px;color:#6b7280;">
     Revenu annuel estimé de votre régime de retraite d'employeur (si applicable)
   </small>
 </div>
-<div class="form-group"><label>Revenu annuel desire (en dollars d'aujourd'hui)</label><input type="number" id="revenu-retraite" value="50000" onchange="calcRetraite()"></div>
+<div class="form-group"><label>Revenu annuel desire (en dollars d'aujourd'hui)</label><input type="number" id="revenu-retraite" value="0" oninput="calcRetraite()"></div>
 <div class="form-group">
   <label style="display:flex;align-items:center;gap:10px;">
     <input type="checkbox" id="contribution-actuelle-toggle" onchange="toggleContributionActuelle()" style="width:auto;">
@@ -443,7 +446,7 @@ button:hover, .tab-button:hover {
 <div id="contribution-actuelle-section" class="hidden" style="background:#f0f9ff;padding:15px;border-radius:8px;margin:10px 0;">
   <div class="form-group">
     <label>Contribution mensuelle actuelle ($)</label>
-    <input type="number" id="contribution-mensuelle-actuelle" value="0" onchange="calcRetraite()">
+    <input type="number" id="contribution-mensuelle-actuelle" value="0" oninput="calcRetraite()">
     <small style="display:block;margin-top:5px;color:#6b7280;">
       Combien épargnez-vous actuellement par mois pour votre retraite ?
     </small>
@@ -961,9 +964,13 @@ function toggleContributionActuelle() {
 }
 
 function calcRetraite() {
-  var revRet = parseFloat(document.getElementById('revenu-retraite').value) || 50000;
-  var annees = parseFloat(document.getElementById('annees-retraite').value) || 30;
-  var ageRetraite = parseFloat(document.getElementById('age-retraite').value) || 65;
+ var revRet = parseFloat(document.getElementById('revenu-retraite').value) || 50000;
+// Nouveaux calculs automatiques
+var ageActuel = parseFloat(document.getElementById('age-actuel').value) || 35;
+var ageRetraiteSouhaite = parseFloat(document.getElementById('age-retraite-souhaite').value) || 65;
+var esperanceVie = 90; // Hypothèse conservative
+var annees = Math.max(0, ageRetraiteSouhaite - ageActuel);
+var ageRetraite = ageRetraiteSouhaite;
   var pensionPublique = parseFloat(document.getElementById('pension-publique').value) || 0;
   var rentePension = parseFloat(document.getElementById('rente-pension').value) || 0;
   var tauxRendementAvant = (parseFloat(document.getElementById('taux-rendement-avant-retraite').value) || 5) / 100;
@@ -987,25 +994,34 @@ function calcRetraite() {
   var revenuACompleterActuel = Math.max(0, revRet - pensionDisponible - rentePension);
 
   // CALCUL DU CAPITAL NÉCESSAIRE (formule de rente)
+// Calcul de l'épargne accumulée grâce aux contributions mensuelles
+var contributionMensuelle = parseFloat(document.getElementById('contribution-mensuelle-actuelle').value) || 0;
+var epargneAccumulee = 0;
+if (contributionMensuelle > 0 && tauxRendementAvant > 0) {
+  // Formule de la valeur future d'une rente (contributions régulières)
+  var tauxMensuel = tauxRendementAvant / 12; // Déjà en décimal
+  var nbMois = annees * 12;
+  epargneAccumulee = contributionMensuelle * ((Math.pow(1 + tauxMensuel, nbMois) - 1) / tauxMensuel);
+} else if (contributionMensuelle > 0) {
+  epargneAccumulee = contributionMensuelle * annees * 12;
+}
   // On suppose une retraite de 30 ans (65 à 95 ans)
-  var dureeRetraite = 30;
+  // Espérance de vie moyenne au Québec (environ 82-85 ans)
+  var esperanceVie = 90; // Tu peux ajuster ou même ajouter un input pour ça
+  var dureeRetraite = esperanceVie - ageRetraite;
   var tauxReel = tauxRendementPendant - tauxInflation; // Taux réel après inflation
   
-  var capitalNecessaire;
-  if (tauxReel > 0.001) {
-    // Formule de la valeur actualisée d'une rente croissante
-    if (retraitIndexe) {
-      // Avec indexation : les retraits augmentent avec l'inflation
-      capitalNecessaire = revenuACompleterActuel * ((1 - Math.pow(1 + tauxReel, -dureeRetraite)) / tauxReel);
-    } else {
-      // Sans indexation : retraits constants
-      var facteur = (1 - Math.pow(1 + tauxRendementPendant, -dureeRetraite)) / tauxRendementPendant;
-      capitalNecessaire = revenuACompleterActuel * facteur;
-    }
+ var capitalNecessaire;
+if (tauxReel > 0.001) {
+  if (retraitIndexe) {
+    capitalNecessaire = revenuACompleterActuel * ((1 - Math.pow(1 + tauxReel, -dureeRetraite)) / tauxReel);
   } else {
-    // Si taux réel ~ 0, calcul simple
-    capitalNecessaire = revenuACompleterActuel * dureeRetraite;
+    var facteur = (1 - Math.pow(1 + tauxRendementPendant, -dureeRetraite)) / tauxRendementPendant;
+    capitalNecessaire = revenuACompleterActuel * facteur;
   }
+} else {
+  capitalNecessaire = revenuACompleterActuel * dureeRetraite;
+}
 
   // Capital liquide actuel (CELI, CELIAPP, CNE, REER)
   var capAct = 
@@ -1014,24 +1030,16 @@ function calcRetraite() {
     (parseFloat(document.getElementById('cne').value) || 0) +
     (parseFloat(document.getElementById('reer').value) || 0);
 
-  // Valeur future du capital actuel
-  var valeurFuture = capAct * Math.pow(1 + tauxRendementAvant, annees);
-// Contribution actuelle (optionnelle)
-var contributionMensuelle = parseFloat(document.getElementById('contribution-mensuelle-actuelle').value) || 0;
-var valeurFutureAvecContributions = valeurFuture;
-
-if(contributionMensuelle > 0) {
-  var tauxMensuel = tauxRendementAvant / 12;
-  var mois = annees * 12;
-  // Valeur future des contributions mensuelles
-  var valeurContributions = contributionMensuelle * ((Math.pow(1 + tauxMensuel, mois) - 1) / tauxMensuel);
-  valeurFutureAvecContributions = valeurFuture + valeurContributions;
-}
-  var ecart = Math.max(0, capitalNecessaire - valeurFuture);
-  var prog = (valeurFuture / capitalNecessaire * 100);
+// Valeur future du capital actuel
+var valeurFuture = capAct * Math.pow(1 + tauxRendementAvant, annees);
+// Valeur future totale = capital actuel + épargne accumulée
+var valeurFutureTotale = valeurFuture + epargneAccumulee;
+// Écart à combler
+var ecart = Math.max(0, capitalNecessaire - valeurFutureTotale);
+var prog = (valeurFutureTotale / capitalNecessaire * 100);
 
   // SIMULATION ANNÉE PAR ANNÉE pour trouver l'âge d'épuisement
-  var capitalSimulation = valeurFuture;
+  var capitalSimulation = valeurFutureTotale;
   var retraitAnnuel = revenuACompleterActuel;
   var ageEpuisement = null;
 
@@ -1064,31 +1072,19 @@ if(contributionMensuelle > 0) {
   html += 'Rendement pendant la retraite: ' + fmt(tauxRendementPendant * 100) + '%';
   html += '</p>';
 
-  if (capAct > 0) {
-    html += '<div class="result-box blue">';
-    html += '<strong>💰 Valeur future de votre capital actuel</strong><br>';
-    html += 'Capital actuel: ' + fmt(capAct) + ' $<br>';
-    html += 'Rendement annuel: ' + fmt(tauxRendementAvant * 100) + '%<br>';
-    html += 'Valeur dans ' + annees + ' ans: <span style="font-size:1.5em;color:#047857;">' + fmt(valeurFuture) + ' $</span><br>';
-    var gainRendement = valeurFuture - capAct;
-    html += '<small style="color:#6b7280;">Gain grâce aux rendements: ' + fmt(gainRendement) + ' $</small>';
-    html += '</div>';
-  }
-
 if(contributionMensuelle > 0) {
-  var valeurContributions = valeurFutureAvecContributions - valeurFuture;
-  var progAvecContrib = (valeurFutureAvecContributions / capitalNecessaire * 100);
+  var progAvecContrib = (valeurFutureTotale / capitalNecessaire * 100);
   
   html += '<div class="result-box blue">';
   html += '<strong>📈 Impact de votre épargne actuelle</strong><br>';
   html += 'Contribution mensuelle: ' + fmt(contributionMensuelle) + ' $/mois<br>';
-  html += 'Valeur future des contributions: <span style="font-size:1.3em;color:#047857;">' + fmt(valeurContributions) + ' $</span><br>';
-  html += '<strong style="font-size:1.1em;">Total dans ' + annees + ' ans: ' + fmt(valeurFutureAvecContributions) + ' $</strong><br>';
+  html += 'Valeur future des contributions: <span style="font-size:1.3em;color:#047857;">' + fmt(epargneAccumulee) + ' $</span><br>';
+  html += '<strong style="font-size:1.1em;">Total dans ' + annees + ' ans: ' + fmt(valeurFutureTotale) + ' $</strong><br>';
   
   if(progAvecContrib >= 100) {
     html += '<p style="margin-top:10px;color:#047857;font-weight:bold;">✅ Avec vos contributions actuelles, vous atteindrez votre objectif !</p>';
   } else {
-    var manqueEncore = capitalNecessaire - valeurFutureAvecContributions;
+    var manqueEncore = capitalNecessaire - valeurFutureTotale;
     html += '<p style="margin-top:10px;color:#ea580c;">⚠️ Il manquera encore ' + fmt(manqueEncore) + ' $ à votre objectif.</p>';
   }
   html += '</div>';
@@ -1096,7 +1092,7 @@ if(contributionMensuelle > 0) {
 
   html += '<div class="result-box ' + (prog >= 100 ? 'green' : 'orange') + '">Progression vers l\'objectif: ' + prog.toFixed(1) + '%';
   html += '<div class="progress-bar"><div class="progress-fill" style="width:' + Math.min(prog, 100) + '%"></div></div>';
-  html += '<p style="margin-top:8px;font-size:0.9em;">Valeur future: ' + fmt(valeurFuture) + ' $<br>Capital nécessaire: ' + fmt(capitalNecessaire) + ' $</p></div>';
+  html += '<p style="margin-top:8px;font-size:0.9em;">Valeur future totale: ' + fmt(valeurFutureTotale) + ' $<br>Capital nécessaire: ' + fmt(capitalNecessaire) + ' $</p></div>';
 
   // Si capital insuffisant : calcul épargne mensuelle requise
   if (prog < 100) {
