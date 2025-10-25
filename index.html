@@ -13,7 +13,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Finance Personnelle Pro</title>
+<title>Ton coach en liberté financière !</title>
 
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://parlonscash.pro/">
@@ -52,6 +52,9 @@ body {
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:#f3f4f6;color:#1f2937}
 .container{max-width:1200px;margin:0 auto;padding:20px}
+.tab-content.active h2:first-child {
+  margin-top: 0;
+}
 header{background:linear-gradient(135deg,#1e40af 0%,#1e40af 100%);color:white;padding:30px 20px}
 .btn-export {
   background:#10b981;
@@ -63,11 +66,11 @@ header{background:linear-gradient(135deg,#1e40af 0%,#1e40af 100%);color:white;pa
   cursor:pointer;
 }
 header h1{font-size:2em;margin-bottom:10px}
-.nav{background:white;padding:15px 20px;margin-bottom:30px;display:flex;gap:10px;overflow-x:auto;flex-wrap:wrap}
+.nav{background:white;padding:15px 20px;margin-bottom:0px;display:flex;gap:10px;overflow-x:auto;flex-wrap:wrap}
 .nav button{padding:10px 20px;border:none;background:#e5e7eb;color:#374151;border-radius:8px;cursor:pointer;font-size:14px}
 .nav button.active{background:#2563eb;color:white}
 .tab-content{display:none}
-.tab-content.active{display:block}
+.tab-content.active{display:block;padding-top:0}
 .card{background:white;padding:25px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:20px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-bottom:30px}
 .stat-card{background:white;padding:25px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
@@ -141,7 +144,7 @@ button:hover, .tab-button:hover {
 <header>
   <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
     <div>
-      <h1>💰 Finance Personnelle Pro</h1>
+      <h1>Ton coach en liberté financière !</h1>
       <p>Gérez vos finances intelligemment</p>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
@@ -157,11 +160,14 @@ button:hover, .tab-button:hover {
 <button onclick="changeTab('budget')" id="btn-budget">Budget</button>
 <button onclick="changeTab('impots')" id="btn-impots">Impôts</button>
 <button onclick="changeTab('objectifs')" id="btn-objectifs">Objectifs</button>
+<button onclick="changeTab('acheter-louer')" id="btn-acheter-louer">Acheter vs Louer</button>
 <button onclick="changeTab('dettes')" id="btn-dettes">Remboursement dettes</button>
-<button onclick="changeTab('apropos')" id="btn-apropos">À propos</button>
+<button onclick="changeTab('plaisirs')" id="btn-plaisirs">Gestion des plaisirs</button>
+<button onclick="changeTab('besoin')" id="btn-besoin">En as-tu besoin ?</button>
+<button onclick="changeTab('couple')" id="btn-couple">Finances de couple</button>
 <button onclick="changeTab('aide')" id="btn-aide">Aide à la décision</button>
+<button onclick="changeTab('apropos')" id="btn-apropos">À propos</button>
 <button onclick="changeTab('confidentialite')" id="btn-confidentialite">Confidentialité</button>
-
 </div>
 
 <div class="container">
@@ -386,7 +392,7 @@ button:hover, .tab-button:hover {
 <div class="section-title">Epargne pour projet personnel</div>
 <div class="card">
 <p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Voyage, achat voiture, annee sabbatique, etudes... Calculez combien epargner mensuellement pour realiser votre projet.</p>
-<div class="form-group"><label>Montant cible ($)</label><input type="number" id="obj-montant" value="50000" onchange="calc()"></div>
+<div class="form-group"><label>Montant cible ($)</label><input type="number" id="obj-montant" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Date cible</label><input type="date" id="obj-date" onchange="calc()"></div>
 <div class="form-group">
   <label>Taux de rendement annuel (%)</label>
@@ -468,6 +474,165 @@ button:hover, .tab-button:hover {
 </div>
 
 </div> <!-- Fin de tab-objectifs -->
+
+<!-- Onglet Acheter vs Louer -->
+<div id="tab-acheter-louer" class="tab-content">
+  <h2 style="margin-top:0;padding-top:0;">🏠 Acheter vs Louer</h2>
+  
+  <p style="background:#eff6ff;padding:15px;border-radius:8px;border-left:4px solid #2563eb;margin-bottom:20px;">
+    Cet outil compare le <strong>coût réel total</strong> d'acheter une maison versus continuer à louer, 
+    en tenant compte de TOUS les frais cachés et du coût d'opportunité.
+  </p>
+
+  <!-- SECTION 1 : Scénario ACHAT -->
+  <div class="card">
+    <h3 style="color:#2563eb;">🏡 Scénario ACHAT</h3>
+    
+    <div class="form-group">
+      <label>Prix d'achat de la maison ($)</label>
+      <input type="number" id="al-prix" value="0" min="0" onchange="calcAcheterLouer()">
+    </div>
+    
+    <div class="form-group">
+      <label>Mise de fonds (%)</label>
+      <select id="al-mise-fonds-pct" onchange="calcAcheterLouer()">
+        <option value="5">5%</option>
+        <option value="10">10%</option>
+        <option value="15">15%</option>
+        <option value="20" selected>20%</option>
+        <option value="25">25%</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Taux hypothécaire (%)</label>
+      <input type="number" id="al-taux-hypo" value="5" min="0" max="15" step="0.1" onchange="calcAcheterLouer()">
+    </div>
+    
+    <div class="form-group">
+      <label>Période d'amortissement (années)</label>
+      <select id="al-amortissement" onchange="calcAcheterLouer()">
+        <option value="25" selected>25 ans</option>
+        <option value="30">30 ans</option>
+      </select>
+    </div>
+    
+    <h4 style="margin-top:20px;color:#374151;">Frais de propriété</h4>
+    
+    <div class="form-group">
+      <label>Taxes municipales + scolaires ($/an)</label>
+      <input type="number" id="al-taxes" value="0" min="0" onchange="calcAcheterLouer()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Généralement 1-1.5% de la valeur de la maison au Québec
+      </small>
+    </div>
+    
+    <div class="form-group">
+      <label>Entretien annuel estimé ($/an)</label>
+      <input type="number" id="al-entretien" value="0" min="0" onchange="calcAcheterLouer()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Règle générale : 1-2% de la valeur de la maison
+      </small>
+    </div>
+    
+    <div class="form-group">
+      <label>Assurances habitation ($/an)</label>
+      <input type="number" id="al-assurance" value="0" min="0" onchange="calcAcheterLouer()">
+    </div>
+  </div>
+
+  <!-- SECTION 2 : Scénario LOCATION -->
+  <div class="card">
+    <h3 style="color:#10b981;">🔑 Scénario LOCATION</h3>
+    
+    <div class="form-group">
+      <label>Loyer mensuel actuel/alternatif ($)</label>
+      <input type="number" id="al-loyer" value="0" min="0" onchange="calcAcheterLouer()">
+    </div>
+    
+ <div class="form-group">
+<label>Augmentation annuelle du loyer (%)</label>
+<input type="number" id="al-augmentation-loyer" value="3" min="0" max="10" step="0.5" onchange="calcAcheterLouer()">
+<small style="display:block;margin-top:5px;color:#6b7280;">
+Historique Québec : 2-4% par an
+</small>
+</div>
+
+<div class="form-group">
+<label>Dépôt de garantie (en mois de loyer)</label>
+<input type="number" id="al-depot-garantie" value="0" min="0" max="3" step="0.5" onchange="calcAcheterLouer()">
+<small style="display:block;margin-top:5px;color:#6b7280;">
+⚠️ Au Québec : les dépôts de garantie sont INTERDITS (laisser à 0). Peut varier ailleurs.
+</small>
+</div>
+
+<div class="form-group">
+<label>Rendement investissement épargne (%)</label>
+
+      <input type="number" id="al-rendement" value="6" min="0" max="15" step="0.5" onchange="calcAcheterLouer()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Si tu loues, tu investis la différence (mise de fonds + écart paiements) dans un portefeuille
+      </small>
+    </div>
+  </div>
+
+  <!-- SECTION 3 : Paramètres de comparaison -->
+  <div class="card">
+    <h3 style="color:#f59e0b;">⚙️ Paramètres de comparaison</h3>
+    
+    <div class="form-group">
+      <label>Durée de la comparaison (années)</label>
+      <input type="number" id="al-duree" value="10" min="1" max="30" onchange="calcAcheterLouer()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Combien d'années prévois-tu rester dans ce logement ?
+      </small>
+    </div>
+    
+    <div class="form-group">
+      <label>Appréciation annuelle de la maison (%)</label>
+      <input type="number" id="al-appreciation" value="3" min="0" max="10" step="0.5" onchange="calcAcheterLouer()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Historique Québec : 3-5% par an (varie selon région)
+      </small>
+    </div>
+    
+    <div class="form-group">
+      <label>Frais de vente estimés (%)</label>
+      <input type="number" id="al-frais-vente" value="6" min="0" max="10" step="0.5" onchange="calcAcheterLouer()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Commission agent immobilier + frais légaux (généralement 5-7%)
+      </small>
+    </div>
+    
+    <button onclick="calcAcheterLouer()" style="background:#10b981;color:white;padding:12px 30px;border:none;border-radius:8px;cursor:pointer;margin-top:15px;font-weight:bold;">
+      📊 Comparer les deux scénarios
+    </button>
+  </div>
+
+  <!-- RÉSULTATS -->
+  <div id="resultats-acheter-louer"></div>
+
+  <!-- Note éducative -->
+  <div style="background:#fef3c7;border-left:4px solid #f59e0b;padding:20px;border-radius:10px;margin-top:30px;">
+    <strong style="color:#92400e;">💡 Points importants à considérer</strong>
+    <ul style="margin:10px 0 0 20px;color:#78350f;line-height:1.8;">
+      <li><strong>Flexibilité :</strong> La location offre plus de mobilité (déménagement plus facile)</li>
+      <li><strong>Prévisibilité :</strong> L'achat fixe votre paiement hypothécaire (mais taxes/entretien peuvent augmenter)</li>
+      <li><strong>Discipline d'épargne :</strong> L'achat "force" l'épargne, la location nécessite discipline pour investir</li>
+      <li><strong>Risque de marché :</strong> La valeur immobilière peut baisser (rare mais possible)</li>
+      <li><strong>Coût d'opportunité :</strong> L'argent investi dans une maison ne rapporte pas d'intérêts composés</li>
+    </ul>
+  </div>
+
+  <!-- Disclaimer -->
+  <div style="background:#f9fafb;border-top:2px solid #e5e7eb;padding:20px;margin-top:30px;border-radius:8px;">
+    <p style="margin:0;font-size:0.85em;color:#6b7280;">
+      ⚠️ <strong>Avertissement :</strong> Cet outil fournit une estimation comparative basée sur les données que vous entrez. 
+      Chaque situation est unique et dépend de facteurs personnels (stabilité emploi, plans familiaux, tolérance au risque). 
+      Consultez un <strong>conseiller financier</strong> ou un <strong>planificateur hypothécaire</strong> avant toute décision importante.
+    </p>
+  </div>
+</div>
 
 <div id="tab-dettes" class="tab-content">
    <h2>Calculateur de remboursement de dettes</h2>
@@ -560,12 +725,293 @@ button:hover, .tab-button:hover {
   </div>
 </div>
 
+
+<!-- Onglet Gestion des plaisirs -->
+<div id="tab-plaisirs" class="tab-content">
+  <h2 style="margin-top:0;padding-top:0;">🎉 Gestion des plaisirs</h2>
+  
+  <p style="background:#eff6ff;padding:15px;border-radius:8px;border-left:4px solid #2563eb;margin-bottom:20px;">
+    Se faire plaisir est <strong>essentiel</strong> pour une vie équilibrée. L'objectif n'est pas de tout couper, 
+    mais de <strong>dépenser consciemment</strong> selon TES priorités.
+  </p>
+
+  <!-- SECTION 1 : Budget loisirs disponible -->
+  <div class="card">
+    <h3 style="color:#2563eb;">💰 Ton budget loisirs disponible</h3>
+    
+    <div class="form-group">
+      <label>Revenu mensuel net ($)</label>
+      <input type="number" id="plaisirs-revenu" value="0" min="0" onchange="calcPlaisirs()">
+    </div>
+    
+    <div class="form-group">
+      <label>Dépenses essentielles mensuelles (loyer, épicerie, transport, etc.) ($)</label>
+      <input type="number" id="plaisirs-essentielles" value="0" min="0" onchange="calcPlaisirs()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Si vous avez rempli l'onglet Budget, utilisez votre "Total dépenses" moins les loisirs
+      </small>
+    </div>
+    
+    <div class="form-group">
+      <label>Objectif d'épargne mensuelle (%)</label>
+      <input type="number" id="plaisirs-epargne-pct" value="20" min="0" max="50" onchange="calcPlaisirs()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Recommandation générale : 20% du revenu
+      </small>
+    </div>
+    
+    <div id="budget-disponible"></div>
+  </div>
+
+  <!-- SECTION 2 : Abonnements mensuels -->
+  <div class="card">
+    <h3 style="color:#8b5cf6;">📺 Tes abonnements mensuels</h3>
+    
+    <div style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px;">
+      💡 <strong>Astuce :</strong> Pour chaque abonnement, note combien de fois tu l'utilises par mois. 
+      Cela révèle les "petits" abonnements qui coûtent TRÈS cher à l'utilisation.
+    </div>
+    
+    <div id="liste-abonnements">
+      <div class="form-group">
+        <label>Netflix / Streaming vidéo ($/mois)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <input type="number" id="abo-netflix" value="0" min="0" onchange="calcPlaisirs()" placeholder="Coût">
+          <input type="number" id="abo-netflix-freq" min="0" onchange="calcPlaisirs()" placeholder="Utilisations/mois">
+          <div style="padding:10px;background:#f3f4f6;border-radius:6px;text-align:center;" id="abo-netflix-cout">-</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Spotify / Musique ($/mois)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <input type="number" id="abo-musique" min="0" onchange="calcPlaisirs()" placeholder="Coût">
+          <input type="number" id="abo-musique-freq" min="0" onchange="calcPlaisirs()" placeholder="Utilisations/mois">
+          <div style="padding:10px;background:#f3f4f6;border-radius:6px;text-align:center;" id="abo-musique-cout">-</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Gym / Sport ($/mois)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <input type="number" id="abo-gym" min="0" onchange="calcPlaisirs()" placeholder="Coût">
+          <input type="number" id="abo-gym-freq" min="0" onchange="calcPlaisirs()" placeholder="Visites/mois">
+          <div style="padding:10px;background:#f3f4f6;border-radius:6px;text-align:center;" id="abo-gym-cout">-</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Jeux vidéo (Xbox Live, PS+, etc.) ($/mois)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <input type="number" id="abo-jeux" min="0" onchange="calcPlaisirs()" placeholder="Coût">
+          <input type="number" id="abo-jeux-freq" min="0" onchange="calcPlaisirs()" placeholder="Utilisations/mois">
+          <div style="padding:10px;background:#f3f4f6;border-radius:6px;text-align:center;" id="abo-jeux-cout">-</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Café quotidien / Café resto ($/mois)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <input type="number" id="abo-cafe" min="0" onchange="calcPlaisirs()" placeholder="Coût">
+          <input type="number" id="abo-cafe-freq" min="0" onchange="calcPlaisirs()" placeholder="Fois/mois">
+          <div style="padding:10px;background:#f3f4f6;border-radius:6px;text-align:center;" id="abo-cafe-cout">-</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Autre abonnement ($/mois)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <input type="number" id="abo-autre" min="0" onchange="calcPlaisirs()" placeholder="Coût">
+          <input type="number" id="abo-autre-freq" min="0" onchange="calcPlaisirs()" placeholder="Utilisations/mois">
+          <div style="padding:10px;background:#f3f4f6;border-radius:6px;text-align:center;" id="abo-autre-cout">-</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="total-row purple">
+      <span>Total abonnements mensuels</span>
+      <span class="value" id="total-abonnements">0 $</span>
+    </div>
+    
+    <div style="margin-top:10px;padding:10px;background:#f3f4f6;border-radius:6px;">
+      <strong>Sur un an :</strong> <span id="total-abonnements-an">0 $</span>
+    </div>
+  </div>
+
+  <!-- SECTION 3 : Dépenses variables -->
+  <div class="card">
+    <h3 style="color:#10b981;">🍽️ Dépenses variables mensuelles</h3>
+    
+    <div class="form-group">
+      <label>Restaurants / Livraison ($/mois)</label>
+      <input type="number" id="var-resto" value="0" min="0" onchange="calcPlaisirs()">
+    </div>
+    
+    <div class="form-group">
+      <label>Bars / Sorties ($/mois)</label>
+      <input type="number" id="var-bars" value="0" min="0" onchange="calcPlaisirs()">
+    </div>
+    
+    <div class="form-group">
+      <label>Cinéma / Spectacles ($/mois)</label>
+      <input type="number" id="var-spectacles" value="0" min="0" onchange="calcPlaisirs()">
+    </div>
+    
+    <div class="form-group">
+      <label>Shopping non-essentiel ($/mois)</label>
+      <input type="number" id="var-shopping" value="0" min="0" onchange="calcPlaisirs()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Vêtements de luxe, gadgets, déco, etc.
+      </small>
+    </div>
+    
+    <div class="form-group">
+      <label>Passe-temps / Hobbies ($/mois)</label>
+      <input type="number" id="var-hobbies" value="0" min="0" onchange="calcPlaisirs()">
+    </div>
+    
+    <div class="form-group">
+      <label>Autres dépenses plaisirs ($/mois)</label>
+      <input type="number" id="var-autres" value="0" min="0" onchange="calcPlaisirs()">
+    </div>
+    
+    <div class="total-row green">
+      <span>Total variables</span>
+      <span class="value" id="total-variables">0 $</span>
+    </div>
+  </div>
+
+  <!-- SECTION 4 : Budget vacances/projets -->
+  <div class="card">
+    <h3 style="color:#f59e0b;">✈️ Budget vacances / Projet plaisir</h3>
+    
+    <div class="form-group">
+      <label>Nom du projet</label>
+      <input type="text" id="projet-nom" value="Voyage" onchange="calcPlaisirs()">
+    </div>
+    
+    <div class="form-group">
+      <label>Coût estimé du projet ($)</label>
+      <input type="number" id="projet-cout" value="0" min="0" onchange="calcPlaisirs()">
+    </div>
+    
+    <div class="form-group">
+      <label>Dans combien de mois ?</label>
+      <input type="number" id="projet-mois" value="12" min="1" onchange="calcPlaisirs()">
+    </div>
+    
+    <div id="resultat-projet"></div>
+  </div>
+
+  <!-- RÉSULTATS GLOBAUX -->
+  <div id="resultats-plaisirs"></div>
+
+</div>
+
+<!-- Onglet : En as-tu vraiment besoin ? -->
+<div id="tab-besoin" class="tab-content">
+
+  <h2>🤔 En as-tu vraiment besoin ?</h2>
+  
+  <p style="background:#eff6ff;padding:15px;border-radius:8px;border-left:4px solid #2563eb;margin-bottom:20px;">
+    Ce calculateur s'inspire de principes de finances personnelles, notamment ceux popularisés par 
+    Pierre-Yves McSween dans <em>"En as-tu vraiment besoin ?"</em>. 
+    <strong>Cet outil est une création indépendante non affiliée à l'auteur.</strong> 
+    Il t'aide à prendre une décision éclairée avant un achat et à éviter les achats impulsifs.
+  </p>
+
+  <div class="card">
+    <h3>💰 Informations sur l'achat</h3>
+    
+    <div class="form-group">
+      <label>Prix de l'article ($)</label>
+      <input type="number" id="prix-article" value="0" oninput="calcBesoin()">
+    </div>
+
+    <div class="form-group">
+      <label>Ton salaire horaire NET (après impôts, $)</label>
+      <input type="number" id="salaire-horaire" value="25" step="0.5" oninput="calcBesoin()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Ex: Si tu gagnes 50 000$/an net, c'est environ 25$/h (50000 ÷ 2000h)
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label>Durée de vie estimée (années)</label>
+      <input type="number" id="duree-vie" value="5" min="0.5" step="0.5" oninput="calcBesoin()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Ex: Téléphone = 3 ans, Voiture = 10 ans, Vêtements = 2 ans
+      </small>
+    </div>
+  </div>
+
+<div class="card" id="questions-reflexion">
+  <h3>❓ Questions de réflexion</h3>
+  <p style="background:#fef3c7;padding:12px;border-radius:6px;font-size:0.9em;margin-bottom:15px;">
+    <strong>📌 Règle McSween :</strong> Pour un achat ≥ 50$, attends 30 jours avant d'acheter. Si tu y penses encore après, c'est probablement un bon achat !
+  </p>
+    
+    <div style="margin-bottom:15px;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+        <input type="checkbox" id="q1-besoin" onchange="calcBesoin()">
+        <span>Est-ce un besoin VITAL et au prix le plus raisonnable ? (épicerie de base, loyer, médicaments, transport nécessaire au travail)</span>
+      </label>
+    </div>
+
+    <div style="margin-bottom:15px;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+        <input type="checkbox" id="q2-remplace" onchange="calcBesoin()">
+        <span>Remplace-t-il quelque chose de brisé ou usé ?</span>
+      </label>
+    </div>
+
+    <div style="margin-bottom:15px;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+        <input type="checkbox" id="q3-utilise" onchange="calcBesoin()">
+        <span>Vas-tu l'utiliser au moins une fois par semaine ?</span>
+      </label>
+    </div>
+
+    <div style="margin-bottom:15px;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+        <input type="checkbox" id="q4-budget" onchange="calcBesoin()">
+        <span>As-tu le budget sans t'endetter ni toucher à ton épargne ?</span>
+      </label>
+    </div>
+
+    <div style="margin-bottom:15px;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+        <input type="checkbox" id="q5-attente" onchange="calcBesoin()">
+        <span>Y penses-tu depuis plus de 30 jours ?</span>
+      </label>
+    </div>
+
+    <div style="margin-bottom:15px;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+        <input type="checkbox" id="q6-alternative" onchange="calcBesoin()">
+        <span>As-tu considéré des alternatives (usagé, location, emprunt) ?</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Résultats -->
+  <div id="resultat-besoin"></div>
+
+</div>
+
+
+
+
+
+
+
+
 <!-- Onglet : Aide à la décision -->
 <div id="tab-aide" class="tab-content">
 
   <h2>💡 Aide à la décision : CELI ou REER ?</h2>
 
-  <p>Voici un aperçu comparatif des deux principaux régimes d’épargne au Canada.</p>
+  <p>Voici un aperçu comparatif des deux principaux régimes d'épargne au Canada.</p>
 
   <table style="width:100%;border-collapse:collapse;margin-top:18px;font-size:0.95rem;">
     <thead style="background:#f9fafb;">
@@ -578,8 +1024,8 @@ button:hover, .tab-button:hover {
     <tbody>
       <tr>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Objectif</td>
-        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Croissance libre d’impôt — idéal pour flexibilité et retraits à court ou moyen terme.</td>
-        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Report d’impôt — avantageux si votre taux d’imposition est plus bas à la retraite.</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Croissance libre d'impôt — idéal pour flexibilité et retraits à court ou moyen terme.</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Report d'impôt — avantageux si votre taux d'imposition est plus bas à la retraite.</td>
       </tr>
       <tr>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Retraits</td>
@@ -589,24 +1035,95 @@ button:hover, .tab-button:hover {
       <tr>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Cotisations</td>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Non déductibles, mais rendement non imposable.</td>
-        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Déductibles du revenu imposable, réduisent l’impôt payé cette année.</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Déductibles du revenu imposable, réduisent l'impôt payé cette année.</td>
       </tr>
       <tr>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Plafond annuel (2025)</td>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">7 000 $ (droits cumulatifs si non utilisés).</td>
-        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">18 % du revenu gagné, jusqu’à un maximum de 31 560 $.</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">18 % du revenu gagné, jusqu'à un maximum de 31 560 $.</td>
       </tr>
     </tbody>
   </table>
 
   <p style="margin-top:20px;">
-    💬 <strong>Astuce :</strong> Comparez votre taux d’imposition actuel et celui anticipé à la retraite.
-    Si votre taux futur est plus élevé, le CELI peut être avantageux ; s’il est plus bas, le REER peut
-    offrir un meilleur report d’impôt.  
+    💬 <strong>Astuce :</strong> Comparez votre taux d'imposition actuel et celui anticipé à la retraite.
+    Si votre taux futur est plus élevé, le CELI peut être avantageux ; s'il est plus bas, le REER peut
+    offrir un meilleur report d'impôt.  
     Ces informations visent à <strong>éclairer</strong> votre réflexion, pas à déterminer un choix.
   </p>
 
-  <!-- ⚠️ Avertissement placé à la fin -->
+  <!-- Séparateur -->
+  <hr style="margin:50px 0;border:none;border-top:2px solid #e5e7eb;">
+
+  <!-- Section Budget mensuel -->
+  <h2>💰 Gérer son budget mensuel</h2>
+  <p>Un budget, c'est avant tout un outil de liberté : il permet de choisir où va votre argent, plutôt que de le subir. Voici quelques principes simples pour mieux gérer vos finances mensuelles.</p>
+
+  <div class="card" style="margin-top:20px;">
+    <h3>1️⃣ Règle 50 / 30 / 20</h3>
+    <p>Une méthode simple pour répartir vos revenus :</p>
+    <ul style="margin-left:20px;line-height:1.8;">
+      <li><strong>50 %</strong> : besoins essentiels (logement, nourriture, transport, assurances)</li>
+      <li><strong>30 %</strong> : dépenses personnelles (loisirs, abonnements, sorties)</li>
+      <li><strong>20 %</strong> : épargne et remboursement de dettes</li>
+    </ul>
+    <p>📊 Cette approche aide à équilibrer vos priorités sans suivre un budget rigide au dollar près.</p>
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <h3>2️⃣ Suivre ses dépenses</h3>
+    <p>Avant d'ajuster, il faut observer. Listez vos dépenses pendant 1 à 3 mois et classez-les par catégorie :</p>
+    <ul style="margin-left:20px;line-height:1.8;">
+      <li>Logement</li>
+      <li>Alimentation</li>
+      <li>Transport</li>
+      <li>Loisirs</li>
+      <li>Dettes</li>
+      <li>Épargne</li>
+    </ul>
+    <p>💡 <strong>Astuce :</strong> Un simple tableau Excel, Google Sheets ou une appli comme <em>Moka</em>, <em>YNAB</em> ou <em>Spendee</em> suffit.</p>
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <h3>3️⃣ Prioriser les paiements essentiels</h3>
+    <p>Le budget n'est pas qu'un tableau : c'est un plan d'action. Classez vos paiements selon leur importance :</p>
+    <ol style="margin-left:20px;line-height:1.8;">
+      <li>Logement et factures fixes</li>
+      <li>Nourriture et transport</li>
+      <li>Dettes à taux élevé (cartes de crédit, marges)</li>
+      <li>Épargne de sécurité (3 mois de dépenses)</li>
+      <li>Investissements et projets</li>
+    </ol>
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <h3>4️⃣ Créer une marge de sécurité</h3>
+    <p>Un bon budget inclut toujours l'imprévu. Réservez chaque mois une petite somme (100 à 200 $) dans un compte distinct pour les urgences.</p>
+    <p>💡 Cela évite d'avoir recours au crédit à chaque dépense inattendue.</p>
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <h3>5️⃣ Automatiser les virements</h3>
+    <p>Simplifiez votre gestion en programmant vos paiements et virements automatiques juste après la paie :</p>
+    <ul style="margin-left:20px;line-height:1.8;">
+      <li>Priorisez l'épargne et le remboursement de dettes</li>
+      <li>Puis les dépenses fixes et variables</li>
+    </ul>
+    <p>💡 Moins de stress, moins d'oublis, et une discipline financière sans effort.</p>
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <h3>6️⃣ Ajuster au fil des mois</h3>
+    <p>Un budget efficace évolue avec vous. Chaque trimestre :</p>
+    <ul style="margin-left:20px;line-height:1.8;">
+      <li>Comparez vos dépenses prévues et réelles</li>
+      <li>Réévaluez vos priorités</li>
+      <li>Adaptez vos objectifs d'épargne</li>
+    </ul>
+    <p>📈 Le but n'est pas la perfection, mais la constance.</p>
+  </div>
+
+  <!-- Avertissement final -->
   <div style="
     background:#fff8e1;
     border:1px solid #fcd34d;
@@ -617,12 +1134,287 @@ button:hover, .tab-button:hover {
     color:#78350f;
     line-height:1.5;
   ">
-    ⚠️ <strong>Avertissement :</strong> Les informations présentées sur cette page sont fournies
-    à titre informatif seulement et ne constituent pas des conseils financiers personnalisés.
-    Chaque situation est unique — consultez un professionnel avant de prendre une décision
-    d’investissement.
+    ⚠️ <strong>Avertissement :</strong> Les informations présentées sur cette page sont fournies à titre informatif seulement.
+    Elles visent à soutenir la prise de décision financière, sans constituer des recommandations personnalisées.
+    Chaque situation est unique — consultez un professionnel (planificateur financier ou conseiller budgétaire) pour un accompagnement adapté.
   </div>
 
+</div>
+
+<!-- Onglet Finances de couple -->
+<div id="tab-couple" class="tab-content">
+  <h2 style="margin-top:0;padding-top:0;">💑 Finances de couple</h2>
+  
+  <p style="background:#eff6ff;padding:15px;border-radius:8px;border-left:4px solid #2563eb;margin-bottom:20px;">
+    Cet outil vous aide à établir une <strong>répartition équitable</strong> des dépenses communes 
+    basée sur la <strong>capacité réelle</strong> de chacun, pas seulement sur le revenu.
+  </p>
+
+  <!-- SECTION 1 : PERSONNE A -->
+  <div class="card">
+    <h3 style="color:#2563eb;">👤 Profil financier - Personne A</h3>
+    
+    <div class="form-group">
+      <label>Revenu net mensuel ($)</label>
+      <input type="number" id="couple-revenu-a" value="0" onchange="calcCouple()">
+    </div>
+    
+    <h4 style="margin-top:20px;color:#374151;">Dettes et obligations personnelles</h4>
+    
+    <!-- Disclaimer confidentialité -->
+    <div style="background:#fff8e1;border-left:4px solid #f59e0b;padding:15px;border-radius:8px;margin:15px 0;">
+   <strong style="color:#92400e;">🔒 Confidentialité et consentement</strong><p style="margin:8px 0 0 0;color:#78350f;font-size:0.9em;line-height:1.6;">
+        Partagez vos informations financières <strong>seulement si vous êtes confortable</strong> de le faire. 
+        Aucune information saisie ici n'est sauvegardée ou partagée - tout reste dans votre navigateur.
+        <br>
+        💡 Une relation saine repose sur la <strong>transparence volontaire</strong>, pas sur l'obligation ou la surveillance.
+      </p>
+    </div>
+    
+    <div class="form-group">
+      <label>Cartes de crédit - Paiement mensuel minimum ($)</label>
+      <input type="number" id="couple-cc-a" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Prêt étudiant - Paiement mensuel ($)</label>
+      <input type="number" id="couple-pret-etude-a" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Prêt automobile personnel - Paiement mensuel ($)</label>
+      <input type="number" id="couple-auto-a" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Autres dettes personnelles - Paiement mensuel ($)</label>
+      <input type="number" id="couple-autres-dettes-a" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <h4 style="margin-top:20px;color:#374151;">Dépenses personnelles fixes</h4>
+    
+    <div class="form-group">
+      <label>Assurances personnelles (vie, invalidité, etc.)</label>
+      <input type="number" id="couple-assurance-a" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Abonnements/téléphone personnel ($)</label>
+      <input type="number" id="couple-abonnements-a" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Pension alimentaire / autres obligations ($)</label>
+      <input type="number" id="couple-pension-a" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <h4 style="margin-top:20px;color:#374151;">Épargne actuelle</h4>
+    
+    <div class="form-group">
+      <label>Fonds d'urgence / épargne disponible ($)</label>
+      <input type="number" id="couple-epargne-a" value="0" onchange="calcCouple()">
+    </div>
+    
+    <div id="diagnostic-a"></div>
+  </div>
+
+  <!-- SECTION 2 : PERSONNE B -->
+  <div class="card">
+    <h3 style="color:#8b5cf6;">👤 Profil financier - Personne B</h3>
+    
+    <div class="form-group">
+      <label>Revenu net mensuel ($)</label>
+      <input type="number" id="couple-revenu-b" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <h4 style="margin-top:20px;color:#374151;">Dettes et obligations personnelles</h4>
+    
+    <div class="form-group">
+      <label>Cartes de crédit - Paiement mensuel minimum ($)</label>
+      <input type="number" id="couple-cc-b" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Prêt étudiant - Paiement mensuel ($)</label>
+      <input type="number" id="couple-pret-etude-b" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Prêt automobile personnel - Paiement mensuel ($)</label>
+      <input type="number" id="couple-auto-b" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Autres dettes personnelles - Paiement mensuel ($)</label>
+      <input type="number" id="couple-autres-dettes-b" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <h4 style="margin-top:20px;color:#374151;">Dépenses personnelles fixes</h4>
+    
+    <div class="form-group">
+      <label>Assurances personnelles (vie, invalidité, etc.)</label>
+      <input type="number" id="couple-assurance-b" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Abonnements/téléphone personnel ($)</label>
+      <input type="number" id="couple-abonnements-b" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Pension alimentaire / autres obligations ($)</label>
+      <input type="number" id="couple-pension-b" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <h4 style="margin-top:20px;color:#374151;">Épargne actuelle</h4>
+    
+    <div class="form-group">
+      <label>Fonds d'urgence / épargne disponible ($)</label>
+      <input type="number" id="couple-epargne-b" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div id="diagnostic-b"></div>
+  </div>
+
+  <!-- SECTION 3 : DÉPENSES COMMUNES -->
+  <div class="card">
+    <h3 style="color:#10b981;">🏠 Dépenses communes mensuelles</h3>
+    
+    <div class="form-group">
+      <label>Loyer / Hypothèque ($)</label>
+      <input type="number" id="couple-loyer" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Épicerie ($)</label>
+      <input type="number" id="couple-epicerie" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Services publics (électricité, internet, etc.) ($)</label>
+      <input type="number" id="couple-services" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Transport commun / Essence partagée ($)</label>
+      <input type="number" id="couple-transport" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Loisirs / Sorties en couple ($)</label>
+      <input type="number" id="couple-loisirs" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="form-group">
+      <label>Autres dépenses communes ($)</label>
+      <input type="number" id="couple-autres" value="0" min="0" onchange="calcCouple()">
+    </div>
+    
+    <div class="total-row green">
+      <span>Total dépenses communes</span>
+      <span class="value" id="couple-total-depenses">0 $</span>
+    </div>
+  </div>
+
+  <!-- SECTION 4 : OBJECTIF D'ÉPARGNE -->
+  <div class="card">
+    <h3 style="color:#f59e0b;">🎯 Objectif d'épargne</h3>
+    
+    <div class="form-group">
+      <label>Taux d'épargne cible pour chacun (%)</label>
+      <input type="number" id="couple-taux-epargne" value="20" min="0" max="50" onchange="calcCouple()">
+      <small style="display:block;margin-top:5px;color:#6b7280;">
+        Recommandation générale : 20% du revenu disponible
+      </small>
+    </div>
+    
+    <button onclick="calcCouple()" style="background:#10b981;color:white;padding:12px 30px;border:none;border-radius:8px;cursor:pointer;margin-top:15px;font-weight:bold;">
+      📊 Calculer la répartition équitable
+    </button>
+  </div>
+
+  <!-- RÉSULTATS -->
+  <div id="resultats-couple"></div>
+
+  <!-- DISCLAIMER PRINCIPAL -->
+  <div style="background:#fef2f2;border-left:6px solid #dc2626;padding:25px;border-radius:12px;margin-bottom:30px;">
+    <strong style="color:#991b1b;font-size:1.1em;">⚠️ Avertissement important</strong>
+    
+    <p style="margin:10px 0;line-height:1.7;color:#7f1d1d;">
+      Cet outil est à des fins <strong>éducatives et de réflexion</strong> seulement. 
+      Les calculs et suggestions présentés sont des <strong>estimations générales</strong> 
+      qui ne tiennent pas compte de toutes les nuances de votre situation.
+    </p>
+    
+    <p style="margin:10px 0;line-height:1.7;color:#7f1d1d;">
+      <strong>Chaque couple est unique.</strong> Les dynamiques financières dépendent 
+      de facteurs émotionnels, historiques et relationnels que cet outil ne peut pas mesurer.
+    </p>
+    
+    <div style="background:#fee2e2;padding:15px;border-radius:8px;margin-top:15px;">
+      <strong style="color:#991b1b;">🚨 Situations à risque :</strong>
+      <ul style="margin:10px 0 0 20px;line-height:1.8;color:#7f1d1d;">
+        <li>Si vous sentez de la <strong>pression, manipulation ou contrôle</strong> dans vos décisions financières</li>
+        <li>Si votre partenaire refuse la <strong>transparence</strong> ou cache des informations financières</li>
+        <li>Si vous êtes dans une situation de <strong>dépendance financière</strong> ou de vulnérabilité</li>
+      </ul>
+      <p style="margin:10px 0 0 0;font-weight:600;color:#991b1b;">
+        → Consultez un professionnel (conseiller conjugal, travailleur social, ou SOS Violence conjugale : 1-800-363-9010)
+      </p>
+    </div>
+    
+    <p style="margin:15px 0 0 0;padding-top:15px;border-top:1px solid #fca5a5;">
+      <strong style="color:#991b1b;">Avant toute décision :</strong><br>
+      <span style="color:#7f1d1d;">
+        Il est recommandé de consulter un <strong>planificateur financier</strong>, 
+        un <strong>conseiller conjugal</strong> ou un <strong>médiateur familial</strong> 
+        pour établir une entente qui respecte vos besoins et limites.
+      </span>
+    </p>
+  </div>
+
+
+  <!-- RESSOURCES EN BAS -->
+  <div style="background:#f9fafb;border-top:2px solid #e5e7eb;padding:20px;margin-top:40px;border-radius:8px;">
+    <h4 style="color:#374151;margin:0 0 10px 0;">📚 Ressources utiles</h4>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;">
+      <div>
+        <strong style="color:#1f2937;">Médiation familiale :</strong>
+        <br><a href="https://www.justice.gouv.qc.ca/couples-et-familles/separation-et-divorce/mediation-familiale/" 
+           target="_blank" style="color:#2563eb;">
+          Service de médiation familiale du Québec
+        </a>
+      </div>
+      
+      <div>
+        <strong style="color:#1f2937;">Aide financière :</strong>
+        <br><a href="https://www.acef-est.org/" target="_blank" style="color:#2563eb;">
+          ACEF (Associations coopératives d'économie familiale)
+        </a>
+      </div>
+      
+      <div>
+        <strong style="color:#1f2937;">Violence conjugale :</strong>
+        <br><a href="https://sosviolenceconjugale.ca/" target="_blank" style="color:#2563eb;">
+          SOS Violence conjugale : 1-800-363-9010
+        </a>
+      </div>
+      
+      <div>
+        <strong style="color:#1f2937;">Conseils financiers :</strong>
+        <br><a href="https://lautorite.qc.ca/" target="_blank" style="color:#2563eb;">
+          Autorité des marchés financiers (AMF)
+        </a>
+      </div>
+    </div>
+    
+    <p style="margin:15px 0 0 0;font-size:0.85em;color:#6b7280;">
+      Cet outil ne constitue pas un avis juridique, financier ou conjugal. 
+      Toute décision financière importante devrait être prise après consultation 
+      avec des professionnels qualifiés.
+    </p>
+  </div>
 </div>
 
 <div id="tab-confidentialite" class="tab-content">
@@ -740,24 +1532,29 @@ button:hover, .tab-button:hover {
 var DATA={};
 
 function changeTab(t){
+console.log('calcBesoin() appelée !');
   var tabs=document.querySelectorAll('.tab-content');
   for(var i=0;i<tabs.length;i++){tabs[i].classList.remove('active');}
   document.getElementById('tab-'+t).classList.add('active');
-
   var btns=document.querySelectorAll('.nav button');
   for(var i=0;i<btns.length;i++){btns[i].classList.remove('active');}
   document.getElementById('btn-'+t).classList.add('active');
-
-  // 👇 AJOUT : cacher les bandeaux sur AIDE aussi
-  var warnings = document.querySelectorAll('.warning-box, .danger-box');
-  for(var i = 0; i < warnings.length; i++) {
-    if(t === 'apropos' || t === 'confidentialite' || t === 'aide') {
-      warnings[i].style.display = 'none';
-    } else {
-      warnings[i].style.display = 'block';
-    }
+  
+// Cacher les bandeaux d'avertissement
+var warnings = document.querySelectorAll('.warning-box, .danger-box');
+for(var i = 0; i < warnings.length; i++) {
+  if(t === 'apropos' || t === 'confidentialite' || t === 'aide' || t === 'besoin' || t === 'couple' || t === 'plaisirs' || t === 'acheter-louer') {
+    warnings[i].style.display = 'none';
+  } else {
+    warnings[i].style.display = 'block';
   }
 }
+  
+  // Recalcul automatique quand on arrive sur l'onglet "En as-tu besoin?"
+  if(t === 'besoin') {
+    calcBesoin();
+  }
+} 
 
 function fmt(n){return Math.round(n).toLocaleString('fr-CA');}
 
@@ -779,7 +1576,6 @@ function calc(){
 var a1=parseFloat(document.getElementById('cb').value)||0;
 var a2=parseFloat(document.getElementById('celi').value)||0;
 var a2b=parseFloat(document.getElementById('celiapp').value)||0;
-var a3=parseFloat(document.getElementById('cne').value)||0;
 var a3=parseFloat(document.getElementById('cne').value)||0;
 var a4=parseFloat(document.getElementById('reer').value)||0;
 var a5=parseFloat(document.getElementById('immob').value)||0;
@@ -1302,7 +2098,7 @@ function calcImmobilier() {
 }
 
 function calcObjectif(){
-  var montant=parseFloat(document.getElementById('obj-montant').value)||50000;
+  var montant=parseFloat(document.getElementById('obj-montant').value)||0;
   var date=document.getElementById('obj-date').value;
   var tauxAnnuel=(parseFloat(document.getElementById('taux-rendement-objectif').value)||0)/100;
   var tauxMensuel=tauxAnnuel/12;
@@ -1361,6 +2157,326 @@ function calcObjectif(){
   document.getElementById('resultat-objectif').innerHTML=html;
 }
 
+function calcBesoin() {
+ // Lecture des inputs de l'achat
+  var prix = parseFloat(document.getElementById('prix-article').value) || 0;
+  var salaireHoraire = parseFloat(document.getElementById('salaire-horaire').value) || 25;
+  var dureeVie = parseFloat(document.getElementById('duree-vie').value) || 5;
+  
+  // NOUVEAU : Lecture des données du bilan
+  var comptesBancaires = parseFloat(document.getElementById('cb').value) || 0;
+  var celi = parseFloat(document.getElementById('celi').value) || 0;
+  var celiapp = parseFloat(document.getElementById('celiapp').value) || 0;
+  var epargneDisponible = comptesBancaires + celi ;
+
+  var cartesCredit = parseFloat(document.getElementById('cc').value) || 0;
+  var margesCredit = parseFloat(document.getElementById('mc').value) || 0;
+  var dettesConsommation = cartesCredit + margesCredit;
+  
+  // NOUVEAU : Lecture du revenu du budget
+  var revenuMensuel = parseFloat(document.getElementById('revenu').value) || 0;
+  if(revenuMensuel === 0 && salaireHoraire > 0) {
+    revenuMensuel = salaireHoraire * 160; // Estimation : 160h/mois
+  }
+  
+  // Questions de réflexion
+  var q1 = document.getElementById('q1-besoin').checked;
+  var q2 = document.getElementById('q2-remplace').checked;
+  var q3 = document.getElementById('q3-utilise').checked;
+  var q4 = document.getElementById('q4-budget').checked;
+  var q5 = document.getElementById('q5-attente').checked;
+  var q6 = document.getElementById('q6-alternative').checked;
+  
+  // Calculs de base
+  var heuresTravail = prix / salaireHoraire;
+  var joursUtilisation = dureeVie * 365;
+  var coutParJour = prix / joursUtilisation;
+  var pctRevenuMensuel = (prix / revenuMensuel * 100);
+  
+  // Coût d'opportunité
+  var valeurSiInvesti = prix * Math.pow(1.06, dureeVie);
+  var gainManque = valeurSiInvesti - prix;
+  
+// ===== APPROCHE McSWEEN : < 50$ = simple, ≥ 50$ = analyse complète =====
+  var score = 0;
+  var details = [];
+  var recommandation = '';
+  var couleur = '';
+  var emoji = '';
+  
+  // Cacher/Afficher les questions selon le prix
+  var questionsBlock = document.getElementById('questions-reflexion');
+  
+  if(prix < 50) {
+    // ========== MICRO-ACHAT (< 50$) : LOGIQUE ULTRA-SIMPLE ==========
+    questionsBlock.style.display = 'none'; // Cacher les questions
+    
+    details.push('💰 Achat de moins de 50$ (micro-achat selon McSween)');
+    
+    if(prix <= comptesBancaires) {
+      score = 95;
+      details.push('✅ Tu as le budget en compte bancaire');
+      recommandation = "C'est un micro-achat et tu as le budget : vas-y !";
+      couleur = '#10b981';
+      emoji = '✅';
+    } else if(prix <= epargneDisponible) {
+      score = 70;
+      details.push('⚠️ Tu devras utiliser ton CELI/CELIAPP');
+      recommandation = "Tu as le budget, mais garde ton épargne pour les urgences si possible.";
+      couleur = '#f59e0b';
+      emoji = '⚠️';
+    } else {
+      score = 30;
+      details.push('❌ Tu n\'as pas le budget disponible');
+      recommandation = "Tu n'as pas le budget. Selon McSween : épargne d'abord, achète ensuite !";
+      couleur = '#ef4444';
+      emoji = '❌';
+    }
+    
+  } else {
+    // ========== ACHAT SIGNIFICATIF (≥ 50$) : ANALYSE COMPLÈTE ==========
+    questionsBlock.style.display = 'block'; // Afficher les questions
+    
+    details.push('🎯 Achat ≥ 50$ : analyse approfondie nécessaire');
+    
+    // A. Questions pondérées (max 40 pts)
+    if(q1) { score += 10; details.push('Besoin vital: +10 pts'); }
+    if(q2) { score += 10; details.push('Remplace brisé: +10 pts'); }
+    if(q3) { score += 8; details.push('Utilisation régulière: +8 pts'); }
+    if(q4) { score += 7; details.push('Budget disponible: +7 pts'); }
+    if(q5) { score += 3; details.push('Attente 30 jours: +3 pts'); }
+    if(q6) { score += 2; details.push('Alternative considérée: +2 pts'); }
+    
+    // B. Temps de travail (max 25 pts)
+    if(heuresTravail < 4) { 
+      score += 25; 
+      details.push('< 4h de travail: +25 pts');
+    } else if(heuresTravail < 20) { 
+      score += 15; 
+      details.push('4-20h de travail: +15 pts');
+    } else if(heuresTravail < 40) { 
+      score += 5; 
+      details.push('20-40h de travail: +5 pts');
+    } else if(heuresTravail < 80) { 
+      score -= 5;
+      details.push('40-80h de travail: -5 pts');
+    } else {
+      score -= 15;
+      details.push('> 80h de travail: -15 pts');
+    }
+    
+    // C. Coût par jour (max 20 pts)
+    if(coutParJour < 0.50) { score += 20; details.push('< 0.50$/jour: +20 pts'); }
+    else if(coutParJour < 2) { score += 10; details.push('0.50-2$/jour: +10 pts'); }
+    else if(coutParJour < 5) { score += 5; details.push('2-5$/jour: +5 pts'); }
+    else { details.push('> 5$/jour: 0 pts'); }
+    
+    // D. Épargne et dettes (max 15 pts)
+    if(prix <= comptesBancaires) {
+      score += 10;
+      details.push('Épargne suffisante: +10 pts');
+    } else if(prix > epargneDisponible) {
+      score -= 20;
+      details.push('⚠️ Épargne insuffisante: -20 pts');
+    }
+    
+    if(dettesConsommation > 5000 && !q1) {
+      score -= 15;
+      details.push('⚠️ Dettes élevées existantes: -15 pts');
+    }
+    
+    // Limite le score entre 0 et 100
+    score = Math.max(0, Math.min(100, score));
+    
+    // Recommandation basée sur le score
+    if(score >= 70) {
+      recommandation = "C'est probablement un bon achat !";
+      couleur = '#10b981';
+      emoji = '✅';
+    } else if(score >= 50) {
+      recommandation = "Réfléchis encore quelques jours avant d'acheter.";
+      couleur = '#f59e0b';
+      emoji = '⚠️';
+    } else {
+      recommandation = "Tu devrais repenser cet achat.";
+      couleur = '#ef4444';
+      emoji = '❌';
+    }
+  }
+  
+  // Recommandation basée sur le score
+  var recommandation = '';
+  var couleur = '';
+  var emoji = '';
+  
+  if(score >= 70) {
+    recommandation = "C'est probablement un bon achat !";
+    couleur = '#10b981';
+    emoji = '✅';
+  } else if(score >= 50) {
+    recommandation = "Réfléchis encore quelques jours avant d'acheter.";
+    couleur = '#f59e0b';
+    emoji = '⚠️';
+  } else {
+    recommandation = "Tu devrais repenser cet achat.";
+    couleur = '#ef4444';
+    emoji = '❌';
+  }
+  
+  // Délai de réflexion
+  var delai = '';
+  if(prix < 50) delai = '24 heures';
+  else if(prix < 200) delai = '3 jours';
+  else if(prix < 1000) delai = '1 semaine';
+  else delai = '30 jours';
+  
+  // ===== CONSTRUCTION DU HTML =====
+  var html = '';
+  
+// ALERTE : Situation financière critique (SAUF pour micro-achats)
+var estMicroAchat = heuresTravail < 0.5 || prix < 10;
+if((prix > epargneDisponible || dettesConsommation > 5000) && !estMicroAchat) {
+  html += '<div class="result-box red" style="margin-bottom:20px;">';
+  html += '<strong>🚨 ALERTE FINANCIÈRE</strong><br>';
+    
+    if(prix > epargneDisponible) {
+      var manquant = prix - epargneDisponible;
+      html += '❌ Épargne disponible : ' + fmt(epargneDisponible) + ' $<br>';
+      html += '❌ Cet achat nécessiterait de t\'endetter de ' + fmt(manquant) + ' $<br>';
+    }
+    
+    if(dettesConsommation > 0) {
+      html += '⚠️ Tu as déjà ' + fmt(dettesConsommation) + ' $ de dettes de consommation<br>';
+    }
+    
+    html += '<strong style="color:#991b1b;">Recommandation : Épargne d\'abord, achète ensuite !</strong>';
+    html += '</div>';
+  }
+  
+  // Situation financière
+  html += '<div class="result-box blue">';
+  html += '<strong>💰 Ta situation financière</strong><br>';
+  
+  if(epargneDisponible > 0) {
+    html += '✅ Épargne disponible : ' + fmt(epargneDisponible) + ' $<br>';
+    if(prix <= comptesBancaires) {
+      html += '<span style="color:#10b981;font-weight:600;">✅ Tu peux payer CASH pour cet achat !</span><br>';
+    } else if(prix <= epargneDisponible) {
+      html += '<span style="color:#f59e0b;">⚠️ Tu devrais utiliser ton CELI/CELIAPP</span><br>';
+    }
+  }
+  
+  if(dettesConsommation > 0) {
+    html += '⚠️ Dettes actuelles : ' + fmt(dettesConsommation) + ' $<br>';
+  }
+  
+  if(revenuMensuel > 0) {
+    html += 'Revenu mensuel : ' + fmt(revenuMensuel) + ' $<br>';
+    html += 'Cet achat représente <strong>' + pctRevenuMensuel.toFixed(1) + '% de ton revenu mensuel</strong>';
+  }
+  
+  html += '</div>';
+  
+// Heures de travail (différent selon < 50$ ou ≥ 50$)
+  if(prix >= 50) {
+    html += '<div class="result-box">';
+    html += '<strong>⏱️ Temps de travail nécessaire</strong><br>';
+    html += '<span style="font-size:2em;color:#2563eb;">' + heuresTravail.toFixed(1) + ' heures</span><br>';
+    if(heuresTravail >= 8) {
+      var jours = Math.floor(heuresTravail / 8);
+      var heures = (heuresTravail % 8).toFixed(1);
+      html += '<small style="color:#6b7280;">Soit environ ' + jours + ' jour(s) et ' + heures + ' heure(s) de travail</small>';
+    }
+    html += '</div>';
+  } else {
+    html += '<div class="result-box blue">';
+    html += '<strong>⏱️ Effort minimal</strong><br>';
+    html += '<span style="font-size:1.5em;color:#2563eb;">' + heuresTravail.toFixed(2) + ' heures de travail</span><br>';
+    html += '<small style="color:#6b7280;">Selon McSween, les achats < 50$ ne nécessitent pas d\'analyse poussée.<br>Question simple : <strong>As-tu le budget ?</strong></small>';
+    html += '</div>';
+  }
+  html += '<span style="font-size:2em;color:#2563eb;">' + heuresTravail.toFixed(1) + ' heures</span><br>';
+  if(heuresTravail >= 8) {
+    var jours = Math.floor(heuresTravail / 8);
+    var heures = (heuresTravail % 8).toFixed(1);
+    html += '<small style="color:#6b7280;">Soit environ ' + jours + ' jour(s) et ' + heures + ' heure(s) de travail</small>';
+  }
+  html += '</div>';
+  
+  // Coût par jour
+  html += '<div class="result-box">';
+  html += '<strong>📅 Coût par jour d\'utilisation</strong><br>';
+  html += '<span style="font-size:1.5em;color:#047857;">' + fmt(coutParJour) + ' $/jour</span><br>';
+  html += '<small style="color:#6b7280;">Sur ' + dureeVie + ' ans (' + Math.round(joursUtilisation) + ' jours)</small>';
+  html += '</div>';
+  
+  // Coût d'opportunité
+  if(prix >= 100) {
+    html += '<div class="result-box orange">';
+    html += '<strong>💸 Coût d\'opportunité</strong><br>';
+    html += 'Si tu investissais ' + fmt(prix) + '$ à 6%/an pendant ' + dureeVie + ' ans :<br>';
+    html += '<span style="font-size:1.5em;color:#ea580c;">' + fmt(valeurSiInvesti) + ' $</span><br>';
+    html += '<small style="color:#6b7280;">Tu perds un gain potentiel de ' + fmt(gainManque) + ' $</small>';
+    html += '</div>';
+  }
+  
+  // Score et recommandation
+  html += '<div class="result-box" style="background:' + couleur + '15;border-left:4px solid ' + couleur + ';">';
+  html += '<strong style="font-size:1.3em;">' + emoji + ' Score de pertinence : ' + score + '/100</strong><br>';
+  html += '<p style="margin:10px 0;font-size:1.1em;color:' + couleur + ';font-weight:600;">' + recommandation + '</p>';
+  
+  // Détails du scoring (collapsible)
+  html += '<details style="margin-top:10px;font-size:0.85em;color:#6b7280;">';
+  html += '<summary style="cursor:pointer;font-weight:600;">Voir le détail du calcul</summary>';
+  html += '<ul style="margin:10px 0;line-height:1.6;">';
+  for(var i = 0; i < details.length; i++) {
+    html += '<li>' + details[i] + '</li>';
+  }
+  html += '</ul>';
+  html += '</details>';
+  html += '</div>';
+  
+  // Délai de réflexion
+  if(!q5 && prix >= 50) {
+    html += '<div class="result-box yellow">';
+    html += '<strong>⏳ Règle des 30 jours de McSween</strong><br>';
+    html += 'Pour un achat de ' + fmt(prix) + '$, attends <strong>' + delai + '</strong> avant d\'acheter.<br>';
+    html += '<small style="color:#6b7280;">Si tu y penses encore après, c\'est probablement un bon achat !</small>';
+    html += '</div>';
+  }
+  
+  // Alternatives
+  if(score < 50) {
+    html += '<div class="card" style="background:#f0fdf4;margin-top:20px;">';
+    html += '<h3 style="color:#166534;">💡 Alternatives à considérer</h3>';
+    html += '<ul style="line-height:1.8;margin-left:20px;">';
+    html += '<li>Acheter usagé (Marketplace, Kijiji, friperies)</li>';
+    html += '<li>Louer ou emprunter temporairement</li>';
+    html += '<li>Attendre une vente ou un rabais</li>';
+    html += '<li>Chercher une version moins chère</li>';
+    if(dettesConsommation > 0) {
+      html += '<li><strong>Rembourser tes dettes existantes d\'abord</strong></li>';
+    }
+    html += '<li>Épargner pendant quelques mois puis acheter cash</li>';
+    html += '</ul>';
+    html += '</div>';
+  }
+  
+  // Citation
+  var citations = [
+    '"Acheter, c\'est voter avec son portefeuille." - Pierre-Yves McSween',
+    '"Le succès est la somme de petits efforts répétés jour après jour." - Robert Collier',
+    '"Un sou épargné est un sou gagné." - Benjamin Franklin',
+    '"La richesse ne consiste pas à avoir de grandes possessions, mais à avoir peu de besoins." - Épictète'
+  ];
+  var citationAleatoire = citations[Math.floor(Math.random() * citations.length)];
+  
+  html += '<div style="background:#fef3c7;padding:15px;border-radius:8px;margin-top:20px;border-left:4px solid #f59e0b;">';
+  html += '<em style="color:#78350f;">' + citationAleatoire + '</em>';
+  html += '</div>';
+  
+  document.getElementById('resultat-besoin').innerHTML = html;
+}
 
 function genererDiagnostic(){
 if(!DATA.totalA && !DATA.totalP && !DATA.revenuTotal){
@@ -1929,6 +3045,877 @@ html += '</div>';
 html += '</div>';
 
   document.getElementById('resultats-strategies').innerHTML = html;
+}
+
+function calcCouple() {
+  // Récupérer toutes les données
+  var revenuA = parseFloat(document.getElementById('couple-revenu-a').value) || 0;
+  var revenuB = parseFloat(document.getElementById('couple-revenu-b').value) || 0;
+  
+  // Dettes A
+  var dettesA = 
+    (parseFloat(document.getElementById('couple-cc-a').value) || 0) +
+    (parseFloat(document.getElementById('couple-pret-etude-a').value) || 0) +
+    (parseFloat(document.getElementById('couple-auto-a').value) || 0) +
+    (parseFloat(document.getElementById('couple-autres-dettes-a').value) || 0);
+  
+  // Dépenses perso A
+  var depensesPersoA = dettesA +
+    (parseFloat(document.getElementById('couple-assurance-a').value) || 0) +
+    (parseFloat(document.getElementById('couple-abonnements-a').value) || 0) +
+    (parseFloat(document.getElementById('couple-pension-a').value) || 0);
+  
+  var epargneA = parseFloat(document.getElementById('couple-epargne-a').value) || 0;
+  
+  // Dettes B
+  var dettesB = 
+    (parseFloat(document.getElementById('couple-cc-b').value) || 0) +
+    (parseFloat(document.getElementById('couple-pret-etude-b').value) || 0) +
+    (parseFloat(document.getElementById('couple-auto-b').value) || 0) +
+    (parseFloat(document.getElementById('couple-autres-dettes-b').value) || 0);
+  
+  // Dépenses perso B
+  var depensesPersoB = dettesB +
+    (parseFloat(document.getElementById('couple-assurance-b').value) || 0) +
+    (parseFloat(document.getElementById('couple-abonnements-b').value) || 0) +
+    (parseFloat(document.getElementById('couple-pension-b').value) || 0);
+  
+  var epargneB = parseFloat(document.getElementById('couple-epargne-b').value) || 0;
+  
+  // Dépenses communes
+  var depensesCommunes = 
+    (parseFloat(document.getElementById('couple-loyer').value) || 0) +
+    (parseFloat(document.getElementById('couple-epicerie').value) || 0) +
+    (parseFloat(document.getElementById('couple-services').value) || 0) +
+    (parseFloat(document.getElementById('couple-transport').value) || 0) +
+    (parseFloat(document.getElementById('couple-loisirs').value) || 0) +
+    (parseFloat(document.getElementById('couple-autres').value) || 0);
+  
+  document.getElementById('couple-total-depenses').textContent = fmt(depensesCommunes) + ' $';
+  
+  var tauxEpargne = (parseFloat(document.getElementById('couple-taux-epargne').value) || 20) / 100;
+  
+  // Calculs de revenu disponible
+  var revenuDispoA = revenuA - depensesPersoA;
+  var revenuDispoB = revenuB - depensesPersoB;
+  
+  // Ratios dette/revenu
+  var ratioDetteA = revenuA > 0 ? (depensesPersoA / revenuA * 100) : 0;
+  var ratioDetteB = revenuB > 0 ? (depensesPersoB / revenuB * 100) : 0;
+  
+  // ===== DIAGNOSTIC INDIVIDUEL A =====
+  var diagA = '<div style="background:#eff6ff;padding:15px;border-radius:8px;margin-top:20px;">';
+  diagA += '<h4 style="color:#1e40af;margin:0 0 10px 0;">📊 Diagnostic Personne A</h4>';
+  diagA += '<p style="margin:5px 0;">Revenu disponible : <strong>' + fmt(revenuDispoA) + ' $/mois</strong></p>';
+  diagA += '<p style="margin:5px 0;">Ratio dettes/revenu : <strong style="color:' + (ratioDetteA <= 35 ? '#10b981' : ratioDetteA <= 50 ? '#f59e0b' : '#ef4444') + '">' + ratioDetteA.toFixed(1) + '%</strong>';
+  if(ratioDetteA > 50) diagA += ' ⚠️ Élevé';
+  else if(ratioDetteA > 35) diagA += ' Acceptable';
+  else diagA += ' ✅ Sain';
+  diagA += '</p>';
+  diagA += '<p style="margin:5px 0;">Fonds d\'urgence : <strong style="color:' + (epargneA >= 3000 ? '#10b981' : epargneA >= 1000 ? '#f59e0b' : '#ef4444') + '">' + fmt(epargneA) + ' $</strong>';
+  if(epargneA < 1000) diagA += ' ❌ Insuffisant';
+  else if(epargneA < 3000) diagA += ' ⚠️ Minimal';
+  else diagA += ' ✅ Adéquat';
+  diagA += '</p>';
+  diagA += '</div>';
+  
+  document.getElementById('diagnostic-a').innerHTML = diagA;
+  
+  // ===== DIAGNOSTIC INDIVIDUEL B =====
+  var diagB = '<div style="background:#faf5ff;padding:15px;border-radius:8px;margin-top:20px;">';
+  diagB += '<h4 style="color:#7c3aed;margin:0 0 10px 0;">📊 Diagnostic Personne B</h4>';
+  diagB += '<p style="margin:5px 0;">Revenu disponible : <strong>' + fmt(revenuDispoB) + ' $/mois</strong></p>';
+  diagB += '<p style="margin:5px 0;">Ratio dettes/revenu : <strong style="color:' + (ratioDetteB <= 35 ? '#10b981' : ratioDetteB <= 50 ? '#f59e0b' : '#ef4444') + '">' + ratioDetteB.toFixed(1) + '%</strong>';
+  if(ratioDetteB > 50) diagB += ' ⚠️ Élevé';
+  else if(ratioDetteB > 35) diagB += ' Acceptable';
+  else diagB += ' ✅ Sain';
+  diagB += '</p>';
+  diagB += '<p style="margin:5px 0;">Fonds d\'urgence : <strong style="color:' + (epargneB >= 3000 ? '#10b981' : epargneB >= 1000 ? '#f59e0b' : '#ef4444') + '">' + fmt(epargneB) + ' $</strong>';
+  if(epargneB < 1000) diagB += ' ❌ Insuffisant';
+  else if(epargneB < 3000) diagB += ' ⚠️ Minimal';
+  else diagB += ' ✅ Adéquat';
+  diagB += '</p>';
+  diagB += '</div>';
+  
+  document.getElementById('diagnostic-b').innerHTML = diagB;
+  
+  // Si aucune donnée, ne pas afficher de résultats
+  if(revenuA === 0 && revenuB === 0) {
+    document.getElementById('resultats-couple').innerHTML = '';
+    return;
+  }
+  
+  // ===== RÉSULTATS ET COMPARAISONS =====
+  var html = '';
+  
+  // Diagnostic comparatif
+  html += '<div class="card" style="margin-top:30px;">';
+  html += '<h3 style="color:#1f2937;">📊 Diagnostic comparatif</h3>';
+  html += '<div style="overflow-x:auto;">';
+  html += '<table style="width:100%;border-collapse:collapse;margin-top:15px;">';
+  html += '<thead style="background:#f9fafb;"><tr>';
+  html += '<th style="text-align:left;padding:12px;border-bottom:2px solid #e5e7eb;">Critère</th>';
+  html += '<th style="text-align:right;padding:12px;border-bottom:2px solid #e5e7eb;">Personne A</th>';
+  html += '<th style="text-align:right;padding:12px;border-bottom:2px solid #e5e7eb;">Personne B</th>';
+  html += '</tr></thead><tbody>';
+  
+  html += '<tr><td style="padding:10px;border-bottom:1px solid #e5e7eb;">Revenu net</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">' + fmt(revenuA) + ' $</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">' + fmt(revenuB) + ' $</td></tr>';
+  
+  html += '<tr><td style="padding:10px;border-bottom:1px solid #e5e7eb;">Dépenses personnelles</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">' + fmt(depensesPersoA) + ' $</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">' + fmt(depensesPersoB) + ' $</td></tr>';
+  
+  html += '<tr><td style="padding:10px;border-bottom:1px solid #e5e7eb;"><strong>Revenu disponible</strong></td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;"><strong>' + fmt(revenuDispoA) + ' $</strong></td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;"><strong>' + fmt(revenuDispoB) + ' $</strong></td></tr>';
+  
+  html += '<tr><td style="padding:10px;border-bottom:1px solid #e5e7eb;">Ratio dette/revenu</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;color:' + (ratioDetteA > 50 ? '#ef4444' : ratioDetteA > 35 ? '#f59e0b' : '#10b981') + '">' + ratioDetteA.toFixed(1) + '%</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;color:' + (ratioDetteB > 50 ? '#ef4444' : ratioDetteB > 35 ? '#f59e0b' : '#10b981') + '">' + ratioDetteB.toFixed(1) + '%</td></tr>';
+  
+  html += '<tr><td style="padding:10px;">Fonds d\'urgence</td>';
+  html += '<td style="text-align:right;padding:10px;color:' + (epargneA >= 3000 ? '#10b981' : epargneA >= 1000 ? '#f59e0b' : '#ef4444') + '">' + fmt(epargneA) + ' $</td>';
+  html += '<td style="text-align:right;padding:10px;color:' + (epargneB >= 3000 ? '#10b981' : epargneB >= 1000 ? '#f59e0b' : '#ef4444') + '">' + fmt(epargneB) + ' $</td></tr>';
+  
+  html += '</tbody></table></div></div>';
+  
+  // ALERTES
+  var alertes = [];
+  
+  // Alerte déséquilibre majeur
+  if(Math.abs(ratioDetteA - ratioDetteB) > 20 || (ratioDetteA > 50 || ratioDetteB > 50)) {
+    alertes.push({
+      type: 'danger',
+      titre: '⚠️ Déséquilibre financier important détecté',
+      message: 'L\'un des partenaires a un niveau d\'endettement significativement plus élevé (' + 
+               (ratioDetteA > ratioDetteB ? 'Personne A: ' + ratioDetteA.toFixed(1) : 'Personne B: ' + ratioDetteB.toFixed(1)) + 
+               '%). Ceci peut créer des dynamiques de pouvoir inégales. Avant d\'établir un budget commun, considérez un plan de remboursement.'
+    });
+  }
+  
+  // Alerte absence d'épargne
+  if(epargneA < 1000 || epargneB < 1000) {
+    var qui = epargneA < 1000 && epargneB < 1000 ? 'Les deux partenaires n\'ont' : 
+              (epargneA < 1000 ? 'Personne A n\'a' : 'Personne B n\'a');
+    alertes.push({
+      type: 'warning',
+      titre: '❌ Absence de fonds d\'urgence',
+      message: qui + ' pas de fonds d\'urgence adéquat (minimum 1 000$). Chaque personne devrait avoir son propre fonds d\'urgence pour maintenir son autonomie financière.'
+    });
+  }
+  
+  // Afficher les alertes
+  for(var i = 0; i < alertes.length; i++) {
+    var a = alertes[i];
+    var bg = a.type === 'danger' ? '#fef2f2' : '#fff4e6';
+    var border = a.type === 'danger' ? '#dc2626' : '#f97316';
+    var color = a.type === 'danger' ? '#7f1d1d' : '#7c2d12';
+    
+    html += '<div style="background:' + bg + ';border:2px solid ' + border + ';padding:20px;border-radius:10px;margin:20px 0;">';
+    html += '<h4 style="color:' + color + ';margin:0 0 10px 0;">' + a.titre + '</h4>';
+    html += '<p style="color:' + color + ';margin:0;line-height:1.7;">' + a.message + '</p>';
+    html += '</div>';
+  }
+  
+  // Si alertes critiques, arrêter là
+  if(alertes.length > 0 && (ratioDetteA > 50 || ratioDetteB > 50)) {
+    html += '<div style="background:#fee2e2;padding:20px;border-radius:10px;margin:20px 0;border-left:6px solid #dc2626;">';
+    html += '<strong style="color:#991b1b;font-size:1.1em;">🛑 Recommandation : Stabilisez d\'abord vos situations individuelles</strong>';
+    html += '<p style="margin:10px 0 0 0;color:#7f1d1d;line-height:1.7;">Avant de créer un budget commun, il est préférable de consulter un conseiller financier (ACEF) pour établir des plans de remboursement de dettes individuels.</p>';
+    html += '</div>';
+    document.getElementById('resultats-couple').innerHTML = html;
+    return;
+  }
+  
+  // ===== CALCULS DE RÉPARTITION =====
+  
+  if(depensesCommunes === 0) {
+    html += '<div class="card"><p style="color:#6b7280;">Entrez vos dépenses communes pour voir les calculs de répartition.</p></div>';
+    document.getElementById('resultats-couple').innerHTML = html;
+    return;
+  }
+  
+  var totalDispo = revenuDispoA + revenuDispoB;
+  
+  // Méthode 1 : 50/50
+  var paiement5050A = depensesCommunes / 2;
+  var paiement5050B = depensesCommunes / 2;
+  var reste5050A = revenuDispoA - paiement5050A;
+  var reste5050B = revenuDispoB - paiement5050B;
+  var epargne5050A = revenuDispoA > 0 ? (reste5050A / revenuDispoA * 100) : 0;
+  var epargne5050B = revenuDispoB > 0 ? (reste5050B / revenuDispoB * 100) : 0;
+  
+  // Méthode 2 : Proportionnelle aux revenus
+  var pctA = revenuA / (revenuA + revenuB);
+  var pctB = revenuB / (revenuA + revenuB);
+  var paiementPropA = depensesCommunes * pctA;
+  var paiementPropB = depensesCommunes * pctB;
+  var restePropA = revenuDispoA - paiementPropA;
+  var restePropB = revenuDispoB - paiementPropB;
+  var epargnePropA = revenuDispoA > 0 ? (restePropA / revenuDispoA * 100) : 0;
+  var epargnePropB = revenuDispoB > 0 ? (restePropB / revenuDispoB * 100) : 0;
+  
+  // Méthode 3 : Capacité d'épargne égale
+  var epargneViseeA = revenuDispoA * tauxEpargne;
+  var epargneViseeB = revenuDispoB * tauxEpargne;
+  var resteApresEpargne = totalDispo - epargneViseeA - epargneViseeB;
+  
+  var paiementCapaA, paiementCapaB;
+  if(resteApresEpargne >= depensesCommunes) {
+    paiementCapaA = (revenuDispoA / totalDispo) * depensesCommunes;
+    paiementCapaB = (revenuDispoB / totalDispo) * depensesCommunes;
+  } else {
+    paiementCapaA = (revenuDispoA / totalDispo) * depensesCommunes;
+    paiementCapaB = (revenuDispoB / totalDispo) * depensesCommunes;
+  }
+  
+  var resteCapaA = revenuDispoA - paiementCapaA;
+  var resteCapaB = revenuDispoB - paiementCapaB;
+  var epargneCapaA = revenuDispoA > 0 ? (resteCapaA / revenuDispoA * 100) : 0;
+  var epargneCapaB = revenuDispoB > 0 ? (resteCapaB / revenuDispoB * 100) : 0;
+  
+  // Afficher les 3 méthodes
+  html += '<div class="card" style="margin-top:30px;">';
+  html += '<h3 style="color:#1f2937;">💰 Comparaison des méthodes de répartition</h3>';
+  
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:20px;">';
+  
+  // Méthode 1
+  html += '<div style="background:#f3f4f6;padding:20px;border-radius:10px;border-left:4px solid #6b7280;">';
+  html += '<h4 style="color:#374151;margin:0 0 15px 0;">1️⃣ Parts égales (50/50)</h4>';
+  html += '<p style="margin:5px 0;"><strong>Personne A :</strong> ' + fmt(paiement5050A) + ' $/mois</p>';
+  html += '<p style="margin:5px 0;color:#6b7280;">Reste : ' + fmt(reste5050A) + ' $ (' + epargne5050A.toFixed(1) + '% épargne)</p>';
+  html += '<p style="margin:5px 0;"><strong>Personne B :</strong> ' + fmt(paiement5050B) + ' $/mois</p>';
+  html += '<p style="margin:5px 0;color:#6b7280;">Reste : ' + fmt(reste5050B) + ' $ (' + epargne5050B.toFixed(1) + '% épargne)</p>';
+var diff5050 = Math.abs(epargne5050A - epargne5050B);
+  html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #d1d5db;color:' + (reste5050A < 0 || reste5050B < 0 ? '#dc2626' : diff5050 > 10 ? '#ef4444' : '#f59e0b') + ';font-weight:600;">';
+  
+  if(reste5050A < 0 || reste5050B < 0) {
+    var qui = reste5050A < 0 ? 'Personne A' : 'Personne B';
+    var manque = Math.abs(reste5050A < 0 ? reste5050A : reste5050B);
+    html += '🚫 IMPOSSIBLE';
+    html += '<br><small style="font-weight:normal;">' + qui + ' n\'a pas assez d\'argent (manque ' + fmt(manque) + ' $)</small>';
+  } else if(diff5050 > 10) {
+    html += '❌ Très inéquitable';
+    html += '<br><small style="font-weight:normal;">Écart d\'épargne : ' + diff5050.toFixed(1) + '%</small>';
+  } else {
+    html += '⚠️ Inéquitable';
+    html += '<br><small style="font-weight:normal;">Écart d\'épargne : ' + diff5050.toFixed(1) + '%</small>';
+  }
+  html += '</p>';
+  html += '</div>';
+  
+  // Méthode 2
+  html += '<div style="background:#fef3c7;padding:20px;border-radius:10px;border-left:4px solid #f59e0b;">';
+  html += '<h4 style="color:#92400e;margin:0 0 15px 0;">2️⃣ Proportionnelle aux revenus</h4>';
+  html += '<p style="margin:5px 0;"><strong>Personne A :</strong> ' + fmt(paiementPropA) + ' $/mois (' + (pctA * 100).toFixed(1) + '%)</p>';
+  html += '<p style="margin:5px 0;color:#78350f;">Reste : ' + fmt(restePropA) + ' $ (' + epargnePropA.toFixed(1) + '% épargne)</p>';
+  html += '<p style="margin:5px 0;"><strong>Personne B :</strong> ' + fmt(paiementPropB) + ' $/mois (' + (pctB * 100).toFixed(1) + '%)</p>';
+  html += '<p style="margin:5px 0;color:#78350f;">Reste : ' + fmt(restePropB) + ' $ (' + epargnePropB.toFixed(1) + '% épargne)</p>';
+var diffProp = Math.abs(epargnePropA - epargnePropB);
+  html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #fcd34d;color:' + (restePropA < 0 || restePropB < 0 ? '#dc2626' : diffProp > 10 ? '#f59e0b' : '#10b981') + ';font-weight:600;">';
+  
+  if(restePropA < 0 || restePropB < 0) {
+    var qui = restePropA < 0 ? 'Personne A' : 'Personne B';
+    var manque = Math.abs(restePropA < 0 ? restePropA : restePropB);
+    html += '🚫 IMPOSSIBLE';
+    html += '<br><small style="font-weight:normal;">' + qui + ' n\'a pas assez d\'argent (manque ' + fmt(manque) + ' $)</small>';
+  } else if(diffProp > 10) {
+    html += '⚠️ Encore inéquitable';
+    html += '<br><small style="font-weight:normal;">Écart d\'épargne : ' + diffProp.toFixed(1) + '%</small>';
+  } else {
+    html += '✅ Acceptable';
+    html += '<br><small style="font-weight:normal;">Écart d\'épargne : ' + diffProp.toFixed(1) + '%</small>';
+  }
+  html += '</p>';
+  html += '</div>';
+  
+  // Méthode 3
+  html += '<div style="background:#d1fae5;padding:20px;border-radius:10px;border-left:4px solid #10b981;">';
+  html += '<h4 style="color:#065f46;margin:0 0 15px 0;">3️⃣ Capacité d\'épargne égale ⭐</h4>';
+  html += '<p style="margin:5px 0;"><strong>Personne A :</strong> ' + fmt(paiementCapaA) + ' $/mois</p>';
+  html += '<p style="margin:5px 0;color:#047857;">Reste : ' + fmt(resteCapaA) + ' $ (' + epargneCapaA.toFixed(1) + '% épargne)</p>';
+  html += '<p style="margin:5px 0;"><strong>Personne B :</strong> ' + fmt(paiementCapaB) + ' $/mois</p>';
+  html += '<p style="margin:5px 0;color:#047857;">Reste : ' + fmt(resteCapaB) + ' $ (' + epargneCapaB.toFixed(1) + '% épargne)</p>';
+  var diffCapa = Math.abs(epargneCapaA - epargneCapaB);
+  html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #6ee7b7;color:#10b981;font-weight:600;">';
+  html += '✅ Méthode équitable';
+  html += '<br><small style="font-weight:normal;">Écart d\'épargne : ' + diffCapa.toFixed(1) + '%</small></p>';
+  html += '</div>';
+  
+  html += '</div></div>';
+  
+  // Recommandation finale
+  html += '<div style="background:#eff6ff;padding:25px;border-radius:12px;margin-top:20px;border-left:6px solid #2563eb;">';
+  html += '<h3 style="color:#1e40af;margin:0 0 15px 0;">💡 Recommandation</h3>';
+  html += '<p style="margin:0 0 10px 0;line-height:1.7;">La <strong>méthode 3 (Capacité d\'épargne égale)</strong> est la plus équitable selon les principes de finances de couple.</p>';
+  html += '<p style="margin:0;line-height:1.7;">Elle garantit que chacun conserve la même <strong>capacité d\'épargne et de liberté financière</strong> après toutes les dépenses, ce qui respecte la contribution de chacun selon ses moyens réels.</p>';
+  html += '</div>';
+  
+  document.getElementById('resultats-couple').innerHTML = html;
+}
+
+function calcPlaisirs() {
+  // Récupérer les inputs de base
+  var revenu = parseFloat(document.getElementById('plaisirs-revenu').value) || 0;
+  var essentielles = parseFloat(document.getElementById('plaisirs-essentielles').value) || 0;
+  var epargnePct = (parseFloat(document.getElementById('plaisirs-epargne-pct').value) || 20) / 100;
+  
+  // Budget loisirs disponible
+  var epargneVisee = revenu * epargnePct;
+  var budgetDisponible = revenu - essentielles - epargneVisee;
+  var budgetRecommande30 = revenu * 0.30; // Règle 50/30/20
+  
+  // Affichage budget disponible
+  var htmlBudget = '<div style="background:#eff6ff;padding:20px;border-radius:10px;margin-top:20px;">';
+  htmlBudget += '<h4 style="color:#1e40af;margin:0 0 15px 0;">📊 Ton budget</h4>';
+  htmlBudget += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;">';
+  
+  htmlBudget += '<div><p style="margin:0;color:#6b7280;font-size:0.9em;">Revenu mensuel</p>';
+  htmlBudget += '<p style="margin:5px 0 0 0;font-size:1.5em;font-weight:bold;color:#1f2937;">' + fmt(revenu) + ' $</p></div>';
+  
+  htmlBudget += '<div><p style="margin:0;color:#6b7280;font-size:0.9em;">Dépenses essentielles</p>';
+  htmlBudget += '<p style="margin:5px 0 0 0;font-size:1.5em;font-weight:bold;color:#1f2937;">' + fmt(essentielles) + ' $</p></div>';
+  
+  htmlBudget += '<div><p style="margin:0;color:#6b7280;font-size:0.9em;">Épargne visée (' + (epargnePct*100) + '%)</p>';
+  htmlBudget += '<p style="margin:5px 0 0 0;font-size:1.5em;font-weight:bold;color:#10b981;">' + fmt(epargneVisee) + ' $</p></div>';
+  
+  htmlBudget += '<div><p style="margin:0;color:#6b7280;font-size:0.9em;">Budget loisirs disponible</p>';
+  htmlBudget += '<p style="margin:5px 0 0 0;font-size:1.5em;font-weight:bold;color:#2563eb;">' + fmt(budgetDisponible) + ' $</p></div>';
+  
+  htmlBudget += '</div>';
+  
+  htmlBudget += '<div style="background:#dbeafe;padding:12px;border-radius:6px;margin-top:15px;">';
+  htmlBudget += '<small style="color:#1e40af;">💡 Selon la règle 50/30/20, ton budget loisirs recommandé est <strong>' + fmt(budgetRecommande30) + ' $/mois</strong></small>';
+  htmlBudget += '</div>';
+  
+  htmlBudget += '</div>';
+  document.getElementById('budget-disponible').innerHTML = htmlBudget;
+  
+  // Calcul des abonnements avec coût par utilisation
+  var abonnements = [
+    {id: 'netflix', nom: 'Streaming'},
+    {id: 'musique', nom: 'Musique'},
+    {id: 'gym', nom: 'Gym'},
+    {id: 'jeux', nom: 'Jeux vidéo'},
+    {id: 'cafe', nom: 'Café'},
+    {id: 'autre', nom: 'Autre'}
+  ];
+  
+  var totalAbonnements = 0;
+  var abonnementsInutilises = [];
+  
+  for(var i = 0; i < abonnements.length; i++) {
+    var abo = abonnements[i];
+    var cout = parseFloat(document.getElementById('abo-' + abo.id).value) || 0;
+    var freq = parseFloat(document.getElementById('abo-' + abo.id + '-freq').value) || 0;
+    totalAbonnements += cout;
+    
+    var coutDiv = document.getElementById('abo-' + abo.id + '-cout');
+    if(cout > 0 && freq > 0) {
+      var coutParUtil = cout / freq;
+      var couleur = coutParUtil < 5 ? '#10b981' : coutParUtil < 15 ? '#f59e0b' : '#ef4444';
+      var verdict = coutParUtil < 5 ? '✅' : coutParUtil < 15 ? '⚠️' : '❌';
+      coutDiv.innerHTML = verdict + ' ' + fmt(coutParUtil) + '$/util';
+      coutDiv.style.color = couleur;
+      coutDiv.style.fontWeight = 'bold';
+      
+      if(freq < 2 && cout > 10) {
+        abonnementsInutilises.push({nom: abo.nom, cout: cout, freq: freq});
+      }
+    } else if(cout > 0 && freq === 0) {
+      coutDiv.innerHTML = '⚠️ Non utilisé';
+      coutDiv.style.color = '#ef4444';
+      abonnementsInutilises.push({nom: abo.nom, cout: cout, freq: 0});
+    } else {
+      coutDiv.innerHTML = '-';
+      coutDiv.style.color = '#6b7280';
+    }
+  }
+  
+  document.getElementById('total-abonnements').textContent = fmt(totalAbonnements) + ' $';
+  document.getElementById('total-abonnements-an').textContent = fmt(totalAbonnements * 12) + ' $';
+  
+  // Calcul des dépenses variables
+  var totalVariables = 
+    (parseFloat(document.getElementById('var-resto').value) || 0) +
+    (parseFloat(document.getElementById('var-bars').value) || 0) +
+    (parseFloat(document.getElementById('var-spectacles').value) || 0) +
+    (parseFloat(document.getElementById('var-shopping').value) || 0) +
+    (parseFloat(document.getElementById('var-hobbies').value) || 0) +
+    (parseFloat(document.getElementById('var-autres').value) || 0);
+  
+  document.getElementById('total-variables').textContent = fmt(totalVariables) + ' $';
+  
+  // Total dépenses plaisirs
+  var totalPlaisirs = totalAbonnements + totalVariables;
+  
+  // Calcul projet
+  var projetNom = document.getElementById('projet-nom').value || 'Projet';
+  var projetCout = parseFloat(document.getElementById('projet-cout').value) || 0;
+  var projetMois = parseFloat(document.getElementById('projet-mois').value) || 12;
+  
+  var htmlProjet = '';
+  if(projetCout > 0) {
+    var epargneMensuelle = projetCout / projetMois;
+    var pctBudget = budgetDisponible > 0 ? (epargneMensuelle / budgetDisponible * 100) : 0;
+    
+    htmlProjet += '<div style="background:#fef3c7;padding:20px;border-radius:10px;margin-top:20px;">';
+    htmlProjet += '<h4 style="color:#92400e;margin:0 0 10px 0;">🎯 ' + projetNom + '</h4>';
+    htmlProjet += '<p style="margin:5px 0;">Coût total : <strong>' + fmt(projetCout) + ' $</strong></p>';
+    htmlProjet += '<p style="margin:5px 0;">Délai : <strong>' + projetMois + ' mois</strong></p>';
+    htmlProjet += '<p style="margin:5px 0;font-size:1.2em;color:#92400e;">Épargne nécessaire : <strong>' + fmt(epargneMensuelle) + ' $/mois</strong></p>';
+    htmlProjet += '<p style="margin:10px 0 0 0;padding-top:10px;border-top:1px solid #fcd34d;color:#78350f;">';
+    htmlProjet += 'Ceci représente <strong>' + pctBudget.toFixed(1) + '%</strong> de ton budget loisirs disponible.';
+    htmlProjet += '</p>';
+    
+var margeActuelle = budgetDisponible - totalPlaisirs;
+
+if(epargneMensuelle <= margeActuelle) {
+  htmlProjet += '<p style="margin:10px 0 0 0;color:#047857;font-weight:600;">✅ Tu peux épargner pour ce projet avec ta marge actuelle de ' + fmt(margeActuelle) + ' $/mois !</p>';
+} else {
+  var aReducer = epargneMensuelle - margeActuelle;
+  var nouveauDelai = Math.ceil(projetCout / margeActuelle);
+  
+  htmlProjet += '<div style="background:#fff4e6;padding:15px;border-radius:8px;margin-top:10px;">';
+  htmlProjet += '<p style="margin:0 0 10px 0;color:#9a3412;font-weight:600;">⚠️ Ta marge actuelle : ' + fmt(margeActuelle) + ' $/mois</p>';
+  htmlProjet += '<p style="margin:0 0 10px 0;color:#7c2d12;">Pour épargner ' + fmt(epargneMensuelle) + ' $/mois, tu as <strong>3 options</strong> :</p>';
+  htmlProjet += '<ul style="margin:0 0 0 20px;color:#7c2d12;line-height:1.8;">';
+  htmlProjet += '<li><strong>Option 1 :</strong> Réduire tes dépenses plaisirs de ' + fmt(aReducer) + ' $/mois</li>';
+  htmlProjet += '<li><strong>Option 2 :</strong> Prolonger le délai à ' + nouveauDelai + ' mois (avec ta marge actuelle)</li>';
+  htmlProjet += '<li><strong>Option 3 :</strong> Réduire le coût du projet à ' + fmt(margeActuelle * projetMois) + ' $</li>';
+  htmlProjet += '</ul>';
+  htmlProjet += '</div>';
+}
+    
+    htmlProjet += '</div>';
+  }
+  document.getElementById('resultat-projet').innerHTML = htmlProjet;
+  
+  // Si aucune donnée, ne pas afficher les résultats
+  if(revenu === 0) {
+    document.getElementById('resultats-plaisirs').innerHTML = '';
+    return;
+  }
+  
+  // ===== RÉSULTATS GLOBAUX =====
+  var html = '';
+  
+  // Tableau récapitulatif
+  html += '<div class="card" style="margin-top:30px;">';
+  html += '<h3 style="color:#1f2937;">📊 Tableau de bord de tes plaisirs</h3>';
+  
+  var resto = parseFloat(document.getElementById('var-resto').value) || 0;
+  var bars = parseFloat(document.getElementById('var-bars').value) || 0;
+  var spectacles = parseFloat(document.getElementById('var-spectacles').value) || 0;
+  var shopping = parseFloat(document.getElementById('var-shopping').value) || 0;
+  var hobbies = parseFloat(document.getElementById('var-hobbies').value) || 0;
+  var autres = parseFloat(document.getElementById('var-autres').value) || 0;
+  
+  html += '<div style="overflow-x:auto;margin-top:20px;">';
+  html += '<table style="width:100%;border-collapse:collapse;">';
+  html += '<thead style="background:#f9fafb;"><tr>';
+  html += '<th style="text-align:left;padding:12px;border-bottom:2px solid #e5e7eb;">Catégorie</th>';
+  html += '<th style="text-align:right;padding:12px;border-bottom:2px solid #e5e7eb;">Montant</th>';
+  html += '<th style="text-align:right;padding:12px;border-bottom:2px solid #e5e7eb;">% du total</th>';
+  html += '</tr></thead><tbody>';
+  
+  var categories = [
+    {nom: 'Abonnements', valeur: totalAbonnements},
+    {nom: 'Restaurants/Livraison', valeur: resto},
+    {nom: 'Bars/Sorties', valeur: bars},
+    {nom: 'Cinéma/Spectacles', valeur: spectacles},
+    {nom: 'Shopping', valeur: shopping},
+    {nom: 'Hobbies', valeur: hobbies},
+    {nom: 'Autres', valeur: autres}
+  ];
+  
+  for(var i = 0; i < categories.length; i++) {
+    var cat = categories[i];
+    if(cat.valeur > 0) {
+      var pct = totalPlaisirs > 0 ? (cat.valeur / totalPlaisirs * 100) : 0;
+      html += '<tr><td style="padding:10px;border-bottom:1px solid #e5e7eb;">' + cat.nom + '</td>';
+      html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">' + fmt(cat.valeur) + ' $</td>';
+      html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">' + pct.toFixed(1) + '%</td></tr>';
+    }
+  }
+  
+  html += '<tr style="background:#f9fafb;font-weight:bold;"><td style="padding:12px;border-top:2px solid #e5e7eb;">TOTAL</td>';
+  html += '<td style="text-align:right;padding:12px;border-top:2px solid #e5e7eb;">' + fmt(totalPlaisirs) + ' $</td>';
+  html += '<td style="text-align:right;padding:12px;border-top:2px solid #e5e7eb;">100%</td></tr>';
+  
+  html += '</tbody></table></div>';
+  
+  // Comparaison budget disponible vs dépensé
+  html += '<div style="margin-top:20px;padding:20px;background:#f3f4f6;border-radius:10px;">';
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;">';
+  
+  html += '<div><p style="margin:0;color:#6b7280;font-size:0.9em;">Budget recommandé (30%)</p>';
+  html += '<p style="margin:5px 0 0 0;font-size:1.3em;font-weight:bold;color:#6b7280;">' + fmt(budgetRecommande30) + ' $</p></div>';
+  
+  html += '<div><p style="margin:0;color:#6b7280;font-size:0.9em;">Budget disponible (réel)</p>';
+  html += '<p style="margin:5px 0 0 0;font-size:1.3em;font-weight:bold;color:#2563eb;">' + fmt(budgetDisponible) + ' $</p></div>';
+  
+  html += '<div><p style="margin:0;color:#6b7280;font-size:0.9em;">Tu dépenses actuellement</p>';
+  html += '<p style="margin:5px 0 0 0;font-size:1.3em;font-weight:bold;color:' + (totalPlaisirs > budgetDisponible ? '#ef4444' : '#10b981') + '">' + fmt(totalPlaisirs) + ' $</p></div>';
+  
+  var diff = budgetDisponible - totalPlaisirs;
+  html += '<div><p style="margin:0;color:#6b7280;font-size:0.9em;">' + (diff > 0 ? 'Dépassement' : 'Marge restante') + '</p>';
+  html += '<p style="margin:5px 0 0 0;font-size:1.3em;font-weight:bold;color:' + (diff > 0 ? '#ef4444' : '#10b981') + '">' + (diff > 0 ? '+' : '') + fmt(diff) + ' $</p></div>';
+  
+  html += '</div></div>';
+  html += '</div>';
+  
+  // Diagnostic et recommandations
+  if(totalPlaisirs > budgetDisponible) {
+    var depassement = totalPlaisirs - budgetDisponible;
+    var pctDepassement = budgetDisponible > 0 ? (depassement / budgetDisponible * 100) : 0;
+    
+    html += '<div style="background:#fee2e2;border-left:6px solid #dc2626;padding:25px;border-radius:12px;margin-top:20px;">';
+    html += '<h4 style="color:#991b1b;margin:0 0 10px 0;">⚠️ Tu dépasses ton budget loisirs</h4>';
+    html += '<p style="margin:0 0 10px 0;color:#7f1d1d;">Dépassement : <strong>' + fmt(depassement) + ' $/mois</strong> (' + pctDepassement.toFixed(1) + '%)</p>';
+    html += '<p style="margin:0 0 10px 0;color:#7f1d1d;">Sur un an, cela représente <strong>' + fmt(depassement * 12) + ' $</strong> qui pourraient être épargnés ou investis.</p>';
+    
+    if(abonnementsInutilises.length > 0) {
+      html += '<div style="background:#fef2f2;padding:15px;border-radius:8px;margin-top:15px;">';
+      html += '<strong style="color:#991b1b;">💡 Opportunités d\'économies détectées :</strong>';
+      html += '<ul style="margin:10px 0 0 20px;color:#7f1d1d;line-height:1.8;">';
+      var economiesPotentielles = 0;
+      for(var i = 0; i < abonnementsInutilises.length; i++) {
+        var abo = abonnementsInutilises[i];
+        economiesPotentielles += abo.cout;
+        html += '<li><strong>' + abo.nom + '</strong> : ' + fmt(abo.cout) + ' $/mois ';
+        html += '(' + (abo.freq === 0 ? 'jamais utilisé' : 'utilisé < 2x/mois') + ')</li>';
+      }
+      html += '</ul>';
+      html += '<p style="margin:10px 0 0 0;color:#991b1b;font-weight:600;">En annulant ces abonnements : ' + fmt(economiesPotentielles) + ' $/mois économisés = ' + fmt(economiesPotentielles * 12) + ' $/an !</p>';
+      html += '</div>';
+    }
+    
+    html += '</div>';
+    
+  } else if(totalPlaisirs > 0) {
+    var marge = budgetDisponible - totalPlaisirs;
+    html += '<div style="background:#d1fae5;border-left:6px solid #10b981;padding:25px;border-radius:12px;margin-top:20px;">';
+    html += '<h4 style="color:#065f46;margin:0 0 10px 0;">✅ Bravo ! Tu gères bien ton budget plaisirs</h4>';
+    html += '<p style="margin:0 0 10px 0;color:#047857;">Il te reste <strong>' + fmt(marge) + ' $/mois</strong> dans ton budget loisirs.</p>';
+    html += '<p style="margin:0;color:#047857;">Tu peux :</p>';
+    html += '<ul style="margin:10px 0 0 20px;color:#047857;line-height:1.8;">';
+    html += '<li>Épargner pour un gros projet (voyage, équipement)</li>';
+    html += '<li>Augmenter ton épargne générale</li>';
+    html += '<li>Te permettre une dépense plaisir occasionnelle</li>';
+    html += '</ul>';
+    html += '</div>';
+  }
+  
+  // Alerte si abonnements > 50% du budget plaisirs
+  if(totalPlaisirs > 0 && totalAbonnements / totalPlaisirs > 0.5) {
+    var pctAbo = (totalAbonnements / totalPlaisirs * 100);
+    html += '<div style="background:#fff4e6;border-left:4px solid #f97316;padding:20px;border-radius:10px;margin-top:20px;">';
+    html += '<strong style="color:#9a3412;">⚠️ ' + pctAbo.toFixed(0) + '% de ton budget plaisirs est en abonnements</strong>';
+    html += '<p style="margin:10px 0 0 0;color:#7c2d12;">La moitié (ou plus) de ton budget plaisirs part en abonnements automatiques. Assure-toi que tu les utilises vraiment !</p>';
+    html += '</div>';
+  }
+  
+  document.getElementById('resultats-plaisirs').innerHTML = html;
+}
+
+function calcAcheterLouer() {
+  // Récupérer les inputs
+  var prixAchat = parseFloat(document.getElementById('al-prix').value) || 0;
+  var miseFondsPct = parseFloat(document.getElementById('al-mise-fonds-pct').value) / 100;
+  var tauxHypo = (parseFloat(document.getElementById('al-taux-hypo').value) || 5) / 100;
+  var amortissement = parseInt(document.getElementById('al-amortissement').value) || 25;
+  var taxesAn = parseFloat(document.getElementById('al-taxes').value) || 0;
+  var entretienAn = parseFloat(document.getElementById('al-entretien').value) || 0;
+  var assuranceAn = parseFloat(document.getElementById('al-assurance').value) || 0;
+  
+  var loyer = parseFloat(document.getElementById('al-loyer').value) || 0;
+  var depotGarantie = parseFloat(document.getElementById('al-depot-garantie').value) || 0;
+  var augmentationLoyer = (parseFloat(document.getElementById('al-augmentation-loyer').value) || 3) / 100;
+  var rendement = (parseFloat(document.getElementById('al-rendement').value) || 6) / 100;
+  
+  var duree = parseInt(document.getElementById('al-duree').value) || 10;
+  var appreciation = (parseFloat(document.getElementById('al-appreciation').value) || 3) / 100;
+  var fraisVente = (parseFloat(document.getElementById('al-frais-vente').value) || 6) / 100;
+  
+  // Si aucune donnée, ne pas afficher
+  if(prixAchat === 0 || loyer === 0) {
+    document.getElementById('resultats-acheter-louer').innerHTML = '';
+    return;
+  }
+  
+  // ===== SCÉNARIO ACHAT =====
+  
+  var miseFonds = prixAchat * miseFondsPct;
+  var montantHypo = prixAchat - miseFonds;
+  
+  // Frais SCHL si mise de fonds < 20%
+  var fraisSCHL = 0;
+  if(miseFondsPct < 0.20) {
+    var ratioEmprunt = 1 - miseFondsPct;
+    var tauxPrime = ratioEmprunt > 0.95 ? 0.04 : ratioEmprunt > 0.90 ? 0.031 : ratioEmprunt > 0.85 ? 0.028 : 0.024;
+    fraisSCHL = montantHypo * tauxPrime;
+    montantHypo += fraisSCHL;
+  }
+  
+  // Frais de notaire et inspection (estimés à 2-3% du prix)
+  var fraisAchat = prixAchat * 0.025;
+  
+  // Taxe de bienvenue
+  var taxeBienvenue = 0;
+  if(prixAchat <= 58900) {
+    taxeBienvenue = prixAchat * 0.005;
+  } else if(prixAchat <= 294600) {
+    taxeBienvenue = 58900 * 0.005 + (prixAchat - 58900) * 0.01;
+  } else {
+    taxeBienvenue = 58900 * 0.005 + (294600 - 58900) * 0.01 + (prixAchat - 294600) * 0.015;
+  }
+  
+  // Paiement hypothécaire mensuel
+  var tauxMensuel = tauxHypo / 12;
+  var nMois = amortissement * 12;
+  var paiementHypoMensuel = (montantHypo * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -nMois));
+  
+  // Simulation année par année
+  var soldeHypo = montantHypo;
+  var coutTotalAchat = miseFonds + fraisAchat + taxeBienvenue + fraisSCHL;
+  var interetsPayes = 0;
+  var valeurMaison = prixAchat;
+  
+  for(var annee = 1; annee <= duree; annee++) {
+    // Paiements hypothécaires de l'année
+    var interetsAnnee = 0;
+    var capitalAnnee = 0;
+    var paiementsHypoAnnee = 0;
+    
+    for(var mois = 0; mois < 12 && soldeHypo > 0; mois++) {
+      var interetsMois = soldeHypo * tauxMensuel;
+      var capitalMois = Math.min(paiementHypoMensuel - interetsMois, soldeHypo);
+      var paiementReel = Math.min(paiementHypoMensuel, interetsMois + capitalMois);
+      
+      interetsAnnee += interetsMois;
+      capitalAnnee += capitalMois;
+      paiementsHypoAnnee += paiementReel;
+      soldeHypo -= capitalMois;
+    }
+    
+    interetsPayes += interetsAnnee;
+    
+    // Frais annuels - utiliser les paiements RÉELS
+    coutTotalAchat += paiementsHypoAnnee + taxesAn + entretienAn + assuranceAn;
+    
+    // Appréciation de la maison
+    valeurMaison *= (1 + appreciation);
+  }
+  
+  // Valeur nette à la fin (équité)
+  var equiteFin = valeurMaison - soldeHypo;
+  var fraisVenteFinaux = valeurMaison * fraisVente;
+  var gainNetVente = equiteFin - fraisVenteFinaux;
+  
+  var coutNetAchat = coutTotalAchat - gainNetVente;
+  
+  // ===== SCÉNARIO LOCATION =====
+  
+  var coutTotalLocation = 0;
+  var loyerActuel = loyer;
+  var fraisLocationInitiaux = loyer * (1 + depotGarantie);
+  var portefeuilleInvesti = (miseFonds + fraisAchat + taxeBienvenue + fraisSCHL) - fraisLocationInitiaux;
+  
+  for(var annee = 1; annee <= duree; annee++) {
+    // Loyers de l'année
+    coutTotalLocation += loyerActuel * 12;
+    
+    // Différence mensuelle investie
+    var fraisProprio = (taxesAn + entretienAn + assuranceAn) / 12;
+    var differenceMensuelle = (paiementHypoMensuel + fraisProprio) - loyerActuel;
+    
+    if(differenceMensuelle > 0) {
+      // Si louer coûte moins cher, on investit la différence
+      for(var mois = 0; mois < 12; mois++) {
+        portefeuilleInvesti += differenceMensuelle;
+        portefeuilleInvesti *= (1 + rendement / 12);
+      }
+    } else {
+      // Si louer coûte plus cher, on retire du portefeuille
+      for(var mois = 0; mois < 12; mois++) {
+        portefeuilleInvesti += differenceMensuelle;
+        portefeuilleInvesti *= (1 + rendement / 12);
+      }
+    }
+    
+    // Augmentation du loyer pour l'année suivante
+    loyerActuel *= (1 + augmentationLoyer);
+  }
+  
+  var coutNetLocation = coutTotalLocation - portefeuilleInvesti;
+  
+  // ===== COMPARAISON =====
+  
+  var difference = coutNetLocation - coutNetAchat;
+  var meilleurChoix = difference > 0 ? 'achat' : 'location';
+  
+  // ===== AFFICHAGE DES RÉSULTATS =====
+  
+  var html = '';
+  
+  // Récapitulatif des coûts initiaux
+  html += '<div class="card" style="margin-top:30px;">';
+  html += '<h3 style="color:#1f2937;">💰 Coûts initiaux</h3>';
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:20px;">';
+  
+  html += '<div style="background:#eff6ff;padding:20px;border-radius:10px;">';
+  html += '<h4 style="color:#1e40af;margin:0 0 10px 0;">Scénario ACHAT</h4>';
+  html += '<p style="margin:5px 0;">Mise de fonds : <strong>' + fmt(miseFonds) + ' $</strong></p>';
+  html += '<p style="margin:5px 0;">Frais notaire/inspection : <strong>' + fmt(fraisAchat) + ' $</strong></p>';
+ html += '<p style="margin:5px 0;">Taxe de bienvenue : <strong>' + fmt(taxeBienvenue) + ' $</strong></p>';
+  if(fraisSCHL > 0) {
+    html += '<p style="margin:5px 0;color:#dc2626;">Frais SCHL : <strong>' + fmt(fraisSCHL) + ' $</strong></p>';
+  }
+  html += '<p style="margin:10px 0 0 0;padding-top:10px;border-top:2px solid #bfdbfe;font-size:1.2em;color:#1e40af;"><strong>Total : ' + fmt(miseFonds + fraisAchat + taxeBienvenue + fraisSCHL) + ' $</strong></p>';
+  html += '</div>';
+  
+  html += '<div style="background:#d1fae5;padding:20px;border-radius:10px;">';
+  html += '<h4 style="color:#065f46;margin:0 0 10px 0;">Scénario LOCATION</h4>';
+  html += '<p style="margin:5px 0;">Premier mois de loyer : <strong>' + fmt(loyer) + ' $</strong></p>';
+  if(depotGarantie > 0) {
+    html += '<p style="margin:5px 0;">Dépôt de garantie (' + depotGarantie + ' mois) : <strong>' + fmt(loyer * depotGarantie) + ' $</strong></p>';
+  }
+  var totalLocationInitial = loyer * (1 + depotGarantie);
+  html += '<p style="margin:10px 0 0 0;padding-top:10px;border-top:2px solid #6ee7b7;font-size:1.2em;color:#065f46;"><strong>Total : ' + fmt(totalLocationInitial) + ' $</strong></p>';
+  html += '<p style="margin:10px 0 0 0;font-size:0.9em;color:#047857;">Capital disponible pour investir : ' + fmt(portefeuilleInvesti) + ' $</strong></p>';
+  html += '</div>';
+  html += '</div></div>';
+  
+  // Paiements mensuels
+  html += '<div class="card" style="margin-top:20px;">';
+  html += '<h3 style="color:#1f2937;">📅 Paiements mensuels (année 1)</h3>';
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:20px;">';
+  
+  var fraisProprioMensuel = (taxesAn + entretienAn + assuranceAn) / 12;
+  var totalMensuelAchat = paiementHypoMensuel + fraisProprioMensuel;
+  
+  html += '<div style="background:#eff6ff;padding:20px;border-radius:10px;">';
+  html += '<h4 style="color:#1e40af;margin:0 0 10px 0;">ACHAT</h4>';
+  html += '<p style="margin:5px 0;">Hypothèque : <strong>' + fmt(paiementHypoMensuel) + ' $/mois</strong></p>';
+  html += '<p style="margin:5px 0;">Taxes : <strong>' + fmt(taxesAn/12) + ' $/mois</strong></p>';
+  html += '<p style="margin:5px 0;">Entretien : <strong>' + fmt(entretienAn/12) + ' $/mois</strong></p>';
+  html += '<p style="margin:5px 0;">Assurance : <strong>' + fmt(assuranceAn/12) + ' $/mois</strong></p>';
+  html += '<p style="margin:10px 0 0 0;padding-top:10px;border-top:2px solid #bfdbfe;font-size:1.3em;color:#1e40af;"><strong>' + fmt(totalMensuelAchat) + ' $/mois</strong></p>';
+  html += '</div>';
+  
+  html += '<div style="background:#d1fae5;padding:20px;border-radius:10px;">';
+  html += '<h4 style="color:#065f46;margin:0 0 10px 0;">LOCATION</h4>';
+  html += '<p style="margin:5px 0;">Loyer : <strong>' + fmt(loyer) + ' $/mois</strong></p>';
+  html += '<p style="margin:10px 0 0 0;padding-top:10px;border-top:2px solid #6ee7b7;font-size:1.3em;color:#065f46;"><strong>' + fmt(loyer) + ' $/mois</strong></p>';
+  var diff = totalMensuelAchat - loyer;
+  html += '<p style="margin:10px 0 0 0;font-size:0.9em;color:' + (diff > 0 ? '#047857' : '#dc2626') + ';">';
+  html += diff > 0 ? 'Économie de ' + fmt(diff) + ' $/mois à investir' : 'Coût supplémentaire de ' + fmt(Math.abs(diff)) + ' $/mois';
+  html += '</p>';
+  html += '</div>';
+  html += '</div></div>';
+  
+  // Résultats après X années
+  html += '<div class="card" style="margin-top:20px;">';
+  html += '<h3 style="color:#1f2937;">📊 Comparaison après ' + duree + ' ans</h3>';
+  html += '<div style="overflow-x:auto;margin-top:20px;">';
+  html += '<table style="width:100%;border-collapse:collapse;">';
+  html += '<thead style="background:#f9fafb;"><tr>';
+  html += '<th style="text-align:left;padding:12px;border-bottom:2px solid #e5e7eb;">Critère</th>';
+  html += '<th style="text-align:right;padding:12px;border-bottom:2px solid #e5e7eb;">ACHAT</th>';
+  html += '<th style="text-align:right;padding:12px;border-bottom:2px solid #e5e7eb;">LOCATION</th>';
+  html += '</tr></thead><tbody>';
+  
+  html += '<tr><td style="padding:10px;border-bottom:1px solid #e5e7eb;">Coûts totaux déboursés</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">' + fmt(coutTotalAchat) + ' $</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">' + fmt(coutTotalLocation) + ' $</td></tr>';
+  
+  html += '<tr><td style="padding:10px;border-bottom:1px solid #e5e7eb;">Valeur de la maison</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;color:#10b981;">' + fmt(valeurMaison) + ' $</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">-</td></tr>';
+  
+  html += '<tr><td style="padding:10px;border-bottom:1px solid #e5e7eb;">Solde hypothécaire restant</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;color:#ef4444;">-' + fmt(soldeHypo) + ' $</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">-</td></tr>';
+  
+  html += '<tr><td style="padding:10px;border-bottom:1px solid #e5e7eb;">Équité (valeur - solde)</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;color:#10b981;">' + fmt(equiteFin) + ' $</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">-</td></tr>';
+  
+  html += '<tr><td style="padding:10px;border-bottom:1px solid #e5e7eb;">Frais de vente (' + (fraisVente*100).toFixed(1) + '%)</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;color:#ef4444;">-' + fmt(fraisVenteFinaux) + ' $</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">-</td></tr>';
+  
+  html += '<tr><td style="padding:10px;border-bottom:1px solid #e5e7eb;">Portefeuille investi</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;">-</td>';
+  html += '<td style="text-align:right;padding:10px;border-bottom:1px solid #e5e7eb;color:#10b981;">' + fmt(portefeuilleInvesti) + ' $</td></tr>';
+  
+  html += '<tr style="background:#f9fafb;font-weight:bold;font-size:1.1em;"><td style="padding:15px;border-top:2px solid #e5e7eb;">COÛT NET FINAL</td>';
+  html += '<td style="text-align:right;padding:15px;border-top:2px solid #e5e7eb;color:' + (coutNetAchat < coutNetLocation ? '#10b981' : '#ef4444') + '">' + fmt(coutNetAchat) + ' $</td>';
+  html += '<td style="text-align:right;padding:15px;border-top:2px solid #e5e7eb;color:' + (coutNetLocation < coutNetAchat ? '#10b981' : '#ef4444') + '">' + fmt(coutNetLocation) + ' $</td></tr>';
+  
+  html += '</tbody></table></div>';
+  html += '</div>';
+  
+  // Note explicative
+  html += '<div style="background:#f0f9ff;padding:15px;border-radius:8px;margin-top:15px;border-left:4px solid #2563eb;">';
+  html += '<p style="margin:0;font-size:0.9em;color:#1e40af;"><strong>📊 Comment lire les résultats :</strong></p>';
+  html += '<p style="margin:5px 0 0 0;font-size:0.85em;color:#1e3a8a;">';
+  html += '• Un montant positif = vous payez ce montant<br>';
+  html += '• Un montant négatif = vous gagnez ce montant (votre patrimoine augmente)';
+  html += '</p></div>';
+  
+  // Verdict final
+  var couleurVerdict = meilleurChoix === 'achat' ? '#1e40af' : '#047857';
+  var bgVerdict = meilleurChoix === 'achat' ? '#eff6ff' : '#d1fae5';
+  
+  html += '<div style="background:' + bgVerdict + ';border-left:6px solid ' + couleurVerdict + ';padding:25px;border-radius:12px;margin-top:30px;">';
+  html += '<h3 style="color:' + couleurVerdict + ';margin:0 0 15px 0;">🎯 Verdict après ' + duree + ' ans</h3>';
+  
+  if(meilleurChoix === 'achat') {
+    html += '<p style="margin:0 0 10px 0;font-size:1.2em;color:#1e40af;"><strong>ACHETER est plus avantageux de ' + fmt(Math.abs(difference)) + ' $</strong></p>';
+    html += '<p style="margin:0;color:#1e3a8a;line-height:1.7;">Dans ce scénario, acheter permet d\'accumuler plus de richesse grâce à l\'équité dans la propriété, même en tenant compte des frais d\'entretien et des coûts de vente.</p>';
+  } else {
+    html += '<p style="margin:0 0 10px 0;font-size:1.2em;color:#065f46;"><strong>LOUER est plus avantageux de ' + fmt(Math.abs(difference)) + ' $</strong></p>';
+    html += '<p style="margin:0;color:#064e3b;line-height:1.7;">Dans ce scénario, continuer à louer et investir la différence dans un portefeuille permet d\'accumuler plus de richesse que l\'achat d\'une propriété.</p>';
+  }
+  
+  html += '</div>';
+  
+  // Point mort (break-even)
+  html += '<div style="background:#fef3c7;padding:20px;border-radius:10px;margin-top:20px;">';
+  html += '<h4 style="color:#92400e;margin:0 0 10px 0;">⏱️ Point mort (break-even)</h4>';
+  html += '<p style="margin:0;color:#78350f;line-height:1.7;">Pour trouver le point mort exact, il faudrait calculer année par année jusqu\'à ce que les deux options s\'égalisent. ';
+  html += 'Généralement, l\'achat devient avantageux après <strong>5-7 ans</strong> si la maison s\'apprécie bien et que vous restez longtemps.</p>';
+  html += '</div>';
+  
+  // Facteurs à considérer
+  html += '<div style="background:#f3f4f6;padding:20px;border-radius:10px;margin-top:20px;">';
+  html += '<h4 style="color:#374151;margin:0 0 15px 0;">🤔 Autres facteurs à considérer</h4>';
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;">';
+  
+  html += '<div><strong style="color:#1f2937;">✅ Avantages ACHAT</strong>';
+  html += '<ul style="margin:5px 0 0 20px;color:#6b7280;line-height:1.8;font-size:0.9em;">';
+  html += '<li>Stabilité du paiement hypothécaire</li>';
+  html += '<li>Accumulation d\'équité forcée</li>';
+  html += '<li>Liberté de rénovation</li>';
+  html += '<li>Pas de propriétaire</li>';
+  html += '</ul></div>';
+  
+  html += '<div><strong style="color:#1f2937;">✅ Avantages LOCATION</strong>';
+  html += '<ul style="margin:5px 0 0 20px;color:#6b7280;line-height:1.8;font-size:0.9em;">';
+  html += '<li>Flexibilité géographique</li>';
+  html += '<li>Pas de frais d\'entretien</li>';
+  html += '<li>Moins de capital immobilisé</li>';
+  html += '<li>Liquidité préservée</li>';
+  html += '</ul></div>';
+  
+  html += '</div></div>';
+  
+  document.getElementById('resultats-acheter-louer').innerHTML = html;
 }
 
 </script>
