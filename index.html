@@ -19,6 +19,284 @@
   <link rel="canonical" href="https://parlonscash.pro/">
 
 <style>
+
+/* === STYLES ÉCRAN D'ACCUEIL === */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.welcome-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.welcome-header h1 {
+  font-size: 2em;
+  color: #1e40af;
+  margin-bottom: 10px;
+}
+
+.welcome-header p {
+  color: #6b7280;
+  font-size: 1.1em;
+}
+
+.choice-buttons {
+  display: grid;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.choice-btn {
+  padding: 25px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.choice-btn:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+  transform: translateY(-2px);
+}
+
+.choice-btn h3 {
+  color: #1e40af;
+  margin-bottom: 8px;
+  font-size: 1.3em;
+}
+
+.choice-btn p {
+  color: #6b7280;
+  margin: 0;
+}
+
+.question-container {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.question-title {
+  color: #1f2937;
+  font-size: 1.4em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.progress-bar {
+  background: #e5e7eb;
+  height: 8px;
+  border-radius: 4px;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #2563eb, #10b981);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.options-grid {
+  display: grid;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.option-btn {
+  padding: 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  font-size: 1em;
+}
+
+.option-btn:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.option-btn.selected {
+  border-color: #2563eb;
+  background: #dbeafe;
+  font-weight: 600;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.btn-secondary, .btn-primary {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1e40af;
+}
+
+.btn-primary:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+}
+
+.results-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.priority-box {
+  background: #fef2f2;
+  border-left: 4px solid #dc2626;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.priority-box h3 {
+  color: #dc2626;
+  margin-bottom: 15px;
+}
+
+.priority-item {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-left: 3px solid #f59e0b;
+}
+
+.priority-item h4 {
+  color: #1f2937;
+  margin-bottom: 5px;
+}
+
+.priority-item p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.recommendations-box {
+  background: #eff6ff;
+  border-left: 4px solid #2563eb;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.recommendations-box h3 {
+  color: #1e40af;
+  margin-bottom: 15px;
+}
+
+.recommendations-box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.recommendations-box li {
+  padding: 10px 0;
+  color: #374151;
+  border-bottom: 1px solid #dbeafe;
+}
+
+.recommendations-box li:last-child {
+  border-bottom: none;
+}
+
+.final-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.final-buttons button {
+  flex: 1;
+}
+
+.skip-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.skip-link a {
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.skip-link a:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
+}
+
+<style>
 body {
   overflow-x: hidden;
 }
@@ -102,7 +380,6 @@ header h1{font-size:2em;margin-bottom:10px}
 .hidden{display:none}
 footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:50px}
 
-<style>
 body {
   font-family: system-ui, sans-serif;
   color: #374151;
@@ -139,8 +416,45 @@ button:hover, .tab-button:hover {
 }
 
 </style>
+
 </head>
 <body>
+
+<!-- === ÉCRAN D'ACCUEIL GUIDÉ === -->
+<div id="welcomeModal" class="modal-overlay">
+  <div class="modal-content">
+    <!-- Écran de bienvenue -->
+    <div id="welcomeScreen">
+      <div class="welcome-header">
+        <h1>🎯 Bienvenue !</h1>
+        <p>Comment souhaitez-vous commencer ?</p>
+      </div>
+      
+      <div class="choice-buttons">
+        <button class="choice-btn" onclick="startGuide()">
+          <h3>🚀 Parcours guidé</h3>
+          <p>5 questions pour personnaliser votre expérience (5 min)</p>
+        </button>
+        
+        <button class="choice-btn" onclick="skipGuide()">
+          <h3>📊 Accès direct</h3>
+          <p>Je sais ce que je veux faire</p>
+        </button>
+      </div>
+      
+      <div class="skip-link">
+        <a href="#" onclick="skipGuide(); return false;">Passer cette intro</a>
+      </div>
+    </div>
+    
+    <!-- Questions (caché au début) -->
+    <div id="questionsScreen" class="hidden"></div>
+    
+    <!-- Résultats (caché au début) -->
+    <div id="resultsScreen" class="hidden"></div>
+  </div>
+</div>
+
 <header>
   <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
     <div>
@@ -3919,5 +4233,281 @@ function calcAcheterLouer() {
 }
 
 </script>
+
+<script>
+// === ÉCRAN D'ACCUEIL GUIDÉ ===
+
+// Vérifier si l'utilisateur a déjà vu l'intro
+window.addEventListener('DOMContentLoaded', function() {
+  var hasSeenIntro = localStorage.getItem('hasSeenIntro');
+  if (hasSeenIntro === 'true') {
+    document.getElementById('welcomeModal').style.display = 'none';
+  }
+});
+
+var currentQuestion = 0;
+var userAnswers = {};
+
+var questions = [
+  {
+    id: 'profil',
+    question: 'Quelle est votre situation actuelle ?',
+    options: [
+      { value: 'etudiant', label: '🎓 Étudiant / Début de carrière' },
+      { value: 'jeune', label: '💼 Jeune professionnel (25-35 ans)' },
+      { value: 'famille', label: '👨‍👩‍👧 Famille établie (35-50 ans)' },
+      { value: 'proche-retraite', label: '🏖️ Proche de la retraite (50-65 ans)' },
+      { value: 'retraite', label: '🌴 Retraité' }
+    ]
+  },
+  {
+    id: 'priorite',
+    question: 'Quelle est votre priorité #1 aujourd\'hui ?',
+    options: [
+      { value: 'comprendre', label: '📊 Comprendre ma situation financière' },
+      { value: 'dettes', label: '💳 Rembourser mes dettes' },
+      { value: 'urgence', label: '🆘 Constituer un fonds d\'urgence' },
+      { value: 'epargne', label: '🎯 Épargner pour un projet' },
+      { value: 'retraite', label: '🏖️ Planifier ma retraite' },
+      { value: 'maison', label: '🏠 Comparer achat vs location' }
+    ]
+  },
+  {
+    id: 'logement',
+    question: 'Votre situation de logement actuelle :',
+    options: [
+      { value: 'locataire', label: '🔑 Locataire' },
+      { value: 'proprio-hypo', label: '🏠 Propriétaire avec hypothèque' },
+      { value: 'proprio', label: '🏡 Propriétaire sans hypothèque' },
+      { value: 'autre', label: '👨‍👩‍👧 Chez mes parents / Autre' }
+    ]
+  },
+  {
+    id: 'dettes',
+    question: 'Avez-vous des dettes (hors hypothèque) ?',
+    options: [
+      { value: 'aucune', label: '✅ Aucune dette' },
+      { value: 'petite', label: '📊 Moins de 5 000 $' },
+      { value: 'moyenne', label: '⚠️ Entre 5 000 $ et 20 000 $' },
+      { value: 'grosse', label: '🚨 Plus de 20 000 $' }
+    ]
+  },
+  {
+    id: 'urgence',
+    question: 'Avez-vous un fonds d\'urgence ?',
+    options: [
+      { value: 'oui', label: '✅ Oui, au moins 3 mois de dépenses' },
+      { value: 'partiel', label: '📊 Un peu, mais pas assez' },
+      { value: 'non', label: '❌ Non, pas encore' }
+    ]
+  }
+];
+
+function startGuide() {
+  document.getElementById('welcomeScreen').classList.add('hidden');
+  document.getElementById('questionsScreen').classList.remove('hidden');
+  currentQuestion = 0;
+  showQuestion();
+}
+
+function skipGuide() {
+  document.getElementById('welcomeModal').style.display = 'none';
+  localStorage.setItem('hasSeenIntro', 'true');
+}
+
+function showQuestion() {
+  var q = questions[currentQuestion];
+  var progress = ((currentQuestion + 1) / questions.length * 100);
+  
+  var html = '<div class="question-container">';
+  html += '<div class="progress-bar"><div class="progress-fill" style="width:' + progress + '%"></div></div>';
+  html += '<p style="text-align:center;color:#6b7280;margin-bottom:20px;">Question ' + (currentQuestion + 1) + ' sur ' + questions.length + '</p>';
+  html += '<h2 class="question-title">' + q.question + '</h2>';
+  html += '<div class="options-grid">';
+  
+  for (var i = 0; i < q.options.length; i++) {
+    var opt = q.options[i];
+    var selected = userAnswers[q.id] === opt.value ? 'selected' : '';
+    html += '<button class="option-btn ' + selected + '" onclick="selectOption(\'' + q.id + '\', \'' + opt.value + '\')">';
+    html += opt.label;
+    html += '</button>';
+  }
+  
+  html += '</div>';
+  html += '<div class="nav-buttons">';
+  
+  if (currentQuestion > 0) {
+    html += '<button class="btn-secondary" onclick="previousQuestion()">← Précédent</button>';
+  } else {
+    html += '<button class="btn-secondary" onclick="backToWelcome()">← Retour</button>';
+  }
+  
+  var disabled = userAnswers[q.id] ? '' : 'disabled';
+  var btnText = currentQuestion === questions.length - 1 ? 'Voir mes recommandations →' : 'Suivant →';
+  html += '<button class="btn-primary" ' + disabled + ' onclick="nextQuestion()">' + btnText + '</button>';
+  
+  html += '</div>';
+  html += '</div>';
+  
+  document.getElementById('questionsScreen').innerHTML = html;
+}
+
+function selectOption(questionId, value) {
+  userAnswers[questionId] = value;
+  showQuestion();
+}
+
+function previousQuestion() {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    showQuestion();
+  }
+}
+
+function nextQuestion() {
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    showQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function backToWelcome() {
+  document.getElementById('questionsScreen').classList.add('hidden');
+  document.getElementById('welcomeScreen').classList.remove('hidden');
+  currentQuestion = 0;
+  userAnswers = {};
+}
+
+function showResults() {
+  document.getElementById('questionsScreen').classList.add('hidden');
+  document.getElementById('resultsScreen').classList.remove('hidden');
+  
+  var priorities = [];
+  var recommendations = [];
+  
+  // Analyser les réponses pour générer les recommandations
+  
+  // Fonds d'urgence
+  if (userAnswers.urgence === 'non' || userAnswers.urgence === 'partiel') {
+    priorities.push({
+      icon: '🆘',
+      title: 'Constituer un fonds d\'urgence',
+      desc: 'Visez 3-6 mois de dépenses',
+      action: 'objectifs'
+    });
+  }
+  
+  // Dettes
+  if (userAnswers.dettes !== 'aucune') {
+    var urgence = userAnswers.dettes === 'grosse' ? 'URGENT : ' : '';
+    priorities.push({
+      icon: '💳',
+      title: urgence + 'Rembourser vos dettes',
+      desc: 'Stratégie avalanche ou boule de neige',
+      action: 'dettes'
+    });
+  }
+  
+  // Recommandations selon la priorité
+  if (userAnswers.priorite === 'comprendre') {
+    recommendations.push('Commencez par compléter votre <strong>Bilan</strong>');
+  }
+  
+  if (userAnswers.priorite === 'maison') {
+    recommendations.push('Utilisez le calculateur <strong>Acheter vs Louer</strong>');
+  }
+  
+  if (userAnswers.priorite === 'retraite') {
+    recommendations.push('Calculez votre <strong>Plan de retraite</strong>');
+  }
+  
+  if (userAnswers.priorite === 'epargne') {
+    recommendations.push('Définissez vos <strong>Objectifs d\'épargne</strong>');
+  }
+  
+  recommendations.push('Calculez votre budget idéal avec la règle <strong>50/30/20</strong>');
+  recommendations.push('Optimisez vos <strong>Impôts</strong>');
+  
+  // Construire le HTML
+  var html = '<div class="results-container">';
+  html += '<div class="welcome-header">';
+  html += '<h1>📋 Votre plan d\'action personnalisé</h1>';
+  html += '</div>';
+  
+  if (priorities.length > 0) {
+    html += '<div class="priority-box">';
+    html += '<h3>🚨 PRIORITÉS URGENTES</h3>';
+    for (var i = 0; i < priorities.length; i++) {
+      var p = priorities[i];
+      html += '<div class="priority-item">';
+      html += '<h4>' + p.icon + ' ' + p.title + '</h4>';
+      html += '<p>' + p.desc + '</p>';
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  
+  html += '<div class="recommendations-box">';
+  html += '<h3>📊 RECOMMANDATIONS</h3>';
+  html += '<ul>';
+  for (var j = 0; j < recommendations.length; j++) {
+    html += '<li>• ' + recommendations[j] + '</li>';
+  }
+  html += '</ul>';
+  html += '</div>';
+  
+  html += '<div class="final-buttons">';
+  html += '<button class="btn-primary" onclick="goToBilan()">📊 Commencer mon bilan</button>';
+  html += '<button class="btn-secondary" onclick="closeModal()">Voir tous les outils</button>';
+  html += '</div>';
+  
+  html += '</div>';
+  
+  document.getElementById('resultsScreen').innerHTML = html;
+}
+
+function goToBilan() {
+  closeModal();
+  changeTab('bilan');
+}
+
+function closeModal() {
+  document.getElementById('welcomeModal').style.display = 'none';
+  localStorage.setItem('hasSeenIntro', 'true');
+}
+</script>
+```
+
+---
+
+## 🎯 **RÉSUMÉ DES EMPLACEMENTS**
+```
+<head>
+  <style>
+    ... vos styles existants ...
+    
+    /* AJOUTER ICI LE CSS DE L'ÉCRAN D'ACCUEIL */
+    
+  </style>
+</head>
+
+<body>
+  
+  <!-- AJOUTER ICI LE HTML DE LA MODAL -->
+  
+  <header>
+    ... votre header existant ...
+  </header>
+  
+  ... reste du contenu ...
+  
+  <script>
+    ... vos scripts existants ...
+  </script>
+  
+  <!-- AJOUTER ICI LE JAVASCRIPT DE L'ÉCRAN D'ACCUEIL -->
+  
 </body>
 </html>
