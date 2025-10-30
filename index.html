@@ -379,6 +379,9 @@ header h1{font-size:2em;margin-bottom:10px}
 .section-title{font-size:1.3em;color:#1f2937;margin:30px 0 15px 0;font-weight:600;border-bottom:2px solid #e5e7eb;padding-bottom:10px}
 .hidden{display:none}
 footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:50px}
+</style>
+
+<style>
 
 body {
   font-family: system-ui, sans-serif;
@@ -1464,6 +1467,16 @@ Historique Québec : 2-4% par an
     basée sur la <strong>capacité réelle</strong> de chacun, pas seulement sur le revenu.
   </p>
 
+    <!-- Disclaimer confidentialité -->
+    <div style="background:#fff8e1;border-left:4px solid #f59e0b;padding:15px;border-radius:8px;margin:15px 0;">
+   <strong style="color:#92400e;">🔒 Confidentialité et consentement</strong><p style="margin:8px 0 0 0;color:#78350f;font-size:0.9em;line-height:1.6;">
+        Partagez vos informations financières <strong>seulement si vous êtes confortable</strong> de le faire. 
+        Aucune information saisie ici n'est sauvegardée ou partagée - tout reste dans votre navigateur.
+        <br>
+        💡 Une relation saine repose sur la <strong>transparence volontaire</strong>, pas sur l'obligation ou la surveillance.
+      </p>
+    </div>
+
   <!-- SECTION 1 : PERSONNE A -->
   <div class="card">
     <h3 style="color:#2563eb;">👤 Profil financier - Personne A</h3>
@@ -1474,16 +1487,6 @@ Historique Québec : 2-4% par an
     </div>
     
     <h4 style="margin-top:20px;color:#374151;">Dettes et obligations personnelles</h4>
-    
-    <!-- Disclaimer confidentialité -->
-    <div style="background:#fff8e1;border-left:4px solid #f59e0b;padding:15px;border-radius:8px;margin:15px 0;">
-   <strong style="color:#92400e;">🔒 Confidentialité et consentement</strong><p style="margin:8px 0 0 0;color:#78350f;font-size:0.9em;line-height:1.6;">
-        Partagez vos informations financières <strong>seulement si vous êtes confortable</strong> de le faire. 
-        Aucune information saisie ici n'est sauvegardée ou partagée - tout reste dans votre navigateur.
-        <br>
-        💡 Une relation saine repose sur la <strong>transparence volontaire</strong>, pas sur l'obligation ou la surveillance.
-      </p>
-    </div>
     
     <div class="form-group">
       <label>Cartes de crédit - Paiement mensuel minimum ($)</label>
@@ -1828,19 +1831,6 @@ Historique Québec : 2-4% par an
     </ul>
   </div>
 </div>
-
-<footer style="background:#1f2937;color:white;padding:40px 20px;margin-top:50px;">
-  <div class="container">
-     <div style="text-align:center;color:#9ca3af;">
-      <p style="margin:0 0 10px 0;font-size:1em;">Finance Personnelle Pro</p>
-      <p style="margin:0;font-size:0.85em;">© 2025 Aziz Guellouz. Tous droits réservés.</p>
-      <p style="margin:10px 0 0 0;font-size:0.8em;">
-        Le code source et les calculateurs de ce site sont la propriété intellectuelle d'Aziz Guellouz. 
-        Toute reproduction ou utilisation non autorisée est interdite.
-      </p>
-    </div>
-  </div>
-</footer>
 
 <script>
 var DATA={};
@@ -4478,36 +4468,30 @@ function closeModal() {
   localStorage.setItem('hasSeenIntro', 'true');
 }
 </script>
-```
 
----
+</ul>
+  </div>
+</div>
 
-## 🎯 **RÉSUMÉ DES EMPLACEMENTS**
-```
-<head>
-  <style>
-    ... vos styles existants ...
-    
-    /* AJOUTER ICI LE CSS DE L'ÉCRAN D'ACCUEIL */
-    
-  </style>
-</head>
+<footer style="background:#1f2937;color:white;padding:40px 20px;margin-top:50px;">
+  <div class="container">
+     <div style="text-align:center;color:#9ca3af;">
+      <p style="margin:0 0 10px 0;font-size:1em;">Finance Personnelle Pro</p>
+      <p style="margin:0;font-size:0.85em;">© 2025 Aziz Guellouz. Tous droits réservés.</p>
+      <p style="margin:10px 0 0 0;font-size:0.8em;">
+        Le code source et les calculateurs de ce site sont la propriété intellectuelle d'Aziz Guellouz. 
+        Toute reproduction ou utilisation non autorisée est interdite.
+      </p>
+    </div>
+  </div>
+</footer>
 
-<body>
-  
-  <!-- AJOUTER ICI LE HTML DE LA MODAL -->
-  
-  <header>
-    ... votre header existant ...
-  </header>
-  
-  ... reste du contenu ...
-  
-  <script>
-    ... vos scripts existants ...
-  </script>
-  
-  <!-- AJOUTER ICI LE JAVASCRIPT DE L'ÉCRAN D'ACCUEIL -->
-  
+<script>
+var DATA={};
+function changeTab(t){
+console.log('calcBesoin() appelée !');
+  var tabs=document.querySelectorAll('.tab-content');
+  // ... reste du script ...
+</script>
 </body>
 </html>
