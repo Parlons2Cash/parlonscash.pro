@@ -378,6 +378,99 @@ header h1{font-size:2em;margin-bottom:10px}
 .progress-fill{background:#10b981;height:100%;transition:width 0.3s}
 .section-title{font-size:1.3em;color:#1f2937;margin:30px 0 15px 0;font-weight:600;border-bottom:2px solid #e5e7eb;padding-bottom:10px}
 .hidden{display:none}
+/* === Styles écran de résultats enrichi === */
+.health-score-container {
+  text-align: center;
+  padding: 30px;
+  background: white;
+  border-radius: 15px;
+  margin: 20px 0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.score-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 3em;
+  font-weight: bold;
+  border: 8px solid;
+}
+
+.score-circle.excellent {
+  background: #d1fae5;
+  border-color: #10b981;
+  color: #065f46;
+}
+
+.score-circle.bon {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+
+.score-circle.attention {
+  background: #fed7aa;
+  border-color: #f97316;
+  color: #9a3412;
+}
+
+.score-circle.urgent {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+.timeline-container {
+  margin: 30px 0;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 15px;
+  margin: 10px 0;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-left: 4px solid #2563eb;
+}
+
+.timeline-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.timeline-number {
+  width: 35px;
+  height: 35px;
+  background: #2563eb;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.next-steps-box {
+  background: #eff6ff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  border-left: 4px solid #3b82f6;
+}
+
 footer{background:#1f2937;color:white;text-align:center;padding:30px;margin-top:50px}
 </style>
 
@@ -475,7 +568,7 @@ button:hover, .tab-button:hover {
 <button onclick="changeTab('dashboard')" id="btn-dashboard" class="active">Tableau de bord</button>
 <button onclick="changeTab('bilan')" id="btn-bilan">Bilan</button>
 <button onclick="changeTab('budget')" id="btn-budget">Budget</button>
-<button onclick="changeTab('impots')" id="btn-impots">Impôts</button>
+<button onclick="changeTab('impôts')" id="btn-impôts">Impôts</button>
 <button onclick="changeTab('objectifs')" id="btn-objectifs">Objectifs</button>
 <button onclick="changeTab('acheter-louer')" id="btn-acheter-louer">Acheter vs Louer</button>
 <button onclick="changeTab('dettes')" id="btn-dettes">Remboursement dettes</button>
@@ -603,7 +696,7 @@ button:hover, .tab-button:hover {
 </div>
 </div>
 
-<div id="tab-impots" class="tab-content">
+<div id="tab-impôts" class="tab-content">
 
   <!-- Encadré d’avertissement -->
   <div style="
@@ -662,7 +755,7 @@ button:hover, .tab-button:hover {
     </div>
   </div>
 
-</div> <!-- ✅ ici tu fermes le tab-impots -->
+</div> <!-- ✅ ici tu fermes le tab-impôts -->
 
 <div id="tab-objectifs" class="tab-content">
 <h2>Objectifs et Projections</h2>
@@ -1958,7 +2051,7 @@ document.getElementById('en').textContent=fmt(DATA.epargne)+' $';
 document.getElementById('te').textContent=DATA.taux+'%';
 document.getElementById('dash-taux').textContent=DATA.taux+'%';
 
-calcImpots();
+calcImpôts();
 calcObjectif();
 calcRetraite();
 calcImmobilier();
@@ -1967,7 +2060,7 @@ calc503020();
 genererDiagnostic();
 }
 
-function calcImpots(){
+function calcImpôts(){
 var rb=parseFloat(document.getElementById('rb').value)||0;
 var cr=parseFloat(document.getElementById('cr').value)||0;
 var ad=parseFloat(document.getElementById('ad').value)||0;
@@ -2000,7 +2093,7 @@ if(ri<=51780){
 }
 
 var impt=impf+impp;
-var rn = ri - impt;
+var rn = rb - impt; 
 document.getElementById('ri').textContent=fmt(ri)+' $';
 document.getElementById('impf').textContent=fmt(impf)+' $';
 document.getElementById('impp').textContent=fmt(impp)+' $';
@@ -4374,21 +4467,129 @@ function showResults() {
   document.getElementById('questionsScreen').classList.add('hidden');
   document.getElementById('resultsScreen').classList.remove('hidden');
   
+  var score = 100;
   var priorities = [];
   var recommendations = [];
   
-  // Analyser les réponses pour générer les recommandations
-  
-  // Fonds d'urgence
-  if (userAnswers.urgence === 'non' || userAnswers.urgence === 'partiel') {
+  if (userAnswers.urgence === 'non') {
+    score -= 30;
     priorities.push({
-      icon: '🆘',
+      icon: 'URGENCE',
       title: 'Constituer un fonds d\'urgence',
-      desc: 'Visez 3-6 mois de dépenses',
-      action: 'objectifs'
+      desc: 'Visez 3-6 mois de depenses',
+      action: 'budget',
+      priority: 1
+    });
+  } else if (userAnswers.urgence === 'partiel') {
+    score -= 15;
+    priorities.push({
+      icon: 'URGENCE',
+      title: 'Completer votre fonds d\'urgence',
+      desc: 'Atteignez 3-6 mois de depenses',
+      action: 'budget',
+      priority: 2
     });
   }
   
+  if (userAnswers.dettes === 'grosse') {
+    score -= 35;
+    priorities.push({
+      icon: 'DETTES',
+      title: 'URGENT : Rembourser vos dettes',
+      desc: 'Strategie avalanche ou boule de neige',
+      action: 'dettes',
+      priority: 1
+    });
+  } else if (userAnswers.dettes === 'moyenne') {
+    score -= 20;
+    priorities.push({
+      icon: 'DETTES',
+      title: 'Rembourser vos dettes',
+      desc: 'Strategie avalanche ou boule de neige',
+      action: 'dettes',
+      priority: 2
+    });
+  } else if (userAnswers.dettes === 'petite') {
+    score -= 10;
+  }
+  
+  var scoreClass = score >= 85 ? 'excellent' : score >= 70 ? 'bon' : score >= 50 ? 'attention' : 'urgent';
+  var scoreLabel = score >= 85 ? 'Excellent' : score >= 70 ? 'Bon' : score >= 50 ? 'Attention' : 'Urgent';
+  
+  if (userAnswers.priorite === 'comprendre') {
+    recommendations.push({text: 'Commencez par complèter votre bilan', action: 'bilan'});
+  }
+  if (userAnswers.priorite === 'maison') {
+    recommendations.push({text: 'Utilisez le calculateur Acheter vs Louer', action: 'acheter-louer'});
+  }
+  if (userAnswers.priorite === 'retraite') {
+    recommendations.push({text: 'Calculez votre plan de retraite', action: 'objectifs'});
+  }
+  if (userAnswers.priorite === 'epargne') {
+    recommendations.push({text: 'Definissez vos Objectifs d\'epargne', action: 'objectifs'});
+  }
+  
+  recommendations.push({text: 'Calculez votre budget idéal avec la règle 50/30/20', action: 'budget'});
+  recommendations.push({text: 'Optimisez vos impôts', action: 'impôts'});
+  
+  priorities.sort(function(a, b) { return a.priority - b.priority; });
+  
+  var html = '<div class="results-container">';
+  html += '<div class="welcome-header"><h1>Votre plan d\'action personnalisé</h1></div>';
+  
+  html += '<div class="health-score-container">';
+  html += '<h3>Score de santé financière</h3>';
+  html += '<div class="score-circle ' + scoreClass + '">' + score + '</div>';
+  html += '<p style="font-size:1.2em;color:#374151;font-weight:600;">' + scoreLabel + '</p>';
+  html += '</div>';
+  
+  if (priorities.length > 0) {
+    html += '<div class="priority-box"><h3>PRIORITES URGENTES</h3>';
+    for (var i = 0; i < priorities.length; i++) {
+      var p = priorities[i];
+      html += '<div class="priority-item"><h4>' + p.icon + ' ' + p.title + '</h4><p>' + p.desc + '</p></div>';
+    }
+    html += '</div>';
+  }
+  
+  html += '<div class="timeline-container"><h3>Votre feuille de route</h3>';
+  var allActions = priorities.concat(recommendations.slice(0, 5 - priorities.length));
+  for (var j = 0; j < Math.min(allActions.length, 5); j++) {
+    var item = allActions[j];
+    var actionName = item.action || 'bilan';
+    html += '<div class="timeline-item" onclick="goToTab(\'' + actionName + '\')">';
+    html += '<div class="timeline-number">' + (j + 1) + '</div>';
+    html += '<div><strong>' + (item.title || item.text) + '</strong>';
+    if (item.desc) html += '<br><small style="color:#6b7280;">' + item.desc + '</small>';
+    html += '</div></div>';
+  }
+  html += '</div>';
+  
+  var prioriteAction = priorities[0] ? priorities[0].action : 'bilan';
+  html += '<div class="next-steps-box"><h3>Vos 7 prochains jours</h3>';
+  if (prioriteAction === 'budget' && userAnswers.urgence !== 'oui') {
+    html += '<p><strong>Jours 1-2 :</strong> Calculez vos depenses mensuelles exactes</p>';
+    html += '<p><strong>Jours 3-4 :</strong> Ouvrez un compte épargne séparé</p>';
+    html += '<p><strong>Jours 5-7 :</strong> Configurez un virement automatique mensuel</p>';
+  } else if (prioriteAction === 'dettes') {
+    html += '<p><strong>Jours 1-2 :</strong> Listez toutes vos dettes avec taux et soldes</p>';
+    html += '<p><strong>Jours 3-4 :</strong> Choisissez votre strategie (avalanche ou boule de neige)</p>';
+    html += '<p><strong>Jours 5-7 :</strong> Contactez vos creanciers pour negocier les taux</p>';
+  } else {
+    html += '<p><strong>Jours 1-2 :</strong> Completez votre bilan financier</p>';
+    html += '<p><strong>Jours 3-5 :</strong> Etablissez votre budget mensuel</p>';
+    html += '<p><strong>Jours 6-7 :</strong> Definissez un objectif d\'epargne pour 6 mois</p>';
+  }
+  html += '</div>';
+  
+  var firstAction = allActions[0] ? (allActions[0].action || 'bilan') : 'bilan';
+  html += '<div class="final-buttons">';
+  html += '<button class="btn-primary" onclick="goToTab(\'' + firstAction + '\')">Commencer maintenant</button>';
+  html += '<button class="btn-secondary" onclick="closeModal()">Voir tous les outils</button>';
+  html += '</div></div>';
+  
+  document.getElementById('resultsScreen').innerHTML = html;
+}  
   // Dettes
   if (userAnswers.dettes !== 'aucune') {
     var urgence = userAnswers.dettes === 'grosse' ? 'URGENT : ' : '';
@@ -4427,29 +4628,17 @@ function showResults() {
   html += '</div>';
   
   if (priorities.length > 0) {
-    html += '<div class="priority-box">';
-    html += '<h3>🚨 PRIORITÉS URGENTES</h3>';
-    for (var i = 0; i < priorities.length; i++) {
-      var p = priorities[i];
-      html += '<div class="priority-item">';
-      html += '<h4>' + p.icon + ' ' + p.title + '</h4>';
-      html += '<p>' + p.desc + '</p>';
-      html += '</div>';
-    }
-    html += '</div>';
-  }
-  
-  html += '<div class="recommendations-box">';
-  html += '<h3>📊 RECOMMANDATIONS</h3>';
+   html += '<div class="recommendations-box">';
+  html += '<h3>RECOMMANDATIONS</h3>';
   html += '<ul>';
   for (var j = 0; j < recommendations.length; j++) {
-    html += '<li>• ' + recommendations[j] + '</li>';
+    html += '<li>• ' + recommendations[j].text + '</li>';
   }
   html += '</ul>';
   html += '</div>';
   
   html += '<div class="final-buttons">';
-  html += '<button class="btn-primary" onclick="goToBilan()">📊 Commencer mon bilan</button>';
+  html += '<button class="btn-primary" onclick="goToBilan()">Commencer mon bilan</button>';
   html += '<button class="btn-secondary" onclick="closeModal()">Voir tous les outils</button>';
   html += '</div>';
   
@@ -4461,6 +4650,11 @@ function showResults() {
 function goToBilan() {
   closeModal();
   changeTab('bilan');
+}
+
+function goToTab(tabName) {
+  closeModal();
+  changeTab(tabName);
 }
 
 function closeModal() {
