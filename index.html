@@ -511,6 +511,274 @@ button:hover, .tab-button:hover {
   background-color: #1e3a8a;
 }
 
+/* === STYLES PSYCHOLOGIE === */
+.psycho-quiz-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.psycho-section {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.psycho-section-title {
+  color: #1e40af;
+  font-size: 1.5em;
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.psycho-question {
+  margin-bottom: 30px;
+}
+
+.psycho-question-text {
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 15px;
+}
+
+.psycho-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.psycho-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.psycho-option:hover {
+  background: #eff6ff;
+  border-color: #2563eb;
+}
+
+.psycho-option.selected {
+  background: #dbeafe;
+  border-color: #2563eb;
+  font-weight: 600;
+}
+
+.psycho-option input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.psycho-submit-btn {
+  background: #2563eb;
+  color: white;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  max-width: 500px;
+  margin: 30px auto;
+  display: block;
+}
+
+.psycho-submit-btn:hover {
+  background: #1e40af;
+  transform: translateY(-2px);
+}
+
+.psycho-submit-btn:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.psycho-profile-badge {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 1.3em;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.psycho-score-bar {
+  background: #e5e7eb;
+  height: 30px;
+  border-radius: 15px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.psycho-score-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  transition: width 0.5s ease;
+}
+
+.psycho-result-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+
+/* ========== BLOG ========== */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+.blog-card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  padding: 28px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.blog-card:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 20px rgba(37,99,235,0.10);
+  transform: translateY(-2px);
+}
+.blog-card-categorie {
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #2563eb;
+  background: #eff6ff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  width: fit-content;
+}
+.blog-card-titre {
+  font-size: 1.15em;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1.4;
+}
+.blog-card-extrait {
+  font-size: 0.92em;
+  color: #6b7280;
+  line-height: 1.6;
+  flex: 1;
+}
+.blog-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82em;
+  color: #9ca3af;
+  border-top: 1px solid #f3f4f6;
+  padding-top: 12px;
+  margin-top: 4px;
+}
+.blog-card-lire { color: #2563eb; font-weight: 600; }
+.blog-article-view { max-width: 720px; margin: 0 auto; }
+.blog-article-view h1 { font-size: 1.9em; color: #1f2937; line-height: 1.3; margin-bottom: 8px; }
+.blog-article-meta { color: #9ca3af; font-size: 0.88em; margin-bottom: 32px; display: flex; gap: 16px; }
+.blog-article-body { font-size: 1.05em; line-height: 1.85; color: #374151; }
+.blog-article-body p { margin-bottom: 20px; }
+.blog-article-body h2 { font-size: 1.3em; color: #1e40af; margin: 36px 0 12px 0; font-weight: 700; }
+.blog-article-body h3 { font-size: 1.1em; color: #1f2937; margin: 28px 0 10px 0; font-weight: 700; }
+.blog-retour-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #f3f4f6; border: none; border-radius: 8px;
+  padding: 10px 18px; cursor: pointer; font-size: 0.92em;
+  color: #374151; font-weight: 600; margin-bottom: 28px; transition: background 0.2s;
+}
+.blog-retour-btn:hover { background: #e5e7eb; }
+
+/* === STYLES ARTICLE BLOG === */
+.blog-article-body blockquote {
+  border-left: 4px solid #2563eb;
+  background: #eff6ff;
+  margin: 28px 0;
+  padding: 20px 24px;
+  border-radius: 0 10px 10px 0;
+  font-size: 1.1em;
+  font-style: italic;
+  color: #1e40af;
+  line-height: 1.7;
+}
+.article-question {
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 20px 0;
+  color: #92400e;
+  font-style: italic;
+  line-height: 1.7;
+}
+.article-question::before {
+  content: "La question à se poser";
+  display: block;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #b45309;
+  margin-bottom: 6px;
+}
+.article-exemples {
+  background: #f3f4f6;
+  border-left: 4px solid #6b7280;
+  padding: 14px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  color: #374151;
+  font-size: 0.95em;
+  line-height: 1.7;
+}
+.article-exemples::before {
+  content: "Exemples";
+  display: block;
+  font-weight: 700;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+.article-test-ultime {
+  background: #1e40af;
+  color: white;
+  padding: 24px 28px;
+  border-radius: 12px;
+  margin: 24px 0;
+  font-size: 1.1em;
+  font-weight: 600;
+  line-height: 1.6;
+  text-align: center;
+}
 </style>
 
 </head>
@@ -578,6 +846,8 @@ button:hover, .tab-button:hover {
 <button onclick="changeTab('aide')" id="btn-aide">Aide à la décision</button>
 <button onclick="changeTab('apropos')" id="btn-apropos">À propos</button>
 <button onclick="changeTab('confidentialite')" id="btn-confidentialite">Confidentialité</button>
+<button onclick="changeTab('psychologie')" id="btn-psychologie">Psychologie</button>
+<button onclick="changeTab('blog')" id="btn-blog">📰 Blog</button>
 </div>
 
 <div class="container">
@@ -653,7 +923,7 @@ button:hover, .tab-button:hover {
 <div class="form-group"><label>Autre revenu</label><input type="number" id="autre-revenu" value="0" onchange="calc()"></div>
 <h4 style="margin-top:20px">Depenses</h4>
 <div class="form-group">
-<label>Statut residentiel</label>
+<label>Statut résidentiel</label>
 <select id="statut-resid" onchange="toggleHypotheque()">
 <option value="locataire">Locataire</option>
 <option value="proprio">Proprietaire</option>
@@ -672,26 +942,33 @@ button:hover, .tab-button:hover {
 <div class="form-group"><label>Transport</label><input type="number" id="d3" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Assurances</label><input type="number" id="d4" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Loisirs</label><input type="number" id="d5" value="0" onchange="calc()"></div>
+<div class="form-group">
+  <label>Remboursement de dettes</label>
+  <input type="number" id="d7" value="0" onchange="calc()">
+  <small style="display:block;margin-top:5px;color:#6b7280;">
+    Paiements mensuels sur cartes de crédit, prêts, etc.
+  </small>
+</div>
 <div class="form-group"><label>Autres</label><input type="number" id="d6" value="0" onchange="calc()"></div>
 </div>
 <div class="card">
-<h3>Resume</h3>
+<h3>Résumé</h3>
 <div class="summary-box">
 <div class="summary-row"><span>Revenus totaux</span><strong id="rt">0 $</strong></div>
-<div class="summary-row"><span>Total depenses</span><strong id="td">0 $</strong></div>
-<div class="summary-row"><span>Epargne nette</span><strong class="green" id="en">0 $</strong></div>
+<div class="summary-row"><span>Total dépenses</span><strong id="td">0 $</strong></div>
+<div class="summary-row"><span>Épargne nette</span><strong class="green" id="en">0 $</strong></div>
 <div class="summary-row"><span>Taux epargne</span><strong class="blue" id="te">0%</strong></div>
 </div>
 </div>
 </div>
 <div class="card">
 <h3>Analyse budget 50-20-30</h3>
-<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Regle 50-20-30: 50% besoins essentiels, 20% epargne, 30% loisirs/desirs</p>
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Regle 50-20-30: 50% besoins essentiels, 20% épargne, 30% loisirs/desirs</p>
 <div id="analyse-503020"></div>
 </div>
 <div class="card">
 <h3>Fonds d'urgence</h3>
-<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Objectif: 3 à 6 mois de depenses en compte bancaire</p>
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Objectif: 3 à 6 mois de dépenses en compte bancaire</p>
 <div id="resultat-fonds-urgence"></div>
 </div>
 </div>
@@ -799,9 +1076,9 @@ button:hover, .tab-button:hover {
   <div id="resultat-immobilier"></div>
 </div>
 
-<div class="section-title">Epargne pour projet personnel</div>
+<div class="section-title">Épargne pour projet personnel</div>
 <div class="card">
-<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Voyage, achat voiture, annee sabbatique, etudes... Calculez combien epargner mensuellement pour realiser votre projet.</p>
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Voyage, achat voiture, annee sabbatique, etudes... Calculez combien épargner mensuellement pour realiser votre projet.</p>
 <div class="form-group"><label>Montant cible ($)</label><input type="number" id="obj-montant" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Date cible</label><input type="date" id="obj-date" onchange="calc()"></div>
 <div class="form-group">
@@ -1722,7 +1999,7 @@ Historique Québec : 2-4% par an
     
     <div class="total-row green">
       <span>Total dépenses communes</span>
-      <span class="value" id="couple-total-depenses">0 $</span>
+      <span class="value" id="couple-total-dépenses">0 $</span>
     </div>
   </div>
 
@@ -1914,19 +2191,539 @@ Historique Québec : 2-4% par an
       La date de dernière mise à jour est indiquée en haut de cette page.
     </p>
   </div>
+</div>
+<div id="tab-psychologie" class="tab-content">
+  <h2 style="margin-top:0;padding-top:0;"> Psychologie de l'argent</h2>
   
-  <div class="card" style="background:#eff6ff;margin-top:20px;">
-    <h3 style="color:#1e40af;margin-top:0;">📚 Ressources utiles</h3>
-    <ul style="line-height:2;">
-      <li><a href="https://policies.google.com/privacy" target="_blank" style="color:#2563eb;">Politique de confidentialité de Google</a></li>
-      <li><a href="https://www.priv.gc.ca/fr/" target="_blank" style="color:#2563eb;">Commissariat à la protection de la vie privée du Canada</a></li>
-      <li><a href="https://support.google.com/analytics/answer/6004245" target="_blank" style="color:#2563eb;">Comment Google Analytics protège vos données</a></li>
-    </ul>
+  <p style="background:#eff6ff;padding:15px;border-radius:8px;border-left:4px solid #2563eb;margin-bottom:20px;">
+    Inspiré du livre <strong>"The Psychology of Money"</strong> de Morgan Housel, ce questionnaire vous aide à identifier votre relation psychologique avec l'argent. 
+    Comprendre vos comportements financiers est la première étape vers une meilleure gestion de vos finances.
+  </p>
+
+  <div class="psycho-quiz-container">
+    
+    <!-- SECTION 1 : Tolérance au Risque -->
+    <div class="psycho-section">
+      <h3 class="psycho-section-title">Tolérance au Risque</h3>
+      
+      <div class="psycho-question">
+        <p class="psycho-question-text">1. Votre portefeuille perd 30% de sa valeur en une semaine. Que faites-vous ?</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q1" value="0" onclick="selectPsychoOption(this)">
+            <span>Je vends tout immédiatement pour éviter de perdre plus</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q1" value="1" onclick="selectPsychoOption(this)">
+            <span>Je vends une partie pour limiter les dégâts</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q1" value="2" onclick="selectPsychoOption(this)">
+            <span>Je ne fais rien et j'attends que ça remonte</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q1" value="3" onclick="selectPsychoOption(this)">
+            <span>J'en profite pour acheter plus à rabais</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="psycho-question">
+        <p class="psycho-question-text">2. Quelle phrase vous décrit le mieux ?</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q2" value="0" onclick="selectPsychoOption(this)">
+            <span>Je préfère ne pas perdre plutôt que de gagner beaucoup</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q2" value="1" onclick="selectPsychoOption(this)">
+            <span>J'accepte un peu de risque pour un rendement modéré</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q2" value="2" onclick="selectPsychoOption(this)">
+            <span>Je suis prêt à prendre des risques pour de meilleurs rendements</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q2" value="3" onclick="selectPsychoOption(this)">
+            <span>Je recherche activement les opportunités à haut risque/rendement</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="psycho-question">
+        <p class="psycho-question-text">3. Comment réagissez-vous face à une opportunité d'investissement ?</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q3" value="0" onclick="selectPsychoOption(this)">
+            <span>J'analyse pendant des semaines et souvent je ne fais rien</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q3" value="1" onclick="selectPsychoOption(this)">
+            <span>Je fais des recherches et je décide prudemment</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q3" value="2" onclick="selectPsychoOption(this)">
+            <span>Je décide rapidement si ça me semble bon</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q3" value="3" onclick="selectPsychoOption(this)">
+            <span>Je saisis l'opportunité immédiatement sans trop réfléchir</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2 : Vision Long Terme -->
+    <div class="psycho-section">
+      <h3 class="psycho-section-title">Vision Long Terme</h3>
+      
+      <div class="psycho-question">
+        <p class="psycho-question-text">4. "Le temps, pas le timing" - Quelle est votre stratégie d'investissement ?</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q4" value="0" onclick="selectPsychoOption(this)">
+            <span>J'achète et je vends selon les fluctuations court terme</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q4" value="1" onclick="selectPsychoOption(this)">
+            <span>Je garde quelques mois à 1-2 ans maximum</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q4" value="3" onclick="selectPsychoOption(this)">
+            <span>J'investis pour 5-10 ans minimum</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q4" value="4" onclick="selectPsychoOption(this)">
+            <span>J'investis pour 20-30 ans (jusqu'à la retraite)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="psycho-question">
+        <p class="psycho-question-text">5. Vous recevez 10 000$ aujourd'hui. Que faites-vous ?</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q5" value="0" onclick="selectPsychoOption(this)">
+            <span>Je me fais plaisir maintenant, on ne vit qu'une fois</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q5" value="1" onclick="selectPsychoOption(this)">
+            <span>50% plaisir immédiat, 50% épargne</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q5" value="3" onclick="selectPsychoOption(this)">
+            <span>J'épargne tout pour mes objectifs futurs</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q5" value="4" onclick="selectPsychoOption(this)">
+            <span>J'investis tout pour la croissance long terme</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="psycho-question">
+        <p class="psycho-question-text">6. Préférez-vous :</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q6" value="0" onclick="selectPsychoOption(this)">
+            <span>Gagner 1 000$ tout de suite</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q6" value="2" onclick="selectPsychoOption(this)">
+            <span>Gagner 1 500$ dans 6 mois</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q6" value="3" onclick="selectPsychoOption(this)">
+            <span>Gagner 3 000$ dans 2 ans</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q6" value="4" onclick="selectPsychoOption(this)">
+            <span>Gagner 10 000$ dans 10 ans</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3 : Notion de "Assez" -->
+    <div class="psycho-section">
+      <h3 class="psycho-section-title">Notion de "Assez"</h3>
+      
+      <div class="psycho-question">
+        <p class="psycho-question-text">7. "Enough is enough" - Avez-vous défini combien d'argent est suffisant pour vous ?</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q7" value="0" onclick="selectPsychoOption(this)">
+            <span>Non, plus j'ai plus je veux</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q7" value="1" onclick="selectPsychoOption(this)">
+            <span>J'y pense parfois mais c'est flou</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q7" value="3" onclick="selectPsychoOption(this)">
+            <span>J'ai des objectifs financiers clairs</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q7" value="4" onclick="selectPsychoOption(this)">
+            <span>Oui, j'ai un montant précis et un plan</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="psycho-question">
+        <p class="psycho-question-text">8. Votre voisin achète une voiture de luxe. Vous pensez :</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q8" value="0" onclick="selectPsychoOption(this)">
+            <span>Je devrais en avoir une aussi !</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q8" value="1" onclick="selectPsychoOption(this)">
+            <span>Ça me donne envie mais je résiste</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q8" value="3" onclick="selectPsychoOption(this)">
+            <span>Bien pour lui, moi j'ai d'autres priorités</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q8" value="4" onclick="selectPsychoOption(this)">
+            <span>Chacun ses valeurs, je suis content de mes choix</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="psycho-question">
+        <p class="psycho-question-text">9. Définiriez-vous un montant qui serait "suffisant" pour être heureux ?</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q9" value="0" onclick="selectPsychoOption(this)">
+            <span>Non, il n'y a jamais assez</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q9" value="2" onclick="selectPsychoOption(this)">
+            <span>Peut-être, mais ça change constamment</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q9" value="3" onclick="selectPsychoOption(this)">
+            <span>Oui, un chiffre approximatif</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q9" value="4" onclick="selectPsychoOption(this)">
+            <span>Oui, et j'ai un plan précis pour l'atteindre</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4 : Indépendance Sociale -->
+    <div class="psycho-section">
+      <h3 class="psycho-section-title">Indépendance Sociale</h3>
+      
+      <div class="psycho-question">
+        <p class="psycho-question-text">10. Les réseaux sociaux influencent-ils vos décisions d'achat ?</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q10" value="0" onclick="selectPsychoOption(this)">
+            <span>Énormément, j'achète souvent ce que je vois</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q10" value="1" onclick="selectPsychoOption(this)">
+            <span>Parfois, je suis tenté</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q10" value="3" onclick="selectPsychoOption(this)">
+            <span>Rarement, je suis assez indépendant</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q10" value="4" onclick="selectPsychoOption(this)">
+            <span>Jamais, je suis mes propres valeurs</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="psycho-question">
+        <p class="psycho-question-text">11. "Richesse = ce que vous ne voyez pas". Que pensez-vous de cette phrase ?</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q11" value="0" onclick="selectPsychoOption(this)">
+            <span>Faux, la richesse se montre (voiture, maison, vêtements)</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q11" value="1" onclick="selectPsychoOption(this)">
+            <span>Je ne suis pas sûr</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q11" value="3" onclick="selectPsychoOption(this)">
+            <span>Vrai, c'est l'épargne et les actifs qui comptent</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q11" value="4" onclick="selectPsychoOption(this)">
+            <span>Totalement d'accord, la vraie richesse est invisible</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="psycho-question">
+        <p class="psycho-question-text">12. Combien d'argent dépensez-vous pour "impressionner" les autres ?</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q12" value="0" onclick="selectPsychoOption(this)">
+            <span>Beaucoup, l'image est importante</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q12" value="1" onclick="selectPsychoOption(this)">
+            <span>Un peu, pour certaines occasions</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q12" value="3" onclick="selectPsychoOption(this)">
+            <span>Très peu, je vis selon mes moyens</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q12" value="4" onclick="selectPsychoOption(this)">
+            <span>Rien du tout, je m'en fiche de l'opinion des autres</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5 : Humilité Financière -->
+    <div class="psycho-section">
+      <h3 class="psycho-section-title">Humilité Financière</h3>
+      
+      <div class="psycho-question">
+        <p class="psycho-question-text">13. Votre succès financier est dû à :</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q13" value="0" onclick="selectPsychoOption(this)">
+            <span>100% mon travail acharné et mes compétences</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q13" value="1" onclick="selectPsychoOption(this)">
+            <span>Surtout mon travail, un peu de chance</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q13" value="3" onclick="selectPsychoOption(this)">
+            <span>Moitié travail, moitié circonstances favorables</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q13" value="4" onclick="selectPsychoOption(this)">
+            <span>Beaucoup de chance, timing, et privilèges + travail</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="psycho-question">
+        <p class="psycho-question-text">14. Face à un échec financier, vous dites :</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q14" value="0" onclick="selectPsychoOption(this)">
+            <span>C'est la faute du système/des autres</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q14" value="1" onclick="selectPsychoOption(this)">
+            <span>J'ai eu de la malchance</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q14" value="3" onclick="selectPsychoOption(this)">
+            <span>J'analyse ce que j'aurais pu faire différemment</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q14" value="4" onclick="selectPsychoOption(this)">
+            <span>J'apprends la leçon et j'ajuste ma stratégie</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="psycho-question">
+        <p class="psycho-question-text">15. Pensez-vous que vous savez "mieux que le marché" ?</p>
+        <div class="psycho-options">
+          <label class="psycho-option">
+            <input type="radio" name="q15" value="0" onclick="selectPsychoOption(this)">
+            <span>Oui, je peux battre le marché facilement</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q15" value="1" onclick="selectPsychoOption(this)">
+            <span>Je peux faire mieux que la moyenne</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q15" value="3" onclick="selectPsychoOption(this)">
+            <span>C'est très difficile de battre le marché</span>
+          </label>
+          <label class="psycho-option">
+            <input type="radio" name="q15" value="4" onclick="selectPsychoOption(this)">
+            <span>Non, j'investis dans des fonds indiciels et j'attends</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
   </div>
+
+  <!-- Zone de résultats (cachée initialement) -->
+  <div id="psycho-results" class="hidden"></div>
+
+  <!-- Bouton de soumission -->
+  <div style="text-align:center;">
+    <button class="psycho-submit-btn" onclick="calculatePsychoResults()" id="psycho-submit">Voir mon profil psychologique
+    </button>
+  </div>
+
 </div>
 
+<!-- ========== ONGLET BLOG ========== -->
+<div id="tab-blog" class="tab-content">
+  <h2>📰 Blog — Parlons Cash</h2>
+  <p style="color:#6b7280;margin-bottom:8px;">Réflexions, stratégies et perspectives sur la finance personnelle au Québec.</p>
+
+  <!-- VUE LISTE -->
+  <div id="blog-liste-view">
+    <div class="blog-grid" id="blog-grid"></div>
+  </div>
+
+  <!-- VUE ARTICLE -->
+  <div id="blog-article-view" style="display:none;">
+    <button class="blog-retour-btn" onclick="blogRetourListe()">← Retour aux articles</button>
+    <div class="blog-article-view">
+      <div id="blog-article-categorie" class="blog-card-categorie" style="margin-bottom:14px;"></div>
+      <h1 id="blog-article-titre"></h1>
+      <div class="blog-article-meta">
+        <span id="blog-article-date"></span>
+        <span id="blog-article-duree"></span>
+      </div>
+      <div class="blog-article-body" id="blog-article-corps"></div>
+    </div>
+  </div>
+</div>
 <script>
 var DATA={};
+
+// ========== DONNÉES BLOG ==========
+var BLOG_ARTICLES = [
+  {
+    id: 1,
+    titre: "Ce n'est pas parce que vous pouvez vous le permettre que c'est une bonne décision",
+    categorie: "Psychologie",
+    date: "Janvier 2026",
+    duree: "6 min de lecture",
+    extrait: "La plupart des gens évaluent leurs dépenses avec une seule question : « Est-ce que je peux me le permettre ? » Pourtant, cette question est insuffisante.",
+    corps: `
+      <p>Nous vivons dans une société où presque chaque achat est présenté comme une nécessité.</p>
+      <p>Un nouveau téléphone promet de nous rendre plus productifs. Une voiture plus luxueuse nous offrirait davantage de liberté. Une bouteille plus chère améliorerait nos relations sociales. Un abonnement supplémentaire nous apporterait du bonheur.</p>
+      <p>Le problème est que la plupart des gens évaluent leurs dépenses à l'aide d'une seule question :</p>
+
+      <blockquote>« Est-ce que je peux me le permettre ? »</blockquote>
+
+      <p>Pourtant, cette question est insuffisante.</p>
+      <p>On peut se permettre beaucoup de choses qui nous appauvrissent à long terme.</p>
+      <p>On peut se permettre une voiture trop chère qui ralentira notre épargne pendant des années. On peut se permettre des excès qui nuisent à notre santé. On peut se permettre de négliger notre famille pour gagner davantage d'argent. On peut même se permettre de passer des années sans apprendre ni progresser.</p>
+      <p>La capacité de payer n'est pas un indicateur de la qualité d'une décision.</p>
+      <p>Alors comment distinguer une dépense utile d'une dépense superflue ?</p>
+      <p>Après plusieurs années à observer les comportements financiers et à réfléchir à la création de valeur, j'en suis venu à une conclusion simple : une dépense devrait être évaluée selon sa contribution à quatre formes de capital.</p>
+      <p><strong>Oubliez les sept péchés capitaux. Concentrez-vous sur ces quatre capitaux.</strong></p>
+      <p>Une dépense est pertinente lorsqu'elle augmente au moins un des quatre capitaux suivants sans affaiblir significativement les autres.</p>
+
+      <h2>1. Le capital financier</h2>
+      <p>Le capital financier représente votre capacité à générer, conserver ou faire croître votre patrimoine.</p>
+      <p>Une dépense améliore ce capital lorsqu'elle génère un revenu, augmente votre productivité, réduit vos dépenses futures ou accroît la valeur de vos actifs.</p>
+      <div class="article-exemples">un investissement, une formation professionnelle, un logiciel qui automatise une tâche, un outil de travail.</div>
+      <p>Cependant, accumuler du capital financier au détriment des autres capitaux n'est pas nécessairement un succès. Travailler sans relâche pendant des années au point de nuire à sa santé ou à ses relations peut augmenter la richesse financière tout en appauvrissant le reste.</p>
+      <div class="article-question">Cette dépense me permettra-t-elle d'être financièrement plus fort demain qu'aujourd'hui, sans nuire significativement à ma santé, à mon jugement ou à mes relations ?</div>
+
+      <h2>2. Le capital santé</h2>
+      <p>La santé est le fondement sur lequel reposent tous les autres capitaux.</p>
+      <p>Sans énergie, sans vitalité et sans capacité physique ou mentale, il devient difficile de profiter pleinement de sa richesse, de ses connaissances ou de ses relations.</p>
+      <p>Une dépense qui améliore votre condition physique ou mentale possède souvent un rendement exceptionnel à long terme.</p>
+      <div class="article-exemples">un abonnement à un centre d'entraînement, un équipement sportif, une meilleure alimentation, un matelas de qualité, des soins préventifs.</div>
+      <p>Cependant, le développement du capital santé doit lui aussi demeurer équilibré. Une obsession pour la performance physique qui détruit les finances, le temps disponible ou les relations personnelles finit par créer de nouveaux problèmes.</p>
+      <div class="article-question">Cette dépense augmentera-t-elle mon énergie, ma vitalité ou ma longévité sans compromettre inutilement mes autres capitaux ?</div>
+
+      <h2>3. Le capital intellectuel</h2>
+      <p>Notre avenir dépend largement de la qualité de nos décisions.</p>
+      <p>Une mauvaise décision financière, professionnelle ou personnelle peut coûter des années d'efforts. À l'inverse, une meilleure compréhension du monde peut produire des bénéfices pendant toute une vie.</p>
+      <p>Un livre de 30 $ sur les biais cognitifs peut vous éviter une erreur d'investissement de 50 000 $. Une formation en négociation peut augmenter vos revenus pendant des décennies. Une heure consacrée à comprendre la fiscalité de votre REER ou de votre CELI peut transformer votre stratégie financière pour les vingt prochaines années.</p>
+      <p>Le véritable pouvoir du capital intellectuel réside dans son effet multiplicateur. Chaque connaissance acquise influence des centaines de décisions futures.</p>
+      <p>Contrairement à un objet qui s'use ou se déprécie, une compétence, une méthode de réflexion ou une compréhension profonde continue de produire des rendements année après année.</p>
+      <div class="article-exemples">livres, formations, coaching, outils d'analyse, intelligence artificielle, réseaux de mentors et d'experts.</div>
+      <p>Toutefois, accumuler des connaissances sans jamais les appliquer ou investir des sommes disproportionnées dans l'apprentissage peut également devenir contre-productif.</p>
+      <div class="article-question">Cette dépense améliorera-t-elle ma capacité à comprendre, analyser et prendre de meilleures décisions sans affaiblir mes autres capitaux ?</div>
+
+      <h2>4. Le capital social</h2>
+      <p>Le capital social représente l'ensemble des relations de confiance que vous avez bâties au fil du temps.</p>
+      <p>Dans la vie comme en affaires, certaines opportunités proviennent moins de ce que vous savez que de la confiance que les autres vous accordent. Les relations familiales, amicales et professionnelles constituent donc un actif précieux.</p>
+      <p>Une relation solide peut vous apporter du soutien dans les moments difficiles, de nouvelles opportunités, des conseils pertinents ou simplement un sentiment d'appartenance.</p>
+      <div class="article-exemples">un voyage familial raisonnable, un repas partagé avec des amis, une activité permettant de créer ou d'entretenir des liens significatifs, du temps investi auprès des personnes qui comptent.</div>
+      <p>Mais comme pour les autres capitaux, l'équilibre demeure essentiel. S'endetter pour impressionner les autres, adopter des habitudes nuisibles à la santé ou sacrifier son jugement pour être accepté ne constitue pas un enrichissement du capital social.</p>
+      <div class="article-question">Cette dépense renforce-t-elle réellement mes relations sans compromettre ma santé, mes finances ou ma capacité à prendre de bonnes décisions ?</div>
+
+      <h2>Le piège de la « qualité de vie »</h2>
+      <p>Beaucoup de dépenses sont justifiées par une expression vague : <strong>« Ça améliore ma qualité de vie. »</strong></p>
+      <p>Le problème est que presque tout peut être rangé dans cette catégorie. Une crème glacée quotidienne. Une voiture de luxe. Un écran géant. Une bouteille hors de prix.</p>
+      <p>Le concept devient alors inutile comme outil de décision.</p>
+      <p>Les quatre capitaux offrent un cadre beaucoup plus concret. Ils nous obligent à nous demander non pas ce qui procure du plaisir aujourd'hui, mais ce qui crée de la valeur durable demain.</p>
+
+      <h2>Le test ultime</h2>
+      <p>Avant un achat important, posez-vous simplement cette question :</p>
+      <div class="article-test-ultime">Cet achat augmente-t-il au moins un de mes quatre capitaux sans détériorer significativement les autres ?</div>
+      <p>Si la réponse est <strong>oui</strong>, l'achat mérite probablement votre attention.</p>
+      <p>Si la réponse est <strong>non</strong>, il s'agit vraisemblablement d'une dépense de confort, de divertissement, de statut ou d'impulsion.</p>
+      <p>Ce n'est pas nécessairement mauvais. Mais il est préférable de l'assumer comme tel.</p>
+
+      <h2>Conclusion</h2>
+      <p>La liberté financière ne repose pas uniquement sur l'accumulation d'argent. Elle repose sur l'accumulation de capitaux.</p>
+      <p>Mais voici ce que la plupart des gens ne réalisent pas : ces quatre capitaux se renforcent mutuellement.</p>
+      <p>Une meilleure santé améliore votre capacité à travailler et à décider. Un capital intellectuel plus solide génère de meilleures décisions financières. Des relations profondes ouvrent des portes que l'argent seul ne peut pas acheter. Et une plus grande sécurité financière vous donne davantage de temps et de liberté pour investir dans les trois autres.</p>
+      <p>À l'inverse, les négliger se paie au prix fort.</p>
+      <p>On peut accumuler de l'argent tout en ruinant sa santé. On peut entretenir un vaste réseau social tout en prenant de mauvaises décisions. On peut cultiver son réseau sans jamais cultiver son jugement.</p>
+      <p>La véritable richesse ne consiste donc pas à maximiser un seul capital. Elle consiste à faire progresser les quatre simultanément.</p>
+
+      <blockquote>La véritable question n'est pas : « Est-ce que je peux me le permettre ? »<br>Elle est : « Cet achat augmente-t-il l'un de mes capitaux ou ne fait-il que satisfaire un désir passager ? »</blockquote>
+
+      <p>Il n'y a pas de mauvaise réponse. Mais il y a toujours une réponse honnête à la question : <strong>suis-je en train de consommer ou de capitaliser ?</strong></p>
+    `
+  }
+];
+
+// ========== FONCTIONS BLOG ==========
+function blogAfficherListe() {
+  var grid = document.getElementById('blog-grid');
+  if (!grid) return;
+  var html = '';
+  for (var i = 0; i < BLOG_ARTICLES.length; i++) {
+    var a = BLOG_ARTICLES[i];
+    html += '<div class="blog-card" onclick="blogLireArticle(' + a.id + ')">';
+    html += '<span class="blog-card-categorie">' + a.categorie + '</span>';
+    html += '<div class="blog-card-titre">' + a.titre + '</div>';
+    html += '<div class="blog-card-extrait">' + a.extrait + '</div>';
+    html += '<div class="blog-card-footer">';
+    html += '<span>' + a.date + '</span>';
+    html += '<span class="blog-card-lire">' + a.duree + ' →</span>';
+    html += '</div></div>';
+  }
+  grid.innerHTML = html;
+}
+
+function blogLireArticle(id) {
+  var article = null;
+  for (var i = 0; i < BLOG_ARTICLES.length; i++) {
+    if (BLOG_ARTICLES[i].id === id) { article = BLOG_ARTICLES[i]; break; }
+  }
+  if (!article) return;
+  document.getElementById('blog-liste-view').style.display = 'none';
+  document.getElementById('blog-article-view').style.display = 'block';
+  document.getElementById('blog-article-categorie').textContent = article.categorie;
+  document.getElementById('blog-article-titre').textContent = article.titre;
+  document.getElementById('blog-article-date').textContent = article.date;
+  document.getElementById('blog-article-duree').textContent = article.duree;
+  document.getElementById('blog-article-corps').innerHTML = article.corps;
+  window.scrollTo(0, 0);
+}
+
+function blogRetourListe() {
+  document.getElementById('blog-liste-view').style.display = 'block';
+  document.getElementById('blog-article-view').style.display = 'none';
+}
+
+blogAfficherListe();
 
 function changeTab(t){
 console.log('calcBesoin() appelée !');
@@ -1940,7 +2737,7 @@ console.log('calcBesoin() appelée !');
 // Cacher les bandeaux d'avertissement
 var warnings = document.querySelectorAll('.warning-box, .danger-box');
 for(var i = 0; i < warnings.length; i++) {
-  if(t === 'apropos' || t === 'confidentialite' || t === 'aide' || t === 'besoin' || t === 'couple' || t === 'plaisirs' || t === 'acheter-louer') {
+  if(t === 'apropos' || t === 'confidentialite' || t === 'aide' || t === 'besoin' || t === 'couple' || t === 'plaisirs' || t === 'acheter-louer' || t === 'blog' || t === 'psychologie') {
     warnings[i].style.display = 'none';
   } else {
     warnings[i].style.display = 'block';
@@ -2041,7 +2838,9 @@ var d3=parseFloat(document.getElementById('d3').value)||0;
 var d4=parseFloat(document.getElementById('d4').value)||0;
 var d5=parseFloat(document.getElementById('d5').value)||0;
 var d6=parseFloat(document.getElementById('d6').value)||0;
-DATA.totalD=d1+d2+d3+d4+d5+d6;
+var d7=parseFloat(document.getElementById('d7').value)||0;
+DATA.totalD=d1+d2+d3+d4+d5+d6+d7;
+
 DATA.epargne=DATA.revenuTotal-DATA.totalD;
 DATA.taux=DATA.revenuTotal>0?((DATA.epargne/DATA.revenuTotal)*100).toFixed(1):0;
 
@@ -2132,10 +2931,10 @@ document.getElementById('analyse-503020').innerHTML=html;
 
 function calcFondsUrgence(){
 var fonds=DATA.cb||0;
-var depenses=DATA.totalD||1;
-var mois=fonds/depenses;
-var c3=depenses*3;
-var c6=depenses*6;
+var dépenses=DATA.totalD||1;
+var mois=fonds/dépenses;
+var c3=dépenses*3;
+var c6=dépenses*6;
 var html='<div class="result-box '+(mois>=6?'green':mois>=3?'orange':'red')+'">';
 html+='Fonds actuel: '+fmt(fonds)+' $ ('+mois.toFixed(1)+' mois)</div>';
 html+='<div class="result-box blue">Objectif min (3 mois): '+fmt(c3)+' $<br>Objectif optimal (6 mois): '+fmt(c6)+' $';
@@ -3067,7 +3866,7 @@ html+='</div>';
 html+='<div style="margin-top:15px;padding-top:15px;border-top:1px solid #d1fae5;">';
 html+='<p style="font-size:0.85em;color:#6b7280;margin:0 0 8px 0;"><strong>📚 Sources officielles pour en savoir plus :</strong></p>';
 html+='<ul style="font-size:0.85em;color:#6b7280;margin:0;padding-left:20px;line-height:1.8;">';
-html+='<li><a href="https://www150.statcan.gc.ca/n1/fr/subjects/revenus_pensions_depenses_et_richesse" target="_blank" style="color:#2563eb;">Statistique Canada - Revenus et richesse</a></li>';
+html+='<li><a href="https://www150.statcan.gc.ca/n1/fr/subjects/revenus_pensions_dépenses_et_richesse" target="_blank" style="color:#2563eb;">Statistique Canada - Revenus et richesse</a></li>';
 html+='<li><a href="https://www.banqueducanada.ca/taux/indicateurs/capacite-et-besoins-financiers/ratios-dette-menages/" target="_blank" style="color:#2563eb;">Banque du Canada - Endettement des ménages</a></li>';
 html+='<li><a href="https://www.canada.ca/fr/agence-consommation-matiere-financiere/programmes/litteratie-financiere.html" target="_blank" style="color:#2563eb;">Gouvernement du Canada - Littératie financière</a></li>';
 html+='</ul>';
@@ -3396,52 +4195,87 @@ function afficherComparaison(avalanche, bouleNeige, dettes, paiementExtra) {
   
   html += '</div>';
   
-  // Verdict
-  var diff = bouleNeige.interetsTotal - avalanche.interetsTotal;
-  var diffMois = bouleNeige.mois - avalanche.mois;
+// Verdict
+var diff = bouleNeige.interetsTotal - avalanche.interetsTotal;
+var diffMois = bouleNeige.mois - avalanche.mois;
+
+html += '<div class="card" style="margin-top:20px;">';
+html += '<h3>🏆 Verdict</h3>';
+
+if(Math.abs(diff) < 10) {
+  html += '<div class="result-box blue">Les deux méthodes donnent des résultats très similaires. Choisissez celle qui vous motive le plus !</div>';
   
-  html += '<div class="card" style="margin-top:20px;">';
-  html += '<h3>🏆 Verdict</h3>';
+  // Conseil NEUTRE quand les résultats sont similaires
+  html += '<div style="background:#fef3c7;padding:20px;border-radius:10px;margin-top:20px;border-left:4px solid #f59e0b;">';
+  html += '<h4 style="margin:0 0 10px 0;color:#92400e;">💡 Comment choisir ?</h4>';
+  html += '<p style="margin:0 0 10px 0;color:#78350f;line-height:1.7;">';
+  html += 'Les deux méthodes donnent des résultats pratiquement identiques. Choisissez selon votre personnalité :';
+  html += '</p>';
+  html += '<ul style="margin:10px 0;padding-left:20px;color:#78350f;line-height:1.8;">';
+  html += '<li><strong>Avalanche</strong> : Vous êtes motivé par la logique mathématique</li>';
+  html += '<li><strong>Boule de neige</strong> : Vous préférez les victoires rapides</li>';
+  html += '</ul>';
+  html += '<p style="margin:10px 0 0 0;padding-top:10px;border-top:1px solid #fcd34d;color:#78350f;font-size:0.9em;">';
+  html += '⚡ <strong>Astuce :</strong> Payez les minimums sur toutes vos dettes, puis concentrez ' + fmt(paiementExtra) + ' $/mois sur UNE dette à la fois.';
+  html += '</p>';
+  html += '</div>';
   
-  if(Math.abs(diff) < 10) {
-    html += '<div class="result-box blue">Les deux méthodes donnent des résultats très similaires. Choisissez celle qui vous motive le plus !</div>';
-  } else if(diff > 0) {
-    html += '<div class="result-box green">';
-    html += '✅ La méthode <strong>Avalanche</strong> vous fait économiser <strong>' + fmt(diff) + ' $</strong> en intérêts ';
-    html += 'et vous libère <strong>' + Math.abs(diffMois) + ' mois plus tôt</strong> (' + Math.round(Math.abs(diffMois)/12*10)/10 + ' ans).';
-    html += '</div>';
-  } else {
-    html += '<div class="result-box green">';
-    html += '✅ La méthode <strong>Boule de neige</strong> est légèrement avantageuse dans votre cas.';
-    html += '</div>';
+} else if(diff > 0) {
+  html += '<div class="result-box green">';
+  html += '✅ La méthode <strong>Avalanche</strong> vous fait économiser <strong>' + fmt(diff) + ' $</strong> en intérêts ';
+  html += 'et vous libère <strong>' + Math.abs(diffMois) + ' mois plus tôt</strong> (' + Math.round(Math.abs(diffMois)/12*10)/10 + ' ans).';
+  html += '</div>';
+  
+  // Plan d'action AVALANCHE
+  html += '<div style="background:#f0f9ff;padding:20px;border-radius:10px;margin-top:20px;border-left:4px solid #2563eb;">';
+  html += '<h4 style="margin:0 0 15px 0;color:#1e40af;">📋 Plan d\'action recommandé</h4>';
+  html += '<p style="margin:0 0 10px 0;"><strong>Suivez la méthode Avalanche :</strong></p>';
+  html += '<ol style="margin:0;padding-left:20px;line-height:2;">';
+
+  for(var i = 0; i < avalanche.ordre.length; i++) {
+    html += '<li><strong>' + avalanche.ordre[i].nom + '</strong> - sera remboursée au mois ' + avalanche.ordre[i].mois;
+    if(i === 0) {
+      html += ' <span style="color:#047857;font-weight:bold;">← Concentrez votre paiement supplémentaire ici en premier</span>';
+    }
+    html += '</li>';
   }
+
+  html += '</ol>';
+  html += '<p style="margin:15px 0 0 0;padding-top:15px;border-top:1px solid #bfdbfe;color:#6b7280;font-size:0.9em;">';
+  html += '💡 <strong>Astuce :</strong> Payez les minimums sur toutes les dettes, puis concentrez ' + fmt(paiementExtra) + ' $/mois sur la dette prioritaire.';
+  html += '</p>';
+  html += '</div>';
   
-html += '<div style="background:#f0f9ff;padding:20px;border-radius:10px;margin-top:20px;border-left:4px solid #2563eb;">';
-html += '<h4 style="margin:0 0 15px 0;color:#1e40af;">📋 Plan d\'action recommandé</h4>';
+} else {
+  html += '<div class="result-box green">';
+  html += '✅ La méthode <strong>Boule de neige</strong> est légèrement avantageuse dans votre cas.';
+  html += '</div>';
+  
+  // Plan d'action BOULE DE NEIGE
+  html += '<div style="background:#f0f9ff;padding:20px;border-radius:10px;margin-top:20px;border-left:4px solid #2563eb;">';
+  html += '<h4 style="margin:0 0 15px 0;color:#1e40af;">📋 Plan d\'action recommandé</h4>';
+  html += '<p style="margin:0 0 10px 0;"><strong>Suivez la méthode Boule de neige :</strong></p>';
+  html += '<ol style="margin:0;padding-left:20px;line-height:2;">';
 
-var meilleure = (diff >= 0) ? avalanche : bouleNeige;
-var methodeNom = (diff >= 0) ? 'Avalanche' : 'Boule de neige';
-
-html += '<p style="margin:0 0 10px 0;"><strong>Suivez la méthode ' + methodeNom + ' :</strong></p>';
-html += '<ol style="margin:0;padding-left:20px;line-height:2;">';
-
-for(var i = 0; i < meilleure.ordre.length; i++) {
-  html += '<li><strong>' + meilleure.ordre[i].nom + '</strong> - sera remboursée au mois ' + meilleure.ordre[i].mois;
-  if(i === 0) {
-    html += ' <span style="color:#047857;font-weight:bold;">← Concentrez votre paiement supplémentaire ici en premier</span>';
+  for(var i = 0; i < bouleNeige.ordre.length; i++) {
+    html += '<li><strong>' + bouleNeige.ordre[i].nom + '</strong> - sera remboursée au mois ' + bouleNeige.ordre[i].mois;
+    if(i === 0) {
+      html += ' <span style="color:#047857;font-weight:bold;">← Concentrez votre paiement supplémentaire ici en premier</span>';
+    }
+    html += '</li>';
   }
-  html += '</li>';
+
+  html += '</ol>';
+  html += '<p style="margin:15px 0 0 0;padding-top:15px;border-top:1px solid #bfdbfe;color:#6b7280;font-size:0.9em;">';
+  html += '💡 <strong>Astuce :</strong> Payez les minimums sur toutes les dettes, puis concentrez ' + fmt(paiementExtra) + ' $/mois sur la dette prioritaire.';
+  html += '</p>';
+  html += '</div>';
 }
 
-html += '</ol>';
-html += '<p style="margin:15px 0 0 0;padding-top:15px;border-top:1px solid #bfdbfe;color:#6b7280;font-size:0.9em;">';
-html += '💡 <strong>Astuce :</strong> Continuez à payer les minimums sur toutes les dettes, mais concentrez votre paiement supplémentaire de ' + fmt(paiementExtra) + ' $/mois sur la dette prioritaire selon cet ordre.';
-html += '</p>';
 html += '</div>';
+  
+document.getElementById('resultats-strategies').innerHTML = html;
 
-html += '</div>';
-
-  document.getElementById('resultats-strategies').innerHTML = html;
 }
 
 function calcCouple() {
@@ -3457,7 +4291,7 @@ function calcCouple() {
     (parseFloat(document.getElementById('couple-autres-dettes-a').value) || 0);
   
   // Dépenses perso A
-  var depensesPersoA = dettesA +
+  var dépensesPersoA = dettesA +
     (parseFloat(document.getElementById('couple-assurance-a').value) || 0) +
     (parseFloat(document.getElementById('couple-abonnements-a').value) || 0) +
     (parseFloat(document.getElementById('couple-pension-a').value) || 0);
@@ -3472,7 +4306,7 @@ function calcCouple() {
     (parseFloat(document.getElementById('couple-autres-dettes-b').value) || 0);
   
   // Dépenses perso B
-  var depensesPersoB = dettesB +
+  var dépensesPersoB = dettesB +
     (parseFloat(document.getElementById('couple-assurance-b').value) || 0) +
     (parseFloat(document.getElementById('couple-abonnements-b').value) || 0) +
     (parseFloat(document.getElementById('couple-pension-b').value) || 0);
@@ -3480,7 +4314,7 @@ function calcCouple() {
   var epargneB = parseFloat(document.getElementById('couple-epargne-b').value) || 0;
   
   // Dépenses communes
-  var depensesCommunes = 
+  var dépensesCommunes = 
     (parseFloat(document.getElementById('couple-loyer').value) || 0) +
     (parseFloat(document.getElementById('couple-epicerie').value) || 0) +
     (parseFloat(document.getElementById('couple-services').value) || 0) +
@@ -3488,12 +4322,12 @@ function calcCouple() {
     (parseFloat(document.getElementById('couple-loisirs').value) || 0) +
     (parseFloat(document.getElementById('couple-autres').value) || 0);
   
-  document.getElementById('couple-total-depenses').textContent = fmt(depensesCommunes) + ' $';
+  document.getElementById('couple-total-dépenses').textContent = fmt(dépensesCommunes) + ' $';
   
   var tauxEpargne = (parseFloat(document.getElementById('couple-taux-epargne').value) || 20) / 100;
   
   // Calculs de revenu disponible
-  var revenuDispoA = revenuA - depensesPersoA;
+  var revenuDispoA = revenuA - dépensesPersoA;
   var revenuDispoB = revenuB - depensesPersoB;
   
   // Ratios dette/revenu
@@ -3664,8 +4498,8 @@ function calcCouple() {
     paiementCapaA = (revenuDispoA / totalDispo) * depensesCommunes;
     paiementCapaB = (revenuDispoB / totalDispo) * depensesCommunes;
   } else {
-    paiementCapaA = (revenuDispoA / totalDispo) * depensesCommunes;
-    paiementCapaB = (revenuDispoB / totalDispo) * depensesCommunes;
+    paiementCapaA = (revenuDispoA / totalDispo) * dépensesCommunes;
+    paiementCapaB = (revenuDispoB / totalDispo) * dépensesCommunes;
   }
   
   var resteCapaA = revenuDispoA - paiementCapaA;
@@ -4316,7 +5150,6 @@ function calcAcheterLouer() {
 }
 
 </script>
-
 <script>
 // === ÉCRAN D'ACCUEIL GUIDÉ ===
 
@@ -4474,125 +5307,16 @@ function showResults() {
   if (userAnswers.urgence === 'non') {
     score -= 30;
     priorities.push({
-      icon: 'URGENCE',
+      icon: '🚨',
       title: 'Constituer un fonds d\'urgence',
-      desc: 'Visez 3-6 mois de depenses',
-      action: 'budget',
-      priority: 1
-    });
-  } else if (userAnswers.urgence === 'partiel') {
-    score -= 15;
-    priorities.push({
-      icon: 'URGENCE',
-      title: 'Completer votre fonds d\'urgence',
-      desc: 'Atteignez 3-6 mois de depenses',
-      action: 'budget',
-      priority: 2
+      desc: '3 à 6 mois de dépenses dans un CELI',
+      action: 'objectifs'
     });
   }
   
-  if (userAnswers.dettes === 'grosse') {
-    score -= 35;
-    priorities.push({
-      icon: 'DETTES',
-      title: 'URGENT : Rembourser vos dettes',
-      desc: 'Strategie avalanche ou boule de neige',
-      action: 'dettes',
-      priority: 1
-    });
-  } else if (userAnswers.dettes === 'moyenne') {
-    score -= 20;
-    priorities.push({
-      icon: 'DETTES',
-      title: 'Rembourser vos dettes',
-      desc: 'Strategie avalanche ou boule de neige',
-      action: 'dettes',
-      priority: 2
-    });
-  } else if (userAnswers.dettes === 'petite') {
-    score -= 10;
-  }
-  
-  var scoreClass = score >= 85 ? 'excellent' : score >= 70 ? 'bon' : score >= 50 ? 'attention' : 'urgent';
-  var scoreLabel = score >= 85 ? 'Excellent' : score >= 70 ? 'Bon' : score >= 50 ? 'Attention' : 'Urgent';
-  
-  if (userAnswers.priorite === 'comprendre') {
-    recommendations.push({text: 'Commencez par complèter votre bilan', action: 'bilan'});
-  }
-  if (userAnswers.priorite === 'maison') {
-    recommendations.push({text: 'Utilisez le calculateur Acheter vs Louer', action: 'acheter-louer'});
-  }
-  if (userAnswers.priorite === 'retraite') {
-    recommendations.push({text: 'Calculez votre plan de retraite', action: 'objectifs'});
-  }
-  if (userAnswers.priorite === 'epargne') {
-    recommendations.push({text: 'Definissez vos Objectifs d\'epargne', action: 'objectifs'});
-  }
-  
-  recommendations.push({text: 'Calculez votre budget idéal avec la règle 50/30/20', action: 'budget'});
-  recommendations.push({text: 'Optimisez vos impôts', action: 'impôts'});
-  
-  priorities.sort(function(a, b) { return a.priority - b.priority; });
-  
-  var html = '<div class="results-container">';
-  html += '<div class="welcome-header"><h1>Votre plan d\'action personnalisé</h1></div>';
-  
-  html += '<div class="health-score-container">';
-  html += '<h3>Score de santé financière</h3>';
-  html += '<div class="score-circle ' + scoreClass + '">' + score + '</div>';
-  html += '<p style="font-size:1.2em;color:#374151;font-weight:600;">' + scoreLabel + '</p>';
-  html += '</div>';
-  
-  if (priorities.length > 0) {
-    html += '<div class="priority-box"><h3>PRIORITES URGENTES</h3>';
-    for (var i = 0; i < priorities.length; i++) {
-      var p = priorities[i];
-      html += '<div class="priority-item"><h4>' + p.icon + ' ' + p.title + '</h4><p>' + p.desc + '</p></div>';
-    }
-    html += '</div>';
-  }
-  
-  html += '<div class="timeline-container"><h3>Votre feuille de route</h3>';
-  var allActions = priorities.concat(recommendations.slice(0, 5 - priorities.length));
-  for (var j = 0; j < Math.min(allActions.length, 5); j++) {
-    var item = allActions[j];
-    var actionName = item.action || 'bilan';
-    html += '<div class="timeline-item" onclick="goToTab(\'' + actionName + '\')">';
-    html += '<div class="timeline-number">' + (j + 1) + '</div>';
-    html += '<div><strong>' + (item.title || item.text) + '</strong>';
-    if (item.desc) html += '<br><small style="color:#6b7280;">' + item.desc + '</small>';
-    html += '</div></div>';
-  }
-  html += '</div>';
-  
-  var prioriteAction = priorities[0] ? priorities[0].action : 'bilan';
-  html += '<div class="next-steps-box"><h3>Vos 7 prochains jours</h3>';
-  if (prioriteAction === 'budget' && userAnswers.urgence !== 'oui') {
-    html += '<p><strong>Jours 1-2 :</strong> Calculez vos depenses mensuelles exactes</p>';
-    html += '<p><strong>Jours 3-4 :</strong> Ouvrez un compte épargne séparé</p>';
-    html += '<p><strong>Jours 5-7 :</strong> Configurez un virement automatique mensuel</p>';
-  } else if (prioriteAction === 'dettes') {
-    html += '<p><strong>Jours 1-2 :</strong> Listez toutes vos dettes avec taux et soldes</p>';
-    html += '<p><strong>Jours 3-4 :</strong> Choisissez votre strategie (avalanche ou boule de neige)</p>';
-    html += '<p><strong>Jours 5-7 :</strong> Contactez vos creanciers pour negocier les taux</p>';
-  } else {
-    html += '<p><strong>Jours 1-2 :</strong> Completez votre bilan financier</p>';
-    html += '<p><strong>Jours 3-5 :</strong> Etablissez votre budget mensuel</p>';
-    html += '<p><strong>Jours 6-7 :</strong> Definissez un objectif d\'epargne pour 6 mois</p>';
-  }
-  html += '</div>';
-  
-  var firstAction = allActions[0] ? (allActions[0].action || 'bilan') : 'bilan';
-  html += '<div class="final-buttons">';
-  html += '<button class="btn-primary" onclick="goToTab(\'' + firstAction + '\')">Commencer maintenant</button>';
-  html += '<button class="btn-secondary" onclick="closeModal()">Voir tous les outils</button>';
-  html += '</div></div>';
-  
-  document.getElementById('resultsScreen').innerHTML = html;
-}  
-  // Dettes
   if (userAnswers.dettes !== 'aucune') {
     var urgence = userAnswers.dettes === 'grosse' ? 'URGENT : ' : '';
+    score -= userAnswers.dettes === 'grosse' ? 25 : 10;
     priorities.push({
       icon: '💳',
       title: urgence + 'Rembourser vos dettes',
@@ -4601,25 +5325,46 @@ function showResults() {
     });
   }
   
+  if (userAnswers.budget === 'non') {
+    score -= 15;
+    priorities.push({
+      icon: '📊',
+      title: 'Créer votre budget',
+      desc: 'Commencez par la règle 50/30/20',
+      action: 'budget'
+    });
+  }
+  
+  if (userAnswers.epargne === 'non') {
+    score -= 10;
+    priorities.push({
+      icon: '💰',
+      title: 'Démarrer l\'épargne automatique',
+      desc: 'Même 50$/mois fait une différence',
+      action: 'objectifs'
+    });
+  }
+  
+  priorities.sort(function(a, b) { return a.priority - b.priority; });
+  
   // Recommandations selon la priorité
   if (userAnswers.priorite === 'comprendre') {
-    recommendations.push('Commencez par compléter votre <strong>Bilan</strong>');
+    recommendations.push({text: 'Commencez par compléter votre <strong>Bilan</strong>', action: 'bilan'});
   }
-  
   if (userAnswers.priorite === 'maison') {
-    recommendations.push('Utilisez le calculateur <strong>Acheter vs Louer</strong>');
+    recommendations.push({text: 'Utilisez le calculateur <strong>Acheter vs Louer</strong>', action: 'acheter-louer'});
   }
-  
   if (userAnswers.priorite === 'retraite') {
-    recommendations.push('Calculez votre <strong>Plan de retraite</strong>');
+    recommendations.push({text: 'Calculez votre <strong>Plan de retraite</strong>', action: 'objectifs'});
   }
-  
   if (userAnswers.priorite === 'epargne') {
-    recommendations.push('Définissez vos <strong>Objectifs d\'épargne</strong>');
+    recommendations.push({text: 'Définissez vos <strong>Objectifs d\'épargne</strong>', action: 'objectifs'});
   }
+  recommendations.push({text: 'Calculez votre budget idéal avec la règle <strong>50/30/20</strong>', action: 'budget'});
+  recommendations.push({text: 'Optimisez vos <strong>Impôts</strong>', action: 'impôts'});
   
-  recommendations.push('Calculez votre budget idéal avec la règle <strong>50/30/20</strong>');
-  recommendations.push('Optimisez vos <strong>Impôts</strong>');
+  var allActions = priorities.concat(recommendations.slice(0, Math.max(0, 5 - priorities.length)));
+  var prioriteAction = priorities[0] ? priorities[0].action : 'bilan';
   
   // Construire le HTML
   var html = '<div class="results-container">';
@@ -4628,21 +5373,47 @@ function showResults() {
   html += '</div>';
   
   if (priorities.length > 0) {
-   html += '<div class="recommendations-box">';
-  html += '<h3>RECOMMANDATIONS</h3>';
-  html += '<ul>';
-  for (var j = 0; j < recommendations.length; j++) {
-    html += '<li>• ' + recommendations[j].text + '</li>';
+    html += '<div style="background:#fee2e2;border-left:4px solid #dc2626;padding:20px;border-radius:10px;margin-bottom:20px;">';
+    html += '<h3 style="color:#dc2626;margin:0 0 15px 0;">🚨 Priorités immédiates</h3>';
+    for (var i = 0; i < priorities.length; i++) {
+      var p = priorities[i];
+      html += '<div style="background:white;padding:12px;border-radius:8px;margin-bottom:10px;">';
+      html += '<strong>' + p.icon + ' ' + p.title + '</strong>';
+      html += '<p style="margin:5px 0 0 0;color:#6b7280;font-size:0.9em;">' + p.desc + '</p>';
+      html += '</div>';
+    }
+    html += '</div>';
   }
-  html += '</ul>';
+  
+  if (recommendations.length > 0) {
+    html += '<div style="background:#eff6ff;border-left:4px solid #2563eb;padding:20px;border-radius:10px;margin-bottom:20px;">';
+    html += '<h3 style="color:#1e40af;margin:0 0 15px 0;">💡 Recommandations</h3>';
+    html += '<ul style="margin:0;padding-left:20px;line-height:1.8;">';
+    for (var j = 0; j < recommendations.length; j++) {
+      html += '<li>' + recommendations[j].text + '</li>';
+    }
+    html += '</ul>';
+    html += '</div>';
+  }
+  
+  html += '<div style="background:#f0fdf4;border-left:4px solid #10b981;padding:20px;border-radius:10px;margin-bottom:20px;">';
+  html += '<h3 style="color:#065f46;margin:0 0 10px 0;">📅 Plan 7 jours</h3>';
+  if (userAnswers.dettes === 'grosse') {
+    html += '<p><strong>Jours 1-2 :</strong> Listez toutes vos dettes avec taux et soldes</p>';
+    html += '<p><strong>Jours 3-4 :</strong> Choisissez votre stratégie (avalanche ou boule de neige)</p>';
+    html += '<p><strong>Jours 5-7 :</strong> Contactez vos créanciers pour négocier les taux</p>';
+  } else {
+    html += '<p><strong>Jours 1-2 :</strong> Complétez votre bilan financier</p>';
+    html += '<p><strong>Jours 3-5 :</strong> Établissez votre budget mensuel</p>';
+    html += '<p><strong>Jours 6-7 :</strong> Définissez un objectif d\'épargne pour 6 mois</p>';
+  }
   html += '</div>';
   
+  var firstAction = allActions[0] ? (allActions[0].action || 'bilan') : 'bilan';
   html += '<div class="final-buttons">';
-  html += '<button class="btn-primary" onclick="goToBilan()">Commencer mon bilan</button>';
+  html += '<button class="btn-primary" onclick="goToTab(\'' + firstAction + '\')">Commencer maintenant</button>';
   html += '<button class="btn-secondary" onclick="closeModal()">Voir tous les outils</button>';
-  html += '</div>';
-  
-  html += '</div>';
+  html += '</div></div>';
   
   document.getElementById('resultsScreen').innerHTML = html;
 }
@@ -4663,13 +5434,9 @@ function closeModal() {
 }
 </script>
 
-</ul>
-  </div>
-</div>
-
 <footer style="background:#1f2937;color:white;padding:40px 20px;margin-top:50px;">
   <div class="container">
-     <div style="text-align:center;color:#9ca3af;">
+    <div style="text-align:center;color:#9ca3af;">
       <p style="margin:0 0 10px 0;font-size:1em;">Finance Personnelle Pro</p>
       <p style="margin:0;font-size:0.85em;">© 2025 Aziz Guellouz. Tous droits réservés.</p>
       <p style="margin:10px 0 0 0;font-size:0.8em;">
@@ -4679,13 +5446,463 @@ function closeModal() {
     </div>
   </div>
 </footer>
-
 <script>
-var DATA={};
-function changeTab(t){
-console.log('calcBesoin() appelée !');
-  var tabs=document.querySelectorAll('.tab-content');
-  // ... reste du script ...
+// SCRIPT PSYCHOLOGIE DE L'ARGENT
+function calculatePsychoResults() {
+  // Vérifier que toutes les questions sont répondues
+  var totalQuestions = 15;
+  var answeredCount = 0;
+  var answers = {};
+  
+  for(var i = 1; i <= totalQuestions; i++) {
+    var selected = document.querySelector('input[name="q' + i + '"]:checked');
+    if(selected) {
+      answeredCount++;
+      answers['q' + i] = selected.value;
+    }
+  }
+  
+  if(answeredCount < totalQuestions) {
+    alert('Veuillez répondre à toutes les questions avant de continuer.');
+    return;
+  }
+  
+  // Calcul des scores par dimension
+  var scores = {
+    risque: 0,        // Tolérance au risque
+    suffisance: 0,    // Notion de "assez"
+    patience: 0,      // Vision long terme
+    independance: 0,  // Indépendance vs comparaison sociale
+    humilite: 0       // Reconnaissance chance vs mérite
+  };
+  
+  // Scoring Section 1: Risque (Q1-Q3)
+  // Q1
+  if(answers.q1 === 'A') scores.risque += 4;
+  else if(answers.q1 === 'B') scores.risque += 2;
+  else if(answers.q1 === 'C') scores.risque += 1;
+  else scores.risque += 0;
+  
+  // Q2
+  if(answers.q2 === 'A') scores.risque += 0;
+  else if(answers.q2 === 'B') scores.risque += 2;
+  else if(answers.q2 === 'C') scores.risque += 4;
+  else scores.risque += 3;
+  
+  // Q3
+  if(answers.q3 === 'A') scores.risque += 0;
+  else if(answers.q3 === 'B') scores.risque += 4;
+  else if(answers.q3 === 'C') scores.risque += 2;
+  else scores.risque += 3;
+  
+  // Scoring Section 2: Suffisance (Q4-Q6)
+  // Q4
+  if(answers.q4 === 'A') scores.suffisance += 2;
+  else if(answers.q4 === 'B') scores.suffisance += 1;
+  else if(answers.q4 === 'C') scores.suffisance += 4;
+  else scores.suffisance += 0;
+  
+  // Q5
+  if(answers.q5 === 'A') scores.suffisance += 0;
+  else if(answers.q5 === 'B') scores.suffisance += 2;
+  else if(answers.q5 === 'C') scores.suffisance += 4;
+  else scores.suffisance += 3;
+  
+  // Q6
+  if(answers.q6 === 'A') scores.suffisance += 4;
+  else if(answers.q6 === 'B') scores.suffisance += 3;
+  else if(answers.q6 === 'C') scores.suffisance += 1;
+  else scores.suffisance += 0;
+  
+  // Scoring Section 3: Patience (Q7-Q9)
+  // Q7
+  if(answers.q7 === 'A') scores.patience += 0;
+  else if(answers.q7 === 'B') scores.patience += 4;
+  else if(answers.q7 === 'C') scores.patience += 2;
+  else scores.patience += 3;
+  
+  // Q8
+  if(answers.q8 === 'A') scores.patience += 0;
+  else if(answers.q8 === 'B') scores.patience += 1;
+  else if(answers.q8 === 'C') scores.patience += 3;
+  else scores.patience += 4;
+  
+  // Q9
+  if(answers.q9 === 'A') scores.patience += 0;
+  else if(answers.q9 === 'B') scores.patience += 4;
+  else if(answers.q9 === 'C') scores.patience += 1;
+  else scores.patience += 3;
+  
+  // Scoring Section 4: Indépendance (Q10-Q12)
+  // Q10
+  if(answers.q10 === 'A') scores.independance += 0;
+  else if(answers.q10 === 'B') scores.independance += 4;
+  else if(answers.q10 === 'C') scores.independance += 2;
+  else scores.independance += 3;
+  
+  // Q11
+  if(answers.q11 === 'A') scores.independance += 0;
+  else if(answers.q11 === 'B') scores.independance += 1;
+  else if(answers.q11 === 'C') scores.independance += 3;
+  else scores.independance += 4;
+  
+  // Q12
+  if(answers.q12 === 'A') scores.independance += 0;
+  else if(answers.q12 === 'B') scores.independance += 4;
+  else if(answers.q12 === 'C') scores.independance += 3;
+  else scores.independance += 2;
+  
+  // Scoring Section 5: Humilité (Q13-Q15)
+  // Q13
+  if(answers.q13 === 'A') scores.humilite += 0;
+  else if(answers.q13 === 'B') scores.humilite += 4;
+  else if(answers.q13 === 'C') scores.humilite += 3;
+  else scores.humilite += 2;
+  
+  // Q14
+  if(answers.q14 === 'A') scores.humilite += 0;
+  else if(answers.q14 === 'B') scores.humilite += 4;
+  else if(answers.q14 === 'C') scores.humilite += 3;
+  else scores.humilite += 1;
+  
+  // Q15
+  if(answers.q15 === 'A') scores.humilite += 0;
+  else if(answers.q15 === 'B') scores.humilite += 2;
+  else if(answers.q15 === 'C') scores.humilite += 4;
+  else scores.humilite += 3;
+  
+  // Normaliser les scores en pourcentage (0-100)
+  var maxScore = 12; // 3 questions × 4 points max
+  var percentages = {
+    risque: Math.round(scores.risque / maxScore * 100),
+    suffisance: Math.round(scores.suffisance / maxScore * 100),
+    patience: Math.round(scores.patience / maxScore * 100),
+    independance: Math.round(scores.independance / maxScore * 100),
+    humilite: Math.round(scores.humilite / maxScore * 100)
+  };
+  
+  // Déterminer le profil dominant
+  var profile = determineProfile(percentages);
+  
+  // Afficher les résultats
+  displayPsychoResults(percentages, profile);
+  
+  // Scroll vers les résultats
+  document.getElementById('psycho-results').scrollIntoView({ behavior: 'smooth' });
+}
+
+function determineProfile(scores) {
+  var avg = Math.round((scores.risque + scores.suffisance + scores.patience + scores.independance + scores.humilite) / 5);
+  
+  var profiles = [
+    {
+      name: "Le Sage Équilibré",
+      condition: function(s) { 
+        return s.patience >= 70 && s.suffisance >= 70 && s.independance >= 70 && s.humilite >= 60;
+      },
+      color: "#10b981",
+      emoji: "🧘",
+      description: "Vous incarnez la philosophie de Morgan Housel. Vous comprenez que la richesse est un marathon, pas un sprint.",
+      strengths: [
+        "Excellente maîtrise émotionnelle face aux fluctuations",
+        "Vision claire de ce qui compte vraiment pour vous",
+        "Indépendance vis-à-vis des influences sociales",
+        "Reconnaissance du rôle de la chance et de l'incertitude"
+      ],
+      warnings: [
+        "Attention à ne pas devenir trop rigide dans votre approche",
+        "Restez ouvert aux opportunités même si elles sortent de votre plan"
+      ],
+      quote: "« Être raisonnable > Être rationnel. Des résultats raisonnables que vous pouvez maintenir battront des résultats optimaux que vous ne pouvez pas tenir. »"
+    },
+    {
+      name: "L'Optimiste Prudent",
+      condition: function(s) {
+        return s.patience >= 60 && s.humilite >= 60 && s.risque >= 50 && s.risque <= 75;
+      },
+      color: "#3b82f6",
+      emoji: "🌱",
+      description: "Vous croyez en l'avenir tout en restant pragmatique. Vous prenez des risques calculés.",
+      strengths: [
+        "Bon équilibre entre optimisme et prudence",
+        "Capacité à voir les opportunités sans être imprudent",
+        "Patience pour laisser le temps faire son œuvre"
+      ],
+      warnings: [
+        "Surveillez que votre optimisme ne devienne pas de la complaisance",
+        "Gardez toujours une marge de sécurité"
+      ],
+      quote: "« L'optimisme est la croyance que les probabilités de succès sont en votre faveur, même si le chemin est incertain. »"
+    },
+    {
+      name: "Le Minimaliste Libre",
+      condition: function(s) {
+        return s.suffisance >= 75 && s.independance >= 70;
+      },
+      color: "#8b5cf6",
+      emoji: "🕊️",
+      description: "Vous avez compris que la vraie richesse, c'est la liberté. Vous savez dire 'c'est assez'.",
+      strengths: [
+        "Forte indépendance face aux pressions sociales",
+        "Excellente compréhension de vos vrais besoins",
+        "Capacité à apprécier ce que vous avez"
+      ],
+      warnings: [
+        "Attention à ne pas sous-estimer vos besoins futurs",
+        "Gardez une certaine ambition financière pour votre sécurité"
+      ],
+      quote: "« La capacité de faire ce que vous voulez, quand vous voulez, avec qui vous voulez, aussi longtemps que vous voulez - c'est la richesse. »"
+    },
+    {
+      name: "L'Investisseur Impulsif",
+      condition: function(s) {
+        return s.risque >= 75 && s.patience <= 40;
+      },
+      color: "#ef4444",
+      emoji: "🎲",
+      description: "Vous aimez l'action et cherchez des gains rapides. Cette approche comporte des risques importants.",
+      strengths: [
+        "Courage pour saisir des opportunités",
+        "Confiance en vos décisions"
+      ],
+      warnings: [
+        "ATTENTION: Votre profil présente des risques élevés",
+        "L'impatience est l'ennemi de la richesse à long terme",
+        "Les décisions rapides mènent souvent aux regrets",
+        "Lisez 'The Psychology of Money' - chapitre sur la patience"
+      ],
+      quote: "« Les bonnes décisions d'investissement sont ennuyeuses. C'est votre patience qui gagne, pas votre intelligence. »"
+    },
+    {
+      name: "Le Suiveur Social",
+      condition: function(s) {
+        return s.independance <= 40 && s.suffisance <= 50;
+      },
+      color: "#f59e0b",
+      emoji: "👥",
+      description: "Vous êtes fortement influencé par votre entourage et les comparaisons sociales.",
+      strengths: [
+        "Motivation à réussir",
+        "Conscience de votre environnement"
+      ],
+      warnings: [
+        "ATTENTION: Votre profil présente des vulnérabilités",
+        "Comparer votre situation à celle des autres est un jeu sans fin",
+        "Définissez VOS propres critères de succès",
+        "La vraie richesse est invisible - arrêtez de regarder les autres"
+      ],
+      quote: "« Les gens ont tendance à vouloir devenir riches pour impressionner les gens qui... se fichent qu'ils soient riches. »"
+    },
+    {
+      name: "Le Conservateur Prudent",
+      condition: function(s) {
+        return s.risque <= 30 && s.patience >= 60;
+      },
+      color: "#6366f1",
+      emoji: "🛡️",
+      description: "Vous privilégiez la sécurité et la préservation du capital. Approche très prudente.",
+      strengths: [
+        "Excellente protection contre les pertes majeures",
+        "Stabilité émotionnelle face aux marchés",
+        "Approche disciplinée"
+      ],
+      warnings: [
+        "Attention à l'excès de prudence - l'inflation érode votre épargne",
+        "Un peu de risque calculé est nécessaire pour croître",
+        "Ne laissez pas la peur vous paralyser"
+      ],
+      quote: "« La survie est le meilleur objectif. Tout le reste vient après. »"
+    },
+    {
+      name: "L'Apprenant Réfléchi",
+      condition: function(s) {
+        return true; // Default si aucun autre profil ne correspond
+      },
+      color: "#14b8a6",
+      emoji: "📚",
+      description: "Vous êtes en apprentissage constant. Votre profil montre un équilibre en développement.",
+      strengths: [
+        "Ouverture d'esprit et volonté d'apprendre",
+        "Approche équilibrée en construction"
+      ],
+      warnings: [
+        "Continuez à vous éduquer sur la psychologie financière",
+        "Identifiez vos faiblesses et travaillez dessus",
+        "La conscience de soi est le premier pas vers la sagesse financière"
+      ],
+      quote: "« Votre expérience personnelle avec l'argent représente peut-être 0.00000001% de ce qui s'est passé dans le monde, mais peut-être 80% de votre façon de penser l'argent. »"
+    }
+  ];
+  
+  // Trouver le profil correspondant
+  for(var i = 0; i < profiles.length; i++) {
+    if(profiles[i].condition(scores)) {
+      return profiles[i];
+    }
+  }
+  
+  return profiles[profiles.length - 1]; // Default
+}
+
+function displayPsychoResults(scores, profile) {
+  var html = '';
+  
+  // En-tête du profil
+  html += '<div class="psycho-result-card" style="text-align:center;border-top:6px solid ' + profile.color + ';">';
+  html += '<h2 style="color:#1f2937;margin:0 0 20px 0;">Votre Profil Psychologique</h2>';
+  html += '<div style="font-size:4em;margin:20px 0;">' + profile.emoji + '</div>';
+  html += '<div class="psycho-profile-badge" style="background:' + profile.color + '20;color:' + profile.color + ';border:2px solid ' + profile.color + ';">';
+  html += profile.name;
+  html += '</div>';
+  html += '<p style="margin:20px 0;font-size:1.1em;color:#374151;line-height:1.7;">' + profile.description + '</p>';
+  html += '</div>';
+  
+  // Citation de Morgan Housel
+  html += '<div class="psycho-book-quote">';
+  html += '<strong style="color:#92400e;">💬 Leçon de "The Psychology of Money" :</strong><br>';
+  html += profile.quote;
+  html += '</div>';
+  
+  // Scores détaillés
+  html += '<div class="psycho-result-card">';
+  html += '<h3 style="color:#1f2937;margin:0 0 30px 0;">📊 Vos 5 Dimensions Psychologiques</h3>';
+  
+  var dimensions = [
+    { key: 'risque', label: 'Tolérance au Risque', color: '#ef4444' },
+    { key: 'patience', label: 'Vision Long Terme', color: '#3b82f6' },
+    { key: 'suffisance', label: 'Notion de "Assez"', color: '#10b981' },
+    { key: 'independance', label: 'Indépendance Sociale', color: '#8b5cf6' },
+    { key: 'humilite', label: 'Humilité Financière', color: '#f59e0b' }
+  ];
+  
+  for(var i = 0; i < dimensions.length; i++) {
+    var dim = dimensions[i];
+    var score = scores[dim.key];
+    
+    html += '<div class="psycho-trait-bar">';
+    html += '<div class="psycho-trait-label">';
+    html += '<span><strong>' + dim.label + '</strong></span>';
+    html += '<span style="color:' + dim.color + ';font-weight:bold;">' + score + '%</span>';
+    html += '</div>';
+    html += '<div class="psycho-trait-progress">';
+    html += '<div class="psycho-trait-fill" style="width:' + score + '%;background:' + dim.color + ';"></div>';
+    html += '</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+  
+  // Points forts
+  html += '<div class="psycho-result-card" style="background:#d1fae5;border-left:4px solid #10b981;">';
+  html += '<h3 style="color:#065f46;margin:0 0 15px 0;">✅ Vos Forces</h3>';
+  html += '<ul style="margin:0;padding-left:20px;color:#047857;line-height:1.8;">';
+  for(var j = 0; j < profile.strengths.length; j++) {
+    html += '<li>' + profile.strengths[j] + '</li>';
+  }
+  html += '</ul>';
+  html += '</div>';
+  
+  // Points d'attention
+  html += '<div class="psycho-result-card" style="background:#fff4e6;border-left:4px solid #f59e0b;">';
+  html += '<h3 style="color:#9a3412;margin:0 0 15px 0;">⚠️ Points d\'Attention</h3>';
+  html += '<ul style="margin:0;padding-left:20px;color:#7c2d12;line-height:1.8;">';
+  for(var k = 0; k < profile.warnings.length; k++) {
+    html += '<li>' + profile.warnings[k] + '</li>';
+  }
+  html += '</ul>';
+  html += '</div>';
+  
+  // Recommandations personnalisées
+  html += '<div class="psycho-result-card">';
+  html += '<h3 style="color:#1f2937;margin:0 0 20px 0;">🎯 Recommandations Personnalisées</h3>';
+  
+  // Basées sur les scores
+  var recommendations = [];
+  
+  if(scores.patience < 50) {
+    recommendations.push({
+      title: "Développez votre patience",
+      desc: "Arrêtez de consulter vos placements quotidiennement. Fixez-vous des rendez-vous trimestriels.",
+      action: "Conseil: Activez les contributions automatiques mensuelles et oubliez vos comptes."
+    });
+  }
+  
+  if(scores.suffisance < 50) {
+    recommendations.push({
+      title: "Définissez votre 'assez'",
+      desc: "Écrivez noir sur blanc: combien d'argent vous faut-il pour être satisfait ? Sinon, vous courrez après une cible mobile.",
+      action: "Exercice: Calculez votre nombre de liberté financière (25x vos dépenses annuelles)."
+    });
+  }
+  
+  if(scores.independance < 50) {
+    recommendations.push({
+      title: "Arrêtez de vous comparer",
+      desc: "Vous ne connaissez pas la situation réelle des autres. Concentrez-vous sur VOTRE chemin.",
+      action: "Conseil: Désactivez les notifications de réseaux sociaux pendant 30 jours."
+    });
+  }
+  
+  if(scores.risque > 75) {
+    recommendations.push({
+      title: "Modérez votre prise de risque",
+      desc: "L'excès de confiance détruit plus de fortunes que la prudence.",
+      action: "Règle: Ne jamais investir plus de 5% de votre capital sur une seule opportunité."
+    });
+  }
+  
+  if(scores.humilite < 50) {
+    recommendations.push({
+      title: "Cultivez l'humilité",
+      desc: "Reconnaissez le rôle de la chance dans vos succès - et celui de la malchance possible dans votre futur.",
+      action: "Conseil: Maintenez toujours 6-12 mois de dépenses en fonds d'urgence."
+    });
+  }
+  
+  if(recommendations.length === 0) {
+    recommendations.push({
+      title: "Maintenez le cap",
+      desc: "Votre profil est très équilibré. Continuez sur cette voie.",
+      action: "Conseil: Révisez votre stratégie une fois par an, pas plus."
+    });
+  }
+  
+  for(var m = 0; m < recommendations.length; m++) {
+    var rec = recommendations[m];
+    html += '<div class="psycho-recommendation">';
+    html += '<p style="margin:5px 0;color:#374151;">' + rec.desc + '</p>';
+    html += '<p style="margin:5px 0;font-style:italic;color:#6b7280;">' + rec.action + '</p>';
+    html += '</div>';
+  }
+  
+  html += '</div>';
+  html += '</div>';
+  
+  document.getElementById('psycho-results').innerHTML = html;
+  document.getElementById('psycho-results').classList.remove('hidden');
+  document.getElementById('psycho-results').scrollIntoView({behavior:'smooth'});
+}
+
+function selectPsychoOption(radio) {
+  var name = radio.name;
+  var options = document.querySelectorAll('input[name="' + name + '"]');
+  for (var i = 0; i < options.length; i++) {
+    options[i].closest('.psycho-option').classList.remove('selected');
+  }
+  radio.closest('.psycho-option').classList.add('selected');
+  
+  // Vérifier si toutes les questions sont répondues
+  var totalQuestions = 15;
+  var answeredCount = 0;
+  for (var q = 1; q <= totalQuestions; q++) {
+    if (document.querySelector('input[name="q' + q + '"]:checked')) {
+      answeredCount++;
+    }
+  }
+  var btn = document.getElementById('psycho-submit');
+  if (btn) {
+    btn.disabled = (answeredCount < totalQuestions);
+  }
+}
 </script>
 </body>
 </html>
