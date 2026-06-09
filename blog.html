@@ -8,7 +8,6 @@
   <meta name="author" content="Aziz Guellouz">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://parlonscash.pro/blog.html">
-
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Parlons Cash">
   <meta property="og:title" content="Blog – Finance personnelle au Québec | Parlons Cash">
@@ -33,27 +32,31 @@
     "blogPost": [
       {
         "@type": "BlogPosting",
-        "headline": "Ce n'est pas parce que vous pouvez vous le permettre que c'est une bonne décision",
-        "url": "https://parlonscash.pro/blog/quatre-capitaux.html",
-        "datePublished": "2026-01-01",
-        "author": {"@type": "Person", "name": "Aziz Guellouz"},
-        "keywords": ["psychologie de l'argent", "quatre capitaux", "dépenses", "finance personnelle"]
-      },
-      {
-        "@type": "BlogPosting",
-        "headline": "Construisez-vous vraiment la vie que vous voulez… ou seulement votre carrière ?",
-        "url": "https://parlonscash.pro/blog/construire-sa-vie.html",
-        "datePublished": "2026-02-01",
-        "author": {"@type": "Person", "name": "Aziz Guellouz"},
-        "keywords": ["carrière", "liberté financière", "phases de vie", "transmission"]
+        "headline": "Ce que l'université ne m'a pas appris sur l'argent",
+        "url": "https://parlonscash.pro/blog/ce-que-luniversite-ne-ma-pas-appris.html",
+        "datePublished": "2026-04-01",
+        "author": {"@type": "Person", "name": "Aziz Guellouz"}
       },
       {
         "@type": "BlogPosting",
         "headline": "FIRE : libération financière ou cage dorée ?",
         "url": "https://parlonscash.pro/blog/fire-liberation-ou-cage-doree.html",
         "datePublished": "2026-03-01",
-        "author": {"@type": "Person", "name": "Aziz Guellouz"},
-        "keywords": ["FIRE", "indépendance financière", "frugalité", "épargne"]
+        "author": {"@type": "Person", "name": "Aziz Guellouz"}
+      },
+      {
+        "@type": "BlogPosting",
+        "headline": "Construisez-vous vraiment la vie que vous voulez… ou seulement votre carrière ?",
+        "url": "https://parlonscash.pro/blog/construire-sa-vie.html",
+        "datePublished": "2026-02-01",
+        "author": {"@type": "Person", "name": "Aziz Guellouz"}
+      },
+      {
+        "@type": "BlogPosting",
+        "headline": "Ce n'est pas parce que vous pouvez vous le permettre que c'est une bonne décision",
+        "url": "https://parlonscash.pro/blog/quatre-capitaux.html",
+        "datePublished": "2026-01-01",
+        "author": {"@type": "Person", "name": "Aziz Guellouz"}
       }
     ]
   }
@@ -61,119 +64,25 @@
 
   <style>
     * { box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-      background-color: #f8f9fa;
-      color: #212529;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-    }
-    header {
-      background-color: #1e40af;
-      color: white;
-      padding: 40px 10%;
-      text-align: center;
-    }
+    body { font-family: "Segoe UI", Roboto, Arial, sans-serif; background-color: #f8f9fa; color: #212529; margin: 0; padding: 0; line-height: 1.6; }
+    header { background-color: #1e40af; color: white; padding: 40px 10%; text-align: center; }
     header h1 { margin: 0 0 8px 0; font-size: 2rem; }
     header p { margin: 0; opacity: 0.85; font-size: 1rem; }
-    header a.retour {
-      display: inline-block;
-      margin-bottom: 20px;
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
+    header a.retour { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 20px; }
     header a.retour:hover { color: white; }
-    nav.categories {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      padding: 24px 20px 0;
-    }
-    .cat-btn {
-      background: white;
-      border: 2px solid #e5e7eb;
-      border-radius: 20px;
-      padding: 6px 16px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      color: #374151;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    .cat-btn:hover, .cat-btn.active {
-      background: #1e40af;
-      border-color: #1e40af;
-      color: white;
-    }
+    nav.categories { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 24px 20px 0; }
+    .cat-btn { background: white; border: 2px solid #e5e7eb; border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; cursor: pointer; color: #374151; font-weight: 600; transition: all 0.2s; }
+    .cat-btn:hover, .cat-btn.active { background: #1e40af; border-color: #1e40af; color: white; }
     main { max-width: 900px; margin: 40px auto; padding: 0 20px; }
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
-    }
-    .blog-card {
-      background: white;
-      border-radius: 14px;
-      border: 1px solid #e5e7eb;
-      padding: 28px;
-      transition: all 0.2s;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      text-decoration: none;
-      color: inherit;
-    }
-    .blog-card:hover {
-      border-color: #2563eb;
-      box-shadow: 0 4px 20px rgba(37,99,235,0.12);
-      transform: translateY(-3px);
-      text-decoration: none;
-    }
-    .card-categorie {
-      font-size: 0.75em;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #2563eb;
-      background: #eff6ff;
-      padding: 4px 10px;
-      border-radius: 20px;
-      display: inline-block;
-      width: fit-content;
-    }
-    .card-titre {
-      font-size: 1.1em;
-      font-weight: 700;
-      color: #1f2937;
-      line-height: 1.4;
-    }
-    .card-extrait {
-      font-size: 0.92em;
-      color: #6b7280;
-      line-height: 1.6;
-      flex: 1;
-    }
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.82em;
-      color: #9ca3af;
-      border-top: 1px solid #f3f4f6;
-      padding-top: 12px;
-    }
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+    .blog-card { background: white; border-radius: 14px; border: 1px solid #e5e7eb; padding: 28px; transition: all 0.2s; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: inherit; }
+    .blog-card:hover { border-color: #2563eb; box-shadow: 0 4px 20px rgba(37,99,235,0.12); transform: translateY(-3px); text-decoration: none; }
+    .card-categorie { font-size: 0.75em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #2563eb; background: #eff6ff; padding: 4px 10px; border-radius: 20px; display: inline-block; width: fit-content; }
+    .card-titre { font-size: 1.1em; font-weight: 700; color: #1f2937; line-height: 1.4; }
+    .card-extrait { font-size: 0.92em; color: #6b7280; line-height: 1.6; flex: 1; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.82em; color: #9ca3af; border-top: 1px solid #f3f4f6; padding-top: 12px; }
     .card-lire { color: #2563eb; font-weight: 600; }
-    footer {
-      text-align: center;
-      padding: 30px 20px;
-      margin-top: 60px;
-      font-size: 0.9rem;
-      color: #6b7280;
-      border-top: 1px solid #e5e7eb;
-    }
+    footer { text-align: center; padding: 30px 20px; margin-top: 60px; font-size: 0.9rem; color: #6b7280; border-top: 1px solid #e5e7eb; }
     footer a { color: #2563eb; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
   </style>
@@ -190,17 +99,28 @@
     <button class="cat-btn" onclick="filtrerCategorie('Psychologie', this)">Psychologie</button>
     <button class="cat-btn" onclick="filtrerCategorie('Vision', this)">Vision</button>
     <button class="cat-btn" onclick="filtrerCategorie('Stratégie', this)">Stratégie</button>
+    <button class="cat-btn" onclick="filtrerCategorie('Expérience personnelle', this)">Expérience</button>
   </nav>
 
   <main>
     <div class="blog-grid" id="blog-grid">
 
-      <a class="blog-card" href="blog/quatre-capitaux.html" data-categorie="Psychologie">
-        <span class="card-categorie">Psychologie</span>
-        <div class="card-titre">Ce n'est pas parce que vous pouvez vous le permettre que c'est une bonne décision</div>
-        <div class="card-extrait">La plupart des gens évaluent leurs dépenses avec une seule question : « Est-ce que je peux me le permettre ? » Pourtant, cette question est insuffisante.</div>
+      <a class="blog-card" href="blog/ce-que-luniversite-ne-ma-pas-appris.html" data-categorie="Expérience personnelle">
+        <span class="card-categorie">Expérience personnelle</span>
+        <div class="card-titre">Ce que l'université ne m'a pas appris sur l'argent</div>
+        <div class="card-extrait">J'avais un baccalauréat en finance et je ne savais pas ce qu'était un REER. L'histoire vraie de ma première rencontre avec la finance personnelle.</div>
         <div class="card-footer">
-          <span>Janvier 2026</span>
+          <span>Avril 2026</span>
+          <span class="card-lire">8 min de lecture →</span>
+        </div>
+      </a>
+
+      <a class="blog-card" href="blog/fire-liberation-ou-cage-doree.html" data-categorie="Stratégie">
+        <span class="card-categorie">Stratégie</span>
+        <div class="card-titre">FIRE : libération financière ou cage dorée ?</div>
+        <div class="card-extrait">Le mouvement FIRE a démocratisé l'ambition de l'indépendance financière. Mais quand la frugalité cesse d'être un moyen et devient une fin en soi, quelque chose se brise.</div>
+        <div class="card-footer">
+          <span>Mars 2026</span>
           <span class="card-lire">6 min de lecture →</span>
         </div>
       </a>
@@ -215,12 +135,12 @@
         </div>
       </a>
 
-      <a class="blog-card" href="blog/fire-liberation-ou-cage-doree.html" data-categorie="Stratégie">
-        <span class="card-categorie">Stratégie</span>
-        <div class="card-titre">FIRE : libération financière ou cage dorée ?</div>
-        <div class="card-extrait">Le mouvement FIRE a démocratisé l'ambition de l'indépendance financière. Mais quand la frugalité cesse d'être un moyen et devient une fin en soi, quelque chose se brise.</div>
+      <a class="blog-card" href="blog/quatre-capitaux.html" data-categorie="Psychologie">
+        <span class="card-categorie">Psychologie</span>
+        <div class="card-titre">Ce n'est pas parce que vous pouvez vous le permettre que c'est une bonne décision</div>
+        <div class="card-extrait">La plupart des gens évaluent leurs dépenses avec une seule question : « Est-ce que je peux me le permettre ? » Pourtant, cette question est insuffisante.</div>
         <div class="card-footer">
-          <span>Mars 2026</span>
+          <span>Janvier 2026</span>
           <span class="card-lire">6 min de lecture →</span>
         </div>
       </a>
