@@ -3,8 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog – Parlons Cash</title>
+  <title>Blog – Finance personnelle au Québec | Parlons Cash</title>
+  <meta name="description" content="Articles de finance personnelle pour les Québécois : psychologie de l'argent, indépendance financière, FIRE, REER, CELI et stratégies pour bâtir une vraie liberté financière.">
+  <meta name="author" content="Aziz Guellouz">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://parlonscash.pro/blog.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Parlons Cash">
+  <meta property="og:title" content="Blog – Finance personnelle au Québec | Parlons Cash">
+  <meta property="og:description" content="Articles de finance personnelle pour les Québécois : psychologie de l'argent, indépendance financière, FIRE, REER, CELI.">
+  <meta property="og:url" content="https://parlonscash.pro/blog.html">
+  <meta property="og:image" content="https://parlonscash.pro/Aziz Guellouz.jpg">
+  <meta property="og:locale" content="fr_CA">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Blog Parlons Cash",
+    "url": "https://parlonscash.pro/blog.html",
+    "description": "Articles de finance personnelle pour les Québécois",
+    "inLanguage": "fr-CA",
+    "author": {
+      "@type": "Person",
+      "name": "Aziz Guellouz",
+      "url": "https://parlonscash.pro/"
+    },
+    "blogPost": [
+      {
+        "@type": "BlogPosting",
+        "headline": "Ce n'est pas parce que vous pouvez vous le permettre que c'est une bonne décision",
+        "url": "https://parlonscash.pro/blog/quatre-capitaux.html",
+        "datePublished": "2026-01-01",
+        "author": {"@type": "Person", "name": "Aziz Guellouz"},
+        "keywords": ["psychologie de l'argent", "quatre capitaux", "dépenses", "finance personnelle"]
+      },
+      {
+        "@type": "BlogPosting",
+        "headline": "Construisez-vous vraiment la vie que vous voulez… ou seulement votre carrière ?",
+        "url": "https://parlonscash.pro/blog/construire-sa-vie.html",
+        "datePublished": "2026-02-01",
+        "author": {"@type": "Person", "name": "Aziz Guellouz"},
+        "keywords": ["carrière", "liberté financière", "phases de vie", "transmission"]
+      },
+      {
+        "@type": "BlogPosting",
+        "headline": "FIRE : libération financière ou cage dorée ?",
+        "url": "https://parlonscash.pro/blog/fire-liberation-ou-cage-doree.html",
+        "datePublished": "2026-03-01",
+        "author": {"@type": "Person", "name": "Aziz Guellouz"},
+        "keywords": ["FIRE", "indépendance financière", "frugalité", "épargne"]
+      }
+    ]
+  }
+  </script>
+
   <style>
+    * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Roboto, Arial, sans-serif;
       background-color: #f8f9fa;
@@ -14,59 +70,177 @@
       line-height: 1.6;
     }
     header {
-      background-color: #B85C2E;
+      background-color: #1e40af;
       color: white;
-      padding: 25px 10%;
+      padding: 40px 10%;
       text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    header h1 { margin: 0; font-size: 2rem; }
+    header h1 { margin: 0 0 8px 0; font-size: 2rem; }
+    header p { margin: 0; opacity: 0.85; font-size: 1rem; }
+    header a.retour {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    header a.retour:hover { color: white; }
+    nav.categories {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 24px 20px 0;
+    }
+    .cat-btn {
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #374151;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .cat-btn:hover, .cat-btn.active {
+      background: #1e40af;
+      border-color: #1e40af;
+      color: white;
+    }
     main { max-width: 900px; margin: 40px auto; padding: 0 20px; }
-    article {
-      background-color: white;
-      margin-bottom: 25px;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
     }
-    article:hover {
+    .blog-card {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      padding: 28px;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .blog-card:hover {
+      border-color: #2563eb;
+      box-shadow: 0 4px 20px rgba(37,99,235,0.12);
       transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-decoration: none;
     }
-    h2 { color: #B85C2E; margin-bottom: 5px; }
-    .date { color: #6c757d; font-size: 0.9rem; }
+    .card-categorie {
+      font-size: 0.75em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #2563eb;
+      background: #eff6ff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      width: fit-content;
+    }
+    .card-titre {
+      font-size: 1.1em;
+      font-weight: 700;
+      color: #1f2937;
+      line-height: 1.4;
+    }
+    .card-extrait {
+      font-size: 0.92em;
+      color: #6b7280;
+      line-height: 1.6;
+      flex: 1;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82em;
+      color: #9ca3af;
+      border-top: 1px solid #f3f4f6;
+      padding-top: 12px;
+    }
+    .card-lire { color: #2563eb; font-weight: 600; }
     footer {
       text-align: center;
-      padding: 20px;
-      margin-top: 40px;
+      padding: 30px 20px;
+      margin-top: 60px;
       font-size: 0.9rem;
-      color: #6c757d;
+      color: #6b7280;
+      border-top: 1px solid #e5e7eb;
     }
-    a { color: #B85C2E; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    footer a { color: #2563eb; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <header>
+    <a class="retour" href="https://parlonscash.pro/">← Retour aux calculateurs</a>
     <h1>Le Blog de Parlons Cash</h1>
-    <p>Des outils simples pour des décisions financières éclairées 💡</p>
+    <p>Réflexions, stratégies et perspectives sur la finance personnelle au Québec</p>
   </header>
 
-  <main>
-    <article>
-      <h2><a href="blog/premier-article.html">Bienvenue sur le blog Parlons Cash</a></h2>
-      <p class="date">Publié le 6 octobre 2025</p>
-      <p>Bienvenue sur le blog de Parlons Cash — l’espace où l’on parle concrètement finance, entrepreneuriat et stratégie d’affaires sans jargon inutile.</p>
-    </article>
+  <nav class="categories">
+    <button class="cat-btn active" onclick="filtrerCategorie('tous', this)">Tous</button>
+    <button class="cat-btn" onclick="filtrerCategorie('Psychologie', this)">Psychologie</button>
+    <button class="cat-btn" onclick="filtrerCategorie('Vision', this)">Vision</button>
+    <button class="cat-btn" onclick="filtrerCategorie('Stratégie', this)">Stratégie</button>
+  </nav>
 
-    <article>
-      <h2><a href="blog/second-article.html">Comment simplifier sa gestion financière</a></h2>
-      <p class="date">Publié le 12 octobre 2025</p>
-      <p>Apprenez à structurer vos finances avec des outils simples et concrets. Ici, on évite les théories compliquées : place à l’action et à la clarté.</p>
-    </article>
+  <main>
+    <div class="blog-grid" id="blog-grid">
+
+      <a class="blog-card" href="blog/quatre-capitaux.html" data-categorie="Psychologie">
+        <span class="card-categorie">Psychologie</span>
+        <div class="card-titre">Ce n'est pas parce que vous pouvez vous le permettre que c'est une bonne décision</div>
+        <div class="card-extrait">La plupart des gens évaluent leurs dépenses avec une seule question : « Est-ce que je peux me le permettre ? » Pourtant, cette question est insuffisante.</div>
+        <div class="card-footer">
+          <span>Janvier 2026</span>
+          <span class="card-lire">6 min de lecture →</span>
+        </div>
+      </a>
+
+      <a class="blog-card" href="blog/construire-sa-vie.html" data-categorie="Vision">
+        <span class="card-categorie">Vision</span>
+        <div class="card-titre">Construisez-vous vraiment la vie que vous voulez… ou seulement votre carrière ?</div>
+        <div class="card-extrait">La vraie question n'est pas de savoir combien vous gagnez. C'est de savoir si vous construisez réellement la vie que vous voulez vivre.</div>
+        <div class="card-footer">
+          <span>Février 2026</span>
+          <span class="card-lire">7 min de lecture →</span>
+        </div>
+      </a>
+
+      <a class="blog-card" href="blog/fire-liberation-ou-cage-doree.html" data-categorie="Stratégie">
+        <span class="card-categorie">Stratégie</span>
+        <div class="card-titre">FIRE : libération financière ou cage dorée ?</div>
+        <div class="card-extrait">Le mouvement FIRE a démocratisé l'ambition de l'indépendance financière. Mais quand la frugalité cesse d'être un moyen et devient une fin en soi, quelque chose se brise.</div>
+        <div class="card-footer">
+          <span>Mars 2026</span>
+          <span class="card-lire">6 min de lecture →</span>
+        </div>
+      </a>
+
+    </div>
   </main>
 
-  <footer>© 2025 Parlons Cash – Tous droits réservés</footer>
+  <footer>
+    <p>© 2026 <a href="https://parlonscash.pro/">Parlons Cash</a> – Aziz Guellouz</p>
+    <p style="margin-top:8px;font-size:0.8em;">Les contenus de ce blog sont à titre éducatif et informatif uniquement. Ils ne constituent pas des conseils financiers personnalisés.</p>
+  </footer>
+
+  <script>
+    function filtrerCategorie(cat, btn) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.blog-card').forEach(card => {
+        card.style.display = (cat === 'tous' || card.dataset.categorie === cat) ? 'flex' : 'none';
+      });
+    }
+  </script>
 </body>
 </html>
