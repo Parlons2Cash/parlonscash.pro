@@ -844,6 +844,22 @@ button:hover, .tab-button:hover {
   color: #374151; font-weight: 600; margin-bottom: 28px; transition: background 0.2s;
 }
 .blog-retour-btn:hover { background: #e5e7eb; }
+.blog-cat-btn {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #374151;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.blog-cat-btn:hover, .blog-cat-btn.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: white;
+}
 
 /* === STYLES ARTICLE BLOG === */
 .blog-article-body blockquote {
@@ -2705,6 +2721,15 @@ Historique Québec : 2-4% par an
   <h2>📰 Blog — Parlons Cash</h2>
   <p style="color:#6b7280;margin-bottom:8px;">Réflexions, stratégies et perspectives sur la finance personnelle au Québec.</p>
 
+  <!-- FILTRES CATÉGORIES -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 20px 0;">
+    <button class="blog-cat-btn active" onclick="blogFiltrer('tous', this)">Tous</button>
+    <button class="blog-cat-btn" onclick="blogFiltrer('Psychologie', this)">Psychologie</button>
+    <button class="blog-cat-btn" onclick="blogFiltrer('Vision', this)">Vision</button>
+    <button class="blog-cat-btn" onclick="blogFiltrer('Stratégie', this)">Stratégie</button>
+    <button class="blog-cat-btn" onclick="blogFiltrer('Expérience', this)">Expérience</button>
+  </div>
+
   <!-- VUE LISTE -->
   <div id="blog-liste-view">
     <div class="blog-grid" id="blog-grid"></div>
@@ -2991,7 +3016,7 @@ var BLOG_ARTICLES = [
       <p>Le taux de retrait dépend de plusieurs variables : votre horizon de placement (trente ans ou cinquante ans, ce n&#39;est pas la même chose), votre allocation d&#39;actifs (un portefeuille composé principalement d&#39;actions ne se comporte pas comme un portefeuille plus conservateur) et surtout, vos dépenses réelles. Ce ne sont pas les statistiques qui déterminent votre indépendance financière. C&#39;est votre mode de vie.</p>
       <h2>Le 70 % du salaire : une norme fragile</h2>
       <p>Une autre règle souvent citée affirme que vous aurez besoin d&#39;environ 70 % de votre salaire à la retraite. Elle repose sur plusieurs hypothèses : moins d&#39;impôts, une hypothèque remboursée et moins de dépenses liées au travail.</p>
-      <p>J&#39;ai entendu cette règle de nombreuses fois au cours de ma carrière, notamment de conseillers que je côtoyais. Elle est commode à expliquer. Mais la réalité varie énormément d&#39;une personne à l&#39;autre. Ce n&#39;est pas votre ancien salaire qui définit votre futur. C&#39;est la vie que vous choisissez de construire.</p>
+      <p>J&#39;ai entendu cette règle de la bouche de conseillers que j&#39;ai consultés pour mes propres finances. Elle est commode à expliquer. Mais la réalité varie énormément d&#39;une personne à l&#39;autre. Ce n&#39;est pas votre ancien salaire qui définit votre futur. C&#39;est la vie que vous choisissez de construire.</p>
       <h2>Le moteur qu&#39;on oublie</h2>
       <p>Toutes ces règles reposent sur une hypothèse implicite : votre argent génère des rendements. Historiquement, les marchés boursiers ont produit environ 8 % à 10 % par année avant inflation sur de longues périodes. Mais c&#39;est ce moteur qui permet au patrimoine de croître. Sans croissance, les règles des 25x et des 4 % s&#39;effondrent. C&#39;est comme avoir une voiture sans moteur : l&#39;épargne seule ne suffit pas.</p>
       <p>C&#39;est pourquoi comprendre vos placements est essentiel. Vos relevés ne sont pas qu&#39;un détail administratif. Si ce n&#39;est pas clair, posez des questions à votre courtier ou à votre planificateur financier. Vous avez le droit de savoir exactement combien votre argent rapporte et quels frais vous payez. Et si les réponses ne vous satisfont pas, magasinez. De plus en plus d&#39;investisseurs choisissent des solutions simples et peu coûteuses comme les fonds indiciels.</p>
@@ -3020,7 +3045,7 @@ function blogAfficherListe() {
   var html = '';
   for (var i = 0; i < BLOG_ARTICLES.length; i++) {
     var a = BLOG_ARTICLES[i];
-    html += '<div class="blog-card" onclick="blogLireArticle(' + a.id + ')">';
+    html += '<div class="blog-card" data-categorie="' + a.categorie + '" onclick="blogLireArticle(' + a.id + ')">';
     html += '<span class="blog-card-categorie">' + a.categorie + '</span>';
     html += '<div class="blog-card-titre">' + a.titre + '</div>';
     html += '<div class="blog-card-extrait">' + a.extrait + '</div>';
@@ -3051,6 +3076,14 @@ function blogLireArticle(id) {
 function blogRetourListe() {
   document.getElementById('blog-liste-view').style.display = 'block';
   document.getElementById('blog-article-view').style.display = 'none';
+}
+
+function blogFiltrer(cat, btn) {
+  document.querySelectorAll('.blog-cat-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.blog-card').forEach(function(card) {
+    card.style.display = (cat === 'tous' || card.dataset.categorie === cat) ? 'flex' : 'none';
+  });
 }
 
 blogAfficherListe();
