@@ -28,14 +28,14 @@
 <meta property="og:title" content="Parlons Cash — Finance personnelle au Québec">
 <meta property="og:description" content="Calculateurs gratuits REER, CELI, budget, dettes et retraite. Prenez le contrôle de vos finances personnelles avec des outils adaptés à la réalité québécoise.">
 <meta property="og:url" content="https://parlonscash.pro/">
-<meta property="og:image" content="https://parlonscash.pro/Aziz Guellouz.jpg">
+<meta property="og:image" content="https://parlonscash.pro/Aziz%20Guellouz.jpg">
 <meta property="og:locale" content="fr_CA">
 
 <!-- ═══ TWITTER CARD ═══ -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Parlons Cash — Finance personnelle au Québec">
 <meta name="twitter:description" content="Calculateurs gratuits REER, CELI, budget, dettes et retraite. Outils adaptés à la réalité québécoise.">
-<meta name="twitter:image" content="https://parlonscash.pro/Aziz Guellouz.jpg">
+<meta name="twitter:image" content="https://parlonscash.pro/Aziz%20Guellouz.jpg">
 
 <!-- ═══ SCHEMA.ORG JSON-LD ═══ -->
 <script type="application/ld+json">
@@ -425,6 +425,7 @@
 .hidden {
   display: none;
 }
+</style>
 
 <style>
 body {
@@ -1290,7 +1291,7 @@ button:hover, .tab-button:hover {
       Combien épargnez-vous actuellement par mois pour votre retraite ?
     </small>
   </div>
-</div
+</div>
 <div class="form-group">
   <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
     <input type="checkbox" id="retrait-indexe" onchange="calcRetraite()" checked style="width:auto;">
@@ -1508,7 +1509,7 @@ Historique Québec : 2-4% par an
   <h2>À propos</h2>
 
 <div class="card" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-  <img src="Aziz Guellouz.jpg" alt="Photo de Aziz Guellouz" 
+  <img src="Aziz%20Guellouz.jpg" alt="Photo de Aziz Guellouz" 
        style="width:180px;height:180px;object-fit:cover;border-radius:50%;border:4px solid #2563eb;">
   
   <div>
@@ -2258,7 +2259,7 @@ Historique Québec : 2-4% par an
     
     <h3 style="color:#2563eb;margin-top:0;">Notre engagement</h3>
     <p style="line-height:1.7;">
-      Finance Personnelle Pro respecte votre vie privée. Cette politique explique quelles données sont collectées 
+      Parlons Cash respecte votre vie privée. Cette politique explique quelles données sont collectées 
       lorsque vous utilisez notre site et comment elles sont utilisées.
     </p>
     
@@ -4688,7 +4689,7 @@ function calcCouple() {
     (parseFloat(document.getElementById('couple-autres-dettes-a').value) || 0);
   
   // Dépenses perso A
-  var dépensesPersoA = dettesA +
+  var depensesPersoA = dettesA +
     (parseFloat(document.getElementById('couple-assurance-a').value) || 0) +
     (parseFloat(document.getElementById('couple-abonnements-a').value) || 0) +
     (parseFloat(document.getElementById('couple-pension-a').value) || 0);
@@ -4703,7 +4704,7 @@ function calcCouple() {
     (parseFloat(document.getElementById('couple-autres-dettes-b').value) || 0);
   
   // Dépenses perso B
-  var dépensesPersoB = dettesB +
+  var depensesPersoB = dettesB +
     (parseFloat(document.getElementById('couple-assurance-b').value) || 0) +
     (parseFloat(document.getElementById('couple-abonnements-b').value) || 0) +
     (parseFloat(document.getElementById('couple-pension-b').value) || 0);
@@ -4711,7 +4712,7 @@ function calcCouple() {
   var epargneB = parseFloat(document.getElementById('couple-epargne-b').value) || 0;
   
   // Dépenses communes
-  var dépensesCommunes = 
+  var depensesCommunes = 
     (parseFloat(document.getElementById('couple-loyer').value) || 0) +
     (parseFloat(document.getElementById('couple-epicerie').value) || 0) +
     (parseFloat(document.getElementById('couple-services').value) || 0) +
@@ -4719,12 +4720,12 @@ function calcCouple() {
     (parseFloat(document.getElementById('couple-loisirs').value) || 0) +
     (parseFloat(document.getElementById('couple-autres').value) || 0);
   
-  document.getElementById('couple-total-dépenses').textContent = fmt(dépensesCommunes) + ' $';
+  document.getElementById('couple-total-dépenses').textContent = fmt(depensesCommunes) + ' $';
   
   var tauxEpargne = (parseFloat(document.getElementById('couple-taux-epargne').value) || 20) / 100;
   
   // Calculs de revenu disponible
-  var revenuDispoA = revenuA - dépensesPersoA;
+  var revenuDispoA = revenuA - depensesPersoA;
   var revenuDispoB = revenuB - depensesPersoB;
   
   // Ratios dette/revenu
@@ -4895,8 +4896,8 @@ function calcCouple() {
     paiementCapaA = (revenuDispoA / totalDispo) * depensesCommunes;
     paiementCapaB = (revenuDispoB / totalDispo) * depensesCommunes;
   } else {
-    paiementCapaA = (revenuDispoA / totalDispo) * dépensesCommunes;
-    paiementCapaB = (revenuDispoB / totalDispo) * dépensesCommunes;
+    paiementCapaA = (revenuDispoA / totalDispo) * depensesCommunes;
+    paiementCapaB = (revenuDispoB / totalDispo) * depensesCommunes;
   }
   
   var resteCapaA = revenuDispoA - paiementCapaA;
@@ -5834,8 +5835,8 @@ function closeModal() {
 <footer style="background:#1f2937;color:white;padding:40px 20px;margin-top:50px;">
   <div class="container">
     <div style="text-align:center;color:#9ca3af;">
-      <p style="margin:0 0 10px 0;font-size:1em;">Finance Personnelle Pro</p>
-      <p style="margin:0;font-size:0.85em;">© 2025 Aziz Guellouz. Tous droits réservés.</p>
+      <p style="margin:0 0 10px 0;font-size:1em;">Parlons Cash</p>
+      <p style="margin:0;font-size:0.85em;">© 2026 Aziz Guellouz. Tous droits réservés.</p>
       <p style="margin:10px 0 0 0;font-size:0.8em;">
         Le code source et les calculateurs de ce site sont la propriété intellectuelle d'Aziz Guellouz. 
         Toute reproduction ou utilisation non autorisée est interdite.
