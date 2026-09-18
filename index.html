@@ -1207,7 +1207,7 @@ button:hover, .tab-button:hover {
   <h2>Calculateur d’impôts</h2>
   <p>Entrez vos informations pour estimer vos impôts :</p>
   <p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">
-    Calculs basés sur les tranches d'imposition fédérales et provinciales du Québec pour 2025.
+    Estimation 2026 fondée sur les tranches fédérales et québécoises, avant crédits personnels et retenues sur la paie.
   </p>
 
   <div class="grid-2">
@@ -1224,7 +1224,7 @@ button:hover, .tab-button:hover {
       <div class="result-box red"><div>Impôt fédéral</div><div id="impf">0 $</div></div>
       <div class="result-box orange"><div>Impôt provincial (QC)</div><div id="impp">0 $</div></div>
       <div class="result-box purple"><div>Impôt total</div><div id="impt">0 $</div></div>
-      <div class="result-box green"><div>Revenu net</div><div id="rn">0 $</div></div>
+      <div class="result-box green"><div>Revenu restant estimé*</div><div id="rn">0 $</div></div>
     </div>
   </div>
 
@@ -3312,34 +3312,38 @@ var cr=parseFloat(document.getElementById('cr').value)||0;
 var ad=parseFloat(document.getElementById('ad').value)||0;
 var ri=Math.max(0,rb-cr-ad);
 
-// IMPÔT FÉDÉRAL 2025 (tranches corrigées)
+// Estimation 2026 : taux progressifs fédéraux et québécois, avant crédits personnels.
+// Sources : ARC et Revenu Québec. Les crédits et retenues dépendent de chaque situation.
 var impf=0;
-if(ri<=55867){
-  impf=ri*0.15;
-}else if(ri<=111733){
-  impf=55867*0.15+(ri-55867)*0.205;
-}else if(ri<=173205){
-  impf=55867*0.15+(111733-55867)*0.205+(ri-111733)*0.26;
-}else if(ri<=246752){
-  impf=55867*0.15+(111733-55867)*0.205+(173205-111733)*0.26+(ri-173205)*0.29;
+if(ri<=58523){
+  impf=ri*0.14;
+}else if(ri<=117045){
+  impf=58523*0.14+(ri-58523)*0.205;
+}else if(ri<=181440){
+  impf=58523*0.14+(117045-58523)*0.205+(ri-117045)*0.26;
+}else if(ri<=258482){
+  impf=58523*0.14+(117045-58523)*0.205+(181440-117045)*0.26+(ri-181440)*0.29;
 }else{
-  impf=55867*0.15+(111733-55867)*0.205+(173205-111733)*0.26+(246752-173205)*0.29+(ri-246752)*0.33;
+  impf=58523*0.14+(117045-58523)*0.205+(181440-117045)*0.26+(258482-181440)*0.29+(ri-258482)*0.33;
 }
+// Les résidents du Québec bénéficient de l'abattement fédéral de 16,5 %.
+impf*=0.835;
 
-// IMPÔT PROVINCIAL QUÉBEC 2025 (tranches corrigées)
+// IMPÔT PROVINCIAL QUÉBEC 2026
 var impp=0;
-if(ri<=51780){
+if(ri<=54345){
   impp=ri*0.14;
-}else if(ri<=103545){
-  impp=51780*0.14+(ri-51780)*0.19;
-}else if(ri<=126000){
-  impp=51780*0.14+(103545-51780)*0.19+(ri-103545)*0.24;
+}else if(ri<=108680){
+  impp=54345*0.14+(ri-54345)*0.19;
+}else if(ri<=132245){
+  impp=54345*0.14+(108680-54345)*0.19+(ri-108680)*0.24;
 }else{
-  impp=51780*0.14+(103545-51780)*0.19+(126000-103545)*0.24+(ri-126000)*0.2575;
+  impp=54345*0.14+(108680-54345)*0.19+(132245-108680)*0.24+(ri-132245)*0.2575;
 }
 
 var impt=impf+impp;
-var rn = rb - impt; 
+// Une cotisation REER est une sortie de trésorerie; « autres déductions » ne le sont pas forcément.
+var rn = rb - cr - impt;
 document.getElementById('ri').textContent=fmt(ri)+' $';
 document.getElementById('impf').textContent=fmt(impf)+' $';
 document.getElementById('impp').textContent=fmt(impp)+' $';
@@ -3462,6 +3466,11 @@ if (tauxReel > 0.001) {
   capitalNecessaire = revenuACompleterActuel * dureeRetraite;
 }
 
+// La rente ci-dessus est en dollars d'aujourd'hui (taux réel). Le portefeuille,
+// lui, est projeté en dollars futurs : on les met dans la même unité avant comparaison.
+var capitalNecessaireAujourdhui = capitalNecessaire;
+capitalNecessaire = capitalNecessaireAujourdhui * Math.pow(1 + tauxInflation, annees);
+
   // Capital liquide actuel (CELI, CELIAPP, CNE, REER)
   var capAct = 
     (parseFloat(document.getElementById('celi').value) || 0) +
@@ -3475,11 +3484,12 @@ var valeurFuture = capAct * Math.pow(1 + tauxRendementAvant, annees);
 var valeurFutureTotale = valeurFuture + epargneAccumulee;
 // Écart à combler
 var ecart = Math.max(0, capitalNecessaire - valeurFutureTotale);
-var prog = (valeurFutureTotale / capitalNecessaire * 100);
+var prog = capitalNecessaire > 0 ? (valeurFutureTotale / capitalNecessaire * 100) : 100;
 
   // SIMULATION ANNÉE PAR ANNÉE pour trouver l'âge d'épuisement
   var capitalSimulation = valeurFutureTotale;
-  var retraitAnnuel = revenuACompleterActuel;
+  // Premier retrait exprimé en dollars de l'année de retraite, puis indexé annuellement.
+  var retraitAnnuel = revenuACompleterActuel * Math.pow(1 + tauxInflation, annees);
   var ageEpuisement = null;
 
   for (var i = 0; i <= 95 - ageRetraite && capitalSimulation > 0; i++) {
@@ -3494,6 +3504,7 @@ var prog = (valeurFutureTotale / capitalNecessaire * 100);
   // CONSTRUCTION DU HTML
   var html = '';
   html += '<div class="result-box green">Capital nécessaire à la retraite: <span style="font-size:1.8em">' + fmt(capitalNecessaire) + ' $</span></div>';
+  html += '<p style="margin:6px 0;font-size:0.9em;color:#6b7280;">Équivalent en dollars d’aujourd’hui : ' + fmt(capitalNecessaireAujourdhui) + ' $.</p>';
   html += '<p style="margin-top:6px;font-size:0.9em;color:#6b7280;">💡 Ce calcul considère uniquement vos actifs financiers liquides (CELI, CELIAPP, CNE, REER). Les immobilisations et le compte bancaire ne sont pas inclus.</p>';
 
   html += '<p style="margin:10px 0;font-size:0.9em;color:#6b7280">';
@@ -4506,6 +4517,15 @@ function calculerStrategies() {
   var avalanche  = simulerStrategie(dettesValides, paiementExtra, 'avalanche');
   var bouleNeige = simulerStrategie(dettesValides, paiementExtra, 'boule');
 
+  if (avalanche.nonConvergent || bouleNeige.nonConvergent) {
+    document.getElementById('resultats-strategies').innerHTML =
+      '<div class="card" style="background:#fee2e2;border-left:4px solid #dc2626;margin-top:20px;">' +
+      '<h3 style="color:#991b1b;">Paiements insuffisants</h3>' +
+      '<p>Avec les paiements saisis, au moins une dette ne se rembourse pas. Augmentez le paiement mensuel avant de comparer les stratégies.</p>' +
+      '</div>';
+    return;
+  }
+
   // Affichage
   afficherComparaison(avalanche, bouleNeige, dettesValides, paiementExtra);
 
@@ -4532,6 +4552,15 @@ function simulerStrategie(dettes, paiementExtra, type) {
   var mois = 0;
   var interetsTotal = 0;
   var ordreRemboursement = [];
+  // Le budget mensuel reste constant : les minimums libérés sont réaffectés
+  // automatiquement à la dette prioritaire (principe avalanche/boule de neige).
+  var budgetMensuel = dettesCopie.reduce(function(total, dette) {
+    return total + dette.paiementMin;
+  }, 0) + paiementExtra;
+
+  if (budgetMensuel <= 0) {
+    return { mois: Infinity, annees: Infinity, interetsTotal: 0, ordre: [], nonConvergent: true };
+  }
 
   // Pour détecter les scénarios qui ne convergent pas
   var previousTotal = dettesCopie.reduce((s,d)=>s+d.solde,0);
@@ -4547,14 +4576,17 @@ function simulerStrategie(dettes, paiementExtra, type) {
       interetsTotal += interetsMois;
     }
 
-    // 2) Payer tous les minimums
+    // 2) Payer tous les minimums, puis réaffecter le budget non utilisé.
+    // Ainsi, lorsqu'une dette disparaît, son minimum n'est jamais « perdu ».
+    var paiementsMinimumsReels = 0;
     for (var k = 0; k < dettesCopie.length; k++) {
       var payMin = Math.min(dettesCopie[k].paiementMin, dettesCopie[k].solde);
       dettesCopie[k].solde -= payMin;
+      paiementsMinimumsReels += payMin;
     }
 
-    // 3) Appliquer le paiement EXTRA avec réallocation
-    var extraRestant = paiementExtra;
+    // 3) Appliquer tout le budget restant à la dette prioritaire.
+    var extraRestant = Math.max(0, budgetMensuel - paiementsMinimumsReels);
     var idx = 0;
     while (extraRestant > 0 && dettesCopie.length > 0 && idx < dettesCopie.length) {
       var pay = Math.min(extraRestant, dettesCopie[idx].solde);
@@ -4926,8 +4958,10 @@ function calcCouple() {
   var epargne5050B = revenuDispoB > 0 ? (reste5050B / revenuDispoB * 100) : 0;
   
   // Méthode 2 : Proportionnelle aux revenus
-  var pctA = revenuA / (revenuA + revenuB);
-  var pctB = revenuB / (revenuA + revenuB);
+  // La répartition doit refléter ce qui reste après les obligations personnelles,
+  // pas seulement le revenu brut de chaque personne.
+  var pctA = totalDispo > 0 ? revenuDispoA / totalDispo : 0;
+  var pctB = totalDispo > 0 ? revenuDispoB / totalDispo : 0;
   var paiementPropA = depensesCommunes * pctA;
   var paiementPropB = depensesCommunes * pctB;
   var restePropA = revenuDispoA - paiementPropA;
@@ -4940,14 +4974,10 @@ function calcCouple() {
   var epargneViseeB = revenuDispoB * tauxEpargne;
   var resteApresEpargne = totalDispo - epargneViseeA - epargneViseeB;
   
-  var paiementCapaA, paiementCapaB;
-  if(resteApresEpargne >= depensesCommunes) {
-    paiementCapaA = (revenuDispoA / totalDispo) * depensesCommunes;
-    paiementCapaB = (revenuDispoB / totalDispo) * depensesCommunes;
-  } else {
-    paiementCapaA = (revenuDispoA / totalDispo) * depensesCommunes;
-    paiementCapaB = (revenuDispoB / totalDispo) * depensesCommunes;
-  }
+  // Un partage proportionnel au revenu disponible laisse le même pourcentage
+  // d'épargne à chacun. On le calcule explicitement pour éviter une fausse promesse.
+  var paiementCapaA = pctA * depensesCommunes;
+  var paiementCapaB = pctB * depensesCommunes;
   
   var resteCapaA = revenuDispoA - paiementCapaA;
   var resteCapaB = revenuDispoB - paiementCapaB;
@@ -4987,7 +5017,7 @@ var diff5050 = Math.abs(epargne5050A - epargne5050B);
   
   // Méthode 2
   html += '<div style="background:#fef3c7;padding:20px;border-radius:10px;border-left:4px solid #f59e0b;">';
-  html += '<h4 style="color:#92400e;margin:0 0 15px 0;">2️⃣ Proportionnelle aux revenus</h4>';
+  html += '<h4 style="color:#92400e;margin:0 0 15px 0;">2️⃣ Proportionnelle aux revenus disponibles</h4>';
   html += '<p style="margin:5px 0;"><strong>Personne A :</strong> ' + fmt(paiementPropA) + ' $/mois (' + (pctA * 100).toFixed(1) + '%)</p>';
   html += '<p style="margin:5px 0;color:#78350f;">Reste : ' + fmt(restePropA) + ' $ (' + epargnePropA.toFixed(1) + '% épargne)</p>';
   html += '<p style="margin:5px 0;"><strong>Personne B :</strong> ' + fmt(paiementPropB) + ' $/mois (' + (pctB * 100).toFixed(1) + '%)</p>';
@@ -5359,7 +5389,9 @@ function calcAcheterLouer() {
   
   // Simulation année par année
   var soldeHypo = montantHypo;
-  var coutTotalAchat = miseFonds + fraisAchat + taxeBienvenue + fraisSCHL;
+  // La prime SCHL est financée dans l'hypothèque : elle est donc déjà comprise
+  // dans les paiements hypothécaires et ne doit pas être comptée comme liquidité initiale.
+  var coutTotalAchat = miseFonds + fraisAchat + taxeBienvenue;
   var interetsPayes = 0;
   var valeurMaison = prixAchat;
   
@@ -5401,7 +5433,7 @@ function calcAcheterLouer() {
   var coutTotalLocation = 0;
   var loyerActuel = loyer;
   var fraisLocationInitiaux = loyer * (1 + depotGarantie);
-  var portefeuilleInvesti = (miseFonds + fraisAchat + taxeBienvenue + fraisSCHL) - fraisLocationInitiaux;
+  var portefeuilleInvesti = (miseFonds + fraisAchat + taxeBienvenue) - fraisLocationInitiaux;
   
   for(var annee = 1; annee <= duree; annee++) {
     // Loyers de l'année
@@ -5453,7 +5485,8 @@ function calcAcheterLouer() {
   if(fraisSCHL > 0) {
     html += '<p style="margin:5px 0;color:#dc2626;">Frais SCHL : <strong>' + fmt(fraisSCHL) + ' $</strong></p>';
   }
-  html += '<p style="margin:10px 0 0 0;padding-top:10px;border-top:2px solid #bfdbfe;font-size:1.2em;color:#1e40af;"><strong>Total : ' + fmt(miseFonds + fraisAchat + taxeBienvenue + fraisSCHL) + ' $</strong></p>';
+  html += '<p style="margin:10px 0 0 0;padding-top:10px;border-top:2px solid #bfdbfe;font-size:1.2em;color:#1e40af;"><strong>Total à payer comptant : ' + fmt(miseFonds + fraisAchat + taxeBienvenue) + ' $</strong></p>';
+  if(fraisSCHL > 0) html += '<p style="margin:8px 0 0;font-size:0.85em;color:#6b7280;">La prime SCHL est financée dans l’hypothèque; elle n’est pas ajoutée au comptant.</p>';
   html += '</div>';
   
   html += '<div style="background:#d1fae5;padding:20px;border-radius:10px;">';
@@ -6439,9 +6472,28 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     });
   }
   function secureLinks() { document.querySelectorAll('a[target="_blank"]').forEach(function (link) { link.rel = 'noopener noreferrer'; }); }
+  function removeDecorativeEmoji(root) {
+    var walker = document.createTreeWalker(root || document.body, NodeFilter.SHOW_TEXT);
+    var nodes = [], node;
+    while ((node = walker.nextNode())) {
+      var parent = node.parentElement;
+      if (parent && !/^(SCRIPT|STYLE|CODE|PRE)$/i.test(parent.tagName)) nodes.push(node);
+    }
+    nodes.forEach(function (textNode) {
+      var cleaned = textNode.nodeValue.replace(/[\p{Extended_Pictographic}\uFE0F\u200D]/gu, '').replace(/ {2,}/g, ' ');
+      if (cleaned !== textNode.nodeValue) textNode.nodeValue = cleaned;
+    });
+  }
   function initialize() {
     var container = document.querySelector('body > .container'); if (container) container.id = 'main-content';
-    labelControls(); configureTabs(); configureModal(); secureLinks();
+    removeDecorativeEmoji(); labelControls(); configureTabs(); configureModal(); secureLinks();
+    new MutationObserver(function (records) {
+      records.forEach(function (record) {
+        record.addedNodes.forEach(function (node) {
+          if (node.nodeType === Node.ELEMENT_NODE || node.nodeType === Node.TEXT_NODE) removeDecorativeEmoji(node);
+        });
+      });
+    }).observe(document.body, { childList:true, subtree:true });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialize); else initialize();
 }());
