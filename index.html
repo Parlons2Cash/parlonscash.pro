@@ -1023,15 +1023,17 @@ button:hover, .tab-button:hover {
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn-export" onclick="exporterCSV()">📥 Exporter CSV</button>
-      <button class="btn-export" style="background:#2563eb" onclick="window.print()">🖨️ Exporter PDF</button>
+      <button class="btn-export" style="background:#2563eb" onclick="genererRapportPDF()">🖨️ Rapport PDF</button>
+      <button class="btn-export" style="background:#7c3aed" onclick="declencherImportCSV()">📤 Importer CSV</button>
+      <input type="file" id="import-csv-input" accept=".csv" style="display:none" onchange="importerCSV(event)">
+      <button class="btn-export" style="background:#dc2626" onclick="window.__effacerDonneesLocales()">🗑️ Effacer mes données</button>
     </div>
   </div>
 </header>
 
 <div class="nav">
 <button onclick="changeTab('dashboard')" id="btn-dashboard" class="active">Tableau de bord</button>
-<button onclick="changeTab('bilan')" id="btn-bilan">Bilan</button>
-<button onclick="changeTab('budget')" id="btn-budget">Budget</button>
+<button onclick="changeTab('profil')" id="btn-profil">👤 Mon profil</button>
 <button onclick="changeTab('impôts')" id="btn-impôts">Impôts</button>
 <button onclick="changeTab('objectifs')" id="btn-objectifs">Objectifs</button>
 <button onclick="changeTab('acheter-louer')" id="btn-acheter-louer">Acheter vs Louer</button>
@@ -1082,13 +1084,82 @@ button:hover, .tab-button:hover {
 
 </div>
 
+<div id="tab-profil" class="tab-content">
+  <h2>👤 Mon profil</h2>
+  <p style="background:#eff6ff;padding:15px;border-radius:8px;border-left:4px solid #2563eb;margin-bottom:20px;">
+    Remplis cette page une seule fois : elle alimente automatiquement tous les autres calculateurs du site.
+    Tu peux aussi ignorer cette page et remplir chaque outil séparément — les deux fonctionnent.
+  </p>
+
+  <div class="card">
+    <h3 style="color:#2563eb;">💰 Revenu brut annuel</h3>
+    <div class="form-group">
+      <label>Revenu brut annuel ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé partout</span></label>
+      <input type="number" id="profil-revenu-brut" value="0" min="0">
+      <small style="display:block;margin-top:5px;color:#6b7280;">Utilisé pour l'estimation d'impôts et la capacité d'achat immobilier.</small>
+    </div>
+  </div>
+
+  <div class="card" id="assistant-profil">
+    <h3 style="color:#2563eb;">📝 Assistant Bilan &amp; Budget</h3>
+    <p style="color:#6b7280;font-size:0.9em;margin-bottom:20px;">
+      Réponds aux questions une à la fois — Bilan et Budget se remplissent automatiquement.
+    </p>
+
+    <div id="assistant-progress-wrap" style="margin-bottom:20px;">
+      <div class="progress-bar"><div class="progress-fill" id="assistant-progress-fill" style="width:0%"></div></div>
+      <p style="text-align:center;color:#6b7280;font-size:0.85em;margin-top:8px;" id="assistant-progress-texte">Question 1</p>
+    </div>
+
+    <div id="assistant-etape-contenu"></div>
+
+    <div id="assistant-recap" class="hidden"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:#f59e0b;">🏠 Projet immobilier</h3>
+    <p style="color:#6b7280;font-size:0.9em;margin-bottom:15px;">🔗 Synchronisé avec les onglets Objectifs (achat maison) et Acheter vs Louer.</p>
+    <div class="form-group">
+      <label>Prix de la maison envisagée ($)</label>
+      <input type="number" id="profil-prix-maison" value="0" min="0">
+    </div>
+    <div class="form-group">
+      <label>Taux hypothécaire (%)</label>
+      <input type="number" id="profil-taux-hypo" value="5" step="0.1" min="0">
+    </div>
+    <div class="form-group">
+      <label>Mise de fonds (%)</label>
+      <select id="profil-mise-de-fonds-pct">
+        <option value="5">5%</option>
+        <option value="10">10%</option>
+        <option value="15">15%</option>
+        <option value="20" selected>20%</option>
+        <option value="25">25%</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Période d'amortissement (années)</label>
+      <select id="profil-amortissement">
+        <option value="25" selected>25 ans</option>
+        <option value="26">26 ans</option>
+        <option value="27">27 ans</option>
+        <option value="28">28 ans</option>
+        <option value="29">29 ans</option>
+        <option value="30">30 ans</option>
+      </select>
+    </div>
+  </div>
+</div>
+
 <div id="tab-bilan" class="tab-content">
 <h2>Bilan personnel</h2>
+<p style="color:#6b7280;font-size:0.9em;margin:-10px 0 15px;">🔗 Synchronisé avec l'onglet Mon profil.</p>
 <div class="grid-2">
 <div class="card">
 <h3 class="green">ACTIFS</h3>
 <div class="form-group"><label>Compte bancaire</label><input type="number" id="cb" value="0" onchange="calc()"></div>
 <div class="form-group"><label>CELI</label><input type="number" id="celi" value="0" onchange="calc()"></div>
+<input type="number" id="celi-liquide-pct" value="0" min="0" max="100" style="display:none">
 <div class="form-group"><label>CELIAPP</label><input type="number" id="celiapp" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Compte non enregistre</label><input type="number" id="cne" value="0" onchange="calc()"></div>
 <div class="form-group"><label>REER</label><input type="number" id="reer" value="0" onchange="calc()"></div>
@@ -1114,7 +1185,7 @@ button:hover, .tab-button:hover {
 <div class="grid-2">
 <div class="card">
 <h3>Revenus</h3>
-<div class="form-group"><label>Revenu mensuel net</label><input type="number" id="revenu" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Revenu mensuel net <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 Mon profil</span></label><input type="number" id="revenu" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Revenu de loyer</label><input type="number" id="rev-loyer" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Autre revenu</label><input type="number" id="autre-revenu" value="0" onchange="calc()"></div>
 <h4 style="margin-top:20px">Depenses</h4>
@@ -1213,7 +1284,7 @@ button:hover, .tab-button:hover {
   <div class="grid-2">
     <div class="card">
       <h3>Informations</h3>
-      <div class="form-group"><label>Revenu brut annuel</label><input type="number" id="rb" value="0" onchange="calc()"></div>
+      <div class="form-group"><label>Revenu brut annuel <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 Mon profil</span></label><input type="number" id="rb" value="0" onchange="calc()"></div>
       <div class="form-group"><label>Contribution REER</label><input type="number" id="cr" value="0" onchange="calc()"></div>
       <div class="form-group"><label>Autres déductions</label><input type="number" id="ad" value="0" onchange="calc()"></div>
     </div>
@@ -1240,20 +1311,21 @@ button:hover, .tab-button:hover {
     <input type="number" id="revenu-brut-menage" value="0" onchange="calcImmobilier()">
   </div>
  <div class="form-group">
-  <label>Mise de fonds (%)</label>
+  <label>Mise de fonds (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
   <select id="mise-de-fonds-pct" onchange="calcImmobilier()">
     <option value="5">5%</option>
     <option value="10">10%</option>
     <option value="15">15%</option>
     <option value="20" selected>20%</option>
+    <option value="25">25%</option>
   </select>
 </div> 
   <div class="form-group">
-    <label>Taux hypothécaire (%)</label>
+    <label>Taux hypothécaire (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
     <input type="number" id="taux-hypo" value="5" step="0.1" onchange="calcImmobilier()">
   </div>
 <div class="form-group">
-  <label>Période d'amortissement (années)</label>
+  <label>Période d'amortissement (années) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
   <select id="amortissement" onchange="calcImmobilier()">
     <option value="25" selected>25 ans</option>
     <option value="26">26 ans</option>
@@ -1265,7 +1337,7 @@ button:hover, .tab-button:hover {
 </div>
 
   <div class="form-group">
-    <label>Prix de la maison envisagée ($)</label>
+    <label>Prix de la maison envisagée ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
     <input type="number" id="prix-maison" value="0" onchange="calcImmobilier()">
   </div>
 
@@ -1372,12 +1444,12 @@ button:hover, .tab-button:hover {
     <h3 style="color:#2563eb;">🏡 Scénario ACHAT</h3>
     
     <div class="form-group">
-      <label>Prix d'achat de la maison ($)</label>
+      <label>Prix d'achat de la maison ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
       <input type="number" id="al-prix" value="0" min="0" onchange="calcAcheterLouer()">
     </div>
     
     <div class="form-group">
-      <label>Mise de fonds (%)</label>
+      <label>Mise de fonds (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
       <select id="al-mise-fonds-pct" onchange="calcAcheterLouer()">
         <option value="5">5%</option>
         <option value="10">10%</option>
@@ -1388,14 +1460,18 @@ button:hover, .tab-button:hover {
     </div>
     
     <div class="form-group">
-      <label>Taux hypothécaire (%)</label>
+      <label>Taux hypothécaire (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
       <input type="number" id="al-taux-hypo" value="5" min="0" max="15" step="0.1" onchange="calcAcheterLouer()">
     </div>
     
     <div class="form-group">
-      <label>Période d'amortissement (années)</label>
+      <label>Période d'amortissement (années) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
       <select id="al-amortissement" onchange="calcAcheterLouer()">
         <option value="25" selected>25 ans</option>
+        <option value="26">26 ans</option>
+        <option value="27">27 ans</option>
+        <option value="28">28 ans</option>
+        <option value="29">29 ans</option>
         <option value="30">30 ans</option>
       </select>
     </div>
@@ -1623,15 +1699,15 @@ Historique Québec : 2-4% par an
     <h3 style="color:#2563eb;">💰 Ton budget loisirs disponible</h3>
     
     <div class="form-group">
-      <label>Revenu mensuel net ($)</label>
-      <input type="number" id="plaisirs-revenu" value="0" min="0" onchange="calcPlaisirs()">
+      <label>Revenu mensuel net ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé depuis l'onglet Budget</span></label>
+      <input type="number" id="plaisirs-revenu" value="0" min="0" readonly style="background:#f3f4f6;cursor:not-allowed;">
     </div>
     
     <div class="form-group">
-      <label>Dépenses essentielles mensuelles (loyer, épicerie, transport, etc.) ($)</label>
-      <input type="number" id="plaisirs-essentielles" value="0" min="0" onchange="calcPlaisirs()">
+      <label>Dépenses essentielles mensuelles ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 calculé depuis l'onglet Budget</span></label>
+      <input type="number" id="plaisirs-essentielles" value="0" min="0" readonly style="background:#f3f4f6;cursor:not-allowed;">
       <small style="display:block;margin-top:5px;color:#6b7280;">
-        Si vous avez rempli l'onglet Budget, utilisez votre "Total dépenses" moins les loisirs
+        = Total dépenses (onglet Budget) moins Loisirs. Ajuste ces valeurs dans l'onglet Budget.
       </small>
     </div>
     
@@ -2048,8 +2124,8 @@ Historique Québec : 2-4% par an
     <h3 style="color:#2563eb;">👤 Profil financier - Personne A</h3>
     
     <div class="form-group">
-      <label>Revenu net mensuel ($)</label>
-      <input type="number" id="couple-revenu-a" value="0" onchange="calcCouple()">
+      <label>Revenu net mensuel ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé depuis Mon profil</span></label>
+      <input type="number" id="couple-revenu-a" value="0" readonly style="background:#f3f4f6;cursor:not-allowed;">
     </div>
     
     <h4 style="margin-top:20px;color:#374151;">Dettes et obligations personnelles</h4>
@@ -2319,10 +2395,21 @@ Historique Québec : 2-4% par an
       </p>
     </div>
     <p style="line-height:1.7;">
-      Toutes les données que vous entrez dans les calculateurs restent <strong>localement dans votre navigateur</strong>. 
+      Toutes les données que vous entrez dans les calculateurs restent <strong>localement dans votre navigateur</strong>, sur cet appareil.
       Nous n'avons aucun accès à ces informations sensibles.
     </p>
-    
+    <p style="line-height:1.7;">
+      Le site <strong>sauvegarde automatiquement</strong> vos données dans la mémoire locale de votre navigateur (localStorage),
+      pour que vous n'ayez pas à tout ressaisir à chaque visite. Ces données restent uniquement sur cet appareil et dans ce navigateur —
+      elles ne sont jamais transmises ailleurs, et disparaissent si vous videz les données de navigation de votre appareil.
+    </p>
+    <div style="margin:15px 0;">
+      <button onclick="window.__effacerDonneesLocales()" style="background:#dc2626;color:white;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:600;">
+        🗑️ Effacer mes données sauvegardées dans ce navigateur
+      </button>
+    </div>
+
+
     <h3 style="color:#2563eb;margin-top:30px;">📊 Google Analytics</h3>
     <p style="line-height:1.7;">
       Nous utilisons Google Analytics pour comprendre comment les visiteurs utilisent notre site et l'améliorer. 
@@ -3230,6 +3317,9 @@ DATA.totalA=a1+a2+a2b+a3+a4+a5+a6;
 DATA.totalP=p1+p2+p3+p4+p5;
 DATA.vn=DATA.totalA-DATA.totalP;
 DATA.cb=a1;
+var celiLiquidePctEl=document.getElementById('celi-liquide-pct');
+var celiLiquidePct=celiLiquidePctEl?(parseFloat(celiLiquidePctEl.value)||0):0;
+DATA.fondsDisponibleUrgence=a1+(a2*Math.max(0,Math.min(100,celiLiquidePct))/100);
 DATA.liquidite=a1+a2+a2b;
 
 document.getElementById('ta').textContent=fmt(DATA.totalA)+' $';
@@ -3287,6 +3377,8 @@ var d5=parseFloat(document.getElementById('d5').value)||0;
 var d6=parseFloat(document.getElementById('d6').value)||0;
 var d7=parseFloat(document.getElementById('d7').value)||0;
 DATA.totalD=d1+d2+d3+d4+d5+d6+d7;
+DATA.logement=d1;
+DATA.remboursementDettes=d7;
 
 DATA.epargne=DATA.revenuTotal-DATA.totalD;
 DATA.taux=DATA.revenuTotal>0?((DATA.epargne/DATA.revenuTotal)*100).toFixed(1):0;
@@ -3381,7 +3473,7 @@ document.getElementById('analyse-503020').innerHTML=html;
 }
 
 function calcFondsUrgence(){
-var fonds=DATA.cb||0;
+var fonds=DATA.fondsDisponibleUrgence!==undefined?DATA.fondsDisponibleUrgence:(DATA.cb||0);
 var dépenses=DATA.totalD||1;
 var mois=fonds/dépenses;
 var c3=dépenses*3;
@@ -4137,10 +4229,10 @@ if(!DATA.totalA && !DATA.totalP && !DATA.revenuTotal){
 document.getElementById('diagnostic-global').innerHTML='Entrez vos donnees';return;
 }
 var score=0;
-var mois=(DATA.cb||0)/(DATA.totalD||1);
+var mois=(DATA.fondsDisponibleUrgence!==undefined?DATA.fondsDisponibleUrgence:(DATA.cb||0))/(DATA.totalD||1);
 var taux=parseFloat(DATA.taux)||0;
 var ratio=DATA.totalA>0?(DATA.totalP/DATA.totalA*100):100;
-var ratioDetteRevenu=DATA.revenuTotal>0?(DATA.totalD/DATA.revenuTotal*100):100;
+var ratioDetteRevenu=DATA.revenuTotal>0?(((DATA.logement||0)+(DATA.remboursementDettes||0))/DATA.revenuTotal*100):0;
 
 var pointsFaibles = [];
 var recommandations = [];
@@ -4337,46 +4429,182 @@ document.getElementById('diagnostic-global').innerHTML=html;
 
 }
 
-function exporterCSV() {
-  const rows = [
-    ["Section","Clé","Valeur"],
-    ["Actifs","Compte bancaire", document.getElementById('cb').value],
-    ["Actifs","CELI", document.getElementById('celi').value],
-    ["Actifs","Compte non enregistré", document.getElementById('cne').value],
-    ["Actifs","REER", document.getElementById('reer').value],
-    ["Actifs","Immobilisations", document.getElementById('immob').value],
-    ["Actifs","Autres actifs", document.getElementById('autre-actif').value],
-    ["Passifs","Cartes de crédit", document.getElementById('cc').value],
-    ["Passifs","Marge de crédit", document.getElementById('mc').value],
-    ["Passifs","Prêt auto", document.getElementById('pa').value],
-    ["Passifs","Hypothèque", document.getElementById('hypo').value],
-    ["Passifs","Autres passifs", document.getElementById('autre-passif').value],
-    ["Résumé","Total actifs", DATA.totalA||0],
-    ["Résumé","Total passifs", DATA.totalP||0],
-    ["Résumé","Valeur nette", DATA.vn||0],
-    ["Budget","Revenu mensuel net", document.getElementById('revenu').value],
-    ["Budget","Revenu de loyer", document.getElementById('rev-loyer').value],
-    ["Budget","Autre revenu", document.getElementById('autre-revenu').value],
-    ["Budget","Revenus totaux", DATA.revenuTotal||0],
-    ["Budget","Total dépenses", DATA.totalD||0],
-    ["Budget","Épargne mensuelle", DATA.epargne||0],
-    ["Budget","Taux d'épargne (%)", DATA.taux||0],
-    ["Impôts","Revenu brut annuel", document.getElementById('rb').value],
-    ["Impôts","Contribution REER", document.getElementById('cr').value],
-    ["Impôts","Autres déductions", document.getElementById('ad').value],
-    ["Objectifs","Montant cible", document.getElementById('obj-montant').value],
-    ["Objectifs","Date cible", document.getElementById('obj-date').value],
-  ];
+function csvVal(v) {
+  var s = (v === undefined || v === null) ? '' : String(v);
+  return '"' + s.replace(/"/g, '""') + '"';
+}
 
-  let csvContent = rows.map(e => e.join(";")).join("\n");
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
+function construireCSVDonnees() {
+  var rows = [["Section", "Id", "Valeur"]];
+  function add(section, id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var val = (el.type === 'checkbox') ? (el.checked ? 'true' : 'false') : el.value;
+    rows.push([section, id, val]);
+  }
+
+  ['cb','celi','celi-liquide-pct','celiapp','cne','reer','immob','autre-actif','cc','mc','pa','hypo','autre-passif'].forEach(function(id){ add('Bilan', id); });
+  ['revenu','rev-loyer','autre-revenu','statut-resid','loyer','paiement-hypo','taxes-entretien','d2','d3','d4','d5','d6','d7'].forEach(function(id){ add('Budget', id); });
+  ['rb','cr','ad'].forEach(function(id){ add('Impots', id); });
+  ['obj-montant','obj-date','taux-rendement-objectif'].forEach(function(id){ add('Objectifs', id); });
+  ['revenu-brut-menage','mise-de-fonds-pct','taux-hypo','amortissement','prix-maison'].forEach(function(id){ add('Immobilier', id); });
+  ['age-actuel','age-retraite-souhaite','taux-rendement-avant-retraite','taux-rendement-pendant-retraite','pension-publique','rente-pension','revenu-retraite','contribution-actuelle-toggle','contribution-mensuelle-actuelle','retrait-indexe'].forEach(function(id){ add('Retraite', id); });
+  ['al-prix','al-mise-fonds-pct','al-taux-hypo','al-amortissement','al-taxes','al-entretien','al-assurance','al-loyer','al-augmentation-loyer','al-depot-garantie','al-rendement','al-duree','al-appreciation','al-frais-vente'].forEach(function(id){ add('AchatLouer', id); });
+
+  listeDettes.forEach(function(d, i){
+    var idx = i + 1;
+    rows.push(['Dette', 'dette-' + idx + '-nom', d.nom]);
+    rows.push(['Dette', 'dette-' + idx + '-solde', d.solde]);
+    rows.push(['Dette', 'dette-' + idx + '-taux', d.taux]);
+    rows.push(['Dette', 'dette-' + idx + '-paiementMin', d.paiementMin]);
+  });
+  add('Dettes', 'paiement-extra');
+
+  ['plaisirs-revenu','plaisirs-essentielles','plaisirs-epargne-pct',
+   'abo-netflix','abo-netflix-freq','abo-musique','abo-musique-freq','abo-gym','abo-gym-freq',
+   'abo-jeux','abo-jeux-freq','abo-cafe','abo-cafe-freq','abo-autre','abo-autre-freq',
+   'var-resto','var-bars','var-spectacles','var-shopping','var-hobbies','var-autres',
+   'projet-nom','projet-cout','projet-mois'].forEach(function(id){ add('Plaisirs', id); });
+
+  ['prix-article','salaire-horaire','duree-vie','q1-besoin','q2-remplace','q3-utilise','q4-budget','q5-attente','q6-alternative'].forEach(function(id){ add('Besoin', id); });
+
+  ['couple-revenu-a','couple-cc-a','couple-pret-etude-a','couple-auto-a','couple-autres-dettes-a',
+   'couple-assurance-a','couple-abonnements-a','couple-pension-a','couple-epargne-a',
+   'couple-revenu-b','couple-cc-b','couple-pret-etude-b','couple-auto-b','couple-autres-dettes-b',
+   'couple-assurance-b','couple-abonnements-b','couple-pension-b','couple-epargne-b',
+   'couple-loyer','couple-epicerie','couple-services','couple-transport','couple-loisirs','couple-autres',
+   'couple-taux-epargne'].forEach(function(id){ add('Couple', id); });
+
+  return rows.map(function(r){ return r.map(csvVal).join(';'); }).join('\r\n');
+}
+
+function exporterCSV() {
+  var csvContent = construireCSVDonnees();
+  var blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement("a");
   link.setAttribute("href", url);
-  link.setAttribute("download", "finance_personnelle.csv");
+  link.setAttribute("download", "parlonscash-donnees.csv");
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+function declencherImportCSV() {
+  var input = document.getElementById('import-csv-input');
+  if (input) input.click();
+}
+
+function parseCSVLine(line) {
+  var result = [];
+  var cur = '';
+  var inQuotes = false;
+  for (var i = 0; i < line.length; i++) {
+    var c = line[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (line[i + 1] === '"') { cur += '"'; i++; }
+        else { inQuotes = false; }
+      } else {
+        cur += c;
+      }
+    } else {
+      if (c === '"') inQuotes = true;
+      else if (c === ';') { result.push(cur); cur = ''; }
+      else cur += c;
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+function appliquerCSV(text) {
+  text = text.replace(/^\uFEFF/, '');
+  var lines = text.split(/\r\n|\n|\r/).filter(function(l){ return l.trim().length > 0; });
+  if (lines.length < 2) throw new Error('Fichier vide ou invalide');
+
+  var dettesImportees = {};
+
+  for (var i = 1; i < lines.length; i++) {
+    var cols = parseCSVLine(lines[i]);
+    if (cols.length < 3) continue;
+    var section = cols[0], id = cols[1], valeur = cols[2];
+
+    if (section === 'Dette' && id.indexOf('dette-') === 0) {
+      var m = id.match(/^dette-(\d+)-(nom|solde|taux|paiementMin)$/);
+      if (m) {
+        var idx = m[1], champ = m[2];
+        if (!dettesImportees[idx]) dettesImportees[idx] = {};
+        dettesImportees[idx][champ] = valeur;
+      }
+      continue;
+    }
+
+    var el = document.getElementById(id);
+    if (!el) continue;
+    if (el.type === 'checkbox') {
+      el.checked = (valeur === 'true');
+    } else {
+      el.value = valeur;
+    }
+  }
+
+  var indices = Object.keys(dettesImportees).map(Number).sort(function(a, b){ return a - b; });
+  listeDettes = indices.map(function(idx){
+    var d = dettesImportees[idx];
+    idCompteur++;
+    return {
+      id: idCompteur,
+      nom: d.nom || 'Carte de crédit',
+      solde: parseFloat(d.solde) || 0,
+      taux: parseFloat(d.taux) || 0,
+      paiementMin: parseFloat(d.paiementMin) || 0
+    };
+  });
+  afficherDettes();
+  listeDettes.forEach(function(d){
+    var sel = document.getElementById('nom-' + d.id);
+    if (sel) sel.value = d.nom;
+  });
+
+  toggleHypotheque();
+  var contribToggle = document.getElementById('contribution-actuelle-toggle');
+  var contribSection = document.getElementById('contribution-actuelle-section');
+  if (contribToggle && contribSection) {
+    contribSection.classList.toggle('hidden', !contribToggle.checked);
+  }
+
+  calc();
+  calcImmobilier();
+  calcAcheterLouer();
+  calcPlaisirs();
+  calcBesoin();
+  calcCouple();
+  calculerStrategies();
+  if (typeof window.resynchroniserTousLesOnglets === 'function') {
+    window.resynchroniserTousLesOnglets();
+  }
+  if (typeof window.__assistantRafraichirAffichage === 'function') {
+    window.__assistantRafraichirAffichage();
+  }
+}
+
+function importerCSV(event) {
+  var file = event.target.files && event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      appliquerCSV(e.target.result);
+      alert('Données importées avec succès !');
+    } catch (err) {
+      alert('Le fichier n\'a pas pu être lu. Assure-toi qu\'il provient bien du bouton "Exporter CSV" de cet outil.');
+      console.error(err);
+    }
+  };
+  reader.readAsText(file, 'UTF-8');
+  event.target.value = '';
 }
 
 // Gestion des dettes - Version propre
@@ -6496,6 +6724,659 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     }).observe(document.body, { childList:true, subtree:true });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialize); else initialize();
+}());
+</script>
+<script>
+/* Synchronisation stricte entre onglets, centralisée autour de l'onglet Mon profil. */
+(function () {
+  'use strict';
+
+  function appelerSiExiste(nomFonction) {
+    if (typeof window[nomFonction] === 'function') window[nomFonction]();
+  }
+
+  function lierGroupe(ids, callbacksParId) {
+    var elements = [];
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) elements.push({ id: id, el: el });
+    });
+    if (elements.length < 2) return;
+    var enCours = false;
+    elements.forEach(function (entry) {
+      ['input', 'change'].forEach(function (evt) {
+        entry.el.addEventListener(evt, function () {
+          if (enCours) return;
+          enCours = true;
+          elements.forEach(function (autre) {
+            if (autre.id !== entry.id && autre.el.value !== entry.el.value) {
+              autre.el.value = entry.el.value;
+            }
+          });
+          ids.forEach(function (id) {
+            var cb = callbacksParId[id];
+            if (cb) cb();
+          });
+          enCours = false;
+        });
+      });
+    });
+  }
+
+  function forcerSyncGroupe(ids, idSource) {
+    var source = document.getElementById(idSource);
+    if (!source) return;
+    ids.forEach(function (id) {
+      if (id === idSource) return;
+      var cible = document.getElementById(id);
+      if (cible) cible.value = source.value;
+    });
+  }
+
+  var cbCalc = function () { appelerSiExiste('calc'); };
+  var cbImmobilier = function () { appelerSiExiste('calcImmobilier'); };
+  var cbAcheterLouer = function () { appelerSiExiste('calcAcheterLouer'); };
+
+  // Revenu brut annuel : Mon profil <-> Impôts <-> Objectifs (achat maison)
+  var groupeRevenuBrut = ['profil-revenu-brut', 'rb', 'revenu-brut-menage'];
+  lierGroupe(groupeRevenuBrut, {
+    'profil-revenu-brut': cbCalc,
+    'rb': cbCalc,
+    'revenu-brut-menage': cbImmobilier
+  });
+
+  // Projet immobilier : Mon profil <-> Objectifs <-> Acheter vs Louer
+  lierGroupe(['profil-prix-maison', 'prix-maison', 'al-prix'], {
+    'profil-prix-maison': cbImmobilier, 'prix-maison': cbImmobilier, 'al-prix': cbAcheterLouer
+  });
+  lierGroupe(['profil-taux-hypo', 'taux-hypo', 'al-taux-hypo'], {
+    'profil-taux-hypo': cbImmobilier, 'taux-hypo': cbImmobilier, 'al-taux-hypo': cbAcheterLouer
+  });
+  lierGroupe(['profil-mise-de-fonds-pct', 'mise-de-fonds-pct', 'al-mise-fonds-pct'], {
+    'profil-mise-de-fonds-pct': cbImmobilier, 'mise-de-fonds-pct': cbImmobilier, 'al-mise-fonds-pct': cbAcheterLouer
+  });
+  lierGroupe(['profil-amortissement', 'amortissement', 'al-amortissement'], {
+    'profil-amortissement': cbImmobilier, 'amortissement': cbImmobilier, 'al-amortissement': cbAcheterLouer
+  });
+
+  // Budget -> Plaisirs (sens unique, calculé)
+  function syncPlaisirsRevenu() {
+    var source = document.getElementById('revenu');
+    var cible = document.getElementById('plaisirs-revenu');
+    if (source && cible) cible.value = source.value;
+  }
+  function syncPlaisirsEssentielles() {
+    var cible = document.getElementById('plaisirs-essentielles');
+    if (!cible) return;
+    var totalDepenses = (window.DATA && DATA.totalD) || 0;
+    var loisirsEl = document.getElementById('d5');
+    var loisirs = loisirsEl ? (parseFloat(loisirsEl.value) || 0) : 0;
+    cible.value = Math.max(0, Math.round(totalDepenses - loisirs));
+  }
+  function syncEtRecalculerPlaisirs() {
+    syncPlaisirsRevenu();
+    syncPlaisirsEssentielles();
+    appelerSiExiste('calcPlaisirs');
+  }
+  var champsBudget = ['revenu', 'rev-loyer', 'autre-revenu', 'statut-resid', 'loyer',
+    'paiement-hypo', 'taxes-entretien', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7'];
+  champsBudget.forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', syncEtRecalculerPlaisirs);
+    el.addEventListener('change', syncEtRecalculerPlaisirs);
+  });
+
+  // Budget (revenu) -> Couple (Personne A), sens unique : champ en lecture seule côté Couple
+  function syncCoupleRevenuA() {
+    var source = document.getElementById('revenu');
+    var cible = document.getElementById('couple-revenu-a');
+    if (source && cible) cible.value = source.value;
+    appelerSiExiste('calcCouple');
+  }
+  (function () {
+    var el = document.getElementById('revenu');
+    if (!el) return;
+    el.addEventListener('input', syncCoupleRevenuA);
+    el.addEventListener('change', syncCoupleRevenuA);
+  }());
+
+  // Fonction de resynchronisation complète (utilisée après un import CSV)
+  window.resynchroniserTousLesOnglets = function () {
+    forcerSyncGroupe(groupeRevenuBrut, 'rb');
+    forcerSyncGroupe(['profil-prix-maison', 'prix-maison', 'al-prix'], 'prix-maison');
+    forcerSyncGroupe(['profil-taux-hypo', 'taux-hypo', 'al-taux-hypo'], 'taux-hypo');
+    forcerSyncGroupe(['profil-mise-de-fonds-pct', 'mise-de-fonds-pct', 'al-mise-fonds-pct'], 'mise-de-fonds-pct');
+    forcerSyncGroupe(['profil-amortissement', 'amortissement', 'al-amortissement'], 'amortissement');
+    syncPlaisirsRevenu();
+    syncPlaisirsEssentielles();
+    syncCoupleRevenuA();
+  };
+
+  function initSync() {
+    window.resynchroniserTousLesOnglets();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSync);
+  } else {
+    initSync();
+  }
+}());
+</script>
+<div id="rapport-imprimable"></div>
+<style>
+  #rapport-imprimable {
+    display: none;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color: #1f2937;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  #rapport-imprimable .rapport-entete {
+    text-align: center;
+    border-bottom: 3px solid #1e40af;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  #rapport-imprimable .rapport-entete h1 {
+    color: #1e40af;
+    font-size: 1.6em;
+    margin: 0 0 6px 0;
+  }
+  #rapport-imprimable .rapport-entete p {
+    color: #6b7280;
+    font-size: 0.9em;
+    margin: 0;
+  }
+  #rapport-imprimable .rapport-section {
+    margin-bottom: 22px;
+    page-break-inside: avoid;
+  }
+  #rapport-imprimable .rapport-section h2 {
+    color: #1e40af;
+    font-size: 1.15em;
+    border-bottom: 1px solid #d1d5db;
+    padding-bottom: 6px;
+    margin: 0 0 10px 0;
+  }
+  #rapport-imprimable .rapport-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92em;
+  }
+  #rapport-imprimable .rapport-table td {
+    padding: 6px 4px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  #rapport-imprimable .rapport-pied {
+    margin-top: 30px;
+    padding-top: 14px;
+    border-top: 1px solid #d1d5db;
+    font-size: 0.78em;
+    color: #6b7280;
+    text-align: center;
+  }
+  @media print {
+    body.impression-rapport > *:not(#rapport-imprimable) { display: none !important; }
+    body.impression-rapport #rapport-imprimable { display: block !important; }
+  }
+</style>
+<script>
+/* Générateur de rapport PDF intelligent : n'inclut que les sections réellement remplies. */
+(function () {
+  'use strict';
+
+  function appeler(nomFonction) {
+    if (typeof window[nomFonction] === 'function') window[nomFonction]();
+  }
+
+  function valeurChamp(id) {
+    var el = document.getElementById(id);
+    return el ? el.value : '';
+  }
+
+  function nombreChamp(id) {
+    return parseFloat(valeurChamp(id)) || 0;
+  }
+
+  function tableRapport(lignes) {
+    var html = '<table class="rapport-table"><tbody>';
+    lignes.forEach(function (l) {
+      html += '<tr><td>' + l[0] + '</td><td style="text-align:right;font-weight:600;">' + l[1] + '</td></tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+  }
+
+  function section(titre, contenuHTML) {
+    if (!contenuHTML || !contenuHTML.trim()) return '';
+    return '<div class="rapport-section"><h2>' + titre + '</h2>' + contenuHTML + '</div>';
+  }
+
+  function contenuElement(id) {
+    var el = document.getElementById(id);
+    return el ? el.innerHTML : '';
+  }
+
+  window.genererRapportPDF = function () {
+    var listeDettesActuelle = (typeof listeDettes !== 'undefined') ? listeDettes : [];
+    var dettesValides = listeDettesActuelle.filter(function (d) { return (d.solde || 0) > 0; });
+
+    // Rafraîchir les calculs avant de générer le rapport
+    appeler('calc');
+    appeler('calcImmobilier');
+    appeler('calcAcheterLouer');
+    appeler('calcPlaisirs');
+    appeler('calcCouple');
+    if (dettesValides.length > 0) appeler('calculerStrategies');
+
+    var fmtFn = (typeof window.fmt === 'function') ? window.fmt : function (n) { return Math.round(n).toLocaleString('fr-CA'); };
+    var d = (typeof DATA !== 'undefined') ? DATA : {};
+    var html = '';
+
+    var maintenant = new Date();
+    var dateStr = maintenant.toLocaleDateString('fr-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+    html += '<div class="rapport-entete"><h1>Rapport financier personnel</h1>';
+    html += '<p>Généré le ' + dateStr + ' — Parlons Cash</p></div>';
+
+    var aDesDonnees = (d.totalA || d.totalP || d.revenuTotal);
+    if (aDesDonnees) {
+      var moisUrgence = (d.cb || 0) / (d.totalD || 1);
+      var ratioEndettement = d.totalA > 0 ? (d.totalP / d.totalA * 100) : 0;
+      html += section('Résumé', tableRapport([
+        ['Valeur nette', fmtFn(d.vn || 0) + ' $'],
+        ['Total actifs', fmtFn(d.totalA || 0) + ' $'],
+        ['Total passifs', fmtFn(d.totalP || 0) + ' $'],
+        ["Taux d'épargne mensuel", (d.taux || 0) + '%'],
+        ["Ratio d'endettement (passifs/actifs)", ratioEndettement.toFixed(1) + '%']
+      ]));
+      html += section('Diagnostic financier', contenuElement('diagnostic-global'));
+    }
+
+    if ((d.totalA || 0) > 0 || (d.totalP || 0) > 0) {
+      html += section('Bilan détaillé', tableRapport([
+        ['Compte bancaire', fmtFn(nombreChamp('cb')) + ' $'],
+        ['CELI', fmtFn(nombreChamp('celi')) + ' $'],
+        ['CELIAPP', fmtFn(nombreChamp('celiapp')) + ' $'],
+        ['Compte non enregistré', fmtFn(nombreChamp('cne')) + ' $'],
+        ['REER', fmtFn(nombreChamp('reer')) + ' $'],
+        ['Immobilisations', fmtFn(nombreChamp('immob')) + ' $'],
+        ['Cartes de crédit', fmtFn(nombreChamp('cc')) + ' $'],
+        ['Marge de crédit', fmtFn(nombreChamp('mc')) + ' $'],
+        ['Prêt automobile', fmtFn(nombreChamp('pa')) + ' $'],
+        ['Hypothèque', fmtFn(nombreChamp('hypo')) + ' $']
+      ]));
+    }
+
+    if ((d.revenuTotal || 0) > 0) {
+      html += section('Budget mensuel', tableRapport([
+        ['Revenus totaux', fmtFn(d.revenuTotal || 0) + ' $'],
+        ['Dépenses totales', fmtFn(d.totalD || 0) + ' $'],
+        ['Épargne nette', fmtFn(d.epargne || 0) + ' $']
+      ]));
+      html += section("Analyse budget 50/30/20", contenuElement('analyse-503020'));
+      if (nombreChamp('cb') > 0) {
+        html += section("Fonds d'urgence", contenuElement('resultat-fonds-urgence'));
+      }
+    }
+
+    var rb = nombreChamp('rb');
+    if (rb > 0) {
+      html += section('Impôts (estimation)', tableRapport([
+        ['Revenu brut annuel', fmtFn(rb) + ' $'],
+        ['Revenu imposable', document.getElementById('ri') ? document.getElementById('ri').textContent : ''],
+        ['Impôt fédéral', document.getElementById('impf') ? document.getElementById('impf').textContent : ''],
+        ['Impôt provincial (QC)', document.getElementById('impp') ? document.getElementById('impp').textContent : ''],
+        ['Impôt total', document.getElementById('impt') ? document.getElementById('impt').textContent : ''],
+        ['Revenu restant estimé', document.getElementById('rn') ? document.getElementById('rn').textContent : '']
+      ]));
+    }
+
+    if (nombreChamp('obj-montant') > 0 && valeurChamp('obj-date')) {
+      html += section("Objectif d'épargne", contenuElement('resultat-objectif'));
+    }
+
+    if (valeurChamp('age-actuel') !== '') {
+      html += section('Planification de la retraite', contenuElement('resultat-retraite'));
+    }
+
+    if (nombreChamp('revenu-brut-menage') > 0) {
+      html += section("Capacité d'achat immobilier", contenuElement('resultat-immobilier'));
+    }
+
+    if (nombreChamp('al-prix') > 0 && nombreChamp('al-loyer') > 0) {
+      html += section('Acheter vs Louer', contenuElement('resultats-acheter-louer'));
+    }
+
+    if (dettesValides.length > 0) {
+      var lignesDettes = dettesValides.map(function (dette) {
+        return [dette.nom + ' (' + dette.taux + '%)', fmtFn(dette.solde) + ' $'];
+      });
+      var totalDettes = dettesValides.reduce(function (s, dette) { return s + dette.solde; }, 0);
+      lignesDettes.push(['<strong>Total</strong>', '<strong>' + fmtFn(totalDettes) + ' $</strong>']);
+      html += section('Dettes détaillées', tableRapport(lignesDettes));
+      html += section('Stratégie de remboursement', contenuElement('resultats-strategies'));
+    }
+
+    if (nombreChamp('couple-revenu-a') > 0 || nombreChamp('couple-revenu-b') > 0) {
+      html += section('Finances de couple', contenuElement('resultats-couple'));
+    }
+
+    var plaisirsHTML = contenuElement('resultats-plaisirs');
+    if (plaisirsHTML && plaisirsHTML.trim()) {
+      html += section('Gestion des plaisirs', plaisirsHTML);
+    }
+
+    html += '<p class="rapport-pied">Ce rapport est généré automatiquement à partir des données saisies dans Parlons Cash. ';
+    html += 'Il est fourni à titre éducatif et informatif seulement et ne constitue pas un conseil financier, fiscal ou juridique personnalisé.</p>';
+
+    var conteneur = document.getElementById('rapport-imprimable');
+    if (!conteneur) return;
+    conteneur.innerHTML = html;
+    document.body.classList.add('impression-rapport');
+    window.print();
+  };
+
+  window.addEventListener('afterprint', function () {
+    document.body.classList.remove('impression-rapport');
+  });
+}());
+</script>
+<script>
+/* Assistant Bilan & Budget : une question à la fois, écrit directement dans les vrais champs. */
+(function () {
+  'use strict';
+
+  var ETAPES = [
+    { id: 'age-actuel', label: 'Quel âge as-tu ?', type: 'nombre' },
+    { id: 'age-retraite-souhaite', label: 'À quel âge aimerais-tu prendre ta retraite ?', type: 'nombre' },
+    { id: 'contribution-actuelle-toggle', label: 'Épargnes-tu déjà pour ta retraite ?', type: 'oui-non' },
+    { id: 'contribution-mensuelle-actuelle', label: 'Combien épargnes-tu par mois pour ta retraite ?', type: 'nombre',
+      condition: function () { var el = document.getElementById('contribution-actuelle-toggle'); return el && el.checked; } },
+    { id: 'revenu', label: 'Quel est ton revenu net mensuel (après impôts) ?', type: 'nombre' },
+    { id: 'autre-revenu', label: 'As-tu un autre revenu mensuel (travail autonome, pension, etc.) ? Mets 0 si non.', type: 'nombre' },
+    { id: 'rev-loyer', label: 'As-tu un revenu de loyer mensuel ? Mets 0 si non.', type: 'nombre' },
+    { id: 'statut-resid', label: 'Es-tu locataire ou propriétaire ?', type: 'choix', choix: [['locataire', '🔑 Locataire'], ['proprio', '🏠 Propriétaire']] },
+    { id: 'loyer', label: 'Quel est ton loyer mensuel ?', type: 'nombre',
+      condition: function () { return valeur('statut-resid') === 'locataire'; } },
+    { id: 'paiement-hypo', label: 'Quel est ton paiement hypothécaire mensuel ?', type: 'nombre',
+      condition: function () { return valeur('statut-resid') === 'proprio'; } },
+    { id: 'taxes-entretien', label: 'Combien payes-tu par mois en taxes municipales/scolaires et entretien ?', type: 'nombre',
+      condition: function () { return valeur('statut-resid') === 'proprio'; } },
+    { id: 'd2', label: 'Combien dépenses-tu par mois en alimentation ?', type: 'nombre' },
+    { id: 'd3', label: 'Combien dépenses-tu par mois en transport ?', type: 'nombre' },
+    { id: 'd4', label: 'Combien payes-tu par mois en assurances ?', type: 'nombre' },
+    { id: 'd5', label: 'Combien dépenses-tu par mois en loisirs ?', type: 'nombre' },
+    { id: 'd7', label: 'Combien payes-tu par mois en remboursement de dettes (cartes, prêts, etc.) ?', type: 'nombre' },
+    { id: 'd6', label: 'As-tu d\'autres dépenses mensuelles non listées ? Mets 0 si non.', type: 'nombre' },
+    { id: 'cb', label: 'Combien as-tu dans ton compte bancaire ?', type: 'nombre' },
+    { id: 'celi', label: 'Combien as-tu dans ton CELI ? Mets 0 si tu n\'en as pas.', type: 'nombre' },
+    { id: 'celi-liquide-pct', label: 'Quel pourcentage de ton CELI est en épargne liquide (compte d\'épargne, CPG) plutôt qu\'investi (actions, FNB) ? Réponds de 0 à 100.',
+      type: 'nombre',
+      condition: function () { return (parseFloat(document.getElementById('celi').value) || 0) > 0; } },
+    { id: 'celiapp', label: 'Combien as-tu dans ton CELIAPP ? Mets 0 si tu n\'en as pas.', type: 'nombre' },
+    { id: 'reer', label: 'Combien as-tu dans ton REER ? Mets 0 si tu n\'en as pas.', type: 'nombre' },
+    { id: 'cne', label: 'Combien as-tu dans un compte de placement non enregistré ? Mets 0 si aucun.', type: 'nombre' },
+    { id: 'immob', label: 'Quelle est la valeur de tes immobilisations (maison, auto, etc.) ?', type: 'nombre' },
+    { id: 'autre-actif', label: 'As-tu d\'autres actifs ? Mets 0 si non.', type: 'nombre' },
+    { id: 'cc', label: 'Quel est le solde de tes cartes de crédit ?', type: 'nombre' },
+    { id: 'mc', label: 'Quel est le solde de ta marge de crédit ?', type: 'nombre' },
+    { id: 'pa', label: 'Quel est le solde de ton prêt automobile ?', type: 'nombre' },
+    { id: 'hypo', label: 'Quel est le solde restant de ton hypothèque ?', type: 'nombre',
+      condition: function () { return valeur('statut-resid') === 'proprio'; } },
+    { id: 'autre-passif', label: 'As-tu d\'autres dettes non listées ici ? Mets 0 si non.', type: 'nombre' }
+  ];
+
+  var indexActuel = 0;
+
+  function valeur(id) {
+    var el = document.getElementById(id);
+    return el ? el.value : '';
+  }
+
+  function definirValeur(id, val) {
+    var el = document.getElementById(id);
+    if (el) el.value = val;
+  }
+
+  function appeler(nomFonction) {
+    if (typeof window[nomFonction] === 'function') window[nomFonction]();
+  }
+
+  function etapesActives() {
+    return ETAPES.filter(function (e) { return !e.condition || e.condition(); });
+  }
+
+  function rafraichirTout() {
+    appeler('calc');
+    if (typeof window.toggleHypotheque === 'function') window.toggleHypotheque();
+    if (typeof window.toggleContributionActuelle === 'function') window.toggleContributionActuelle();
+  }
+
+  function afficherEtape() {
+    var actives = etapesActives();
+    if (indexActuel >= actives.length) {
+      afficherRecap();
+      return;
+    }
+    if (indexActuel < 0) indexActuel = 0;
+
+    var etape = actives[indexActuel];
+    var contenu = document.getElementById('assistant-etape-contenu');
+    var recap = document.getElementById('assistant-recap');
+    recap.classList.add('hidden');
+    contenu.classList.remove('hidden');
+
+    var progressFill = document.getElementById('assistant-progress-fill');
+    var progressTexte = document.getElementById('assistant-progress-texte');
+    var pct = Math.round((indexActuel / actives.length) * 100);
+    progressFill.style.width = pct + '%';
+    progressTexte.textContent = 'Question ' + (indexActuel + 1) + ' sur ' + actives.length;
+
+    var html = '<h4 style="margin-bottom:15px;color:#1f2937;font-size:1.15em;">' + etape.label + '</h4>';
+
+    if (etape.type === 'choix') {
+      html += '<div class="options-grid" style="margin-bottom:20px;">';
+      etape.choix.forEach(function (c) {
+        var selectionne = valeur(etape.id) === c[0];
+        html += '<button type="button" class="option-btn' + (selectionne ? ' selected' : '') +
+          '" onclick="window.__assistantChoisir(\'' + etape.id + '\',\'' + c[0] + '\')">' + c[1] + '</button>';
+      });
+      html += '</div>';
+    } else if (etape.type === 'oui-non') {
+      var elToggle = document.getElementById(etape.id);
+      var estCoche = elToggle ? elToggle.checked : false;
+      var libelleOui = etape.labelOui || '✅ Oui';
+      var libelleNon = etape.labelNon || '❌ Pas encore';
+      html += '<div class="options-grid" style="margin-bottom:20px;">';
+      html += '<button type="button" class="option-btn' + (estCoche ? ' selected' : '') +
+        '" onclick="window.__assistantOuiNon(\'' + etape.id + '\', true)">' + libelleOui + '</button>';
+      html += '<button type="button" class="option-btn' + (!estCoche ? ' selected' : '') +
+        '" onclick="window.__assistantOuiNon(\'' + etape.id + '\', false)">' + libelleNon + '</button>';
+      html += '</div>';
+    } else {
+      var valActuelle = valeur(etape.id) || '0';
+      html += '<div class="form-group" style="max-width:300px;">';
+      html += '<input type="number" id="assistant-input-temp" value="' + valActuelle + '" min="0" ' +
+        'style="font-size:1.3em;padding:14px;" autofocus>';
+      html += '</div>';
+    }
+
+    html += '<div class="nav-buttons">';
+    html += '<button class="btn-secondary" type="button" onclick="window.__assistantPrecedent()"' +
+      (indexActuel === 0 ? ' disabled' : '') + '>← Précédent</button>';
+    if (etape.type !== 'choix' && etape.type !== 'oui-non') {
+      html += '<button class="btn-primary" type="button" onclick="window.__assistantSuivant()">' +
+        (indexActuel === actives.length - 1 ? 'Terminer' : 'Suivant →') + '</button>';
+    }
+    html += '</div>';
+
+    contenu.innerHTML = html;
+
+    if (etape.type !== 'choix' && etape.type !== 'oui-non') {
+      var inputTemp = document.getElementById('assistant-input-temp');
+      if (inputTemp) {
+        inputTemp.focus();
+        inputTemp.select();
+        inputTemp.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') { e.preventDefault(); window.__assistantSuivant(); }
+        });
+      }
+    }
+  }
+
+  window.__assistantSuivant = function () {
+    var actives = etapesActives();
+    var etape = actives[indexActuel];
+    if (etape && etape.type !== 'choix' && etape.type !== 'oui-non') {
+      var inputTemp = document.getElementById('assistant-input-temp');
+      definirValeur(etape.id, inputTemp ? (inputTemp.value || '0') : '0');
+      rafraichirTout();
+    }
+    indexActuel++;
+    afficherEtape();
+  };
+
+  window.__assistantPrecedent = function () {
+    if (indexActuel > 0) {
+      indexActuel--;
+      afficherEtape();
+    }
+  };
+
+  window.__assistantChoisir = function (id, val) {
+    definirValeur(id, val);
+    rafraichirTout();
+    indexActuel++;
+    afficherEtape();
+  };
+
+  window.__assistantOuiNon = function (id, val) {
+    var el = document.getElementById(id);
+    if (el) el.checked = val;
+    rafraichirTout();
+    indexActuel++;
+    afficherEtape();
+  };
+
+  function afficherRecap() {
+    appeler('calc');
+    var d = (typeof DATA !== 'undefined') ? DATA : {};
+    var fmtFn = (typeof window.fmt === 'function') ? window.fmt : function (n) { return Math.round(n).toLocaleString('fr-CA'); };
+
+    var contenu = document.getElementById('assistant-etape-contenu');
+    var recap = document.getElementById('assistant-recap');
+    contenu.classList.add('hidden');
+    recap.classList.remove('hidden');
+
+    document.getElementById('assistant-progress-fill').style.width = '100%';
+    document.getElementById('assistant-progress-texte').textContent = 'Terminé !';
+
+    var html = '<div class="result-box green" style="margin-bottom:15px;">';
+    html += '<h4 style="margin-bottom:10px;">✅ Voici ton portrait financier</h4>';
+    html += '<p style="margin:5px 0;">Revenus totaux : <strong>' + fmtFn(d.revenuTotal || 0) + ' $/mois</strong></p>';
+    html += '<p style="margin:5px 0;">Dépenses totales : <strong>' + fmtFn(d.totalD || 0) + ' $/mois</strong></p>';
+    html += '<p style="margin:5px 0;">Épargne nette : <strong>' + fmtFn(d.epargne || 0) + ' $/mois (' + (d.taux || 0) + '%)</strong></p>';
+    html += '<p style="margin:5px 0;">Total actifs : <strong>' + fmtFn(d.totalA || 0) + ' $</strong></p>';
+    html += '<p style="margin:5px 0;">Total passifs : <strong>' + fmtFn(d.totalP || 0) + ' $</strong></p>';
+    html += '<p style="margin:5px 0;font-size:1.2em;">Valeur nette : <strong style="color:#1e40af;">' + fmtFn(d.vn || 0) + ' $</strong></p>';
+    html += '</div>';
+    html += '<div class="final-buttons">';
+    html += '<button class="btn-primary" type="button" onclick="changeTab(\'dashboard\')">Voir mon tableau de bord</button>';
+    html += '<button class="btn-secondary" type="button" onclick="window.__assistantRecommencer()">Modifier mes réponses</button>';
+    html += '</div>';
+    recap.innerHTML = html;
+  }
+
+  window.__assistantRecommencer = function () {
+    indexActuel = 0;
+    afficherEtape();
+  };
+
+  // Exposé pour permettre à d'autres fonctions (ex. import CSV) de rafraîchir l'écran affiché
+  window.__assistantRafraichirAffichage = function () {
+    if (document.getElementById('assistant-etape-contenu')) {
+      afficherEtape();
+    }
+  };
+
+  function initialiser() {
+    if (document.getElementById('assistant-etape-contenu')) {
+      afficherEtape();
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialiser);
+  } else {
+    initialiser();
+  }
+}());
+</script>
+<script>
+/* Sauvegarde automatique locale (localStorage) : aucune donnée n'est envoyée nulle part,
+   tout reste dans ce navigateur, sur cet appareil. */
+(function () {
+  'use strict';
+
+  var CLE_STOCKAGE = 'parlonscash-donnees-v1';
+  var minuteur = null;
+
+  function sauvegarderLocal() {
+    try {
+      if (typeof window.construireCSVDonnees === 'function') {
+        localStorage.setItem(CLE_STOCKAGE, window.construireCSVDonnees());
+      }
+    } catch (e) {
+      // Stockage plein ou indisponible (navigation privée, etc.) : on ignore silencieusement.
+    }
+  }
+
+  function planifierSauvegarde() {
+    clearTimeout(minuteur);
+    minuteur = setTimeout(sauvegarderLocal, 600);
+  }
+
+  document.addEventListener('input', function (e) {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT')) {
+      planifierSauvegarde();
+    }
+  });
+  document.addEventListener('change', function (e) {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT')) {
+      planifierSauvegarde();
+    }
+  });
+
+  window.__effacerDonneesLocales = function () {
+    if (!confirm('Effacer toutes tes données sauvegardées dans ce navigateur ? Cette action est irréversible.')) return;
+    try { localStorage.removeItem(CLE_STOCKAGE); } catch (e) {}
+    location.reload();
+  };
+
+  function restaurerAuChargement() {
+    var donnees;
+    try {
+      donnees = localStorage.getItem(CLE_STOCKAGE);
+    } catch (e) {
+      donnees = null;
+    }
+    if (donnees && typeof window.appliquerCSV === 'function') {
+      try {
+        window.appliquerCSV(donnees);
+      } catch (e) {
+        console.error('Restauration locale impossible :', e);
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', restaurerAuChargement);
+  } else {
+    restaurerAuChargement();
+  }
 }());
 </script>
 </body>
