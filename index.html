@@ -1022,6 +1022,7 @@ button:hover, .tab-button:hover {
       <p>Budget, dettes, impôts, REER, CELI, CELIAPP et retraite — des outils simples pour mieux gérer votre argent.</p>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn-export" style="background:#059669" onclick="ouvrirDiagnostic()">🔍 Diagnostic financier</button>
       <button class="btn-export" onclick="exporterCSV()">📥 Exporter CSV</button>
       <button class="btn-export" style="background:#2563eb" onclick="genererRapportPDF()">🖨️ Rapport PDF</button>
       <button class="btn-export" style="background:#7c3aed" onclick="declencherImportCSV()">📤 Importer CSV</button>
@@ -1029,11 +1030,17 @@ button:hover, .tab-button:hover {
       <button class="btn-export" style="background:#dc2626" onclick="window.__effacerDonneesLocales()">🗑️ Effacer mes données</button>
     </div>
   </div>
+  <div class="container" style="padding-top:0;padding-bottom:0;margin-top:15px;">
+    <div style="display:flex;justify-content:flex-start;flex-wrap:wrap;gap:10px;">
+      <button class="btn-export" type="button" onclick="changeTab('blog')">Lire le blog</button>
+      <a href="https://substack.com/@parlonscash" target="_blank" rel="noopener" class="btn-export" style="background:#2563eb;text-decoration:none;">S'abonner à l'infolettre</a>
+    </div>
+  </div>
 </header>
 
 <div class="nav">
-<button onclick="changeTab('dashboard')" id="btn-dashboard" class="active">Tableau de bord</button>
-<button onclick="changeTab('profil')" id="btn-profil">👤 Mon profil</button>
+<button onclick="changeTab('profil')" id="btn-profil" class="active">👤 Mon profil</button>
+<button onclick="changeTab('dashboard')" id="btn-dashboard">Tableau de bord</button>
 <button onclick="changeTab('impôts')" id="btn-impôts">Impôts</button>
 <button onclick="changeTab('objectifs')" id="btn-objectifs">Objectifs</button>
 <button onclick="changeTab('acheter-louer')" id="btn-acheter-louer">Acheter vs Louer</button>
@@ -1049,7 +1056,7 @@ button:hover, .tab-button:hover {
 </div>
 
 <div class="container">
-<div id="tab-dashboard" class="tab-content active">
+<div id="tab-dashboard" class="tab-content">
 
   <h2>Tableau de bord financier</h2>
 
@@ -1084,7 +1091,7 @@ button:hover, .tab-button:hover {
 
 </div>
 
-<div id="tab-profil" class="tab-content">
+<div id="tab-profil" class="tab-content active">
   <h2>👤 Mon profil</h2>
   <p style="background:#eff6ff;padding:15px;border-radius:8px;border-left:4px solid #2563eb;margin-bottom:20px;">
     Remplis cette page une seule fois : elle alimente automatiquement tous les autres calculateurs du site.
@@ -1107,6 +1114,7 @@ button:hover, .tab-button:hover {
     </p>
 
     <div id="assistant-progress-wrap" style="margin-bottom:20px;">
+      <div id="assistant-fil-ariane" style="text-align:center;margin-bottom:10px;"></div>
       <div class="progress-bar"><div class="progress-fill" id="assistant-progress-fill" style="width:0%"></div></div>
       <p style="text-align:center;color:#6b7280;font-size:0.85em;margin-top:8px;" id="assistant-progress-texte">Question 1</p>
     </div>
@@ -1396,7 +1404,7 @@ button:hover, .tab-button:hover {
     Revenu annuel estimé de votre régime de retraite d'employeur (si applicable)
   </small>
 </div>
-<div class="form-group"><label>Revenu annuel desire (en dollars d'aujourd'hui)</label><input type="number" id="revenu-retraite" value="0" oninput="calcRetraite()"></div>
+<div class="form-group"><label>Revenu annuel desire (en dollars d'aujourd'hui)</label><input type="number" id="revenu-retraite" value="50000" oninput="calcRetraite()"></div>
 <div class="form-group">
   <label style="display:flex;align-items:center;gap:10px;">
     <input type="checkbox" id="contribution-actuelle-toggle" onchange="toggleContributionActuelle()" style="width:auto;">
@@ -1699,15 +1707,15 @@ Historique Québec : 2-4% par an
     <h3 style="color:#2563eb;">💰 Ton budget loisirs disponible</h3>
     
     <div class="form-group">
-      <label>Revenu mensuel net ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé depuis l'onglet Budget</span></label>
+      <label>Revenu mensuel net ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé depuis Mon profil</span></label>
       <input type="number" id="plaisirs-revenu" value="0" min="0" readonly style="background:#f3f4f6;cursor:not-allowed;">
     </div>
-    
+
     <div class="form-group">
-      <label>Dépenses essentielles mensuelles ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 calculé depuis l'onglet Budget</span></label>
+      <label>Dépenses essentielles mensuelles ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 calculé depuis Mon profil</span></label>
       <input type="number" id="plaisirs-essentielles" value="0" min="0" readonly style="background:#f3f4f6;cursor:not-allowed;">
       <small style="display:block;margin-top:5px;color:#6b7280;">
-        = Total dépenses (onglet Budget) moins Loisirs. Ajuste ces valeurs dans l'onglet Budget.
+        = Total dépenses (Mon profil) moins Loisirs. Ajuste ces valeurs dans Mon profil.
       </small>
     </div>
     
@@ -3446,7 +3454,7 @@ document.getElementById('rn').textContent=fmt(rn)+' $';
 function calc503020(){
 var rev=DATA.revenuTotal||0;
 if(rev<=0){
-document.getElementById('analyse-503020').innerHTML='<p>Entrez votre revenu mensuel dans l\'onglet Budget.</p>';
+document.getElementById('analyse-503020').innerHTML='<p>Entrez votre revenu mensuel dans Mon profil.</p>';
 return;
 }
 var besoin50=rev*0.5;
@@ -4226,7 +4234,11 @@ if((prix > epargneDisponible || dettesConsommation > 5000) && !estMicroAchat) {
 
 function genererDiagnostic(){
 if(!DATA.totalA && !DATA.totalP && !DATA.revenuTotal){
-document.getElementById('diagnostic-global').innerHTML='Entrez vos donnees';return;
+document.getElementById('diagnostic-global').innerHTML='<div style="text-align:center;padding:10px 0;">' +
+  '<p style="color:#6b7280;margin-bottom:15px;">Ton tableau de bord est vide pour l\'instant. Remplis ton profil pour voir tes résultats ici.</p>' +
+  '<button class="btn-primary" type="button" onclick="changeTab(\'profil\')">👤 Remplir mon profil</button>' +
+  '</div>';
+return;
 }
 var score=0;
 var mois=(DATA.fondsDisponibleUrgence!==undefined?DATA.fondsDisponibleUrgence:(DATA.cb||0))/(DATA.totalD||1);
@@ -6004,6 +6016,15 @@ function backToWelcome() {
   userAnswers = {};
 }
 
+function ouvrirDiagnostic() {
+  document.getElementById('questionsScreen').classList.add('hidden');
+  document.getElementById('resultsScreen').classList.add('hidden');
+  document.getElementById('welcomeScreen').classList.remove('hidden');
+  currentQuestion = 0;
+  userAnswers = {};
+  document.getElementById('welcomeModal').style.display = 'flex';
+}
+
 function showResults() {
   document.getElementById('questionsScreen').classList.add('hidden');
   document.getElementById('resultsScreen').classList.remove('hidden');
@@ -6039,7 +6060,7 @@ function showResults() {
       icon: '📊',
       title: 'Créer votre budget',
       desc: 'Commencez par la règle 50/30/20',
-      action: 'budget'
+      action: 'profil'
     });
   }
   
@@ -6057,7 +6078,7 @@ function showResults() {
   
   // Recommandations selon la priorité
   if (userAnswers.priorite === 'comprendre') {
-    recommendations.push({text: 'Commencez par compléter votre <strong>Bilan</strong>', action: 'bilan'});
+    recommendations.push({text: 'Commencez par compléter votre <strong>profil</strong>', action: 'profil'});
   }
   if (userAnswers.priorite === 'maison') {
     recommendations.push({text: 'Utilisez le calculateur <strong>Acheter vs Louer</strong>', action: 'acheter-louer'});
@@ -6068,11 +6089,11 @@ function showResults() {
   if (userAnswers.priorite === 'epargne') {
     recommendations.push({text: 'Définissez vos <strong>Objectifs d\'épargne</strong>', action: 'objectifs'});
   }
-  recommendations.push({text: 'Calculez votre budget idéal avec la règle <strong>50/30/20</strong>', action: 'budget'});
+  recommendations.push({text: 'Calculez votre budget idéal avec la règle <strong>50/30/20</strong>', action: 'profil'});
   recommendations.push({text: 'Optimisez vos <strong>Impôts</strong>', action: 'impôts'});
   
   var allActions = priorities.concat(recommendations.slice(0, Math.max(0, 5 - priorities.length)));
-  var prioriteAction = priorities[0] ? priorities[0].action : 'bilan';
+  var prioriteAction = priorities[0] ? priorities[0].action : 'profil';
   
   // Construire le HTML
   var html = '<div class="results-container">';
@@ -6111,24 +6132,34 @@ function showResults() {
     html += '<p><strong>Jours 3-4 :</strong> Choisissez votre stratégie (avalanche ou boule de neige)</p>';
     html += '<p><strong>Jours 5-7 :</strong> Contactez vos créanciers pour négocier les taux</p>';
   } else {
-    html += '<p><strong>Jours 1-2 :</strong> Complétez votre bilan financier</p>';
+    html += '<p><strong>Jours 1-2 :</strong> Complétez votre profil financier</p>';
     html += '<p><strong>Jours 3-5 :</strong> Établissez votre budget mensuel</p>';
     html += '<p><strong>Jours 6-7 :</strong> Définissez un objectif d\'épargne pour 6 mois</p>';
   }
   html += '</div>';
-  
-  var firstAction = allActions[0] ? (allActions[0].action || 'bilan') : 'bilan';
+
+  var firstAction = allActions[0] ? (allActions[0].action || 'profil') : 'profil';
   html += '<div class="final-buttons">';
   html += '<button class="btn-primary" onclick="goToTab(\'' + firstAction + '\')">Commencer maintenant</button>';
   html += '<button class="btn-secondary" onclick="closeModal()">Voir tous les outils</button>';
+  html += '</div>';
+
+  html += '<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:20px;margin-top:20px;text-align:center;">';
+  html += '<h3 style="margin:0 0 8px 0;color:#1f2937;">📰 Pour aller plus loin</h3>';
+  html += '<p style="margin:0 0 15px 0;color:#6b7280;font-size:0.9em;">Des articles sur la finance personnelle au Québec, chaque mois.</p>';
+  html += '<div class="final-buttons">';
+  html += '<button class="btn-secondary" type="button" onclick="closeModal();changeTab(\'blog\')">Lire le blog</button>';
+  html += '<a href="https://substack.com/@parlonscash" target="_blank" rel="noopener" class="btn-primary" style="text-decoration:none;display:inline-block;">S\'abonner à l\'infolettre</a>';
   html += '</div></div>';
-  
+
+  html += '</div>';
+
   document.getElementById('resultsScreen').innerHTML = html;
 }
 
 function goToBilan() {
   closeModal();
-  changeTab('bilan');
+  changeTab('profil');
 }
 
 function goToTab(tabName) {
@@ -6148,8 +6179,11 @@ function closeModal() {
       <p style="margin:0 0 10px 0;font-size:1em;">Parlons Cash</p>
       <p style="margin:0;font-size:0.85em;">© 2026 Aziz Guellouz. Tous droits réservés.</p>
       <p style="margin:10px 0 0 0;font-size:0.8em;">
-        Le code source et les calculateurs de ce site sont la propriété intellectuelle d'Aziz Guellouz. 
+        Le code source et les calculateurs de ce site sont la propriété intellectuelle d'Aziz Guellouz.
         Toute reproduction ou utilisation non autorisée est interdite.
+      </p>
+      <p style="margin:15px 0 0 0;">
+        <a href="#" onclick="ouvrirDiagnostic();return false;" style="color:#93c5fd;font-size:0.85em;text-decoration:underline;">🔍 Refaire le mini-diagnostic financier</a>
       </p>
     </div>
   </div>
@@ -7077,7 +7111,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     if (!conteneur) return;
     conteneur.innerHTML = html;
     document.body.classList.add('impression-rapport');
+    var titreOriginal = document.title;
+    document.title = 'Rapport personnel - Parlons Cash';
     window.print();
+    setTimeout(function () { document.title = titreOriginal; }, 1000);
   };
 
   window.addEventListener('afterprint', function () {
@@ -7091,43 +7128,50 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   'use strict';
 
   var ETAPES = [
-    { id: 'age-actuel', label: 'Quel âge as-tu ?', type: 'nombre' },
-    { id: 'age-retraite-souhaite', label: 'À quel âge aimerais-tu prendre ta retraite ?', type: 'nombre' },
-    { id: 'contribution-actuelle-toggle', label: 'Épargnes-tu déjà pour ta retraite ?', type: 'oui-non' },
-    { id: 'contribution-mensuelle-actuelle', label: 'Combien épargnes-tu par mois pour ta retraite ?', type: 'nombre',
+    { id: 'age-actuel', label: 'Quel âge as-tu ?', type: 'nombre', section: 'Retraite' },
+    { id: 'age-retraite-souhaite', label: 'À quel âge aimerais-tu prendre ta retraite ?', type: 'nombre', section: 'Retraite' },
+    { id: 'taux-rendement-avant-retraite', label: 'Quel rendement annuel moyen espères-tu sur tes placements avant la retraite ? (par défaut 5%)', type: 'nombre', section: 'Retraite' },
+    { id: 'taux-rendement-pendant-retraite', label: 'Et pendant la retraite, quel rendement annuel moyen prévois-tu sur tes placements ? (par défaut 5%)', type: 'nombre', section: 'Retraite' },
+    { id: 'revenu-retraite', label: 'Quel revenu annuel désires-tu à la retraite (en dollars d\'aujourd\'hui) ? (par défaut 50 000$)', type: 'nombre', section: 'Retraite' },
+    { id: 'pension-publique', label: 'À combien estimes-tu tes rentes publiques (RRQ, PSV) par année à la retraite ? Mets 0 si tu ne sais pas encore.', type: 'nombre', section: 'Retraite' },
+    { id: 'rente-pension', label: 'As-tu un régime de retraite d\'employeur ? Si oui, à combien par année ? Mets 0 si non.', type: 'nombre', section: 'Retraite' },
+    { id: 'contribution-actuelle-toggle', label: 'Épargnes-tu déjà pour ta retraite ?', type: 'oui-non', section: 'Retraite' },
+    { id: 'contribution-mensuelle-actuelle', label: 'Combien épargnes-tu par mois pour ta retraite ?', type: 'nombre', section: 'Retraite',
       condition: function () { var el = document.getElementById('contribution-actuelle-toggle'); return el && el.checked; } },
-    { id: 'revenu', label: 'Quel est ton revenu net mensuel (après impôts) ?', type: 'nombre' },
-    { id: 'autre-revenu', label: 'As-tu un autre revenu mensuel (travail autonome, pension, etc.) ? Mets 0 si non.', type: 'nombre' },
-    { id: 'rev-loyer', label: 'As-tu un revenu de loyer mensuel ? Mets 0 si non.', type: 'nombre' },
-    { id: 'statut-resid', label: 'Es-tu locataire ou propriétaire ?', type: 'choix', choix: [['locataire', '🔑 Locataire'], ['proprio', '🏠 Propriétaire']] },
-    { id: 'loyer', label: 'Quel est ton loyer mensuel ?', type: 'nombre',
+    { id: 'revenu', label: 'Quel est ton revenu net mensuel (après impôts) ?', type: 'nombre', section: 'Revenu et logement' },
+    { id: 'autre-revenu', label: 'As-tu un autre revenu mensuel (travail autonome, pension, etc.) ? Mets 0 si non.', type: 'nombre', section: 'Revenu et logement' },
+    { id: 'rev-loyer', label: 'As-tu un revenu de loyer mensuel ? Mets 0 si non.', type: 'nombre', section: 'Revenu et logement' },
+    { id: 'statut-resid', label: 'Es-tu locataire ou propriétaire ?', type: 'choix', section: 'Revenu et logement', choix: [['locataire', '🔑 Locataire'], ['proprio', '🏠 Propriétaire']] },
+    { id: 'loyer', label: 'Quel est ton loyer mensuel ?', type: 'nombre', section: 'Revenu et logement',
       condition: function () { return valeur('statut-resid') === 'locataire'; } },
-    { id: 'paiement-hypo', label: 'Quel est ton paiement hypothécaire mensuel ?', type: 'nombre',
+    { id: 'paiement-hypo', label: 'Quel est ton paiement hypothécaire mensuel ?', type: 'nombre', section: 'Revenu et logement',
       condition: function () { return valeur('statut-resid') === 'proprio'; } },
-    { id: 'taxes-entretien', label: 'Combien payes-tu par mois en taxes municipales/scolaires et entretien ?', type: 'nombre',
+    { id: 'taxes-entretien', label: 'Combien payes-tu par mois en taxes municipales/scolaires et entretien ?', type: 'nombre', section: 'Revenu et logement',
       condition: function () { return valeur('statut-resid') === 'proprio'; } },
-    { id: 'd2', label: 'Combien dépenses-tu par mois en alimentation ?', type: 'nombre' },
-    { id: 'd3', label: 'Combien dépenses-tu par mois en transport ?', type: 'nombre' },
-    { id: 'd4', label: 'Combien payes-tu par mois en assurances ?', type: 'nombre' },
-    { id: 'd5', label: 'Combien dépenses-tu par mois en loisirs ?', type: 'nombre' },
-    { id: 'd7', label: 'Combien payes-tu par mois en remboursement de dettes (cartes, prêts, etc.) ?', type: 'nombre' },
-    { id: 'd6', label: 'As-tu d\'autres dépenses mensuelles non listées ? Mets 0 si non.', type: 'nombre' },
-    { id: 'cb', label: 'Combien as-tu dans ton compte bancaire ?', type: 'nombre' },
-    { id: 'celi', label: 'Combien as-tu dans ton CELI ? Mets 0 si tu n\'en as pas.', type: 'nombre' },
+    { id: 'd2', label: 'Combien dépenses-tu par mois en alimentation ?', type: 'nombre', section: 'Dépenses' },
+    { id: 'd3', label: 'Combien dépenses-tu par mois en transport ?', type: 'nombre', section: 'Dépenses' },
+    { id: 'd4', label: 'Combien payes-tu par mois en assurances ?', type: 'nombre', section: 'Dépenses' },
+    { id: 'd5', label: 'Combien dépenses-tu par mois en loisirs ?', type: 'nombre', section: 'Dépenses' },
+    { id: 'd7', label: 'Combien payes-tu par mois en remboursement de dettes (cartes, prêts, etc.) ?', type: 'nombre', section: 'Dépenses' },
+    { id: 'd6', label: 'As-tu d\'autres dépenses mensuelles non listées ? Mets 0 si non.', type: 'nombre', section: 'Dépenses' },
+    { id: 'cb', label: 'Combien as-tu dans ton compte bancaire ?', type: 'nombre', section: 'Actifs' },
+    { id: 'celi', label: 'Combien as-tu dans ton CELI ? Mets 0 si tu n\'en as pas.', type: 'nombre', section: 'Actifs' },
     { id: 'celi-liquide-pct', label: 'Quel pourcentage de ton CELI est en épargne liquide (compte d\'épargne, CPG) plutôt qu\'investi (actions, FNB) ? Réponds de 0 à 100.',
-      type: 'nombre',
+      type: 'nombre', section: 'Actifs',
       condition: function () { return (parseFloat(document.getElementById('celi').value) || 0) > 0; } },
-    { id: 'celiapp', label: 'Combien as-tu dans ton CELIAPP ? Mets 0 si tu n\'en as pas.', type: 'nombre' },
-    { id: 'reer', label: 'Combien as-tu dans ton REER ? Mets 0 si tu n\'en as pas.', type: 'nombre' },
-    { id: 'cne', label: 'Combien as-tu dans un compte de placement non enregistré ? Mets 0 si aucun.', type: 'nombre' },
-    { id: 'immob', label: 'Quelle est la valeur de tes immobilisations (maison, auto, etc.) ?', type: 'nombre' },
-    { id: 'autre-actif', label: 'As-tu d\'autres actifs ? Mets 0 si non.', type: 'nombre' },
-    { id: 'cc', label: 'Quel est le solde de tes cartes de crédit ?', type: 'nombre' },
-    { id: 'mc', label: 'Quel est le solde de ta marge de crédit ?', type: 'nombre' },
-    { id: 'pa', label: 'Quel est le solde de ton prêt automobile ?', type: 'nombre' },
-    { id: 'hypo', label: 'Quel est le solde restant de ton hypothèque ?', type: 'nombre',
+    { id: 'celiapp', label: 'Combien as-tu dans ton CELIAPP ? Mets 0 si tu n\'en as pas.', type: 'nombre', section: 'Actifs' },
+    { id: 'reer', label: 'Combien as-tu dans ton REER ? Mets 0 si tu n\'en as pas.', type: 'nombre', section: 'Actifs' },
+    { id: 'cne', label: 'Combien as-tu dans un compte de placement non enregistré ? Mets 0 si aucun.', type: 'nombre', section: 'Actifs' },
+    { id: 'immob', label: 'Quelle est la valeur de tes immobilisations (maison, auto, etc.) ?', type: 'nombre', section: 'Actifs' },
+    { id: 'autre-actif', label: 'As-tu d\'autres actifs ? Mets 0 si non.', type: 'nombre', section: 'Actifs' },
+    { id: 'cc', label: 'Quel est le solde de tes cartes de crédit ?', type: 'nombre', section: 'Dettes' },
+    { id: 'mc', label: 'Quel est le solde de ta marge de crédit ?', type: 'nombre', section: 'Dettes' },
+    { id: 'pa', label: 'Quel est le solde de ton prêt automobile ?', type: 'nombre', section: 'Dettes' },
+    { id: 'hypo', label: 'Quel est le solde restant de ton hypothèque ?', type: 'nombre', section: 'Dettes',
       condition: function () { return valeur('statut-resid') === 'proprio'; } },
-    { id: 'autre-passif', label: 'As-tu d\'autres dettes non listées ici ? Mets 0 si non.', type: 'nombre' }
+    { id: 'autre-passif', label: 'As-tu d\'autres dettes non listées ici ? Mets 0 si non.', type: 'nombre', section: 'Dettes' },
+    { id: 'taux-rendement-objectif', label: 'Pour ton objectif d\'épargne, quel rendement annuel moyen espères-tu sur tes placements ? (par défaut 3%)', type: 'nombre', section: 'Objectif d\'épargne',
+      condition: function () { return (parseFloat(document.getElementById('obj-montant').value) || 0) > 0; } }
   ];
 
   var indexActuel = 0;
@@ -7174,7 +7218,26 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     var progressTexte = document.getElementById('assistant-progress-texte');
     var pct = Math.round((indexActuel / actives.length) * 100);
     progressFill.style.width = pct + '%';
-    progressTexte.textContent = 'Question ' + (indexActuel + 1) + ' sur ' + actives.length;
+    progressTexte.textContent = etape.section + ' — Question ' + (indexActuel + 1) + ' sur ' + actives.length;
+
+    var sectionsPresentes = [];
+    actives.forEach(function (e) {
+      if (sectionsPresentes.indexOf(e.section) === -1) sectionsPresentes.push(e.section);
+    });
+    var indexSectionActuelle = sectionsPresentes.indexOf(etape.section);
+    var filArianeEl = document.getElementById('assistant-fil-ariane');
+    if (filArianeEl) {
+      var filHtml = '';
+      sectionsPresentes.forEach(function (nomSection, i) {
+        var etat = i < indexSectionActuelle ? 'fait' : (i === indexSectionActuelle ? 'actif' : 'a-venir');
+        var couleur = etat === 'fait' ? '#10b981' : (etat === 'actif' ? '#2563eb' : '#d1d5db');
+        var poids = etat === 'actif' ? '700' : '500';
+        filHtml += '<span style="display:inline-block;padding:4px 10px;margin:2px;border-radius:12px;font-size:0.75em;' +
+          'font-weight:' + poids + ';color:white;background:' + couleur + ';">' +
+          (etat === 'fait' ? '✓ ' : '') + nomSection + '</span>';
+      });
+      filArianeEl.innerHTML = filHtml;
+    }
 
     var html = '<h4 style="margin-bottom:15px;color:#1f2937;font-size:1.15em;">' + etape.label + '</h4>';
 
@@ -7228,6 +7291,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     }
   }
 
+  var modeEdition = false;
+
+  function apresReponse() {
+    if (modeEdition) {
+      modeEdition = false;
+      afficherRecap();
+    } else {
+      indexActuel++;
+      afficherEtape();
+    }
+  }
+
   window.__assistantSuivant = function () {
     var actives = etapesActives();
     var etape = actives[indexActuel];
@@ -7236,11 +7311,15 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
       definirValeur(etape.id, inputTemp ? (inputTemp.value || '0') : '0');
       rafraichirTout();
     }
-    indexActuel++;
-    afficherEtape();
+    apresReponse();
   };
 
   window.__assistantPrecedent = function () {
+    if (modeEdition) {
+      modeEdition = false;
+      afficherRecap();
+      return;
+    }
     if (indexActuel > 0) {
       indexActuel--;
       afficherEtape();
@@ -7250,16 +7329,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   window.__assistantChoisir = function (id, val) {
     definirValeur(id, val);
     rafraichirTout();
-    indexActuel++;
-    afficherEtape();
+    apresReponse();
   };
 
   window.__assistantOuiNon = function (id, val) {
     var el = document.getElementById(id);
     if (el) el.checked = val;
     rafraichirTout();
-    indexActuel++;
-    afficherEtape();
+    apresReponse();
   };
 
   function afficherRecap() {
@@ -7286,10 +7363,46 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     html += '</div>';
     html += '<div class="final-buttons">';
     html += '<button class="btn-primary" type="button" onclick="changeTab(\'dashboard\')">Voir mon tableau de bord</button>';
-    html += '<button class="btn-secondary" type="button" onclick="window.__assistantRecommencer()">Modifier mes réponses</button>';
     html += '</div>';
+
+    var actives = etapesActives();
+    html += '<div style="margin-top:25px;">';
+    html += '<h4 style="margin-bottom:10px;color:#1f2937;">Modifier une réponse</h4>';
+    html += '<div style="border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;">';
+    actives.forEach(function (etape, i) {
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid #f3f4f6;cursor:pointer;" ' +
+        'onclick="window.__assistantAllerA(' + i + ')">' +
+        '<span style="color:#374151;font-size:0.88em;">' + etape.label + '</span>' +
+        '<span style="color:#2563eb;font-weight:600;white-space:nowrap;font-size:0.9em;">' + texteReponseEtape(etape) + ' ✏️</span>' +
+        '</div>';
+    });
+    html += '</div></div>';
+
+    html += '<p style="margin-top:15px;"><a href="#" onclick="window.__assistantRecommencer();return false;" style="color:#6b7280;font-size:0.85em;">↺ Recommencer le parcours depuis le début</a></p>';
+
     recap.innerHTML = html;
   }
+
+  function texteReponseEtape(etape) {
+    if (etape.type === 'choix') {
+      var val = valeur(etape.id);
+      var trouve = etape.choix.filter(function (c) { return c[0] === val; })[0];
+      return trouve ? trouve[1] : (val || '—');
+    }
+    if (etape.type === 'oui-non') {
+      var el = document.getElementById(etape.id);
+      var coche = el ? el.checked : false;
+      return coche ? (etape.labelOui || '✅ Oui') : (etape.labelNon || '❌ Pas encore');
+    }
+    var v = valeur(etape.id);
+    return (v === '' || v === null || v === undefined) ? '—' : v;
+  }
+
+  window.__assistantAllerA = function (i) {
+    modeEdition = true;
+    indexActuel = i;
+    afficherEtape();
+  };
 
   window.__assistantRecommencer = function () {
     indexActuel = 0;
