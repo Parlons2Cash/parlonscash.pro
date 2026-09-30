@@ -3555,15 +3555,19 @@ if (contributionMensuelle > 0 && tauxRendementAvant > 0) {
   var tauxReel = tauxRendementPendant - tauxInflation; // Taux réel après inflation
   
  var capitalNecessaire;
-if (tauxReel > 0.001) {
-  if (retraitIndexe) {
+if (retraitIndexe) {
+  if (tauxReel > 0.001) {
     capitalNecessaire = revenuACompleterActuel * ((1 - Math.pow(1 + tauxReel, -dureeRetraite)) / tauxReel);
   } else {
-    var facteur = (1 - Math.pow(1 + tauxRendementPendant, -dureeRetraite)) / tauxRendementPendant;
-    capitalNecessaire = revenuACompleterActuel * facteur;
+    capitalNecessaire = revenuACompleterActuel * dureeRetraite;
   }
 } else {
-  capitalNecessaire = revenuACompleterActuel * dureeRetraite;
+  if (tauxRendementPendant > 0.0001) {
+    var facteur = (1 - Math.pow(1 + tauxRendementPendant, -dureeRetraite)) / tauxRendementPendant;
+    capitalNecessaire = revenuACompleterActuel * facteur;
+  } else {
+    capitalNecessaire = revenuACompleterActuel * dureeRetraite;
+  }
 }
 
 // La rente ci-dessus est en dollars d'aujourd'hui (taux réel). Le portefeuille,
@@ -3723,11 +3727,13 @@ function calcImmobilier() {
   var paiementSimple = (empruntTotalSimple * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -amortissement));
   var taxeBienvenueSimple = calculerTaxeBienvenue(prixRegleSimple);
   
-  // Approche 2 : Capacité réelle selon les institutions (32% du revenu)
+  // Approche 2 : Capacité réelle selon les institutions (32% logement / 40% total des dettes)
   var maxLog = revBrut * 0.32 / 12;
   var maxTot = revBrut * 0.40 / 12;
-  
-  // Calcul itératif pour trouver le prix max tenant compte des frais SCHL
+  // Autres dettes mensuelles (remboursements saisis dans Mon profil), pour la règle du 40%
+  var autresDettesMensuelles = (typeof DATA !== 'undefined' && DATA.remboursementDettes) || 0;
+
+  // Calcul itératif pour trouver le prix max en respectant les deux règles (32% et 40%)
   var prixMaxMaison = 0;
   var tentative = revBrut * 4;
   for (var i = 0; i < 10; i++) {
@@ -3736,7 +3742,7 @@ function calcImmobilier() {
     var fraisSCHLMax = calculerFraisSCHL(tentative, miseDeFondsPct);
     var empruntTotalMax = empruntMax + fraisSCHLMax;
     var paiementMax = (empruntTotalMax * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -amortissement));
-    if (paiementMax <= maxLog) {
+    if (paiementMax <= maxLog && (paiementMax + autresDettesMensuelles) <= maxTot) {
       prixMaxMaison = tentative;
       tentative *= 1.05;
     } else {
@@ -3775,8 +3781,9 @@ function calcImmobilier() {
           💰 Paiement mensuel : ${fmt(maxLog)} $/mois
         </p>
         <p style="margin-top:10px;font-size:0.85em;color:#64748b;">
-          Basé sur 32% du revenu brut et le taux actuel de ${(tauxHypo * 100).toFixed(2)}%.
+          Basé sur 32% du revenu brut (logement) et le taux actuel de ${(tauxHypo * 100).toFixed(2)}%.
         </p>
+        ${autresDettesMensuelles > 0 ? `<p style="margin-top:6px;font-size:0.85em;color:#64748b;">Tient aussi compte de vos ${fmt(autresDettesMensuelles)} $/mois d'autres dettes, pour respecter la règle du 40% (total des dettes/revenu).</p>` : ''}
       </div>
     </div>
 
@@ -3822,8 +3829,10 @@ function calcImmobilier() {
     var argentRequis = miseFonds + taxeBienvenue;
     var ecartReel = prixMaison - prixMaxMaison;
     var ecartRegle = prixMaison - prixRegleSimple;
-    var conformeInstitution = paiementReel <= maxLog;
-    
+    var conformeLogement = paiementReel <= maxLog;
+    var conformeTotal = (paiementReel + autresDettesMensuelles) <= maxTot;
+    var conformeInstitution = conformeLogement && conformeTotal;
+
     html += `
       <div class="result-box ${conformeInstitution ? 'green' : 'red'}">
         <h4 style="margin:0 0 10px 0;">Maison envisagée : ${fmt(prixMaison)} $</h4>
@@ -3832,17 +3841,20 @@ function calcImmobilier() {
         <p style="margin:5px 0;color:#7c3aed;"><strong>Taxe de bienvenue :</strong> ${fmt(taxeBienvenue)} $</p>
         <p style="margin:5px 0;font-size:1.1em;font-weight:bold;color:#1e40af;"><strong>💵 Argent requis au comptant :</strong> ${fmt(argentRequis)} $</p>
         <p style="margin:5px 0;"><strong>Paiement mensuel :</strong> ${fmt(paiementReel)} $ / mois</p>
+        ${autresDettesMensuelles > 0 ? `<p style="margin:5px 0;"><strong>+ Autres dettes :</strong> ${fmt(autresDettesMensuelles)} $ / mois</p>` : ''}
         <p style="margin:10px 0;font-weight:bold;">
-          ${conformeInstitution ? '✅ Conforme à la règle du 32%' : '❌ Dépasse la règle du 32% - Risque de refus bancaire'}
+          ${conformeLogement ? '✅' : '❌'} Règle du 32% (logement)${autresDettesMensuelles > 0 ? `<br>${conformeTotal ? '✅' : '❌'} Règle du 40% (total des dettes)` : ''}
         </p>
       </div>
     `;
-    
+
     // Analyse par rapport aux deux approches
     if (conformeInstitution && Math.abs(ecartRegle / prixRegleSimple * 100) < 10) {
       html += `<div class="result-box green">✅ Le prix envisagé est raisonnable selon les deux approches (règle traditionnelle et capacité réelle).</div>`;
-    } else if (!conformeInstitution) {
-      html += `<div class="result-box red">❌ Le prix envisagé dépasse votre capacité de paiement mensuel de ${fmt(paiementReel - maxLog)} $/mois. Les institutions financières risquent de refuser ce montant.</div>`;
+    } else if (!conformeLogement) {
+      html += `<div class="result-box red">❌ Le prix envisagé dépasse votre capacité de paiement mensuel de ${fmt(paiementReel - maxLog)} $/mois (règle du 32%). Les institutions financières risquent de refuser ce montant.</div>`;
+    } else if (!conformeTotal) {
+      html += `<div class="result-box red">❌ En incluant vos autres dettes (${fmt(autresDettesMensuelles)} $/mois), vous dépassez la règle du 40% de ${fmt((paiementReel + autresDettesMensuelles) - maxTot)} $/mois. Les institutions financières risquent de refuser ce montant.</div>`;
     } else {
       html += `<div class="result-box orange">⚠️ Le prix envisagé utilise toute votre capacité d'emprunt. Budget serré mais acceptable.</div>`;
     }
@@ -4057,26 +4069,7 @@ function calcBesoin() {
       emoji = '❌';
     }
   }
-  
-  // Recommandation basée sur le score
-  var recommandation = '';
-  var couleur = '';
-  var emoji = '';
-  
-  if(score >= 70) {
-    recommandation = "C'est probablement un bon achat !";
-    couleur = '#10b981';
-    emoji = '✅';
-  } else if(score >= 50) {
-    recommandation = "Réfléchis encore quelques jours avant d'acheter.";
-    couleur = '#f59e0b';
-    emoji = '⚠️';
-  } else {
-    recommandation = "Tu devrais repenser cet achat.";
-    couleur = '#ef4444';
-    emoji = '❌';
-  }
-  
+
   // Délai de réflexion
   var delai = '';
   if(prix < 50) delai = '24 heures';
@@ -5209,16 +5202,20 @@ function calcCouple() {
   var epargnePropA = revenuDispoA > 0 ? (restePropA / revenuDispoA * 100) : 0;
   var epargnePropB = revenuDispoB > 0 ? (restePropB / revenuDispoB * 100) : 0;
   
-  // Méthode 3 : Capacité d'épargne égale
+  // Méthode 3 : Surplus égal en dollars après épargne cible.
+  // Chaque personne réserve d'abord son épargne visée (% du revenu disponible),
+  // puis les dépenses communes sont réparties pour que le SURPLUS restant au-delà
+  // de cette épargne visée soit identique en dollars pour les deux (contrairement
+  // à la méthode 2, qui égalise plutôt un pourcentage).
   var epargneViseeA = revenuDispoA * tauxEpargne;
   var epargneViseeB = revenuDispoB * tauxEpargne;
-  var resteApresEpargne = totalDispo - epargneViseeA - epargneViseeB;
-  
-  // Un partage proportionnel au revenu disponible laisse le même pourcentage
-  // d'épargne à chacun. On le calcule explicitement pour éviter une fausse promesse.
-  var paiementCapaA = pctA * depensesCommunes;
-  var paiementCapaB = pctB * depensesCommunes;
-  
+  var surplusA = revenuDispoA - epargneViseeA;
+  var surplusB = revenuDispoB - epargneViseeB;
+
+  var paiementCapaA = (depensesCommunes + surplusA - surplusB) / 2;
+  paiementCapaA = Math.max(0, Math.min(depensesCommunes, paiementCapaA));
+  var paiementCapaB = depensesCommunes - paiementCapaA;
+
   var resteCapaA = revenuDispoA - paiementCapaA;
   var resteCapaB = revenuDispoB - paiementCapaB;
   var epargneCapaA = revenuDispoA > 0 ? (resteCapaA / revenuDispoA * 100) : 0;
@@ -5281,16 +5278,24 @@ var diffProp = Math.abs(epargnePropA - epargnePropB);
   html += '</div>';
   
   // Méthode 3
+  var surplusApresA = surplusA - paiementCapaA;
+  var surplusApresB = surplusB - paiementCapaB;
+  var diffSurplus = Math.abs(surplusApresA - surplusApresB);
+  var capaClampee = paiementCapaA <= 0.005 || paiementCapaA >= depensesCommunes - 0.005;
   html += '<div style="background:#d1fae5;padding:20px;border-radius:10px;border-left:4px solid #10b981;">';
-  html += '<h4 style="color:#065f46;margin:0 0 15px 0;">3️⃣ Capacité d\'épargne égale ⭐</h4>';
+  html += '<h4 style="color:#065f46;margin:0 0 15px 0;">3️⃣ Surplus égal après épargne visée ⭐</h4>';
   html += '<p style="margin:5px 0;"><strong>Personne A :</strong> ' + fmt(paiementCapaA) + ' $/mois</p>';
   html += '<p style="margin:5px 0;color:#047857;">Reste : ' + fmt(resteCapaA) + ' $ (' + epargneCapaA.toFixed(1) + '% épargne)</p>';
   html += '<p style="margin:5px 0;"><strong>Personne B :</strong> ' + fmt(paiementCapaB) + ' $/mois</p>';
   html += '<p style="margin:5px 0;color:#047857;">Reste : ' + fmt(resteCapaB) + ' $ (' + epargneCapaB.toFixed(1) + '% épargne)</p>';
-  var diffCapa = Math.abs(epargneCapaA - epargneCapaB);
   html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #6ee7b7;color:#10b981;font-weight:600;">';
-  html += '✅ Méthode équitable';
-  html += '<br><small style="font-weight:normal;">Écart d\'épargne : ' + diffCapa.toFixed(1) + '%</small></p>';
+  if(capaClampee){
+    html += '⚠️ Écart de revenu trop grand';
+    html += '<br><small style="font-weight:normal;">Impossible d\'égaliser le surplus sans qu\'une personne paie tout ou rien. Résultat le plus proche affiché.</small></p>';
+  } else {
+    html += '✅ Méthode équitable';
+    html += '<br><small style="font-weight:normal;">Chacun garde le même surplus au-delà de son épargne visée (écart : ' + fmt(diffSurplus) + ' $).</small></p>';
+  }
   html += '</div>';
   
   html += '</div></div>';
@@ -5298,8 +5303,8 @@ var diffProp = Math.abs(epargnePropA - epargnePropB);
   // Recommandation finale
   html += '<div style="background:#eff6ff;padding:25px;border-radius:12px;margin-top:20px;border-left:6px solid #2563eb;">';
   html += '<h3 style="color:#1e40af;margin:0 0 15px 0;">💡 Recommandation</h3>';
-  html += '<p style="margin:0 0 10px 0;line-height:1.7;">La <strong>méthode 3 (Capacité d\'épargne égale)</strong> est la plus équitable selon les principes de finances de couple.</p>';
-  html += '<p style="margin:0;line-height:1.7;">Elle garantit que chacun conserve la même <strong>capacité d\'épargne et de liberté financière</strong> après toutes les dépenses, ce qui respecte la contribution de chacun selon ses moyens réels.</p>';
+  html += '<p style="margin:0 0 10px 0;line-height:1.7;">La <strong>méthode 3 (Surplus égal après épargne visée)</strong> est la plus équitable selon les principes de finances de couple.</p>';
+  html += '<p style="margin:0;line-height:1.7;">Elle garantit que chacun atteint d\'abord son épargne visée, puis conserve le même <strong>surplus en dollars</strong> après les dépenses communes, ce qui respecte la contribution de chacun selon ses moyens réels.</p>';
   html += '</div>';
   
   document.getElementById('resultats-couple').innerHTML = html;
@@ -5674,7 +5679,8 @@ function calcAcheterLouer() {
   var loyerActuel = loyer;
   var fraisLocationInitiaux = loyer * (1 + depotGarantie);
   var portefeuilleInvesti = (miseFonds + fraisAchat + taxeBienvenue) - fraisLocationInitiaux;
-  
+  var portefeuilleInvestiInitial = portefeuilleInvesti;
+
   for(var annee = 1; annee <= duree; annee++) {
     // Loyers de l'année
     coutTotalLocation += loyerActuel * 12;
@@ -5737,7 +5743,7 @@ function calcAcheterLouer() {
   }
   var totalLocationInitial = loyer * (1 + depotGarantie);
   html += '<p style="margin:10px 0 0 0;padding-top:10px;border-top:2px solid #6ee7b7;font-size:1.2em;color:#065f46;"><strong>Total : ' + fmt(totalLocationInitial) + ' $</strong></p>';
-  html += '<p style="margin:10px 0 0 0;font-size:0.9em;color:#047857;">Capital disponible pour investir : ' + fmt(portefeuilleInvesti) + ' $</strong></p>';
+  html += '<p style="margin:10px 0 0 0;font-size:0.9em;color:#047857;">Capital disponible pour investir : ' + fmt(portefeuilleInvestiInitial) + ' $</strong></p>';
   html += '</div>';
   html += '</div></div>';
   
