@@ -2404,7 +2404,7 @@ Historique Québec : 2-4% par an
       </p>
     </div>
     <p style="line-height:1.7;">
-      <strong>Exception :</strong> dans l'onglet « Évaluer un FNB », le symbole boursier que vous saisissez (par exemple XEQT.TO) est transmis à un service de relais hébergé chez Cloudflare, qui interroge Yahoo Finance pour récupérer les données publiques du fonds. Aucune donnée personnelle ni montant que vous saisissez n'est envoyé. Les montants du test « payé pour patienter » restent dans votre navigateur.
+      <strong>Exception :</strong> dans l'onglet « Évaluer un FNB », le symbole boursier que vous saisissez (par exemple XEQT.TO) est transmis à un service de relais hébergé chez Cloudflare, qui interroge Yahoo Finance pour récupérer les données publiques du fonds. Aucune donnée personnelle n'est envoyée.
     </p>
     <p style="line-height:1.7;">
       Toutes les données que vous entrez dans les calculateurs restent <strong>localement dans votre navigateur</strong>, sur cet appareil.
@@ -2898,30 +2898,6 @@ Historique Québec : 2-4% par an
 
   <div id="fnb-statut" class="fnb-statut" role="status" aria-live="polite"></div>
   <div id="fnb-resultat"></div>
-
-  <!-- Test « payé pour patienter » : chiffres personnels, calculés localement, jamais envoyés -->
-  <div class="card" id="fnb-bilan-carte">
-    <h3 style="color:#2563eb;">Test « payé pour patienter » (facultatif)</h3>
-    <p style="color:#6b7280;font-size:0.9em;margin-bottom:15px;">
-      Si vous détenez déjà ce FNB, entrez vos propres chiffres. Le prix de l'unité seul ne dit pas tout :
-      il faut aussi compter les distributions reçues. Ces données restent dans votre navigateur.
-    </p>
-    <div class="grid-2">
-      <div class="form-group">
-        <label for="fnb-investi">Montant investi ($)</label>
-        <input type="number" id="fnb-investi" min="0" step="any" oninput="window.fnbBilan()">
-      </div>
-      <div class="form-group">
-        <label for="fnb-distrib">Distributions reçues à ce jour ($)</label>
-        <input type="number" id="fnb-distrib" min="0" step="any" oninput="window.fnbBilan()">
-      </div>
-      <div class="form-group">
-        <label for="fnb-valeur">Valeur actuelle de la position ($)</label>
-        <input type="number" id="fnb-valeur" min="0" step="any" oninput="window.fnbBilan()">
-      </div>
-    </div>
-    <div id="fnb-bilan-resultat" aria-live="polite"></div>
-  </div>
 
   <div style="background:#f9fafb;border-top:2px solid #e5e7eb;padding:20px;margin-top:30px;border-radius:8px;">
     <p style="margin:0;font-size:0.85em;color:#6b7280;line-height:1.7;">
@@ -7083,6 +7059,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   border-radius: 999px; padding: 4px 12px; margin: 4px 6px 0 0;
   min-height: 0; font-size: 0.85rem; cursor: pointer;
 }
+
+/* Barre d'onglets : retour à la ligne au lieu du défilement horizontal */
+@media (min-width: 651px) { .nav { flex-wrap: wrap !important; overflow-x: visible !important; row-gap: .4rem; } }
 </style>
 <script>
 /* Générateur de rapport PDF intelligent : n'inclut que les sections réellement remplies. */
@@ -8062,9 +8041,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
       ? '<strong style="color:#1f2937;">Note : ' + res.note + ' sur 100 (' + esc(res.verdict.txt) + ')</strong> · ' +
         'critères évaluables : ' + Math.round(res.couverture * 100) + ' % du total'
       : 'Aucun critère n\'a pu être évalué.';
-    h += '<br>Données récupérées le ' + esc((res.recuLe || '').slice(0, 10)) + ' · calcul v4' +
-      (res.diag ? '<br>Historique lu : ' + res.diag.n + ' points mensuels (' + res.diag.nBrut + ' reçus), du ' + new Date(res.diag.debut).toISOString().slice(0, 7) + ' au ' + new Date(res.diag.fin).toISOString().slice(0, 7) + ', premier cours ' + res.diag.c0.toFixed(2) + ', dernier cours ' + res.diag.c1.toFixed(2) + ', ' + res.diag.nDiv + ' distributions' : '') +
-      '</div></div></div>';
+    h += '<br>Données récupérées le ' + esc((res.recuLe || '').slice(0, 10)) + '</div></div></div>';
 
     if (p.type && !/ETF|MUTUALFUND|FUND/i.test(p.type)) {
       h += alerte('jaune', 'Ce symbole est de type « ' + esc(p.type) + ' » et non un FNB. Plusieurs critères ne s\'appliquent pas.');
@@ -8205,25 +8182,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     fnbLancer();
   }
 
-  function fnbBilan() {
-    var investi = parseFloat(document.getElementById('fnb-investi').value);
-    var distrib = parseFloat(document.getElementById('fnb-distrib').value);
-    var valeur = parseFloat(document.getElementById('fnb-valeur').value);
-    var zone = document.getElementById('fnb-bilan-resultat');
-    if (isNaN(investi) || isNaN(distrib) || isNaN(valeur)) { zone.innerHTML = ''; return; }
-    var net = valeur + distrib - investi;
-    var txt = net >= 0
-      ? 'Jusqu\'ici, la position a payé pour patienter : la valeur actuelle plus les distributions dépasse le montant investi.'
-      : 'Jusqu\'ici, les distributions n\'ont pas compensé la baisse de valeur : une partie de la distribution était un retour de capital.';
-    zone.innerHTML = '<div class="fnb-alerte ' + (net >= 0 ? 'bleu' : 'jaune') + '"><strong>Résultat net : ' +
-      (net >= 0 ? '+' : '') + esc(argent(net)) + '</strong><br>' + esc(txt) +
-      '<br><small>Calcul : valeur actuelle + distributions reçues − montant investi. Ce résultat ne tient pas compte des impôts.</small></div>';
-  }
-
   if (typeof window !== 'undefined') {
     window.fnbLancer = fnbLancer;
     window.fnbExemple = fnbExemple;
-    window.fnbBilan = fnbBilan;
   }
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = { analyser: analyser, rendre: rendre, CONFIG: CONFIG };
