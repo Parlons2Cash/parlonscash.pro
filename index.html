@@ -7037,6 +7037,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 #tab-fnb .fnb-entete { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
 #tab-fnb .fnb-entete .score-circle { margin: 0; flex-shrink: 0; }
 #tab-fnb .score-circle.fnb-sans-note { background: #f3f4f6; border-color: #9ca3af; color: #6b7280; }
+#tab-fnb .fnb-saisie { display: block; width: 130px; margin-top: 6px; padding: 6px 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.9rem; }
+#tab-fnb .fnb-retirer { background: none; border: none; color: #2563eb; text-decoration: underline; cursor: pointer; padding: 0; margin-left: 6px; font-size: 0.95em; min-height: 0; }
 #tab-fnb .fnb-meta { color: #6b7280; font-size: 0.9em; line-height: 1.6; }
 
 #tab-fnb .fnb-alerte {
@@ -7781,7 +7783,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   }
 
   /* ---------- Analyse complète ---------- */
-  function analyser(data) {
+  function analyser(data, surcharges) {
     var chart = data.chart || {};
     var pts = preparerSerie(chart);
     if (pts.length < 2) return { erreur: 'historique_insuffisant' };
@@ -7794,6 +7796,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     var prof = lireProfil(data.sommaire);
     if (!prof.nom) prof.nom = chart.nom;
     if (!prof.devise) prof.devise = chart.devise;
+    // Données saisies par le visiteur : seulement pour combler un trou, jamais pour remplacer une donnée de la source
+    var saisi = {};
+    surcharges = surcharges || {};
+    if (prof.frais === null && surcharges.frais > 0 && surcharges.frais <= 10) { prof.frais = surcharges.frais / 100; saisi.frais = true; }
+    if (prof.actifs === null && surcharges.actifs > 0 && surcharges.actifs <= 1e7) { prof.actifs = surcharges.actifs * 1e6; saisi.actifs = true; }
+    if (prof.pe === null && surcharges.pe > 0 && surcharges.pe < 1000) { prof.pe = surcharges.pe; saisi.pe = true; }
 
     var m = {
       annees: annees,
@@ -7819,7 +7827,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 
     var scFrais = prof.frais === null ? null : lin(prof.frais * 100, 1.5, 0.25);
     criteres.push({
-      nom: 'Frais de gestion (RFG)', poids: 15, score: scFrais,
+      nom: 'Frais de gestion (RFG)', cle: 'frais', poids: 15, score: scFrais,
       valeur: prof.frais === null ? null : esc(fp(prof.frais, 2)),
       repere: 'Pleinement respecté à 0,25 % ou moins, non respecté à 1,5 % ou plus',
       source: 'Yahoo, profil du fonds'
@@ -7871,7 +7879,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     });
 
     criteres.push({
-      nom: 'P/E du portefeuille', poids: 10, score: lin(prof.pe, 30, 15),
+      nom: 'P/E du portefeuille', cle: 'pe', poids: 10, score: lin(prof.pe, 30, 15),
       valeur: prof.pe === null ? null : esc(fr(prof.pe, 1)) +
         '<span class="fnb-sous">Selon la source, peut être un P/E historique plutôt que prévisionnel</span>',
       repere: 'Pleinement respecté à 15 ou moins, non respecté à 30 ou plus',
@@ -7879,7 +7887,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     });
 
     criteres.push({
-      nom: 'Taille du fonds', poids: 10,
+      nom: 'Taille du fonds', cle: 'actifs', poids: 10,
       score: prof.actifs === null ? null : lin(Math.log(prof.actifs) / Math.LN10, Math.log(25e6) / Math.LN10, 9),
       valeur: prof.actifs === null ? null : esc(grosMontant(prof.actifs)),
       repere: 'Non respecté sous 25 M$, pleinement respecté à 1 G$ ou plus (risque de fermeture et liquidité)',
@@ -7922,7 +7930,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     var moduleActif = raisons.length > 0;
     var signes = moduleActif ? calculerSignes(m, prof, pts, divs, fin, texteId) : [];
 
-    return { prof: prof, mesures: m, criteres: criteres, note: note, verdict: verdict, couverture: couverture,
+    return { saisi: saisi, prof: prof, mesures: m, criteres: criteres, note: note, verdict: verdict, couverture: couverture,
              moduleActif: moduleActif, raisons: raisons, signes: signes,
              sommaireAbsent: !data.sommaire, recuLe: data.recuLe, symbole: data.symbole,
              diag: { n: n, debut: pts[0].t, fin: dernier.t, c0: pts[0].c, c1: dernier.c, nDiv: divs.length, nBrut: (chart.t || []).length } };
@@ -8039,11 +8047,31 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     return '';
   }
 
+  var SAISIES = {
+    frais: { libelle: 'Frais de gestion, en %', aide: 'en %', ex: '0,65' },
+    actifs: { libelle: 'Taille du fonds, en millions de dollars', aide: 'en millions de $', ex: '1200' },
+    pe: { libelle: 'P/E du portefeuille', aide: 'nombre', ex: '18' }
+  };
+  function celluleValeur(k, res) {
+    var saisie = k.cle && SAISIES[k.cle];
+    if (k.valeur === null) {
+      return 'Non disponible' + (saisie
+        ? '<span class="fnb-sous">Si vous la connaissez, saisissez-la (' + saisie.aide + ')</span>' +
+          '<input type="text" inputmode="decimal" class="fnb-saisie" data-cle="' + k.cle + '" placeholder="ex. ' + saisie.ex + '" aria-label="' + esc(saisie.libelle) + '">'
+        : '');
+    }
+    return k.valeur + (k.cle && res.saisi && res.saisi[k.cle]
+      ? '<span class="fnb-sous">Saisi par vous <button type="button" class="fnb-retirer" data-retirer="' + k.cle + '">Retirer</button></span>'
+      : '');
+  }
+
   function alerte(cls, html) { return '<div class="fnb-alerte ' + cls + '">' + html + '</div>'; }
 
   function rendre(res) {
     var p = res.prof, h = '';
     h += '<div class="card"><div class="fnb-entete">';
+    var nbSaisi = 0;
+    for (var cs in (res.saisi || {})) nbSaisi++;
     var noteMasquee = res.note !== null && res.couverture < 0.6;
     if (noteMasquee) {
       h += '<div class="score-circle fnb-sans-note" aria-label="Note non calculée">&ndash;</div>';
@@ -8076,6 +8104,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     if (res.mesures && res.mesures.annees < 3 && res.note !== null) {
       h += alerte('jaune', '<strong>Historique court.</strong> Ce fonds a moins de 3 ans de données : Sharpe, tendance et recul maximal reposent sur peu de points, et la note est moins fiable.');
     }
+    if (nbSaisi > 0) {
+      h += alerte('bleu', '<strong>Cette note inclut ' + (nbSaisi === 1 ? 'une donnée saisie par vous' : nbSaisi + ' données saisies par vous') +
+        '.</strong> Je n\'en vérifie pas l\'exactitude. Ces données restent dans votre navigateur.');
+    }
     if (noteMasquee) {
       h += alerte('jaune', '<strong>Pas de note.</strong> Seulement ' + Math.round(res.couverture * 100) +
         ' % des repères ont pu être évalués faute de données. Une note calculée sur si peu de repères ne serait pas comparable à celle d\'un autre fonds. Les repères disponibles sont détaillés plus bas.');
@@ -8096,7 +8128,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     for (var c = 0; c < res.criteres.length; c++) {
       var k = res.criteres[c];
       h += '<tr><td><strong>' + esc(k.nom) + '</strong><span class="fnb-sous">' + esc(explication(k.nom)) + '</span><span class="fnb-sous">Poids : ' + k.poids + '</span></td>' +
-        '<td>' + (k.valeur === null ? 'Non disponible' : k.valeur) + '</td>' +
+        '<td>' + celluleValeur(k, res) + '</td>' +
         '<td>' + esc(k.repere) + '</td>' +
         '<td>' + (k.score === null ? badge('nd') : badge(k.statut, fr(k.score * k.poids, 1) + ' / ' + k.poids)) + '</td>' +
         '<td>' + esc(k.source) + '</td></tr>';
@@ -8143,8 +8175,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   function ecrireCache(t, data) {
     try { sessionStorage.setItem('fnb:' + t, JSON.stringify({ t: Date.now(), data: data })); } catch (e) {}
   }
-  function afficher(data) {
-    var res = analyser(data);
+  var derniereData = null, surcharges = {};
+  function afficher(data, garder) {
+    derniereData = data;
+    if (!garder) surcharges = {};
+    var res = analyser(data, surcharges);
     var zone = document.getElementById('fnb-resultat');
     if (res.erreur) {
       zone.innerHTML = '';
@@ -8153,7 +8188,32 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     }
     majStatut('');
     zone.innerHTML = rendre(res);
-    zone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!garder) zone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function brancherSaisies() {
+    var zone = document.getElementById('fnb-resultat');
+    if (!zone || zone.getAttribute('data-saisies')) return;
+    zone.setAttribute('data-saisies', '1');
+    zone.addEventListener('change', function (e) {
+      var el = e.target;
+      if (!el.classList || !el.classList.contains('fnb-saisie') || !derniereData) return;
+      var cle = el.getAttribute('data-cle');
+      var v = parseFloat((el.value || '').replace(/\s/g, '').replace(',', '.'));
+      var bornes = { frais: [0, 10], actifs: [0, 1e7], pe: [0, 1000] }[cle];
+      if (!(v > bornes[0] && v <= bornes[1])) {
+        majStatut('Valeur non valide : entrez un nombre positif, ' + SAISIES[cle].aide + '.');
+        return;
+      }
+      majStatut('');
+      surcharges[cle] = v;
+      afficher(derniereData, true);
+    });
+    zone.addEventListener('click', function (e) {
+      var cle = e.target && e.target.getAttribute && e.target.getAttribute('data-retirer');
+      if (!cle || !derniereData) return;
+      delete surcharges[cle];
+      afficher(derniereData, true);
+    });
   }
 
   function fnbLancer(evt) {
@@ -8208,6 +8268,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     fnbLancer();
   }
 
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', brancherSaisies); else brancherSaisies();
+  }
   if (typeof window !== 'undefined') {
     window.fnbLancer = fnbLancer;
     window.fnbExemple = fnbExemple;
