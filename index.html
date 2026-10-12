@@ -2870,7 +2870,7 @@ Historique Québec : 2-4% par an
   <h2>Évaluer un FNB</h2>
 
   <p style="background:#eff6ff;padding:15px;border-radius:8px;border-left:4px solid #2563eb;margin-bottom:20px;">
-    Entrez le symbole d'un FNB. Les données sont récupérées automatiquement et comparées à huit repères généraux, pour une note de conformité sur 100. L'outil informe seulement, il ne recommande rien.
+    Entrez le symbole d'un FNB. Les données sont récupérées automatiquement et comparées à huit repères que j'ai choisis, pour une note de conformité sur 100. L'outil informe seulement, il ne recommande rien.
     Chaque critère affiche son repère et sa source. Si une donnée est introuvable, le critère est exclu
     du calcul au lieu d'être deviné.
   </p>
@@ -8081,9 +8081,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
         'Le module « revenu élevé » plus bas donne le détail.');
     }
 
-    h += alerte('bleu', '<strong>Comment lire cette note.</strong> Elle indique dans quelle mesure le fonds respecte huit repères généraux choisis par l\'auteur du site. ' +
-      'Elle ne dit rien sur la convenance du fonds pour votre situation, et elle ne recommande ni d\'acheter, ni de conserver, ni de vendre. ' +
-      'Un fonds à revenu ou à options obtient souvent une note plus basse qu\'un fonds indiciel, car les repères favorisent les fonds très diversifiés. La note ne juge pas leur qualité.');
+    h += alerte('bleu', '<strong>Comment lire cette note.</strong> J\'ai choisi huit repères pour comparer les FNB sur une base commune. Ce sont mes hypothèses de travail, pas des normes. ' +
+      'La note indique dans quelle mesure le fonds les respecte. Elle ne tient pas compte de votre situation et ne recommande ni d\'acheter, ni de conserver, ni de vendre. ' +
+      'Mes repères favorisent les fonds très diversifiés, donc un fonds à revenu ou à options obtient souvent une note plus basse. Cela ne juge pas sa qualité.');
 
     h += '<div class="card"><h3>Détail des critères</h3><div class="fnb-scroll"><table class="fnb-table"><thead><tr>' +
       '<th>Critère</th><th>Valeur</th><th>Repère</th><th>Points</th><th>Source</th></tr></thead><tbody>';
@@ -8111,7 +8111,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 
     h += '<div class="card" style="background:#f9fafb;"><h4 style="margin-bottom:8px;">Limites de cette évaluation</h4>' +
       '<ul style="margin-left:20px;line-height:1.8;color:#4b5563;font-size:0.92em;">' +
-      '<li>Les repères sont des seuils généraux choisis par l\'auteur du site. Ce sont des hypothèses de travail, pas des normes établies.</li>' +
+      '<li>Les repères sont mes seuils personnels. Ce sont des hypothèses de travail, pas des normes établies.</li>' +
       '<li>Le Sharpe, la tendance et le recul maximal sont calculés sur des données mensuelles de rendement total.</li>' +
       '<li>Aucune comparaison avec un indice de référence n\'est faite. Un fonds sectoriel peut être concentré par conception.</li>' +
       '<li>La fiscalité (retenues à la source étrangères, type de compte) n\'est pas évaluée.</li>' +
