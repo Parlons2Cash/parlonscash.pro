@@ -1,15 +1,45 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8F7MY8T2TC"></script>
+<!-- Début : confidentialité et consentement Parlons Cash -->
+<style>
+#pc-privacy-banner{position:fixed;bottom:0;left:0;right:0;z-index:2147483647;background:#fff;color:#172336;box-shadow:0 -4px 25px #0003;padding:19px;max-height:85vh;overflow:auto;font:15px/1.5 system-ui,sans-serif}#pc-privacy-banner[hidden]{display:none!important}#pc-privacy-banner .pc-wrap{max-width:860px;margin:auto}#pc-privacy-banner button,#pc-privacy-settings{font:inherit;cursor:pointer;border-radius:7px;padding:9px 14px;margin:5px;border:1px solid #1859ad}#pc-privacy-banner .pc-primary{background:#1859ad;color:#fff}#pc-privacy-banner .pc-secondary{background:white;color:#1859ad}#pc-privacy-settings{position:fixed;bottom:12px;right:12px;z-index:2147483646;background:#fff;color:#124b91;box-shadow:0 1px 10px #0002;font-size:12px;padding:7px 10px}#pc-privacy-banner label{display:inline-block;margin:5px 18px 5px 0}#pc-privacy-banner input{width:17px;height:17px;vertical-align:middle}
+</style>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8F7MY8T2TC');
+(function(){
+  'use strict';
+  const KEY='parlonscash-consent-v1';
+  const GA='G-8F7MY8T2TC';
+  const ADS='ca-pub-3695467180266092';
+  let choice=null,gaLoaded=false,adsLoaded=false;
+  try { const v=JSON.parse(localStorage.getItem(KEY)); if(v&&typeof v.analytics==='boolean'&&typeof v.ads==='boolean')choice=v; }catch(e){}
+  function script(src,attrs){let s=document.createElement('script');s.async=true;s.src=src;if(attrs){Object.entries(attrs).forEach(([k,v])=>s.setAttribute(k,v));}document.head.appendChild(s);}
+  function loadSelected(){
+    if(choice&&choice.analytics&&!gaLoaded){gaLoaded=true;window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag('js',new Date());gtag('config',GA);script('https://www.googletagmanager.com/gtag/js?id='+GA);}
+    if(choice&&choice.ads&&!adsLoaded){adsLoaded=true;script('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+ADS,{'crossorigin':'anonymous'});}
+  }
+  function save(analytics,ads){choice={analytics:!!analytics,ads:!!ads,updated:new Date().toISOString()};try{localStorage.setItem(KEY,JSON.stringify(choice));}catch(e){} document.getElementById('pc-privacy-banner').hidden=true;
+    if((gaLoaded&&!choice.analytics)||(adsLoaded&&!choice.ads)){location.reload();return;}loadSelected();}
+  function init(){
+    const panel=document.createElement('section');panel.id='pc-privacy-banner';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Choix de confidentialité');panel.innerHTML='<div class="pc-wrap"><strong style="font-size:19px">Vos préférences de confidentialité</strong><p>Parlons Cash souhaite utiliser des témoins facultatifs pour mesurer la fréquentation avec Google Analytics et, séparément, pour la publicité Google AdSense. Rien de facultatif ne se charge tant que vous ne l’avez pas autorisé. Vous pouvez refuser sans perdre l’accès au site.</p><p><label><input type="checkbox" id="pc-analytics"> Statistiques (Google Analytics)</label><label><input type="checkbox" id="pc-ads"> Publicité (Google AdSense)</label></p><div><button type="button" class="pc-secondary" id="pc-reject">Tout refuser</button><button type="button" class="pc-primary" id="pc-save">Enregistrer mes choix</button><button type="button" class="pc-secondary" id="pc-accept">Tout accepter</button></div><small>Vous pouvez modifier vos choix à tout moment avec le bouton « Confidentialité » en bas de page. Pour toute question : azizguellouz@gmail.com.</small></div>';
+    document.body.appendChild(panel);
+    const opener=document.createElement('button');opener.id='pc-privacy-settings';opener.type='button';opener.textContent='Confidentialité';document.body.appendChild(opener);
+    const analytics=panel.querySelector('#pc-analytics'),ads=panel.querySelector('#pc-ads');
+    function show(){analytics.checked=!!(choice&&choice.analytics);ads.checked=!!(choice&&choice.ads);panel.hidden=false;}
+    opener.addEventListener('click',show);
+    panel.querySelector('#pc-reject').addEventListener('click',()=>save(false,false));
+    panel.querySelector('#pc-accept').addEventListener('click',()=>save(true,true));
+    panel.querySelector('#pc-save').addEventListener('click',()=>save(analytics.checked,ads.checked));
+    panel.hidden=!!choice;if(!choice)show();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  loadSelected();
+})();
 </script>
+<!-- Fin : confidentialité et consentement Parlons Cash -->
+
+<!-- Google tag (gtag.js) -->
+
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1087,8 +1117,7 @@ button:hover, .tab-button:hover {
     </p>
   </div>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3695467180266092"
-     crossorigin="anonymous"></script>
+
 
 </div>
 
@@ -2389,7 +2418,7 @@ Historique Québec : 2-4% par an
   <h2>Politique de confidentialité</h2>
   
   <div class="card">
-    <p style="margin-bottom:20px;"><em>Dernière mise à jour : Octobre 2025</em></p>
+    <p style="margin-bottom:20px;"><em>Dernière mise à jour : octobre 2026</em></p>
     
     <h3 style="color:#2563eb;margin-top:0;">Notre engagement</h3>
     <p style="line-height:1.7;">
@@ -2454,8 +2483,7 @@ Historique Québec : 2-4% par an
     
     <h3 style="color:#2563eb;margin-top:30px;">🍪 Cookies</h3>
     <p style="line-height:1.7;">
-      Notre site utilise des cookies pour Google Analytics et AdSense. Vous pouvez bloquer ou supprimer les cookies 
-      via les paramètres de votre navigateur. Cela n'affectera pas le fonctionnement des calculateurs.
+      Notre site demande un consentement séparé avant de charger Google Analytics et Google AdSense. Vous pouvez accepter ou refuser chaque finalité et revenir sur votre choix au moyen du bouton « Confidentialité ». Vous pouvez aussi supprimer les témoins dans votre navigateur. Cela n'affectera pas le fonctionnement des calculateurs.
     </p>
     
     <h3 style="color:#2563eb;margin-top:30px;">🔒 Sécurité</h3>
@@ -2469,7 +2497,7 @@ Historique Québec : 2-4% par an
       Conformément aux lois canadiennes (LPRPDE) et européennes (RGPD), vous avez le droit de :
     </p>
     <ul style="line-height:1.8;margin-left:20px;">
-      <li>Refuser les cookies (via les paramètres de votre navigateur)</li>
+      <li>Refuser les témoins facultatifs sur notre site ou modifier votre choix à tout moment</li>
       <li>Demander l'accès aux données que nous détenons (Analytics anonyme uniquement)</li>
       <li>Utiliser notre site sans accepter les cookies publicitaires</li>
     </ul>
