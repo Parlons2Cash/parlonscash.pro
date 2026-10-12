@@ -1,6 +1,43 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<!-- Début : confidentialité et consentement Parlons Cash -->
+<style>
+#pc-privacy-banner{position:fixed;bottom:0;left:0;right:0;z-index:2147483647;background:#fff;color:#172336;box-shadow:0 -4px 25px #0003;padding:19px;max-height:85vh;overflow:auto;font:15px/1.5 system-ui,sans-serif}#pc-privacy-banner[hidden]{display:none!important}#pc-privacy-banner .pc-wrap{max-width:860px;margin:auto}#pc-privacy-banner button,#pc-privacy-settings{font:inherit;cursor:pointer;border-radius:7px;padding:9px 14px;margin:5px;border:1px solid #1859ad}#pc-privacy-banner .pc-primary{background:#1859ad;color:#fff}#pc-privacy-banner .pc-secondary{background:white;color:#1859ad}#pc-privacy-settings{position:fixed;bottom:12px;right:12px;z-index:2147483646;background:#fff;color:#124b91;box-shadow:0 1px 10px #0002;font-size:12px;padding:7px 10px}#pc-privacy-banner label{display:inline-block;margin:5px 18px 5px 0}#pc-privacy-banner input{width:17px;height:17px;vertical-align:middle}
+</style>
+<script>
+(function(){
+  'use strict';
+  const KEY='parlonscash-consent-v1';
+  const GA='G-8F7MY8T2TC';
+  const ADS='ca-pub-3695467180266092';
+  let choice=null,gaLoaded=false,adsLoaded=false;
+  try { const v=JSON.parse(localStorage.getItem(KEY)); if(v&&typeof v.analytics==='boolean'&&typeof v.ads==='boolean')choice=v; }catch(e){}
+  function script(src,attrs){let s=document.createElement('script');s.async=true;s.src=src;if(attrs){Object.entries(attrs).forEach(([k,v])=>s.setAttribute(k,v));}document.head.appendChild(s);}
+  function loadSelected(){
+    if(choice&&choice.analytics&&!gaLoaded){gaLoaded=true;window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag('js',new Date());gtag('config',GA);script('https://www.googletagmanager.com/gtag/js?id='+GA);}
+    if(choice&&choice.ads&&!adsLoaded){adsLoaded=true;script('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+ADS,{'crossorigin':'anonymous'});}
+  }
+  function save(analytics,ads){choice={analytics:!!analytics,ads:!!ads,updated:new Date().toISOString()};try{localStorage.setItem(KEY,JSON.stringify(choice));}catch(e){} document.getElementById('pc-privacy-banner').hidden=true;
+    if((gaLoaded&&!choice.analytics)||(adsLoaded&&!choice.ads)){location.reload();return;}loadSelected();}
+  function init(){
+    const panel=document.createElement('section');panel.id='pc-privacy-banner';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Choix de confidentialité');panel.innerHTML='<div class="pc-wrap"><strong style="font-size:19px">Vos préférences de confidentialité</strong><p>Parlons Cash souhaite utiliser des témoins facultatifs pour mesurer la fréquentation avec Google Analytics et, séparément, pour la publicité Google AdSense. Rien de facultatif ne se charge tant que vous ne l’avez pas autorisé. Vous pouvez refuser sans perdre l’accès au site.</p><p><label><input type="checkbox" id="pc-analytics"> Statistiques (Google Analytics)</label><label><input type="checkbox" id="pc-ads"> Publicité (Google AdSense)</label></p><div><button type="button" class="pc-secondary" id="pc-reject">Tout refuser</button><button type="button" class="pc-primary" id="pc-save">Enregistrer mes choix</button><button type="button" class="pc-secondary" id="pc-accept">Tout accepter</button></div><small>Vous pouvez modifier vos choix à tout moment avec le bouton « Confidentialité » en bas de page. Pour toute question : azizguellouz@gmail.com.</small></div>';
+    document.body.appendChild(panel);
+    const opener=document.createElement('button');opener.id='pc-privacy-settings';opener.type='button';opener.textContent='Confidentialité';document.body.appendChild(opener);
+    const analytics=panel.querySelector('#pc-analytics'),ads=panel.querySelector('#pc-ads');
+    function show(){analytics.checked=!!(choice&&choice.analytics);ads.checked=!!(choice&&choice.ads);panel.hidden=false;}
+    opener.addEventListener('click',show);
+    panel.querySelector('#pc-reject').addEventListener('click',()=>save(false,false));
+    panel.querySelector('#pc-accept').addEventListener('click',()=>save(true,true));
+    panel.querySelector('#pc-save').addEventListener('click',()=>save(analytics.checked,ads.checked));
+    panel.hidden=!!choice;if(!choice)show();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  loadSelected();
+})();
+</script>
+<!-- Fin : confidentialité et consentement Parlons Cash -->
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FIRE : libération financière ou cage dorée ? | Parlons Cash</title>
