@@ -1052,6 +1052,7 @@ button:hover, .tab-button:hover {
 <button onclick="changeTab('apropos')" id="btn-apropos">À propos</button>
 <button onclick="changeTab('confidentialite')" id="btn-confidentialite">Confidentialité</button>
 <button onclick="changeTab('psychologie')" id="btn-psychologie">Psychologie</button>
+<button onclick="changeTab('fnb')" id="btn-fnb">Évaluer un FNB</button>
 <button onclick="changeTab('blog')" id="btn-blog">📰 Blog</button>
 </div>
 
@@ -2403,6 +2404,9 @@ Historique Québec : 2-4% par an
       </p>
     </div>
     <p style="line-height:1.7;">
+      <strong>Exception :</strong> dans l'onglet « Évaluer un FNB », le symbole boursier que vous saisissez (par exemple XEQT.TO) est transmis à un service de relais hébergé chez Cloudflare, qui interroge Yahoo Finance pour récupérer les données publiques du fonds. Aucune donnée personnelle ni montant que vous saisissez n'est envoyé. Les montants du test « payé pour patienter » restent dans votre navigateur.
+    </p>
+    <p style="line-height:1.7;">
       Toutes les données que vous entrez dans les calculateurs restent <strong>localement dans votre navigateur</strong>, sur cet appareil.
       Nous n'avons aucun accès à ces informations sensibles.
     </p>
@@ -2862,6 +2866,76 @@ Historique Québec : 2-4% par an
 </div>
 
 <!-- ========== ONGLET BLOG ========== -->
+<div id="tab-fnb" class="tab-content">
+  <h2>Évaluer un FNB</h2>
+
+  <p style="background:#eff6ff;padding:15px;border-radius:8px;border-left:4px solid #2563eb;margin-bottom:20px;">
+    Entrez le symbole d'un FNB. Les données sont récupérées automatiquement et notées sur 100 selon huit critères.
+    Chaque critère affiche son repère et sa source. Si une donnée est introuvable, le critère est exclu
+    du calcul au lieu d'être deviné.
+  </p>
+
+  <div class="card">
+    <form id="fnb-form" onsubmit="return window.fnbLancer(event)">
+      <div class="form-group">
+        <label for="fnb-ticker">Symbole du FNB</label>
+        <input type="text" id="fnb-ticker" maxlength="12" autocomplete="off" autocapitalize="characters"
+               spellcheck="false" placeholder="Ex. XEQT.TO">
+        <small style="display:block;margin-top:5px;color:#6b7280;">
+          Pour la Bourse de Toronto, ajoutez .TO (ex. VFV.TO). Pour les États-Unis, le symbole seul suffit (ex. SPY).
+        </small>
+      </div>
+      <button type="submit" class="btn-primary" id="fnb-bouton">Évaluer ce FNB</button>
+      <div class="fnb-exemples" style="margin-top:12px;">
+        <small style="color:#6b7280;">Exemples :</small>
+        <button type="button" onclick="window.fnbExemple('XEQT.TO')">XEQT.TO</button>
+        <button type="button" onclick="window.fnbExemple('VFV.TO')">VFV.TO</button>
+        <button type="button" onclick="window.fnbExemple('ZWC.TO')">ZWC.TO</button>
+        <button type="button" onclick="window.fnbExemple('SPY')">SPY</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="fnb-statut" class="fnb-statut" role="status" aria-live="polite"></div>
+  <div id="fnb-resultat"></div>
+
+  <!-- Test « payé pour patienter » : chiffres personnels, calculés localement, jamais envoyés -->
+  <div class="card" id="fnb-bilan-carte">
+    <h3 style="color:#2563eb;">Test « payé pour patienter » (facultatif)</h3>
+    <p style="color:#6b7280;font-size:0.9em;margin-bottom:15px;">
+      Si vous détenez déjà ce FNB, entrez vos propres chiffres. Le prix de l'unité seul ne dit pas tout :
+      il faut aussi compter les distributions reçues. Ces données restent dans votre navigateur.
+    </p>
+    <div class="grid-2">
+      <div class="form-group">
+        <label for="fnb-investi">Montant investi ($)</label>
+        <input type="number" id="fnb-investi" min="0" step="any" oninput="window.fnbBilan()">
+      </div>
+      <div class="form-group">
+        <label for="fnb-distrib">Distributions reçues à ce jour ($)</label>
+        <input type="number" id="fnb-distrib" min="0" step="any" oninput="window.fnbBilan()">
+      </div>
+      <div class="form-group">
+        <label for="fnb-valeur">Valeur actuelle de la position ($)</label>
+        <input type="number" id="fnb-valeur" min="0" step="any" oninput="window.fnbBilan()">
+      </div>
+    </div>
+    <div id="fnb-bilan-resultat" aria-live="polite"></div>
+  </div>
+
+  <div style="background:#f9fafb;border-top:2px solid #e5e7eb;padding:20px;margin-top:30px;border-radius:8px;">
+    <p style="margin:0;font-size:0.85em;color:#6b7280;line-height:1.7;">
+      <strong>Avertissement :</strong> cet outil est à des fins éducatives et informatives seulement.
+      Il ne constitue pas un conseil en placement, ni une recommandation d'acheter ou de vendre un titre.
+      La note mesure la conformité à des repères généraux, pas la qualité d'un investissement pour votre situation.
+      Les rendements passés ne garantissent pas les rendements futurs. Les données proviennent de Yahoo Finance,
+      sans garantie d'exactitude ou de disponibilité. Avant toute décision, consultez un professionnel inscrit
+      auprès de l'Autorité des marchés financiers
+      (<a href="https://lautorite.qc.ca/" target="_blank" rel="noopener noreferrer" style="color:#2563eb;">lautorite.qc.ca</a>).
+    </p>
+  </div>
+</div>
+
 <div id="tab-blog" class="tab-content">
   <h2>📰 Blog — Parlons Cash</h2>
   <p style="color:#6b7280;margin-bottom:8px;">Réflexions, stratégies et perspectives sur la finance personnelle au Québec.</p>
@@ -3279,7 +3353,7 @@ console.log('calcBesoin() appelée !');
 // Cacher les bandeaux d'avertissement
 var warnings = document.querySelectorAll('.warning-box, .danger-box');
 for(var i = 0; i < warnings.length; i++) {
-  if(t === 'apropos' || t === 'confidentialite' || t === 'aide' || t === 'besoin' || t === 'couple' || t === 'plaisirs' || t === 'acheter-louer' || t === 'blog' || t === 'psychologie') {
+  if(t === 'apropos' || t === 'confidentialite' || t === 'aide' || t === 'besoin' || t === 'couple' || t === 'plaisirs' || t === 'acheter-louer' || t === 'blog' || t === 'psychologie' || t === 'fnb') {
     warnings[i].style.display = 'none';
   } else {
     warnings[i].style.display = 'block';
@@ -6963,6 +7037,52 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     body.impression-rapport > *:not(#rapport-imprimable) { display: none !important; }
     body.impression-rapport #rapport-imprimable { display: block !important; }
   }
+
+/* ===== ONGLET ÉVALUER UN FNB (à coller dans un bloc <style>) ===== */
+#tab-fnb .fnb-scroll { overflow-x: auto; }
+#tab-fnb .fnb-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; min-width: 640px; }
+#tab-fnb .fnb-table th { text-align: left; padding: 10px; border-bottom: 2px solid #e5e7eb; background: #f9fafb; }
+#tab-fnb .fnb-table td { padding: 10px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+#tab-fnb .fnb-sous { display: block; color: #6b7280; font-size: 0.85em; margin-top: 2px; }
+
+#tab-fnb .fnb-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: 999px;
+  font-size: 0.8rem; font-weight: 700; white-space: nowrap;
+}
+#tab-fnb .fnb-badge::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor;
+}
+#tab-fnb .fnb-ok   { background: #d1fae5; color: #065f46; }
+#tab-fnb .fnb-warn { background: #fef3c7; color: #92400e; }
+#tab-fnb .fnb-bad  { background: #fee2e2; color: #991b1b; }
+#tab-fnb .fnb-nd   { background: #f3f4f6; color: #4b5563; }
+
+#tab-fnb .fnb-entete { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+#tab-fnb .fnb-entete .score-circle { margin: 0; flex-shrink: 0; }
+#tab-fnb .fnb-meta { color: #6b7280; font-size: 0.9em; line-height: 1.6; }
+
+#tab-fnb .fnb-alerte {
+  padding: 14px 18px; border-radius: 10px; margin: 16px 0;
+  border-left: 5px solid; font-size: 0.95em; line-height: 1.6;
+}
+#tab-fnb .fnb-alerte.rouge  { background: #fef2f2; border-color: #dc2626; color: #7f1d1d; }
+#tab-fnb .fnb-alerte.jaune  { background: #fffbeb; border-color: #f59e0b; color: #78350f; }
+#tab-fnb .fnb-alerte.bleu   { background: #eff6ff; border-color: #2563eb; color: #1e3a8a; }
+
+#tab-fnb .fnb-statut { margin: 14px 0; color: #374151; }
+#tab-fnb .fnb-chargement::after {
+  content: ""; display: inline-block; width: 14px; height: 14px; margin-left: 10px;
+  border: 2px solid #2563eb; border-top-color: transparent; border-radius: 50%;
+  animation: fnb-tourne 0.8s linear infinite; vertical-align: -2px;
+}
+@keyframes fnb-tourne { to { transform: rotate(360deg); } }
+
+#tab-fnb .fnb-exemples button {
+  background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe;
+  border-radius: 999px; padding: 4px 12px; margin: 4px 6px 0 0;
+  min-height: 0; font-size: 0.85rem; cursor: pointer;
+}
 </style>
 <script>
 /* Générateur de rapport PDF intelligent : n'inclut que les sections réellement remplies. */
@@ -7497,6 +7617,619 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     restaurerAuChargement();
   }
 }());
+</script>
+<script>
+/* ============================================================
+   Onglet « Évaluer un FNB » - Parlons Cash
+   À coller dans un nouveau bloc <script>, après le script principal.
+   Dépend du relais fnb-worker.js (voir CONFIG.URL_RELAIS).
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ---------- Réglages modifiables ---------- */
+  var CONFIG = {
+    URL_RELAIS: 'https://fnb-relais.azizguellouz.workers.dev/',
+    TAUX_SANS_RISQUE: 0.03,      // hypothèse utilisée pour le ratio de Sharpe (3 % par an)
+    SEUIL_REVENU_ELEVE: 0.06,    // distribution sur 12 mois à partir de laquelle le module s'active
+    DUREE_CACHE_MS: 15 * 60 * 1000
+  };
+  var AN = 365.25 * 24 * 3600 * 1000;
+  var RE_REVENU = /covered|couvert|buy-?write|option|premium income|enhanced yield|call writ/i;
+  var RE_LEVIER = /levier|leverag|\b[23]x\b|ultra|\bbear\b|\bbull\b|split/i;
+
+  var SECTEURS = {
+    realestate: 'Immobilier', consumer_cyclical: 'Consommation cyclique', basic_materials: 'Matériaux de base',
+    consumer_defensive: 'Consommation défensive', technology: 'Technologie', communication_services: 'Communications',
+    financial_services: 'Services financiers', utilities: 'Services publics', industrials: 'Industrie',
+    energy: 'Énergie', healthcare: 'Santé'
+  };
+
+  /* ---------- Utilitaires ---------- */
+  function esc(s) {
+    return String(s === null || s === undefined ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function brut(v) {
+    if (v === null || v === undefined) return null;
+    if (typeof v === 'object') return (typeof v.raw === 'number') ? v.raw : null;
+    return (typeof v === 'number') ? v : null;
+  }
+  function lin(x, mauvais, bon) {            // 0 au niveau « mauvais », 1 au niveau « bon », linéaire entre les deux
+    if (x === null || x === undefined || !isFinite(x)) return null;
+    return Math.max(0, Math.min(1, (x - mauvais) / (bon - mauvais)));
+  }
+  function fr(x, d) { return x.toFixed(d).replace('.', ','); }
+  function fp(x, d) { return fr(x * 100, d === undefined ? 1 : d) + ' %'; }      // fraction -> pourcentage
+  function argent(x) {
+    return x.toLocaleString('fr-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+  }
+  function grosMontant(x) {
+    if (x >= 1e9) return fr(x / 1e9, 1) + ' G$';
+    return fr(x / 1e6, 0) + ' M$';
+  }
+  function moyenne(a) { var s = 0; for (var i = 0; i < a.length; i++) s += a[i]; return s / a.length; }
+  function ecartType(a) {
+    var m = moyenne(a), s = 0;
+    for (var i = 0; i < a.length; i++) s += Math.pow(a[i] - m, 2);
+    return Math.sqrt(s / (a.length - 1));
+  }
+  function statutDepuisScore(s) { return s === null ? 'nd' : (s >= 0.7 ? 'ok' : (s >= 0.4 ? 'warn' : 'bad')); }
+  var LIBELLES = { ok: 'Sain', warn: 'À surveiller', bad: 'Signe confirmé', nd: 'Non évaluable' };
+  function badge(statut, texte) {
+    return '<span class="fnb-badge fnb-' + statut + '">' + esc(texte || LIBELLES[statut]) + '</span>';
+  }
+
+  /* ---------- Séries et mesures ---------- */
+  function preparerSerie(chart) {
+    var pts = [], t = chart.t || [], c = chart.close || [], a = chart.adj || [];
+    var divs = chart.dividendes || [];
+    // Rendement total reconstruit : distributions réinvesties au dernier cours du mois.
+    // Plus transparent que le cours ajusté de Yahoo, qui peut mal refléter certaines distributions.
+    var reconstruire = divs.length > 0, facteur = 1, k = 0;
+    for (var i = 0; i < t.length; i++) {
+      var cl = c[i], aj = a[i];
+      if (cl === null || cl === undefined) continue;
+      if (reconstruire) {
+        var fin = (i + 1 < t.length) ? t[i + 1] : Infinity;
+        while (k < divs.length && divs[k].t < t[i]) k++;
+        while (k < divs.length && divs[k].t < fin) {
+          if (cl > 0 && divs[k].montant > 0) facteur *= (1 + divs[k].montant / cl);
+          k++;
+        }
+        aj = cl * facteur;
+      } else if (aj === null || aj === undefined) aj = cl;
+      pts.push({ t: t[i] * 1000, c: cl, a: aj });
+    }
+    // Yahoo renvoie parfois des points hebdomadaires malgré la demande mensuelle :
+    // on garde le dernier point de chaque mois pour que « 36 points » signifie bien 36 mois.
+    var mensuel = [], cleMois = null;
+    for (var q = 0; q < pts.length; q++) {
+      var d = new Date(pts[q].t), cm = d.getUTCFullYear() * 12 + d.getUTCMonth();
+      if (cm === cleMois) mensuel[mensuel.length - 1] = pts[q]; else { mensuel.push(pts[q]); cleMois = cm; }
+    }
+    return mensuel;
+  }
+  function rendementAnnualise(pts, mois, cle) {
+    var n = pts.length;
+    if (n <= mois) return null;
+    var debut = pts[n - 1 - mois][cle], fin = pts[n - 1][cle];
+    if (!(debut > 0)) return null;
+    return Math.pow(fin / debut, 12 / mois) - 1;
+  }
+  function sharpe(pts, mois) {
+    var n = pts.length;
+    if (n <= mois) return null;
+    var r = [];
+    for (var i = n - mois; i < n; i++) r.push(pts[i].a / pts[i - 1].a - 1);
+    var s = ecartType(r);
+    if (!(s > 0)) return null;
+    return ((moyenne(r) - CONFIG.TAUX_SANS_RISQUE / 12) * 12) / (s * Math.sqrt(12));
+  }
+  function reculMax(pts, mois) {
+    var n = pts.length, debut = Math.max(0, n - 1 - mois);
+    var pic = pts[debut].a, pire = 0;
+    for (var i = debut; i < n; i++) {
+      if (pts[i].a > pic) pic = pts[i].a;
+      var dd = pts[i].a / pic - 1;
+      if (dd < pire) pire = dd;
+    }
+    return { max: pire, actuel: pts[n - 1].a / pic - 1 };
+  }
+  function sommeDiv(divs, finMs, k) {          // distributions versées dans la k-ième fenêtre de 12 mois (0 = la plus récente)
+    var hi = finMs - k * AN, lo = hi - AN, s = 0;
+    for (var i = 0; i < divs.length; i++) {
+      var t = divs[i].t * 1000;
+      if (t > lo && t <= hi) s += divs[i].montant;
+    }
+    return s;
+  }
+
+  /* ---------- Profil du fonds (source Yahoo, tout peut être absent) ---------- */
+  function lireProfil(som) {
+    var p = { nom: null, devise: null, type: null, categorie: null, frais: null, actifs: null,
+              top10: null, fondDeFonds: false, topSecteur: null, nomSecteur: null, pe: null, peInverse: false };
+    if (!som) return p;
+    var prix = som.price || {};
+    p.nom = prix.longName || prix.shortName || null;
+    p.devise = prix.currency || null;
+    p.type = prix.quoteType || null;
+
+    var fpf = som.fundProfile || {};
+    p.categorie = fpf.categoryName || null;
+    var f = brut((fpf.feesExpensesInvestment || {}).annualReportExpenseRatio);
+    if (f === null) f = brut((som.defaultKeyStatistics || {}).annualReportExpenseRatio);
+    if (f !== null && f > 0.1) f = f / 100;     // au cas où la valeur serait déjà en pourcentage
+    p.frais = f;
+
+    var a = brut((som.summaryDetail || {}).totalAssets);
+    if (a === null) a = brut((som.defaultKeyStatistics || {}).totalAssets);
+    p.actifs = (a !== null && a > 0) ? a : null;
+
+    var th = som.topHoldings || {};
+    if (th.holdings && th.holdings.length) {
+      var s = 0, ok = false, poidsFnb = 0;
+      for (var i = 0; i < th.holdings.length; i++) {
+        var h = brut(th.holdings[i].holdingPercent);
+        if (h !== null) { s += h; ok = true; }
+        if (h !== null && /\bETF\b|\bFund\b|\bPortfolio\b|\bTrust\b/i.test(th.holdings[i].holdingName || '')) poidsFnb += h;
+      }
+      // Fonds de fonds : les principaux "titres" sont d'autres FNB, la concentration par titre n'a pas de sens
+      if (ok && s > 0 && poidsFnb / s >= 0.5) { p.fondDeFonds = true; }
+      else if (ok) p.top10 = s;
+    }
+    if (th.sectorWeightings && th.sectorWeightings.length) {
+      var best = null, bestKey = null;
+      for (var j = 0; j < th.sectorWeightings.length; j++) {
+        var obj = th.sectorWeightings[j];
+        for (var k in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, k)) {
+            var w = brut(obj[k]);
+            if (w !== null && (best === null || w > best)) { best = w; bestKey = k; }
+          }
+        }
+      }
+      if (best !== null) { p.topSecteur = best; p.nomSecteur = SECTEURS[bestKey] || bestKey; }
+    }
+    var pe = brut((th.equityHoldings || {}).priceToEarnings);
+    if (pe !== null && pe > 0) {
+      if (pe < 1) { pe = 1 / pe; p.peInverse = true; }  // certaines sources donnent le rendement des bénéfices
+      p.pe = pe;
+    }
+    return p;
+  }
+
+  /* ---------- Analyse complète ---------- */
+  function analyser(data) {
+    var chart = data.chart || {};
+    var pts = preparerSerie(chart);
+    if (pts.length < 2) return { erreur: 'historique_insuffisant' };
+    var divs = chart.dividendes || [];
+    var fin = Date.parse(data.recuLe);
+    if (isNaN(fin)) fin = pts[pts.length - 1].t;
+    var n = pts.length, dernier = pts[n - 1];
+    var annees = (fin - pts[0].t) / AN;
+
+    var prof = lireProfil(data.sommaire);
+    if (!prof.nom) prof.nom = chart.nom;
+    if (!prof.devise) prof.devise = chart.devise;
+
+    var m = {
+      annees: annees,
+      sharpe: sharpe(pts, 36),
+      mm10: null, auDessus: null,
+      rend12: n > 12 ? dernier.a / pts[n - 13].a - 1 : null,
+      rend36: rendementAnnualise(pts, 36, 'a'),
+      rend60: rendementAnnualise(pts, 60, 'a'),
+      rendCreation: annees >= 3 ? Math.pow(dernier.a / pts[0].a, 1 / annees) - 1 : null,
+      recul: reculMax(pts, 60),
+      d0: sommeDiv(divs, fin, 0), d1: sommeDiv(divs, fin, 1), d2: sommeDiv(divs, fin, 2)
+    };
+    if (n >= 10) {
+      var s = 0;
+      for (var i = n - 10; i < n; i++) s += pts[i].c;
+      m.mm10 = s / 10;
+      m.auDessus = dernier.c > m.mm10;
+    }
+    m.rendementDistrib = dernier.c > 0 ? m.d0 / dernier.c : null;
+
+    /* ----- 8 critères pondérés (total 100) ----- */
+    var criteres = [];
+
+    var scFrais = prof.frais === null ? null : lin(prof.frais * 100, 1.5, 0.25);
+    criteres.push({
+      nom: 'Frais de gestion (RFG)', poids: 15, score: scFrais,
+      valeur: prof.frais === null ? null : esc(fp(prof.frais, 2)),
+      repere: 'Excellent à 0,25 % ou moins, faible à 1,5 % ou plus',
+      source: 'Yahoo, profil du fonds'
+    });
+
+    var s1 = prof.top10 === null ? null : lin(prof.top10 * 100, 60, 25);
+    var s2 = prof.topSecteur === null ? null : lin(prof.topSecteur * 100, 60, 30);
+    var partsDiv = [];
+    if (s1 !== null) partsDiv.push(s1);
+    if (s2 !== null) partsDiv.push(s2);
+    var valDiv = null;
+    if (partsDiv.length) {
+      valDiv = (prof.top10 !== null ? '10 principaux titres : ' + esc(fp(prof.top10)) : '');
+      if (prof.fondDeFonds) valDiv += '<span class="fnb-sous">Fonds de fonds : le poids des titres individuels n\'est pas calculé</span>';
+      if (prof.topSecteur !== null) {
+        valDiv += '<span class="fnb-sous">Plus grand secteur : ' + esc(prof.nomSecteur) + ' ' + esc(fp(prof.topSecteur)) + '</span>';
+      }
+    }
+    criteres.push({
+      nom: 'Diversification', poids: 20, score: partsDiv.length ? moyenne(partsDiv) : null,
+      valeur: valDiv,
+      repere: 'Poids des 10 principaux titres : excellent à 25 % ou moins, faible à 60 % ou plus. Plus grand secteur : excellent à 30 % ou moins, faible à 60 % ou plus',
+      source: 'Yahoo, profil du fonds'
+    });
+
+    criteres.push({
+      nom: 'Ratio de Sharpe (3 ans)', poids: 15, score: lin(m.sharpe, 0, 1),
+      valeur: m.sharpe === null ? null : esc(fr(m.sharpe, 2)) +
+        '<span class="fnb-sous">Taux sans risque supposé : ' + esc(fp(CONFIG.TAUX_SANS_RISQUE)) + '</span>',
+      repere: 'Faible à 0 ou moins, excellent à 1 ou plus',
+      source: 'Calculé (36 rendements mensuels, rendement total)'
+    });
+
+    var partsTend = [];
+    if (m.auDessus !== null) partsTend.push(m.auDessus ? 1 : 0);
+    if (m.rend12 !== null) partsTend.push(m.rend12 > 0 ? 1 : 0);
+    var valTend = null;
+    if (partsTend.length) {
+      valTend = (m.auDessus === null ? '' : 'Prix ' + (m.auDessus ? 'au-dessus de' : 'sous') + ' la moyenne de 10 mois');
+      if (m.rend12 !== null) {
+        valTend += '<span class="fnb-sous">Rendement total sur 12 mois : ' + esc((m.rend12 > 0 ? '+' : '') + fp(m.rend12)) + '</span>';
+      }
+    }
+    criteres.push({
+      nom: 'Tendance', poids: 10, score: partsTend.length ? moyenne(partsTend) : null,
+      valeur: valTend,
+      repere: '50 % si le prix dépasse sa moyenne de 10 mois, 50 % si le rendement total sur 12 mois est positif',
+      source: 'Calculé (historique de prix)'
+    });
+
+    criteres.push({
+      nom: 'P/E du portefeuille', poids: 10, score: lin(prof.pe, 30, 15),
+      valeur: prof.pe === null ? null : esc(fr(prof.pe, 1)) +
+        '<span class="fnb-sous">Selon la source, peut être un P/E historique plutôt que prévisionnel</span>',
+      repere: 'Excellent à 15 ou moins, faible à 30 ou plus',
+      source: 'Yahoo, profil du fonds'
+    });
+
+    criteres.push({
+      nom: 'Taille du fonds', poids: 10,
+      score: prof.actifs === null ? null : lin(Math.log(prof.actifs) / Math.LN10, Math.log(25e6) / Math.LN10, 9),
+      valeur: prof.actifs === null ? null : esc(grosMontant(prof.actifs)),
+      repere: 'Faible sous 25 M$, excellent à 1 G$ ou plus (risque de fermeture et liquidité)',
+      source: 'Yahoo, profil du fonds'
+    });
+
+    criteres.push({
+      nom: 'Recul maximal (5 ans)', poids: 10, score: lin(m.recul.max * 100, -50, -15),
+      valeur: esc(fp(m.recul.max)) + '<span class="fnb-sous">Écart actuel avec le sommet : ' + esc(fp(m.recul.actuel)) + '</span>',
+      repere: 'Excellent à -15 % ou mieux, faible à -50 % ou pire',
+      source: 'Calculé (données mensuelles, les creux intramensuels sont sous-estimés)'
+    });
+
+    criteres.push({
+      nom: 'Historique', poids: 10, score: lin(annees, 1, 10),
+      valeur: esc(fr(annees, 1)) + ' ans',
+      repere: 'Faible à 1 an, excellent à 10 ans ou plus',
+      source: 'Calculé (date du premier cours)'
+    });
+
+    var poidsEval = 0, points = 0;
+    for (var c = 0; c < criteres.length; c++) {
+      criteres[c].statut = statutDepuisScore(criteres[c].score);
+      if (criteres[c].score !== null) {
+        poidsEval += criteres[c].poids;
+        points += criteres[c].poids * criteres[c].score;
+      }
+    }
+    var couverture = poidsEval / 100;
+    var note = poidsEval > 0 ? Math.round(points / poidsEval * 100) : null;
+    var verdict = note === null ? null
+      : (note >= 75 ? { cls: 'excellent', txt: 'Solide' }
+      : (note >= 60 ? { cls: 'bon', txt: 'Correct' }
+      : (note >= 40 ? { cls: 'attention', txt: 'À surveiller' } : { cls: 'urgent', txt: 'Faible' })));
+
+    /* ----- Module revenu élevé : 7 signes d'érosion de la valeur liquidative ----- */
+    var texteId = (prof.nom || '') + ' ' + (prof.categorie || '');
+    var raisons = [];
+    if (m.rendementDistrib !== null && m.rendementDistrib >= CONFIG.SEUIL_REVENU_ELEVE) {
+      raisons.push('distribution des 12 derniers mois de ' + fp(m.rendementDistrib) + ' (seuil : ' + fp(CONFIG.SEUIL_REVENU_ELEVE, 0) + ')');
+    }
+    if (RE_REVENU.test(texteId)) raisons.push('nom ou catégorie évoquant une stratégie de revenu à options');
+    var moduleActif = raisons.length > 0;
+    var signes = moduleActif ? calculerSignes(m, prof, pts, divs, fin, texteId) : [];
+
+    return { prof: prof, mesures: m, criteres: criteres, note: note, verdict: verdict, couverture: couverture,
+             moduleActif: moduleActif, raisons: raisons, signes: signes,
+             sommaireAbsent: !data.sommaire, recuLe: data.recuLe, symbole: data.symbole,
+             diag: { n: n, debut: pts[0].t, fin: dernier.t, c0: pts[0].c, c1: dernier.c, nDiv: divs.length, nBrut: (chart.t || []).length } };
+  }
+
+  function calculerSignes(m, prof, pts, divs, fin, texteId) {
+    var n = pts.length, dernier = pts[n - 1], y = m.rendementDistrib;
+    var out = [];
+    function ajouter(num, titre, statut, detail) { out.push({ num: num, titre: titre, statut: statut, detail: detail }); }
+
+    // 1. Rendement total constamment inférieur à la distribution affichée
+    if (y === null || y <= 0 || m.rend36 === null) {
+      ajouter(1, 'Rendement total sous la distribution affichée', 'nd',
+        'Il faut au moins 3 ans d\'historique et une distribution sur 12 mois.');
+    } else {
+      var sous = [m.rend36 < y, m.rend60 === null ? null : m.rend60 < y];
+      var st1 = (sous[0] && sous[1] === true) ? 'bad' : ((sous[0] || sous[1] === true) ? 'warn' : 'ok');
+      ajouter(1, 'Rendement total sous la distribution affichée', st1,
+        'Rendement total annualisé sur 3 ans : ' + fp(m.rend36) +
+        (m.rend60 === null ? '' : ', sur 5 ans : ' + fp(m.rend60)) +
+        '. Distribution des 12 derniers mois : ' + fp(y) + '.' +
+        (m.rend60 === null && sous[0] ? ' Historique de moins de 5 ans, signe non confirmé.' : ''));
+    }
+
+    // 2. Baisse prolongée de la VL (prix de l'unité)
+    var mois2 = Math.min(36, n - 1);
+    if (mois2 < 12) {
+      ajouter(2, 'Baisse prolongée de la valeur liquidative', 'nd', 'Moins de 12 mois d\'historique.');
+    } else {
+      var v2 = dernier.c / pts[n - 1 - mois2].c - 1;
+      ajouter(2, 'Baisse prolongée de la valeur liquidative', v2 < -0.10 ? 'bad' : (v2 < 0 ? 'warn' : 'ok'),
+        'Variation du prix de l\'unité sur ' + mois2 + ' mois : ' + (v2 > 0 ? '+' : '') + fp(v2) +
+        '. Sans comparaison avec un indice : une baisse peut aussi refléter un recul général des marchés.');
+    }
+
+    // 3. Réductions répétées de la distribution (en dollars par année)
+    if (m.annees < 3 || m.d1 <= 0 || m.d2 <= 0) {
+      ajouter(3, 'Réductions répétées de la distribution', 'nd', 'Il faut 3 années complètes de distributions.');
+    } else {
+      var baisses = (m.d0 < m.d1 * 0.95 ? 1 : 0) + (m.d1 < m.d2 * 0.95 ? 1 : 0);
+      ajouter(3, 'Réductions répétées de la distribution', baisses >= 2 ? 'bad' : (baisses === 1 ? 'warn' : 'ok'),
+        'Distributions par période de 12 mois, de la plus récente à la plus ancienne : ' +
+        argent(m.d0) + ', ' + argent(m.d1) + ', ' + argent(m.d2) + ' par unité.');
+    }
+
+    // 4. Distribution élevée seulement parce que la VL a chuté
+    var h = m.annees >= 4 ? 36 : (m.annees >= 3 ? 24 : null);
+    if (h === null || y === null) {
+      ajouter(4, 'Distribution élevée parce que la valeur liquidative a chuté', 'nd', 'Il faut au moins 3 ans d\'historique.');
+    } else {
+      var dThen = sommeDiv(divs, fin, h / 12), pThen = pts[n - 1 - h].c;
+      if (!(dThen > 0) || !(pThen > 0)) {
+        ajouter(4, 'Distribution élevée parce que la valeur liquidative a chuté', 'nd', 'Distributions passées introuvables.');
+      } else {
+        var yThen = dThen / pThen, pv = dernier.c / pThen - 1;
+        var st4 = (pv < -0.10 && m.d0 <= dThen * 1.05 && y > yThen) ? 'bad' : ((pv < 0 && y > yThen) ? 'warn' : 'ok');
+        ajouter(4, 'Distribution élevée parce que la valeur liquidative a chuté', st4,
+          'Il y a ' + (h / 12) + ' ans : ' + argent(dThen) + ' par unité pour un rendement de ' + fp(yThen) +
+          '. Maintenant : ' + argent(m.d0) + ' pour ' + fp(y) + '. Variation du prix : ' + (pv > 0 ? '+' : '') + fp(pv) + '.');
+      }
+    }
+
+    // 5. Rendement depuis la création très inférieur au rendement affiché
+    if (m.rendCreation === null || y === null || y <= 0) {
+      ajouter(5, 'Rendement depuis la création sous le rendement affiché', 'nd', 'Il faut au moins 3 ans d\'historique.');
+    } else {
+      var st5 = m.rendCreation < y * 0.5 ? 'bad' : (m.rendCreation < y ? 'warn' : 'ok');
+      ajouter(5, 'Rendement depuis la création sous le rendement affiché', st5,
+        'Rendement total annualisé depuis la création : ' + fp(m.rendCreation) + ' (distribution actuelle : ' + fp(y) + ').');
+    }
+
+    // 6. Frais et structure à levier
+    var levier = RE_LEVIER.test(texteId), ameliore = /enhanced|am[ée]lior|boost/i.test(texteId);
+    if (levier) {
+      ajouter(6, 'Frais élevés ou structure à levier', 'bad',
+        'Le nom ou la catégorie évoque un levier (ou une structure de type split corp). Le mécanisme de récupération d\'une baisse n\'est pas celui d\'un indice large.');
+    } else if (ameliore) {
+      ajouter(6, 'Frais élevés ou structure à levier', 'warn',
+        'Le nom contient « enhanced » (ou équivalent). Plusieurs fonds de ce type empruntent pour investir davantage. Vérifiez la fiche du fonds pour le levier et les frais réels' +
+        (prof.frais === null ? '.' : ' (frais lus : ' + fp(prof.frais, 2) + ').'));
+    } else if (prof.frais === null) {
+      ajouter(6, 'Frais élevés ou structure à levier', 'nd', 'Frais non disponibles. Les coûts de financement d\'un levier éventuel ne sont pas mesurés.');
+    } else {
+      ajouter(6, 'Frais élevés ou structure à levier', prof.frais > 0.015 ? 'bad' : (prof.frais > 0.01 ? 'warn' : 'ok'),
+        'Frais de gestion : ' + fp(prof.frais, 2) + '. Aucun indice de levier dans le nom, mais seul le nom est vérifié : consultez la fiche du fonds.');
+    }
+
+    // 7. Concentration sur un secteur ou un titre
+    if (prof.top10 === null && prof.topSecteur === null) {
+      ajouter(7, 'Concentration sur un secteur ou un titre', 'nd', 'Composition du fonds non disponible.');
+    } else {
+      var t10 = prof.top10 === null ? 0 : prof.top10, ts = prof.topSecteur === null ? 0 : prof.topSecteur;
+      var st7 = (t10 > 0.60 || ts > 0.50) ? 'bad' : ((t10 > 0.40 || ts > 0.35) ? 'warn' : 'ok');
+      ajouter(7, 'Concentration sur un secteur ou un titre', st7,
+        (prof.top10 === null ? '' : '10 principaux titres : ' + fp(prof.top10) + '. ') +
+        (prof.topSecteur === null ? '' : 'Plus grand secteur : ' + prof.nomSecteur + ' ' + fp(prof.topSecteur) + '.'));
+    }
+    return out;
+  }
+
+  /* ---------- Affichage ---------- */
+  function alerte(cls, html) { return '<div class="fnb-alerte ' + cls + '">' + html + '</div>'; }
+
+  function rendre(res) {
+    var p = res.prof, h = '';
+    h += '<div class="card"><div class="fnb-entete">';
+    if (res.note !== null) {
+      h += '<div class="score-circle ' + res.verdict.cls + '" aria-label="Note de ' + res.note + ' sur 100">' + res.note + '</div>';
+    }
+    h += '<div><h3 style="margin:0 0 6px 0;">' + esc(p.nom || res.symbole) + '</h3>';
+    h += '<div class="fnb-meta">Symbole : ' + esc(res.symbole) +
+      (p.devise ? ' · Devise : ' + esc(p.devise) : '') +
+      (p.categorie ? ' · Catégorie : ' + esc(p.categorie) : '') + '<br>';
+    h += res.note !== null
+      ? '<strong style="color:#1f2937;">Note : ' + res.note + ' sur 100 (' + esc(res.verdict.txt) + ')</strong> · ' +
+        'critères évaluables : ' + Math.round(res.couverture * 100) + ' % du total'
+      : 'Aucun critère n\'a pu être évalué.';
+    h += '<br>Données récupérées le ' + esc((res.recuLe || '').slice(0, 10)) + ' · calcul v4' +
+      (res.diag ? '<br>Historique lu : ' + res.diag.n + ' points mensuels (' + res.diag.nBrut + ' reçus), du ' + new Date(res.diag.debut).toISOString().slice(0, 7) + ' au ' + new Date(res.diag.fin).toISOString().slice(0, 7) + ', premier cours ' + res.diag.c0.toFixed(2) + ', dernier cours ' + res.diag.c1.toFixed(2) + ', ' + res.diag.nDiv + ' distributions' : '') +
+      '</div></div></div>';
+
+    if (p.type && !/ETF|MUTUALFUND|FUND/i.test(p.type)) {
+      h += alerte('jaune', 'Ce symbole est de type « ' + esc(p.type) + ' » et non un FNB. Plusieurs critères ne s\'appliquent pas.');
+    }
+    if (res.sommaireAbsent) {
+      h += alerte('bleu', 'Le profil du fonds (frais, titres, secteurs, P/E, actifs) n\'a pas pu être lu. ' +
+        'Seuls les critères calculés à partir de l\'historique de prix sont évalués.');
+    }
+    if (res.symbole && res.symbole.indexOf('.') === -1) {
+      h += alerte('bleu', 'Symbole sans suffixe : Yahoo cherche d\'abord un titre américain. Pour un FNB canadien, ajoutez .TO (ex. VGRO.TO). ' +
+        'Vérifiez que le nom affiché ci-dessus correspond bien au fonds visé.');
+    }
+    if (res.mesures && res.mesures.annees < 3 && res.note !== null) {
+      h += alerte('jaune', '<strong>Historique court.</strong> Ce fonds a moins de 3 ans de données : Sharpe, tendance et recul maximal reposent sur peu de points, et la note est moins fiable.');
+    }
+    if (res.couverture < 0.6 && res.note !== null) {
+      h += alerte('jaune', '<strong>Note peu fiable.</strong> Seulement ' + Math.round(res.couverture * 100) +
+        ' % des critères ont pu être évalués faute de données.');
+    }
+    var nbBad = 0;
+    for (var i = 0; i < res.signes.length; i++) if (res.signes[i].statut === 'bad') nbBad++;
+    if (nbBad >= 2) {
+      h += alerte('rouge', '<strong>' + nbBad + ' signes d\'érosion confirmés.</strong> La note ci-dessus ne tient pas compte de ce risque : ' +
+        'lisez le module « revenu élevé » plus bas.');
+    }
+
+    h += '<div class="card"><h3>Détail des critères</h3><div class="fnb-scroll"><table class="fnb-table"><thead><tr>' +
+      '<th>Critère</th><th>Valeur</th><th>Repère</th><th>Points</th><th>Source</th></tr></thead><tbody>';
+    for (var c = 0; c < res.criteres.length; c++) {
+      var k = res.criteres[c];
+      h += '<tr><td><strong>' + esc(k.nom) + '</strong><span class="fnb-sous">Poids : ' + k.poids + '</span></td>' +
+        '<td>' + (k.valeur === null ? 'Non disponible' : k.valeur) + '</td>' +
+        '<td>' + esc(k.repere) + '</td>' +
+        '<td>' + (k.score === null ? badge('nd') : badge(k.statut, fr(k.score * k.poids, 1) + ' / ' + k.poids)) + '</td>' +
+        '<td>' + esc(k.source) + '</td></tr>';
+    }
+    h += '</tbody></table></div></div>';
+
+    if (res.moduleActif) {
+      h += '<div class="card"><h3>Module revenu élevé : 7 signes d\'érosion de la valeur liquidative</h3>';
+      h += alerte('bleu', 'Module activé : ' + esc(res.raisons.join(' ; ')) + '. Le taux de distribution affiché ne dit rien à lui seul. ' +
+        'Ce qui compte est le rendement total, c\'est-à-dire le prix plus les distributions.');
+      h += '<div class="fnb-scroll"><table class="fnb-table"><thead><tr><th>Signe</th><th>Statut</th><th>Détail</th></tr></thead><tbody>';
+      for (var s = 0; s < res.signes.length; s++) {
+        var sg = res.signes[s];
+        h += '<tr><td><strong>' + sg.num + '. ' + esc(sg.titre) + '</strong></td><td>' + badge(sg.statut) + '</td><td>' + esc(sg.detail) + '</td></tr>';
+      }
+      h += '</tbody></table></div></div>';
+    }
+
+    h += '<div class="card" style="background:#f9fafb;"><h4 style="margin-bottom:8px;">Limites de cette évaluation</h4>' +
+      '<ul style="margin-left:20px;line-height:1.8;color:#4b5563;font-size:0.92em;">' +
+      '<li>Les repères sont des seuils généraux choisis par l\'auteur du site. Ce sont des hypothèses de travail, pas des normes établies.</li>' +
+      '<li>Le Sharpe, la tendance et le recul maximal sont calculés sur des données mensuelles de rendement total.</li>' +
+      '<li>Aucune comparaison avec un indice de référence n\'est faite. Un fonds sectoriel peut être concentré par conception.</li>' +
+      '<li>La fiscalité (retenues à la source étrangères, type de compte) n\'est pas évaluée.</li>' +
+      (res.prof.peInverse ? '<li>Le P/E a été converti à partir d\'un rendement des bénéfices fourni par la source.</li>' : '') +
+      '</ul></div>';
+    return h;
+  }
+
+  /* ---------- Interaction ---------- */
+  function majStatut(texte, chargement) {
+    var el = document.getElementById('fnb-statut');
+    if (!el) return;
+    el.textContent = texte || '';
+    el.className = 'fnb-statut' + (chargement ? ' fnb-chargement' : '');
+  }
+  function lireCache(t) {
+    try {
+      var j = JSON.parse(sessionStorage.getItem('fnb:' + t));
+      if (j && Date.now() - j.t < CONFIG.DUREE_CACHE_MS) return j.data;
+    } catch (e) {}
+    return null;
+  }
+  function ecrireCache(t, data) {
+    try { sessionStorage.setItem('fnb:' + t, JSON.stringify({ t: Date.now(), data: data })); } catch (e) {}
+  }
+  function afficher(data) {
+    var res = analyser(data);
+    var zone = document.getElementById('fnb-resultat');
+    if (res.erreur) {
+      zone.innerHTML = '';
+      majStatut('Historique de prix insuffisant pour évaluer ce symbole.');
+      return;
+    }
+    majStatut('');
+    zone.innerHTML = rendre(res);
+    zone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function fnbLancer(evt) {
+    if (evt && evt.preventDefault) evt.preventDefault();
+    var t = (document.getElementById('fnb-ticker').value || '').trim().toUpperCase();
+    document.getElementById('fnb-ticker').value = t;
+    if (!/^[A-Z0-9.\-]{1,12}$/.test(t)) {
+      majStatut('Entrez un symbole valide (lettres, chiffres, point ou tiret).');
+      return false;
+    }
+    if (CONFIG.URL_RELAIS.indexOf('REMPLACER') !== -1) {
+      majStatut('Le service de données n\'est pas encore configuré (URL_RELAIS).');
+      return false;
+    }
+    var cache = lireCache(t);
+    if (cache) { afficher(cache); return false; }
+
+    var btn = document.getElementById('fnb-bouton');
+    btn.disabled = true;
+    document.getElementById('fnb-resultat').innerHTML = '';
+    majStatut('Récupération des données de ' + t, true);
+
+    var url = new URL(CONFIG.URL_RELAIS);
+    url.searchParams.set('symbol', t);
+    var ctrl = new AbortController();
+    var minuteur = setTimeout(function () { ctrl.abort(); }, 20000);
+
+    fetch(url.toString(), { signal: ctrl.signal })
+      .then(function (r) {
+        clearTimeout(minuteur);
+        if (r.status === 400) throw new Error('invalide');
+        if (r.status === 404) throw new Error('introuvable');
+        if (!r.ok) throw new Error('service');
+        return r.json();
+      })
+      .then(function (data) { ecrireCache(t, data); afficher(data); })
+      .catch(function (err) {
+        var msg = err && err.message;
+        majStatut(msg === 'invalide' ? 'Ce symbole n\'est pas valide.'
+          : (msg === 'introuvable' ? 'Aucune donnée trouvée pour ' + t + '. Pour la Bourse de Toronto, ajoutez .TO (ex. VFV.TO).'
+          : 'Le service de données est temporairement indisponible. Réessayez dans quelques minutes.'));
+      })
+      .then(function () { btn.disabled = false; });
+    return false;
+  }
+
+  function fnbExemple(t) {
+    document.getElementById('fnb-ticker').value = t;
+    fnbLancer();
+  }
+
+  function fnbBilan() {
+    var investi = parseFloat(document.getElementById('fnb-investi').value);
+    var distrib = parseFloat(document.getElementById('fnb-distrib').value);
+    var valeur = parseFloat(document.getElementById('fnb-valeur').value);
+    var zone = document.getElementById('fnb-bilan-resultat');
+    if (isNaN(investi) || isNaN(distrib) || isNaN(valeur)) { zone.innerHTML = ''; return; }
+    var net = valeur + distrib - investi;
+    var txt = net >= 0
+      ? 'Jusqu\'ici, la position a payé pour patienter : la valeur actuelle plus les distributions dépasse le montant investi.'
+      : 'Jusqu\'ici, les distributions n\'ont pas compensé la baisse de valeur : une partie de la distribution était un retour de capital.';
+    zone.innerHTML = '<div class="fnb-alerte ' + (net >= 0 ? 'bleu' : 'jaune') + '"><strong>Résultat net : ' +
+      (net >= 0 ? '+' : '') + esc(argent(net)) + '</strong><br>' + esc(txt) +
+      '<br><small>Calcul : valeur actuelle + distributions reçues − montant investi. Ce résultat ne tient pas compte des impôts.</small></div>';
+  }
+
+  if (typeof window !== 'undefined') {
+    window.fnbLancer = fnbLancer;
+    window.fnbExemple = fnbExemple;
+    window.fnbBilan = fnbBilan;
+  }
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { analyser: analyser, rendre: rendre, CONFIG: CONFIG };
+  }
+}());
+
 </script>
 </body>
 </html>
