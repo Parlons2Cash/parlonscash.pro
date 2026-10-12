@@ -7036,6 +7036,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 
 #tab-fnb .fnb-entete { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
 #tab-fnb .fnb-entete .score-circle { margin: 0; flex-shrink: 0; }
+#tab-fnb .score-circle.fnb-sans-note { background: #f3f4f6; border-color: #9ca3af; color: #6b7280; }
 #tab-fnb .fnb-meta { color: #6b7280; font-size: 0.9em; line-height: 1.6; }
 
 #tab-fnb .fnb-alerte {
@@ -8043,14 +8044,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   function rendre(res) {
     var p = res.prof, h = '';
     h += '<div class="card"><div class="fnb-entete">';
-    if (res.note !== null) {
+    var noteMasquee = res.note !== null && res.couverture < 0.6;
+    if (noteMasquee) {
+      h += '<div class="score-circle fnb-sans-note" aria-label="Note non calculée">&ndash;</div>';
+    } else if (res.note !== null) {
       h += '<div class="score-circle ' + res.verdict.cls + '" aria-label="Note de ' + res.note + ' sur 100">' + res.note + '</div>';
     }
     h += '<div><h3 style="margin:0 0 6px 0;">' + esc(p.nom || res.symbole) + '</h3>';
     h += '<div class="fnb-meta">Symbole : ' + esc(res.symbole) +
       (p.devise ? ' · Devise : ' + esc(p.devise) : '') +
       (p.categorie ? ' · Catégorie : ' + esc(p.categorie) : '') + '<br>';
-    h += res.note !== null
+    h += noteMasquee
+      ? '<strong style="color:#1f2937;">Note non calculée : données insuffisantes</strong> · repères évaluables : ' + Math.round(res.couverture * 100) + ' % du total'
+      : res.note !== null
       ? '<strong style="color:#1f2937;">Note de conformité aux repères : ' + res.note + ' sur 100</strong> · ' +
         'repères évaluables : ' + Math.round(res.couverture * 100) + ' % du total'
       : 'Aucun critère n\'a pu être évalué.';
@@ -8070,9 +8076,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     if (res.mesures && res.mesures.annees < 3 && res.note !== null) {
       h += alerte('jaune', '<strong>Historique court.</strong> Ce fonds a moins de 3 ans de données : Sharpe, tendance et recul maximal reposent sur peu de points, et la note est moins fiable.');
     }
-    if (res.couverture < 0.6 && res.note !== null) {
-      h += alerte('jaune', '<strong>Note peu fiable.</strong> Seulement ' + Math.round(res.couverture * 100) +
-        ' % des critères ont pu être évalués faute de données.');
+    if (noteMasquee) {
+      h += alerte('jaune', '<strong>Pas de note.</strong> Seulement ' + Math.round(res.couverture * 100) +
+        ' % des repères ont pu être évalués faute de données. Une note calculée sur si peu de repères ne serait pas comparable à celle d\'un autre fonds. Les repères disponibles sont détaillés plus bas.');
     }
     var nbBad = 0;
     for (var i = 0; i < res.signes.length; i++) if (res.signes[i].statut === 'bad') nbBad++;
