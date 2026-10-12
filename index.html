@@ -2870,7 +2870,7 @@ Historique Québec : 2-4% par an
   <h2>Évaluer un FNB</h2>
 
   <p style="background:#eff6ff;padding:15px;border-radius:8px;border-left:4px solid #2563eb;margin-bottom:20px;">
-    Entrez le symbole d'un FNB. Les données sont récupérées automatiquement et notées sur 100 selon huit critères.
+    Entrez le symbole d'un FNB. Les données sont récupérées automatiquement et comparées à huit repères généraux, pour une note de conformité sur 100. L'outil informe seulement, il ne recommande rien.
     Chaque critère affiche son repère et sa source. Si une donnée est introuvable, le critère est exclu
     du calcul au lieu d'être deviné.
   </p>
@@ -7654,7 +7654,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     return Math.sqrt(s / (a.length - 1));
   }
   function statutDepuisScore(s) { return s === null ? 'nd' : (s >= 0.7 ? 'ok' : (s >= 0.4 ? 'warn' : 'bad')); }
-  var LIBELLES = { ok: 'Sain', warn: 'À surveiller', bad: 'Signe confirmé', nd: 'Non évaluable' };
+  var LIBELLES = { ok: 'Repère respecté', warn: 'À observer', bad: 'Repère non respecté', nd: 'Non évaluable' };
+  var LIBELLES_SIGNES = { ok: 'Signe absent', warn: 'À observer', bad: 'Signe présent', nd: 'Non évaluable' };
   function badge(statut, texte) {
     return '<span class="fnb-badge fnb-' + statut + '">' + esc(texte || LIBELLES[statut]) + '</span>';
   }
@@ -7819,7 +7820,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     criteres.push({
       nom: 'Frais de gestion (RFG)', poids: 15, score: scFrais,
       valeur: prof.frais === null ? null : esc(fp(prof.frais, 2)),
-      repere: 'Excellent à 0,25 % ou moins, faible à 1,5 % ou plus',
+      repere: 'Pleinement respecté à 0,25 % ou moins, non respecté à 1,5 % ou plus',
       source: 'Yahoo, profil du fonds'
     });
 
@@ -7839,7 +7840,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     criteres.push({
       nom: 'Diversification', poids: 20, score: partsDiv.length ? moyenne(partsDiv) : null,
       valeur: valDiv,
-      repere: 'Poids des 10 principaux titres : excellent à 25 % ou moins, faible à 60 % ou plus. Plus grand secteur : excellent à 30 % ou moins, faible à 60 % ou plus',
+      repere: 'Poids des 10 principaux titres : pleinement respecté à 25 % ou moins, non respecté à 60 % ou plus. Plus grand secteur : pleinement respecté à 30 % ou moins, non respecté à 60 % ou plus',
       source: 'Yahoo, profil du fonds'
     });
 
@@ -7847,7 +7848,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
       nom: 'Ratio de Sharpe (3 ans)', poids: 15, score: lin(m.sharpe, 0, 1),
       valeur: m.sharpe === null ? null : esc(fr(m.sharpe, 2)) +
         '<span class="fnb-sous">Taux sans risque supposé : ' + esc(fp(CONFIG.TAUX_SANS_RISQUE)) + '</span>',
-      repere: 'Faible à 0 ou moins, excellent à 1 ou plus',
+      repere: 'Non respecté à 0 ou moins, pleinement respecté à 1 ou plus',
       source: 'Calculé (36 rendements mensuels, rendement total)'
     });
 
@@ -7872,7 +7873,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
       nom: 'P/E du portefeuille', poids: 10, score: lin(prof.pe, 30, 15),
       valeur: prof.pe === null ? null : esc(fr(prof.pe, 1)) +
         '<span class="fnb-sous">Selon la source, peut être un P/E historique plutôt que prévisionnel</span>',
-      repere: 'Excellent à 15 ou moins, faible à 30 ou plus',
+      repere: 'Pleinement respecté à 15 ou moins, non respecté à 30 ou plus',
       source: 'Yahoo, profil du fonds'
     });
 
@@ -7880,21 +7881,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
       nom: 'Taille du fonds', poids: 10,
       score: prof.actifs === null ? null : lin(Math.log(prof.actifs) / Math.LN10, Math.log(25e6) / Math.LN10, 9),
       valeur: prof.actifs === null ? null : esc(grosMontant(prof.actifs)),
-      repere: 'Faible sous 25 M$, excellent à 1 G$ ou plus (risque de fermeture et liquidité)',
+      repere: 'Non respecté sous 25 M$, pleinement respecté à 1 G$ ou plus (risque de fermeture et liquidité)',
       source: 'Yahoo, profil du fonds'
     });
 
     criteres.push({
       nom: 'Recul maximal (5 ans)', poids: 10, score: lin(m.recul.max * 100, -50, -15),
       valeur: esc(fp(m.recul.max)) + '<span class="fnb-sous">Écart actuel avec le sommet : ' + esc(fp(m.recul.actuel)) + '</span>',
-      repere: 'Excellent à -15 % ou mieux, faible à -50 % ou pire',
+      repere: 'Pleinement respecté à -15 % ou mieux, non respecté à -50 % ou pire',
       source: 'Calculé (données mensuelles, les creux intramensuels sont sous-estimés)'
     });
 
     criteres.push({
       nom: 'Historique', poids: 10, score: lin(annees, 1, 10),
       valeur: esc(fr(annees, 1)) + ' ans',
-      repere: 'Faible à 1 an, excellent à 10 ans ou plus',
+      repere: 'Non respecté à 1 an, pleinement respecté à 10 ans ou plus',
       source: 'Calculé (date du premier cours)'
     });
 
@@ -7908,10 +7909,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     }
     var couverture = poidsEval / 100;
     var note = poidsEval > 0 ? Math.round(points / poidsEval * 100) : null;
-    var verdict = note === null ? null
-      : (note >= 75 ? { cls: 'excellent', txt: 'Solide' }
-      : (note >= 60 ? { cls: 'bon', txt: 'Correct' }
-      : (note >= 40 ? { cls: 'attention', txt: 'À surveiller' } : { cls: 'urgent', txt: 'Faible' })));
+    var verdict = note === null ? null : { cls: 'bon', txt: '' };
 
     /* ----- Module revenu élevé : 7 signes d'érosion de la valeur liquidative ----- */
     var texteId = (prof.nom || '') + ' ' + (prof.categorie || '');
@@ -8025,6 +8023,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   }
 
   /* ---------- Affichage ---------- */
+  var EXPLICATIONS = {
+    'Frais': 'Coût annuel prélevé par le fonds.',
+    'Diversification': 'Mesure si le fonds dépend de quelques titres ou d\'un seul secteur.',
+    'Ratio de Sharpe': 'Rendement obtenu pour chaque unité de variation du prix. Plus il est élevé, plus le parcours a été régulier.',
+    'Tendance': 'Position du prix par rapport à sa moyenne récente.',
+    'P/E': 'Prix payé pour chaque dollar de bénéfices des entreprises détenues.',
+    'Taille': 'Actifs du fonds. Un petit fonds peut fermer ou être moins facile à échanger.',
+    'Recul maximal': 'Pire baisse entre un sommet et un creux sur 5 ans.',
+    'Historique': 'Durée des données disponibles.'
+  };
+  function explication(nom) {
+    for (var cle in EXPLICATIONS) if (nom.indexOf(cle) === 0) return EXPLICATIONS[cle];
+    return '';
+  }
+
   function alerte(cls, html) { return '<div class="fnb-alerte ' + cls + '">' + html + '</div>'; }
 
   function rendre(res) {
@@ -8038,8 +8051,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
       (p.devise ? ' · Devise : ' + esc(p.devise) : '') +
       (p.categorie ? ' · Catégorie : ' + esc(p.categorie) : '') + '<br>';
     h += res.note !== null
-      ? '<strong style="color:#1f2937;">Note : ' + res.note + ' sur 100 (' + esc(res.verdict.txt) + ')</strong> · ' +
-        'critères évaluables : ' + Math.round(res.couverture * 100) + ' % du total'
+      ? '<strong style="color:#1f2937;">Note de conformité aux repères : ' + res.note + ' sur 100</strong> · ' +
+        'repères évaluables : ' + Math.round(res.couverture * 100) + ' % du total'
       : 'Aucun critère n\'a pu être évalué.';
     h += '<br>Données récupérées le ' + esc((res.recuLe || '').slice(0, 10)) + '</div></div></div>';
 
@@ -8064,15 +8077,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
     var nbBad = 0;
     for (var i = 0; i < res.signes.length; i++) if (res.signes[i].statut === 'bad') nbBad++;
     if (nbBad >= 2) {
-      h += alerte('rouge', '<strong>' + nbBad + ' signes d\'érosion confirmés.</strong> La note ci-dessus ne tient pas compte de ce risque : ' +
-        'lisez le module « revenu élevé » plus bas.');
+      h += alerte('rouge', '<strong>' + nbBad + ' signes d\'érosion présents dans les données.</strong> La note ci-dessus n\'en tient pas compte. ' +
+        'Le module « revenu élevé » plus bas donne le détail.');
     }
+
+    h += alerte('bleu', '<strong>Comment lire cette note.</strong> Elle indique dans quelle mesure le fonds respecte huit repères généraux choisis par l\'auteur du site. ' +
+      'Elle ne dit rien sur la convenance du fonds pour votre situation, et elle ne recommande ni d\'acheter, ni de conserver, ni de vendre. ' +
+      'Un fonds à revenu ou à options obtient souvent une note plus basse qu\'un fonds indiciel, car les repères favorisent les fonds très diversifiés. La note ne juge pas leur qualité.');
 
     h += '<div class="card"><h3>Détail des critères</h3><div class="fnb-scroll"><table class="fnb-table"><thead><tr>' +
       '<th>Critère</th><th>Valeur</th><th>Repère</th><th>Points</th><th>Source</th></tr></thead><tbody>';
     for (var c = 0; c < res.criteres.length; c++) {
       var k = res.criteres[c];
-      h += '<tr><td><strong>' + esc(k.nom) + '</strong><span class="fnb-sous">Poids : ' + k.poids + '</span></td>' +
+      h += '<tr><td><strong>' + esc(k.nom) + '</strong><span class="fnb-sous">' + esc(explication(k.nom)) + '</span><span class="fnb-sous">Poids : ' + k.poids + '</span></td>' +
         '<td>' + (k.valeur === null ? 'Non disponible' : k.valeur) + '</td>' +
         '<td>' + esc(k.repere) + '</td>' +
         '<td>' + (k.score === null ? badge('nd') : badge(k.statut, fr(k.score * k.poids, 1) + ' / ' + k.poids)) + '</td>' +
@@ -8136,6 +8153,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   function fnbLancer(evt) {
     if (evt && evt.preventDefault) evt.preventDefault();
     var t = (document.getElementById('fnb-ticker').value || '').trim().toUpperCase();
+    // Parts de fiducie cotées en « .UN » : Yahoo attend « XXX-UN.TO »
+    var mUn = /^([A-Z0-9]{1,6})[.-]UN(\.TO)?$/.exec(t);
+    if (mUn) { t = mUn[1] + '-UN.TO'; document.getElementById('fnb-ticker').value = t; }
     document.getElementById('fnb-ticker').value = t;
     if (!/^[A-Z0-9.\-]{1,12}$/.test(t)) {
       majStatut('Entrez un symbole valide (lettres, chiffres, point ou tiret).');
@@ -8170,7 +8190,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
       .catch(function (err) {
         var msg = err && err.message;
         majStatut(msg === 'invalide' ? 'Ce symbole n\'est pas valide.'
-          : (msg === 'introuvable' ? 'Aucune donnée trouvée pour ' + t + '. Pour la Bourse de Toronto, ajoutez .TO (ex. VFV.TO).'
+          : (msg === 'introuvable' ? 'Aucune donnée trouvée pour ' + t + '. Pour la Bourse de Toronto, ajoutez .TO (ex. VFV.TO). Pour une part de fiducie cotée en .UN, écrivez par exemple EIT-UN.TO.'
           : 'Le service de données est temporairement indisponible. Réessayez dans quelques minutes.'));
       })
       .then(function () { btn.disabled = false; });
