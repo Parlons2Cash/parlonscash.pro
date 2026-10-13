@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- Début : confidentialité et consentement Parlons Cash -->
+<style>
+#pc-privacy-banner{position:fixed;bottom:0;left:0;right:0;z-index:2147483647;background:#fff;color:#172336;box-shadow:0 -4px 25px #0003;padding:19px;max-height:85vh;overflow:auto;font:15px/1.5 system-ui,sans-serif}#pc-privacy-banner[hidden]{display:none!important}#pc-privacy-banner .pc-wrap{max-width:860px;margin:auto}#pc-privacy-banner button,#pc-privacy-settings{font:inherit;cursor:pointer;border-radius:7px;padding:9px 14px;margin:5px;border:1px solid #1859ad}#pc-privacy-banner .pc-primary{background:#1859ad;color:#fff}#pc-privacy-banner .pc-secondary{background:white;color:#1859ad}#pc-privacy-settings{position:fixed;bottom:12px;right:12px;z-index:2147483646;background:#fff;color:#124b91;box-shadow:0 1px 10px #0002;font-size:12px;padding:7px 10px}#pc-privacy-banner label{display:inline-block;margin:5px 18px 5px 0}#pc-privacy-banner input{width:17px;height:17px;vertical-align:middle}
+</style>
+<script>
+(function(){
+ 'use strict';
+ const KEY='parlonscash-consent-v1';
+ const GA='G-8F7MY8T2TC';
+ const ADS='ca-pub-3695467180266092';
+ let choice=null,gaLoaded=false,adsLoaded=false;
+ try { const v=JSON.parse(localStorage.getItem(KEY)); if(v&&typeof v.analytics==='boolean'&&typeof v.ads==='boolean')choice=v; }catch(e){}
+ function script(src,attrs){let s=document.createElement('script');s.async=true;s.src=src;if(attrs){Object.entries(attrs).forEach(([k,v])=>s.setAttribute(k,v));}document.head.appendChild(s);}
+ function loadSelected(){
+   if(choice&&choice.analytics&&!gaLoaded){gaLoaded=true;window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag('js',new Date());gtag('config',GA);script('https://www.googletagmanager.com/gtag/js?id='+GA);}
+   if(choice&&choice.ads&&!adsLoaded){adsLoaded=true;script('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+ADS,{'crossorigin':'anonymous'});}
+ }
+ function save(analytics,ads){choice={analytics:!!analytics,ads:!!ads,updated:new Date().toISOString()};try{localStorage.setItem(KEY,JSON.stringify(choice));}catch(e){} document.getElementById('pc-privacy-banner').hidden=true;
+   if((gaLoaded&&!choice.analytics)||(adsLoaded&&!choice.ads)){location.reload();return;}loadSelected();}
+ function init(){
+   const panel=document.createElement('section');panel.id='pc-privacy-banner';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Choix de confidentialité');panel.innerHTML='<div class="pc-wrap"><strong style="font-size:19px">Vos préférences de confidentialité</strong><p>Parlons Cash souhaite utiliser des témoins facultatifs pour mesurer la fréquentation avec Google Analytics et, séparément, pour la publicité Google AdSense. Rien de facultatif ne se charge tant que vous ne l’avez pas autorisé. Vous pouvez refuser sans perdre l’accès au site.</p><p><label><input type="checkbox" id="pc-analytics"> Statistiques (Google Analytics)</label><label><input type="checkbox" id="pc-ads"> Publicité (Google AdSense)</label></p><div><button type="button" class="pc-secondary" id="pc-reject">Tout refuser</button><button type="button" class="pc-primary" id="pc-save">Enregistrer mes choix</button><button type="button" class="pc-secondary" id="pc-accept">Tout accepter</button></div><small>Vous pouvez modifier vos choix à tout moment avec le bouton « Confidentialité » en bas de page. Pour toute question : azizguellouz@gmail.com.</small></div>';
+   document.body.appendChild(panel);
+   const opener=document.createElement('button');opener.id='pc-privacy-settings';opener.type='button';opener.textContent='Confidentialité';document.body.appendChild(opener);
+   const analytics=panel.querySelector('#pc-analytics'),ads=panel.querySelector('#pc-ads');
+   function show(){analytics.checked=!!(choice&&choice.analytics);ads.checked=!!(choice&&choice.ads);panel.hidden=false;}
+   opener.addEventListener('click',show);
+   panel.querySelector('#pc-reject').addEventListener('click',()=>save(false,false));
+   panel.querySelector('#pc-accept').addEventListener('click',()=>save(true,true));
+   panel.querySelector('#pc-save').addEventListener('click',()=>save(analytics.checked,ads.checked));
+   panel.hidden=!!choice;if(!choice)show();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+ loadSelected();
+})();
+</script>
+<!-- Fin : confidentialité et consentement Parlons Cash -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hypothèque : taux fixe ou variable ? Le prix de la tranquillité à l&#39;automne 2026 | Parlons Cash</title>
+<meta name="description" content="Fixe à 4,59 % ou variable à 3,41 % ? Ce que coûte vraiment la tranquillité d&#39;esprit au renouvellement hypothécaire, avec un exemple chiffré, les pénalités et cinq questions pour décider.">
+<meta name="author" content="Aziz Guellouz">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://parlonscash.pro/blog/hypotheque-fixe-ou-variable.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Parlons Cash">
+<meta property="og:title" content="Hypothèque : taux fixe ou variable ? Le prix de la tranquillité à l&#39;automne 2026">
+<meta property="og:description" content="Fixe à 4,59 % ou variable à 3,41 % ? Ce que coûte vraiment la tranquillité d&#39;esprit au renouvellement hypothécaire, avec un exemple chiffré, les pénalités et cinq questions pour décider.">
+<meta property="og:url" content="https://parlonscash.pro/blog/hypotheque-fixe-ou-variable.html">
+<meta property="og:image" content="https://parlonscash.pro/Aziz Guellouz.jpg">
+<meta property="og:locale" content="fr_CA">
+<meta property="article:published_time" content="2026-10-13">
+<meta property="article:author" content="Aziz Guellouz">
+<script type="application/ld+json">
+ {
+   "@context": "https://schema.org",
+   "@type": "BlogPosting",
+   "headline": "Hypothèque : taux fixe ou variable ? Le prix de la tranquillité à l&#39;automne 2026",
+   "description": "Fixe à 4,59 % ou variable à 3,41 % ? Ce que coûte vraiment la tranquillité d&#39;esprit au renouvellement hypothécaire, avec un exemple chiffré, les pénalités et cinq questions pour décider.",
+   "url": "https://parlonscash.pro/blog/hypotheque-fixe-ou-variable.html",
+   "datePublished": "2026-10-13",
+   "inLanguage": "fr-CA",
+   "author": {"@type": "Person", "name": "Aziz Guellouz", "url": "https://parlonscash.pro/"},
+   "publisher": {"@type": "Person", "name": "Aziz Guellouz"},
+   "keywords": ["hypothèque", "taux fixe", "taux variable", "renouvellement hypothécaire", "Banque du Canada", "Québec", "pénalités hypothécaires", "nesto"]
+ }
+</script>
+<style>
+   * { box-sizing: border-box; }
+   body { font-family: "Segoe UI", Roboto, Arial, sans-serif; background: #f8f9fa; color: #212529; margin: 0; padding: 0; line-height: 1.7; }
+   header { background: #1e40af; color: white; padding: 32px 10%; }
+   header a.retour { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 16px; }
+   header a.retour:hover { color: white; }
+   .article-header h1 { font-size: 1.9em; margin: 0 0 12px 0; line-height: 1.3; }
+   .article-meta { display: flex; gap: 16px; font-size: 0.88em; opacity: 0.8; flex-wrap: wrap; align-items: center; }
+   .article-categorie { background: rgba(255,255,255,0.2); padding: 3px 12px; border-radius: 20px; font-weight: 700; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.06em; }
+   main { max-width: 720px; margin: 48px auto; padding: 0 24px; }
+   p { margin-bottom: 20px; font-size: 1.05em; }
+   h2 { font-size: 1.35em; color: #1e40af; margin: 40px 0 14px 0; font-weight: 700; }
+   blockquote { border-left: 4px solid #2563eb; background: #eff6ff; margin: 28px 0; padding: 20px 24px; border-radius: 0 10px 10px 0; font-size: 1.05em; font-style: italic; color: #1e40af; line-height: 1.7; }
+   .disclaimer { background: #f3f4f6; border-left: 4px solid #9ca3af; padding: 14px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; color: #6b7280; font-size: 0.9em; font-style: italic; line-height: 1.6; }
+   .article-test-ultime { background: #1e40af; color: white; padding: 24px 28px; border-radius: 12px; margin: 32px 0; font-size: 1.05em; font-weight: 600; line-height: 1.6; text-align: center; }
+   footer { text-align: center; padding: 30px 20px; margin-top: 60px; font-size: 0.9rem; color: #6b7280; border-top: 1px solid #e5e7eb; }
+   footer a { color: #2563eb; text-decoration: none; }
+   .nav-articles { text-align: center; margin-top: 48px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+   .nav-articles a { display: inline-block; background: #1e40af; color: white; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9em; }
+   .nav-articles a.secondary { background: white; color: #1e40af; border: 2px solid #1e40af; }
+   ul, ol { margin: 0 0 20px 0; padding-left: 24px; font-size: 1.05em; }
+   li { margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<header>
+<a class="retour" href="../blog.html">← Retour au blog</a>
+<div class="article-header">
+<h1>Hypothèque : taux fixe ou variable ? Le prix de la tranquillité à l&#39;automne 2026</h1>
+<div class="article-meta">
+<span class="article-categorie">Stratégie</span>
+<span>Octobre 2026</span>
+<span>9 min de lecture</span>
+</div>
+</div>
+</header>
+<main>
+<div class="disclaimer">Cet article présente une analyse générale et ne constitue pas un conseil financier personnalisé. Les taux mentionnés sont indicatifs, sous réserve des conditions de qualification et susceptibles de changer. Avant de renouveler, compare les offres de plusieurs prêteurs ou consulte un professionnel hypothécaire.</div>
+<p>Ton hypothèque arrive à échéance bientôt ? Tu découvres peut-être que l&#39;argent coûte bien plus cher qu&#39;en 2021.</p>
+<p>Il faut maintenant choisir entre fixe et variable. À mon avis, cette décision mérite plus qu&#39;un coup d&#39;œil rapide. L&#39;écart entre les deux est énorme et le contexte économique est compliqué.</p>
+<h2>1. L&#39;état des lieux</h2>
+<p>Voici quelques-uns des meilleurs taux au Canada au 13 octobre 2026, selon nesto :</p>
+<ul>
+<li>Fixe 5 ans : 4,59 %</li>
+<li>Variable 5 ans : 3,41 %</li>
+<li>Fixe 3 ans : 4,64 %</li>
+<li>Variable 3 ans : 3,60 %</li>
+</ul>
+<p>Ces taux visent des prêts assurés, sous réserve d&#39;admissibilité. Les prêts non assurés peuvent être très différents.</p>
+<p>Deux choses me frappent. Le variable 5 ans coûte 1,18 point de moins que le fixe. Et le fixe 3 ans n&#39;est pas moins cher que le 5 ans. Raccourcir le terme ne donne donc pas un meilleur taux aujourd&#39;hui.</p>
+<p>Un taux affiché reste un point de comparaison. Ton taux réel dépend de ton dossier, de l&#39;amortissement, de la propriété et du montant emprunté.</p>
+<h2>2. Pourquoi les taux fixes montent alors que la Banque du Canada ne bouge pas</h2>
+<p>Les taux fixes ne suivent pas le taux directeur. Ils suivent surtout les rendements des obligations du gouvernement canadien, notamment celles à 5 ans. Les banques s&#39;en servent comme référence et ajoutent leurs marges et leurs coûts de risque.</p>
+<p>Ces rendements dépendent des anticipations des investisseurs. Si les marchés craignent une inflation persistante ou des hausses de taux, les rendements montent. Même si la Banque du Canada n&#39;a encore rien fait.</p>
+<p>Une mauvaise nouvelle sur l&#39;inflation peut donc faire grimper les taux fixes avant la prochaine décision de la banque centrale.</p>
+<h2>3. Le variable : moins cher aujourd&#39;hui, exposé à demain</h2>
+<p>Le taux directeur est à 2,25 %. Le taux préférentiel utilisé par nesto est à 4,45 %. Un variable à 3,41 % correspond donc au préférentiel moins 1,04 point.</p>
+<p>Ce rabais est négocié au départ et reste généralement fixe pendant le contrat. C&#39;est le préférentiel qui bouge.</p>
+<p>Si la Banque du Canada hausse son taux de 0,25 point et que le prêteur suit, le variable passe à 3,66 %. Deux hausses l&#39;amènent à 3,91 %. Quatre hausses, à 4,41 %. Même là, il resterait un peu sous le fixe actuel de 4,59 %.</p>
+<p>Attention à une distinction. Certains variables ajustent le versement avec le taux. D&#39;autres gardent un versement stable et changent la part qui va aux intérêts. Dans ce cas, ton budget semble intact, mais tu rembourses ton capital plus lentement. Ça finit par coûter de l&#39;argent.</p>
+<p>Un prêteur peut aussi réduire ses rabais sur les nouveaux variables, sans que la Banque du Canada ne bouge. Le 3,41 % d&#39;aujourd&#39;hui ne sera pas forcément là dans quelques semaines.</p>
+<h2>4. Une économie qui ralentit, mais des taux qui pourraient monter</h2>
+<p>Normalement, quand l&#39;économie ralentit, une banque centrale baisse ses taux. Or les signaux sont mixtes.</p>
+<p>Selon Statistique Canada, le pays a perdu environ 68 000 emplois en septembre, après environ 42 000 en août. Le chômage atteint 6,5 %. Au Québec, 49 000 emplois ont disparu en septembre, pour un recul cumulé de 130 000 depuis janvier.</p>
+<p>Mais l&#39;inflation complique tout. En août, l&#39;IPC affichait 3,0 % sur un an, au sommet de la fourchette cible de 1 % à 3 %. L&#39;essence, en hausse de 22,8 %, explique une bonne part du problème. Sans l&#39;essence, l&#39;inflation tombe à 2,4 %. L&#39;IPC médian est à 2,0 % et l&#39;IPC tronqué à 1,9 %.</p>
+<p>L&#39;inflation sous-jacente reste donc assez calme. Le choc énergétique, lui, pourrait se répercuter sur les coûts de transport et de production. Les tensions commerciales avec les États-Unis ajoutent à l&#39;incertitude.</p>
+<p>La Banque du Canada est coincée. Si elle hausse, elle fragilise l&#39;économie. Si elle attend trop, elle risque de laisser l&#39;inflation s&#39;installer. Les économistes parlent de risque de stagflation. Nous n&#39;y sommes pas forcément, mais le risque rend chaque décision délicate.</p>
+<p>Pour toi, ça veut dire qu&#39;il ne suffit pas de deviner la direction de l&#39;économie. Il faut aussi deviner la réaction de la banque centrale. Personne ne peut le faire avec certitude.</p>
+<h2>5. Deux dates à surveiller</h2>
+<p>Le lundi 19 octobre, à 8 h 30, Statistique Canada publie l&#39;inflation de septembre. Une surprise à la hausse pourrait pousser les rendements obligataires et certains taux fixes vers le haut. Une inflation plus faible pourrait calmer le jeu.</p>
+<p>Le 28 octobre, la Banque du Canada annonce sa décision, avec ses nouvelles perspectives. Vu la détérioration du marché du travail, plusieurs économistes s&#39;attendent à un maintien. Les marchés considèrent toutefois de nouvelles hausses comme possibles dans les prochains mois.</p>
+<p>Mon point est simple. Personne ne connaît la trajectoire des taux. Quelqu&#39;un qui prétend le contraire devrait gérer quelques milliards plutôt que vendre des prévisions.</p>
+<h2>6. Combien coûte la tranquillité d&#39;esprit ?</h2>
+<p>Prenons un solde de 350 000 $ avec 20 ans d&#39;amortissement restant :</p>
+<ul>
+<li>Fixe 5 ans à 4,59 % : 2 223 $ par mois</li>
+<li>Variable 5 ans à 3,41 % : 2 009 $ par mois</li>
+</ul>
+<p>L&#39;écart est d&#39;environ 214 $ par mois, soit près de 2 570 $ par an. Sur cinq ans, si les taux ne bougeaient pas, les versements du variable seraient inférieurs d&#39;environ 12 800 $.</p>
+<p>Ce chiffre n&#39;est pas l&#39;économie totale d&#39;intérêts. Les deux options ne remboursent pas la même part de capital. Il faut comparer les intérêts payés et le solde restant à la fin du terme.</p>
+<p>Et rien ne garantit que le variable reste à 3,41 %. Voici deux scénarios :</p>
+<ul>
+<li>Hausse immédiate d&#39;un point (4,41 %) : environ 2 190 $ par mois. C&#39;est presque le fixe, mais encore un peu moins.</li>
+<li>Hausse immédiate de deux points (5,41 %) : environ 2 378 $ par mois. Là, le variable devient nettement plus cher.</li>
+</ul>
+<p>Le gagnant ne dépend pas du taux le plus haut atteint pendant le terme. Il dépend de toute la trajectoire. Un variable qui reste à 3,41 % pendant deux ans avant de monter à 5 % coûte moins cher qu&#39;un variable qui atteint 5 % après trois mois, même si le taux final est identique.</p>
+<p>Comparer 4,59 % et 3,41 % ne suffit donc pas. Le calendrier et la durée des hausses comptent autant.</p>
+<div class="disclaimer">Calculs illustratifs, avec la capitalisation semestrielle canadienne appliquée aux taux nominaux. Les versements variables sont recalculés théoriquement. Les résultats réels dépendent des modalités du prêteur et du calendrier des changements de taux.</div>
+<h2>7. Le fixe, une assurance que tu paies chaque mois</h2>
+<p>Je vois le taux fixe comme une assurance. Tu paies plus au départ pour éliminer le risque de hausse pendant le contrat.</p>
+<p>Comme pour toute assurance, la bonne question est : combien ça coûte et quel risque ça transfère ? Dans notre exemple, la prime est d&#39;environ 214 $ par mois.</p>
+<p>Pour certains ménages, c&#39;est un prix justifié pour garder des versements prévisibles. D&#39;autres, avec plus de marge de manœuvre, préféreront garder le risque et profiter du taux plus bas. Je ne vois rien d&#39;irrationnel dans l&#39;un ou l&#39;autre choix.</p>
+<p>Ce que je trouve dommage, c&#39;est de payer cette assurance sans savoir ce qu&#39;elle coûte. Ou d&#39;y renoncer sans avoir testé une forte hausse de taux.</p>
+<h2>8. Le piège des pénalités</h2>
+<p>Le taux le plus bas n&#39;est pas toujours le moins cher.</p>
+<p>Si tu brises un fixe fermé avant l&#39;échéance, la pénalité correspond souvent au plus élevé de deux montants : trois mois d&#39;intérêts ou le différentiel de taux calculé selon la méthode du prêteur. Ce différentiel peut atteindre plusieurs milliers de dollars, parfois des dizaines de milliers.</p>
+<p>Pour un variable fermé, la pénalité se limite généralement à trois mois d&#39;intérêts, même si les contrats varient.</p>
+<p>Tous les variables ne sont pas flexibles, et tous les fixes ne sont pas punitifs. Certains prêts se transfèrent vers une nouvelle propriété. D&#39;autres offrent des privilèges de remboursement anticipé. Je pense qu&#39;il ne faut jamais comparer un taux sans ses conditions. Une hypothèque un peu plus chère mais plus souple peut valoir mieux, surtout si tu prévois vendre ou refinancer.</p>
+<h2>9. Comment décider ?</h2>
+<p>Voici les cinq questions que je me poserais.</p>
+<ol>
+<li><strong>Combien de temps vais-je garder ma propriété ?</strong> Si je pense vendre ou refinancer dans deux ou trois ans, je regarde les termes plus courts et les pénalités. Signer cinq ans juste pour un beau taux peut être une erreur.</li>
+<li><strong>Quelle hausse puis-je vraiment supporter ?</strong> Si je choisis le variable, je ne bâtis pas mon budget à 3,41 % seulement. Je le teste à 4,41 % et à 5,41 %. Est-ce que je continue d&#39;épargner ? Si un point de plus met mon budget en difficulté, le fixe vaut peut-être son prix.</li>
+<li><strong>Quel taux mon prêteur m&#39;offre-t-il vraiment ?</strong> Les taux ci-dessus visent des prêts assurés. Pour un prêt non assuré, l&#39;écart fixe/variable peut être plus petit, ce qui change le calcul. Je demande plusieurs offres et je compare des produits équivalents.</li>
+<li><strong>Puis-je supporter l&#39;incertitude ?</strong> Absorber une hausse financièrement et être à l&#39;aise avec cette possibilité sont deux choses différentes. La tranquillité d&#39;esprit a une valeur. Je pense qu&#39;il faut la chiffrer plutôt que la présumer.</li>
+<li><strong>Faut-il absolument cinq ans ?</strong> Un fixe de trois ans peut être un compromis. Mais un terme court veut aussi dire renouveler plus tôt, à des taux inconnus. Je ne choisirais pas un terme court juste parce que j&#39;espère une baisse.</li>
+</ol>
+<p>Enfin, si ton renouvellement approche, demande une garantie de taux. Certains prêteurs bloquent une offre pendant plusieurs semaines, parfois 90 à 120 jours, selon le produit. Ça évite qu&#39;une remontée des taux fixes te surprenne pendant que tu compares.</p>
+<h2>10. Mon analyse</h2>
+<p>Je ne sais pas ce que la Banque du Canada fera dans six mois. Je me méfie des prévisions trop affirmatives quand l&#39;inflation et l&#39;emploi envoient des signaux contraires.</p>
+<p>Mais je trouve qu&#39;un écart de 1,18 point entre le variable et le fixe 5 ans est trop gros pour être ignoré. Le variable part avec un avantage considérable. Une série de hausses pourrait le réduire ou même l&#39;effacer. Il ne disparaît pas à la première hausse.</p>
+<p>Le fixe protège contre le pire scénario. Cette protection peut valoir cher quand le budget est serré ou que la prévisibilité passe en premier.</p>
+<p>Personnellement, je ne choisirais pas le fixe juste parce que les médias parlent de hausses. Je voudrais d&#39;abord mesurer leur ampleur probable, leur calendrier et leur effet sur le coût total. Puis je comparerais les économies possibles au risque que je peux vraiment assumer.</p>
+<blockquote>Une hypothèque n&#39;est pas un pari à gagner. C&#39;est une décision financière qui doit rester compatible avec le reste de ta vie.</blockquote>
+<h2>Le mot de la fin</h2>
+<p>L&#39;inflation et la décision de la Banque du Canada pourraient changer les anticipations dans les prochains jours. Les fixes pourraient monter, se stabiliser ou reculer. Le variable pourrait garder son avantage ou subir des hausses.</p>
+<p>Personne ne peut garantir le résultat. Mais avec près de 1,2 point d&#39;écart entre les meilleures offres, choisir la stabilité a aujourd&#39;hui un coût bien réel.</p>
+<p>Le fixe est une assurance contre la hausse des taux. Le variable consiste à garder une partie du risque pour un coût initial plus bas. Le mauvais choix, à mon avis, est de signer sans avoir fait le calcul. Pour une dette de plusieurs centaines de milliers de dollars, ça vaut un peu de ton temps.</p>
+<h2>Sources</h2>
+<ul>
+<li>nesto, Taux hypothécaires au Canada, relevés des 9 et 12 octobre 2026</li>
+<li>Banque du Canada, Décision du 2 septembre 2026</li>
+<li>Banque du Canada, Indicateurs de politique monétaire</li>
+<li>Statistique Canada, Enquête sur la population active, septembre 2026</li>
+<li>Statistique Canada, IPC, août 2026</li>
+</ul>
+</main>
+<div class="nav-articles">
+<a href="../blog.html">← Tous les articles</a>
+<a class="secondary" href="https://parlonscash.pro/">Accéder aux calculateurs</a>
+</div>
+<footer>
+<p>© 2026 <a href="https://parlonscash.pro/">Parlons Cash</a> – Aziz Guellouz</p>
+<p style="margin-top:8px;font-size:0.8em;">Les contenus de ce blog sont à titre éducatif et informatif uniquement. Ils ne constituent pas des conseils financiers personnalisés.</p>
+</footer>
+</body>
+</html>
