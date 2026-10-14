@@ -21,9 +21,9 @@
   function save(analytics,ads){choice={analytics:!!analytics,ads:!!ads,updated:new Date().toISOString()};try{localStorage.setItem(KEY,JSON.stringify(choice));}catch(e){} document.getElementById('pc-privacy-banner').hidden=true;
     if((gaLoaded&&!choice.analytics)||(adsLoaded&&!choice.ads)){location.reload();return;}loadSelected();}
   function init(){
-    const panel=document.createElement('section');panel.id='pc-privacy-banner';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Choix de confidentialité');panel.innerHTML='<div class="pc-wrap"><strong style="font-size:19px">Vos préférences de confidentialité</strong><p>Parlons Cash souhaite utiliser des témoins facultatifs pour mesurer la fréquentation avec Google Analytics et, séparément, pour la publicité Google AdSense. Rien de facultatif ne se charge tant que vous ne l’avez pas autorisé. Vous pouvez refuser sans perdre l’accès au site.</p><p><label><input type="checkbox" id="pc-analytics"> Statistiques (Google Analytics)</label><label><input type="checkbox" id="pc-ads"> Publicité (Google AdSense)</label></p><div><button type="button" class="pc-secondary" id="pc-reject">Tout refuser</button><button type="button" class="pc-primary" id="pc-save">Enregistrer mes choix</button><button type="button" class="pc-secondary" id="pc-accept">Tout accepter</button></div><small>Vous pouvez modifier vos choix à tout moment avec le bouton « Confidentialité » en bas de page. Pour toute question : azizguellouz@gmail.com.</small></div>';
+    const panel=document.createElement('section');panel.id='pc-privacy-banner';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Choix de confidentialité');panel.innerHTML='<div class="pc-wrap"><strong style="font-size:19px">Vos préférences de confidentialité</strong><p>Parlons Cash souhaite utiliser des témoins facultatifs pour mesurer la fréquentation avec Google Analytics et, séparément, pour la publicité Google AdSense. Rien de facultatif ne se charge tant que vous ne l’avez pas autorisé. Vous pouvez refuser sans perdre l’accès au site.</p><p><label><input type="checkbox" id="pc-analytics"> Statistiques (Google Analytics)</label><label><input type="checkbox" id="pc-ads"> Publicité (Google AdSense)</label></p><div><button type="button" class="pc-secondary" id="pc-reject">Tout refuser</button><button type="button" class="pc-primary" id="pc-save">Enregistrer mes choix</button><button type="button" class="pc-secondary" id="pc-accept">Tout accepter</button></div><small>Vous pouvez modifier vos choix à tout moment avec le bouton « Mes choix de témoins » en bas de page. Pour toute question : azizguellouz@gmail.com.</small></div>';
     document.body.appendChild(panel);
-    const opener=document.createElement('button');opener.id='pc-privacy-settings';opener.type='button';opener.textContent='Confidentialité';document.body.appendChild(opener);
+    const opener=document.createElement('button');opener.id='pc-privacy-settings';opener.type='button';opener.textContent='Mes choix de témoins';document.body.appendChild(opener);
     const analytics=panel.querySelector('#pc-analytics'),ads=panel.querySelector('#pc-ads');
     function show(){analytics.checked=!!(choice&&choice.analytics);ads.checked=!!(choice&&choice.ads);panel.hidden=false;}
     opener.addEventListener('click',show);
@@ -69,13 +69,6 @@
       "url": "https://parlonscash.pro/"
     },
     "blogPost": [
-      {
-        "@type": "BlogPosting",
-        "headline": "Hypothèque : taux fixe ou variable ? Le prix de la tranquillité à l'automne 2026",
-        "url": "https://parlonscash.pro/blog/hypotheque-fixe-ou-variable.html",
-        "datePublished": "2026-10-13",
-        "author": {"@type": "Person", "name": "Aziz Guellouz"}
-      },
       {
         "@type": "BlogPosting",
         "headline": "Du stock picking aux FNB : ce que j'ai appris à mes dépens",
@@ -164,16 +157,6 @@
 
   <main>
     <div class="blog-grid" id="blog-grid">
-
-      <a class="blog-card" href="blog/hypotheque-fixe-ou-variable.html" data-categorie="Stratégie">
-        <span class="card-categorie">Stratégie</span>
-        <div class="card-titre">Hypothèque : taux fixe ou variable ? Le prix de la tranquillité à l&#39;automne 2026</div>
-        <div class="card-extrait">Le variable 5 ans coûte 1,18 point de moins que le fixe. Ce que la tranquillité d&#39;esprit coûte vraiment au renouvellement, avec un exemple chiffré et cinq questions pour décider.</div>
-        <div class="card-footer">
-          <span>Octobre 2026</span>
-          <span class="card-lire">9 min de lecture →</span>
-        </div>
-      </a>
 
       <a class="blog-card" href="blog/stock-picking-aux-fnb.html" data-categorie="Stratégie">
         <span class="card-categorie">Stratégie</span>
