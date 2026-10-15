@@ -1017,13 +1017,13 @@ button:hover, .tab-button:hover {
     <div id="welcomeScreen">
       <div class="welcome-header">
         <h2>🎯 Bienvenue !</h2>
-        <p>Comment souhaitez-vous commencer ?</p>
+        <p>Comment souhaites-tu commencer ?</p>
       </div>
       
       <div class="choice-buttons">
         <button class="choice-btn" onclick="startGuide()">
           <h3>🚀 Parcours guidé</h3>
-          <p>5 questions pour personnaliser votre expérience (5 min)</p>
+          <p>5 questions pour personnaliser ton expérience (5 min)</p>
         </button>
         
         <button class="choice-btn" onclick="skipGuide()">
@@ -1049,8 +1049,8 @@ button:hover, .tab-button:hover {
   <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
     <div>
       <h1>Calculateurs financiers gratuits pour le Québec</h1>
-      <p>Budget, dettes, impôts, REER, CELI, CELIAPP et retraite — des outils simples pour mieux gérer votre argent.</p>
-      <p style="margin-top:6px;font-size:0.9em;opacity:0.9;">🔒 Vos données financières restent dans votre navigateur. Rien n'est envoyé à nos serveurs.</p>
+      <p>Budget, dettes, impôts, REER, CELI, CELIAPP et retraite — des outils simples pour mieux gérer ton argent.</p>
+      <p style="margin-top:6px;font-size:0.9em;opacity:0.9;">🔒 Tes données financières restent dans ton navigateur. Rien n'est envoyé à nos serveurs.</p>
     </div>
     <div class="header-actions">
       <button class="btn-export hero-btn" type="button" onclick="ouvrirDiagnostic()">Commencer mon diagnostic</button>
@@ -1107,7 +1107,7 @@ button:hover, .tab-button:hover {
 
   <div class="card">
     <h3>Diagnostic financier</h3>
-    <div id="diagnostic-global">Entrez vos données pour un diagnostic</div>
+    <div id="diagnostic-global">Entre tes données pour un diagnostic</div>
   </div>
 
   <!-- Bandeau inspirant -->
@@ -1117,7 +1117,7 @@ button:hover, .tab-button:hover {
               border-radius:12px;
               margin-top:20px;
               text-align:center;">
-    <h3 style="font-size:1.8em;font-weight:bold;color:white;">« "Le succès est la somme de petits efforts répétés jour après jour." – Robert Collier »</h3>
+    <h3 style="font-size:1.8em;font-weight:bold;color:white;">« Le succès est la somme de petits efforts répétés jour après jour. » – Robert Collier</h3>
     <p style="margin-top:15px;font-size:1.1em;">
       Merci de faire partie de cette aventure. Continue à construire, apprendre et avancer —
       une décision éclairée à la fois.
@@ -1212,7 +1212,7 @@ button:hover, .tab-button:hover {
 <div class="form-group"><label>CELI</label><input type="number" id="celi" value="0" onchange="calc()"></div>
 <input type="number" id="celi-liquide-pct" value="0" min="0" max="100" style="display:none">
 <div class="form-group"><label>CELIAPP</label><input type="number" id="celiapp" value="0" onchange="calc()"></div>
-<div class="form-group"><label>Compte non enregistre</label><input type="number" id="cne" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Compte non enregistré</label><input type="number" id="cne" value="0" onchange="calc()"></div>
 <div class="form-group"><label>REER</label><input type="number" id="reer" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Immobilisations</label><input type="number" id="immob" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Autre</label><input type="number" id="autre-actif" value="0" onchange="calc()"></div>
@@ -1220,10 +1220,10 @@ button:hover, .tab-button:hover {
 </div>
 <div class="card">
 <h3 class="red">PASSIFS</h3>
-<div class="form-group"><label>Cartes de credit</label><input type="number" id="cc" value="0" onchange="calc()"></div>
-<div class="form-group"><label>Marge de credit</label><input type="number" id="mc" value="0" onchange="calc()"></div>
-<div class="form-group"><label>Pret automobile</label><input type="number" id="pa" value="0" onchange="calc()"></div>
-<div class="form-group"><label>Hypotheque</label><input type="number" id="hypo" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Cartes de crédit</label><input type="number" id="cc" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Marge de crédit</label><input type="number" id="mc" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Prêt automobile</label><input type="number" id="pa" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Hypothèque</label><input type="number" id="hypo" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Autre</label><input type="number" id="autre-passif" value="0" onchange="calc()"></div>
 <div class="total-row red"><span>Total passifs</span><span class="value" id="tp">0 $</span></div>
 <div class="summary-box"><div class="summary-row"><strong>Valeur nette</strong><strong class="blue" style="font-size:1.5em" id="vn">0 $</strong></div></div>
@@ -1239,7 +1239,7 @@ button:hover, .tab-button:hover {
 <div class="form-group"><label>Revenu mensuel net <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 Mon profil</span></label><input type="number" id="revenu" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Revenu de loyer</label><input type="number" id="rev-loyer" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Autre revenu</label><input type="number" id="autre-revenu" value="0" onchange="calc()"></div>
-<h4 style="margin-top:20px">Depenses</h4>
+<h4 style="margin-top:20px">Dépenses</h4>
 <div class="form-group">
 <label>Statut résidentiel</label>
 <select id="statut-resid" onchange="toggleHypotheque()">
@@ -1275,13 +1275,13 @@ button:hover, .tab-button:hover {
 <div class="summary-row"><span>Revenus totaux</span><strong id="rt">0 $</strong></div>
 <div class="summary-row"><span>Total dépenses</span><strong id="td">0 $</strong></div>
 <div class="summary-row"><span>Épargne nette</span><strong class="green" id="en">0 $</strong></div>
-<div class="summary-row"><span>Taux epargne</span><strong class="blue" id="te">0%</strong></div>
+<div class="summary-row"><span>Taux épargne</span><strong class="blue" id="te">0%</strong></div>
 </div>
 </div>
 </div>
 <div class="card">
-<h3>Analyse budget 50-20-30</h3>
-<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Regle 50-20-30: 50% besoins essentiels, 20% épargne, 30% loisirs/desirs</p>
+<h3>Analyse budget 50/30/20</h3>
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Règle 50/30/20: 50% besoins essentiels, 30% loisirs/désirs, 20% épargne</p>
 <div id="analyse-503020"></div>
 </div>
 <div class="card">
@@ -1320,14 +1320,14 @@ button:hover, .tab-button:hover {
       </ul>
       <p style="margin:0;">
         👉 Il est recommandé de consulter un <strong>comptable</strong> ou un <strong>fiscaliste</strong>
-        pour obtenir des calculs précis et adaptés à votre situation.
+        pour obtenir des calculs précis et adaptés à ta situation.
       </p>
     </div>
   </div> <!-- ✅ ici tu fermes l’encadré SEULEMENT -->
 
   <!-- Calculateur -->
   <h2>Calculateur d’impôts</h2>
-  <p>Entrez vos informations pour estimer vos impôts :</p>
+  <p>Entre tes informations pour estimer tes impôts :</p>
   <p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">
     Estimation 2026 fondée sur les tranches fédérales et québécoises, avant crédits personnels et retenues sur la paie.
   </p>
@@ -1397,7 +1397,7 @@ button:hover, .tab-button:hover {
 
 <div class="section-title">Épargne pour projet personnel</div>
 <div class="card">
-<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Voyage, achat voiture, annee sabbatique, etudes... Calculez combien épargner mensuellement pour realiser votre projet.</p>
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Voyage, achat voiture, année sabbatique, études... Calcule combien épargner mensuellement pour réaliser ton projet.</p>
 <div class="form-group"><label>Montant cible ($)</label><input type="number" id="obj-montant" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Date cible</label><input type="date" id="obj-date" onchange="calc()"></div>
 <div class="form-group">
@@ -1408,11 +1408,11 @@ button:hover, .tab-button:hover {
 <div id="resultat-objectif"></div>
 </div>
 
-<div class="section-title">Capital necessaire a la retraite</div>
+<div class="section-title">Capital nécessaire à la retraite</div>
 <div class="card">
-<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Calculez le capital necessaire selon votre taux de retrait. Le revenu desire est ajuste automatiquement pour l'inflation (3% annuel).</p>
+<p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:15px">Calcule le capital nécessaire selon ton taux de retrait. Le revenu désiré est ajusté automatiquement pour l'inflation (3% annuel).</p>
 <div class="form-group">
-  <label>Votre âge actuel</label>
+  <label>Ton âge actuel</label>
   <input type="number" id="age-actuel" value="" oninput="calcRetraite()">
 </div>
 <div class="form-group">
@@ -1430,24 +1430,24 @@ button:hover, .tab-button:hover {
   <label>Taux de rendement pendant la retraite (%)</label>
   <input type="number" id="taux-rendement-pendant-retraite" value="5" step="0.5" min="0" max="20" oninput="calcRetraite()">
   <small style="display:block;margin-top:5px;color:#6b7280;">
-    Rendement prévu sur vos placements une fois à la retraite
+    Rendement prévu sur tes placements une fois à la retraite
   </small>
 </div>
 <div class="form-group">
   <label>Revenu de pension estimé (RRQ + PSV)</label>
   <input type="number" id="pension-publique" value="0" oninput="calcRetraite()">
   <small style="display:block;margin-top:5px;color:#6b7280;">
-    Estimation 2025 : RRQ max ~15 600$/an, PSV ~8 600$/an (si 65 ans+)
+    Estimation 2026 : RRQ max ~18 100$/an, PSV ~9 100$/an (si 65 ans+). Chiffres vérifiés en octobre 2026.
   </small>
 </div>
 <div class="form-group">
   <label>Rente de fonds de pension (employeur)</label>
   <input type="number" id="rente-pension" value="0" oninput="calcRetraite()">
   <small style="display:block;margin-top:5px;color:#6b7280;">
-    Revenu annuel estimé de votre régime de retraite d'employeur (si applicable)
+    Revenu annuel estimé de ton régime de retraite d'employeur (si applicable)
   </small>
 </div>
-<div class="form-group"><label>Revenu annuel desire (en dollars d'aujourd'hui)</label><input type="number" id="revenu-retraite" value="50000" oninput="calcRetraite()"></div>
+<div class="form-group"><label>Revenu annuel désiré (en dollars d'aujourd'hui)</label><input type="number" id="revenu-retraite" value="50000" oninput="calcRetraite()"></div>
 <div class="form-group">
   <label style="display:flex;align-items:center;gap:10px;">
     <input type="checkbox" id="contribution-actuelle-toggle" onchange="toggleContributionActuelle()" style="width:auto;">
@@ -1460,7 +1460,7 @@ button:hover, .tab-button:hover {
     <label>Contribution mensuelle actuelle ($)</label>
     <input type="number" id="contribution-mensuelle-actuelle" value="0" oninput="calcRetraite()">
     <small style="display:block;margin-top:5px;color:#6b7280;">
-      Combien épargnez-vous actuellement par mois pour votre retraite ?
+      Combien épargnes-tu actuellement par mois pour ta retraite ?
     </small>
   </div>
 </div>
@@ -1470,7 +1470,7 @@ button:hover, .tab-button:hover {
     <span>Indexer les retraits à l'inflation (3% annuel)</span>
   </label>
   <small style="display:block;margin-top:5px;color:#6b7280;">
-    Si coché, vos retraits augmenteront de 3% par an pour maintenir votre pouvoir d'achat
+    Si coché, tes retraits augmenteront de 3% par an pour maintenir ton pouvoir d'achat
   </small>
 </div>
 <div id="resultat-retraite"></div>
@@ -1622,7 +1622,7 @@ Historique Québec : 2-4% par an
     <strong style="color:#92400e;">💡 Points importants à considérer</strong>
     <ul style="margin:10px 0 0 20px;color:#78350f;line-height:1.8;">
       <li><strong>Flexibilité :</strong> La location offre plus de mobilité (déménagement plus facile)</li>
-      <li><strong>Prévisibilité :</strong> L'achat fixe votre paiement hypothécaire (mais taxes/entretien peuvent augmenter)</li>
+      <li><strong>Prévisibilité :</strong> L'achat fixe ton paiement hypothécaire (mais taxes/entretien peuvent augmenter)</li>
       <li><strong>Discipline d'épargne :</strong> L'achat "force" l'épargne, la location nécessite discipline pour investir</li>
       <li><strong>Risque de marché :</strong> La valeur immobilière peut baisser (rare mais possible)</li>
       <li><strong>Coût d'opportunité :</strong> L'argent investi dans une maison ne rapporte pas d'intérêts composés</li>
@@ -1632,9 +1632,9 @@ Historique Québec : 2-4% par an
   <!-- Disclaimer -->
   <div style="background:#f9fafb;border-top:2px solid #e5e7eb;padding:20px;margin-top:30px;border-radius:8px;">
     <p style="margin:0;font-size:0.85em;color:#6b7280;">
-      ⚠️ <strong>Avertissement :</strong> Cet outil fournit une estimation comparative basée sur les données que vous entrez. 
+      ⚠️ <strong>Avertissement :</strong> Cet outil fournit une estimation comparative basée sur les données que tu entres. 
       Chaque situation est unique et dépend de facteurs personnels (stabilité emploi, plans familiaux, tolérance au risque). 
-      Consultez un <strong>conseiller financier</strong> ou un <strong>planificateur hypothécaire</strong> avant toute décision importante.
+      Consulte un <strong>conseiller financier</strong> ou un <strong>planificateur hypothécaire</strong> avant toute décision importante.
     </p>
   </div>
 </div>
@@ -1643,12 +1643,12 @@ Historique Québec : 2-4% par an
    <h2>Calculateur de remboursement de dettes</h2>
   
   <p style="background:#fef3c7;padding:15px;border-radius:8px;margin-bottom:20px;">
-    Comparez deux stratégies populaires : <strong>Avalanche</strong> (rembourse d'abord les taux élevés - économise plus d'intérêts) 
+    Compare deux stratégies populaires : <strong>Avalanche</strong> (rembourse d'abord les taux élevés - économise plus d'intérêts) 
     et <strong>Boule de neige</strong> (rembourse d'abord les petits soldes - motivation psychologique).
   </p>
 
   <div class="card">
-    <h3>Vos dettes</h3>
+    <h3>Tes dettes</h3>
     <div id="liste-dettes-container"></div>
     
     <button onclick="ajouterLigneDette()" style="background:#2563eb;color:white;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;margin-top:15px;">
@@ -1662,7 +1662,7 @@ Historique Québec : 2-4% par an
       <label>Montant mensuel disponible (au-delà des minimums)</label>
       <input type="number" id="paiement-extra" value="0" min="0" onchange="calculerStrategies()">
       <small style="display:block;margin-top:5px;color:#6b7280;">
-        Combien pouvez-vous allouer mensuellement en plus des paiements minimums ?
+        Combien peux-tu allouer mensuellement en plus des paiements minimums ?
       </small>
     </div>
     
@@ -1715,7 +1715,7 @@ Historique Québec : 2-4% par an
   
  <p style="margin:10px 0 10px 0;padding:0;line-height:1.7;color:#7f1d1d;text-align:left;"><strong>Cet outil est à des fins éducatives et informatives seulement.</strong> Les calculs, projections et suggestions présentés sont des estimations simplifiées basées sur des principes financiers généralement reconnus. <strong>Ils ne constituent en aucun cas des conseils financiers, fiscaux ou juridiques personnalisés.</strong></p>
 
-<p style="margin:10px 0 10px 0;padding:0;line-height:1.7;color:#7f1d1d;text-align:left;">Chaque situation financière est unique. Avant de prendre toute décision financière importante, consultez un conseiller financier autorisé, un fiscaliste ou un planificateur financier certifié.</p>
+<p style="margin:10px 0 10px 0;padding:0;line-height:1.7;color:#7f1d1d;text-align:left;">Chaque situation financière est unique. Avant de prendre toute décision financière importante, consulte un conseiller financier autorisé, un fiscaliste ou un planificateur financier certifié.</p>
   
   </p>
   
@@ -2025,12 +2025,12 @@ Historique Québec : 2-4% par an
       <tr>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Objectif</td>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Croissance libre d'impôt — idéal pour flexibilité et retraits à court ou moyen terme.</td>
-        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Report d'impôt — avantageux si votre taux d'imposition est plus bas à la retraite.</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Report d'impôt — avantageux si ton taux d'imposition est plus bas à la retraite.</td>
       </tr>
       <tr>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Retraits</td>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Non imposables et sans impact fiscal.</td>
-        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Imposables selon votre taux au moment du retrait.</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Imposables selon ton taux au moment du retrait.</td>
       </tr>
       <tr>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Cotisations</td>
@@ -2038,18 +2038,18 @@ Historique Québec : 2-4% par an
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Déductibles du revenu imposable, réduisent l'impôt payé cette année.</td>
       </tr>
       <tr>
-        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Plafond annuel (2025)</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">Plafond annuel (2026)</td>
         <td style="padding:10px;border-bottom:1px solid #e5e7eb;">7 000 $ (droits cumulatifs si non utilisés).</td>
-        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">18 % du revenu gagné, jusqu'à un maximum de 31 560 $.</td>
+        <td style="padding:10px;border-bottom:1px solid #e5e7eb;">18 % du revenu gagné, jusqu'à un maximum de 33 810 $.</td>
       </tr>
     </tbody>
   </table>
 
   <p style="margin-top:20px;">
-    💬 <strong>Astuce :</strong> Comparez votre taux d'imposition actuel et celui anticipé à la retraite.
-    Si votre taux futur est plus élevé, le CELI peut être avantageux ; s'il est plus bas, le REER peut
+    💬 <strong>Astuce :</strong> Compare ton taux d'imposition actuel et celui anticipé à la retraite.
+    Si ton taux futur est plus élevé, le CELI peut être avantageux ; s'il est plus bas, le REER peut
     offrir un meilleur report d'impôt.  
-    Ces informations visent à <strong>éclairer</strong> votre réflexion, pas à déterminer un choix.
+    Ces informations visent à <strong>éclairer</strong> ta réflexion, pas à déterminer un choix.
   </p>
 
   <!-- Séparateur -->
@@ -2057,22 +2057,22 @@ Historique Québec : 2-4% par an
 
   <!-- Section Budget mensuel -->
   <h2>💰 Gérer son budget mensuel</h2>
-  <p>Un budget, c'est avant tout un outil de liberté : il permet de choisir où va votre argent, plutôt que de le subir. Voici quelques principes simples pour mieux gérer vos finances mensuelles.</p>
+  <p>Un budget, c'est avant tout un outil de liberté : il permet de choisir où va ton argent, plutôt que de le subir. Voici quelques principes simples pour mieux gérer tes finances mensuelles.</p>
 
   <div class="card" style="margin-top:20px;">
     <h3>1️⃣ Règle 50 / 30 / 20</h3>
-    <p>Une méthode simple pour répartir vos revenus :</p>
+    <p>Une méthode simple pour répartir tes revenus :</p>
     <ul style="margin-left:20px;line-height:1.8;">
       <li><strong>50 %</strong> : besoins essentiels (logement, nourriture, transport, assurances)</li>
       <li><strong>30 %</strong> : dépenses personnelles (loisirs, abonnements, sorties)</li>
       <li><strong>20 %</strong> : épargne et remboursement de dettes</li>
     </ul>
-    <p>📊 Cette approche aide à équilibrer vos priorités sans suivre un budget rigide au dollar près.</p>
+    <p>📊 Cette approche aide à équilibrer tes priorités sans suivre un budget rigide au dollar près.</p>
   </div>
 
   <div class="card" style="margin-top:20px;">
     <h3>2️⃣ Suivre ses dépenses</h3>
-    <p>Avant d'ajuster, il faut observer. Listez vos dépenses pendant 1 à 3 mois et classez-les par catégorie :</p>
+    <p>Avant d'ajuster, il faut observer. Liste tes dépenses pendant 1 à 3 mois et classe-les par catégorie :</p>
     <ul style="margin-left:20px;line-height:1.8;">
       <li>Logement</li>
       <li>Alimentation</li>
@@ -2086,7 +2086,7 @@ Historique Québec : 2-4% par an
 
   <div class="card" style="margin-top:20px;">
     <h3>3️⃣ Prioriser les paiements essentiels</h3>
-    <p>Le budget n'est pas qu'un tableau : c'est un plan d'action. Classez vos paiements selon leur importance :</p>
+    <p>Le budget n'est pas qu'un tableau : c'est un plan d'action. Classe tes paiements selon leur importance :</p>
     <ol style="margin-left:20px;line-height:1.8;">
       <li>Logement et factures fixes</li>
       <li>Nourriture et transport</li>
@@ -2098,15 +2098,15 @@ Historique Québec : 2-4% par an
 
   <div class="card" style="margin-top:20px;">
     <h3>4️⃣ Créer une marge de sécurité</h3>
-    <p>Un bon budget inclut toujours l'imprévu. Réservez chaque mois une petite somme (100 à 200 $) dans un compte distinct pour les urgences.</p>
+    <p>Un bon budget inclut toujours l'imprévu. Réserve chaque mois une petite somme (100 à 200 $) dans un compte distinct pour les urgences.</p>
     <p>💡 Cela évite d'avoir recours au crédit à chaque dépense inattendue.</p>
   </div>
 
   <div class="card" style="margin-top:20px;">
     <h3>5️⃣ Automatiser les virements</h3>
-    <p>Simplifiez votre gestion en programmant vos paiements et virements automatiques juste après la paie :</p>
+    <p>Simplifie ta gestion en programmant tes paiements et virements automatiques juste après la paie :</p>
     <ul style="margin-left:20px;line-height:1.8;">
-      <li>Priorisez l'épargne et le remboursement de dettes</li>
+      <li>Priorise l'épargne et le remboursement de dettes</li>
       <li>Puis les dépenses fixes et variables</li>
     </ul>
     <p>💡 Moins de stress, moins d'oublis, et une discipline financière sans effort.</p>
@@ -2114,11 +2114,11 @@ Historique Québec : 2-4% par an
 
   <div class="card" style="margin-top:20px;">
     <h3>6️⃣ Ajuster au fil des mois</h3>
-    <p>Un budget efficace évolue avec vous. Chaque trimestre :</p>
+    <p>Un budget efficace évolue avec toi. Chaque trimestre :</p>
     <ul style="margin-left:20px;line-height:1.8;">
-      <li>Comparez vos dépenses prévues et réelles</li>
-      <li>Réévaluez vos priorités</li>
-      <li>Adaptez vos objectifs d'épargne</li>
+      <li>Compare tes dépenses prévues et réelles</li>
+      <li>Réévalue tes priorités</li>
+      <li>Adapte tes objectifs d'épargne</li>
     </ul>
     <p>📈 Le but n'est pas la perfection, mais la constance.</p>
   </div>
@@ -2136,7 +2136,7 @@ Historique Québec : 2-4% par an
   ">
     ⚠️ <strong>Avertissement :</strong> Les informations présentées sur cette page sont fournies à titre informatif seulement.
     Elles visent à soutenir la prise de décision financière, sans constituer des recommandations personnalisées.
-    Chaque situation est unique — consultez un professionnel (planificateur financier ou conseiller budgétaire) pour un accompagnement adapté.
+    Chaque situation est unique — consulte un professionnel (planificateur financier ou conseiller budgétaire) pour un accompagnement adapté.
   </div>
 
 </div>
@@ -2149,8 +2149,8 @@ Historique Québec : 2-4% par an
     <!-- Disclaimer confidentialité -->
     <div style="background:#fff8e1;border-left:4px solid #f59e0b;padding:15px;border-radius:8px;margin:15px 0;">
    <strong style="color:#92400e;">🔒 Confidentialité et consentement</strong><p style="margin:8px 0 0 0;color:#78350f;font-size:0.9em;line-height:1.6;">
-        Partagez vos informations financières <strong>seulement si vous êtes confortable</strong> de le faire. 
-        Aucune information saisie ici n'est sauvegardée ou partagée - tout reste dans votre navigateur.
+        Partage tes informations financières <strong>seulement si tu es confortable</strong> de le faire. 
+        Aucune information saisie ici n'est sauvegardée ou partagée - tout reste dans ton navigateur.
         <br>
         💡 Une relation saine repose sur la <strong>transparence volontaire</strong>, pas sur l'obligation ou la surveillance.
       </p>
@@ -2339,7 +2339,7 @@ Historique Québec : 2-4% par an
     <p style="margin:10px 0;line-height:1.7;color:#7f1d1d;">
       Cet outil est à des fins <strong>éducatives et de réflexion</strong> seulement. 
       Les calculs et suggestions présentés sont des <strong>estimations générales</strong> 
-      qui ne tiennent pas compte de toutes les nuances de votre situation.
+      qui ne tiennent pas compte de toutes les nuances de ta situation.
     </p>
     
     <p style="margin:10px 0;line-height:1.7;color:#7f1d1d;">
@@ -2350,12 +2350,12 @@ Historique Québec : 2-4% par an
     <div style="background:#fee2e2;padding:15px;border-radius:8px;margin-top:15px;">
       <strong style="color:#991b1b;">🚨 Situations à risque :</strong>
       <ul style="margin:10px 0 0 20px;line-height:1.8;color:#7f1d1d;">
-        <li>Si vous sentez de la <strong>pression, manipulation ou contrôle</strong> dans vos décisions financières</li>
-        <li>Si votre partenaire refuse la <strong>transparence</strong> ou cache des informations financières</li>
-        <li>Si vous êtes dans une situation de <strong>dépendance financière</strong> ou de vulnérabilité</li>
+        <li>Si tu sens de la <strong>pression, manipulation ou contrôle</strong> dans tes décisions financières</li>
+        <li>Si ton ou ta partenaire refuse la <strong>transparence</strong> ou cache des informations financières</li>
+        <li>Si tu es dans une situation de <strong>dépendance financière</strong> ou de vulnérabilité</li>
       </ul>
       <p style="margin:10px 0 0 0;font-weight:600;color:#991b1b;">
-        → Consultez un professionnel (conseiller conjugal, travailleur social, ou SOS Violence conjugale : 1-800-363-9010)
+        → Consulte un professionnel (conseiller conjugal, travailleur social, ou SOS Violence conjugale : 1-800-363-9010)
       </p>
     </div>
     
@@ -2364,7 +2364,7 @@ Historique Québec : 2-4% par an
       <span style="color:#7f1d1d;">
         Il est recommandé de consulter un <strong>planificateur financier</strong>, 
         un <strong>conseiller conjugal</strong> ou un <strong>médiateur familial</strong> 
-        pour établir une entente qui respecte vos besoins et limites.
+        pour établir une entente qui respecte tes besoins et limites.
       </span>
     </p>
   </div>
@@ -2534,8 +2534,8 @@ Historique Québec : 2-4% par an
   <h2 style="margin-top:0;padding-top:0;"> Psychologie de l'argent</h2>
   
   <p style="color:#6b7280;font-size:0.9em;margin-bottom:20px;">
-    Inspiré du livre <strong>"The Psychology of Money"</strong> de Morgan Housel, ce questionnaire vous aide à identifier votre relation psychologique avec l'argent. 
-    Comprendre vos comportements financiers est la première étape vers une meilleure gestion de vos finances.
+    Inspiré du livre <strong>"The Psychology of Money"</strong> de Morgan Housel, ce questionnaire t'aide à identifier ta relation psychologique avec l'argent. 
+    Comprendre tes comportements financiers est la première étape vers une meilleure gestion de tes finances.
   </p>
 
   <div class="psycho-quiz-container">
@@ -2545,7 +2545,7 @@ Historique Québec : 2-4% par an
       <h3 class="psycho-section-title">Tolérance au Risque</h3>
       
       <div class="psycho-question">
-        <p class="psycho-question-text">1. Votre portefeuille perd 30% de sa valeur en une semaine. Que faites-vous ?</p>
+        <p class="psycho-question-text">1. Ton portefeuille perd 30% de sa valeur en une semaine. Que fais-tu ?</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q1" value="0" onclick="selectPsychoOption(this)">
@@ -2567,7 +2567,7 @@ Historique Québec : 2-4% par an
       </div>
 
       <div class="psycho-question">
-        <p class="psycho-question-text">2. Quelle phrase vous décrit le mieux ?</p>
+        <p class="psycho-question-text">2. Quelle phrase te décrit le mieux ?</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q2" value="0" onclick="selectPsychoOption(this)">
@@ -2589,7 +2589,7 @@ Historique Québec : 2-4% par an
       </div>
 
       <div class="psycho-question">
-        <p class="psycho-question-text">3. Comment réagissez-vous face à une opportunité d'investissement ?</p>
+        <p class="psycho-question-text">3. Comment réagis-tu face à une opportunité d'investissement ?</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q3" value="0" onclick="selectPsychoOption(this)">
@@ -2616,7 +2616,7 @@ Historique Québec : 2-4% par an
       <h3 class="psycho-section-title">Vision Long Terme</h3>
       
       <div class="psycho-question">
-        <p class="psycho-question-text">4. "Le temps, pas le timing" - Quelle est votre stratégie d'investissement ?</p>
+        <p class="psycho-question-text">4. "Le temps, pas le timing" - Quelle est ta stratégie d'investissement ?</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q4" value="0" onclick="selectPsychoOption(this)">
@@ -2638,7 +2638,7 @@ Historique Québec : 2-4% par an
       </div>
 
       <div class="psycho-question">
-        <p class="psycho-question-text">5. Vous recevez 10 000$ aujourd'hui. Que faites-vous ?</p>
+        <p class="psycho-question-text">5. Tu reçois 10 000$ aujourd'hui. Que fais-tu ?</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q5" value="0" onclick="selectPsychoOption(this)">
@@ -2660,7 +2660,7 @@ Historique Québec : 2-4% par an
       </div>
 
       <div class="psycho-question">
-        <p class="psycho-question-text">6. Préférez-vous :</p>
+        <p class="psycho-question-text">6. Préfères-tu :</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q6" value="0" onclick="selectPsychoOption(this)">
@@ -2687,7 +2687,7 @@ Historique Québec : 2-4% par an
       <h3 class="psycho-section-title">Notion de "Assez"</h3>
       
       <div class="psycho-question">
-        <p class="psycho-question-text">7. "Enough is enough" - Avez-vous défini combien d'argent est suffisant pour vous ?</p>
+        <p class="psycho-question-text">7. "Enough is enough" - As-tu défini combien d'argent est suffisant pour toi ?</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q7" value="0" onclick="selectPsychoOption(this)">
@@ -2709,7 +2709,7 @@ Historique Québec : 2-4% par an
       </div>
 
       <div class="psycho-question">
-        <p class="psycho-question-text">8. Votre voisin achète une voiture de luxe. Vous pensez :</p>
+        <p class="psycho-question-text">8. Ton voisin achète une voiture de luxe. Tu penses :</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q8" value="0" onclick="selectPsychoOption(this)">
@@ -2731,7 +2731,7 @@ Historique Québec : 2-4% par an
       </div>
 
       <div class="psycho-question">
-        <p class="psycho-question-text">9. Définiriez-vous un montant qui serait "suffisant" pour être heureux ?</p>
+        <p class="psycho-question-text">9. Définirais-tu un montant qui serait "suffisant" pour être heureux ?</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q9" value="0" onclick="selectPsychoOption(this)">
@@ -2758,7 +2758,7 @@ Historique Québec : 2-4% par an
       <h3 class="psycho-section-title">Indépendance Sociale</h3>
       
       <div class="psycho-question">
-        <p class="psycho-question-text">10. Les réseaux sociaux influencent-ils vos décisions d'achat ?</p>
+        <p class="psycho-question-text">10. Les réseaux sociaux influencent-ils tes décisions d'achat ?</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q10" value="0" onclick="selectPsychoOption(this)">
@@ -2780,7 +2780,7 @@ Historique Québec : 2-4% par an
       </div>
 
       <div class="psycho-question">
-        <p class="psycho-question-text">11. "Richesse = ce que vous ne voyez pas". Que pensez-vous de cette phrase ?</p>
+        <p class="psycho-question-text">11. "Richesse = ce que tu ne vois pas". Que penses-tu de cette phrase ?</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q11" value="0" onclick="selectPsychoOption(this)">
@@ -2802,7 +2802,7 @@ Historique Québec : 2-4% par an
       </div>
 
       <div class="psycho-question">
-        <p class="psycho-question-text">12. Combien d'argent dépensez-vous pour "impressionner" les autres ?</p>
+        <p class="psycho-question-text">12. Combien d'argent dépenses-tu pour "impressionner" les autres ?</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q12" value="0" onclick="selectPsychoOption(this)">
@@ -2829,7 +2829,7 @@ Historique Québec : 2-4% par an
       <h3 class="psycho-section-title">Humilité Financière</h3>
       
       <div class="psycho-question">
-        <p class="psycho-question-text">13. Votre succès financier est dû à :</p>
+        <p class="psycho-question-text">13. Ton succès financier est dû à :</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q13" value="0" onclick="selectPsychoOption(this)">
@@ -2851,7 +2851,7 @@ Historique Québec : 2-4% par an
       </div>
 
       <div class="psycho-question">
-        <p class="psycho-question-text">14. Face à un échec financier, vous dites :</p>
+        <p class="psycho-question-text">14. Face à un échec financier, tu dis :</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q14" value="0" onclick="selectPsychoOption(this)">
@@ -2873,7 +2873,7 @@ Historique Québec : 2-4% par an
       </div>
 
       <div class="psycho-question">
-        <p class="psycho-question-text">15. Pensez-vous que vous savez "mieux que le marché" ?</p>
+        <p class="psycho-question-text">15. Penses-tu que tu sais "mieux que le marché" ?</p>
         <div class="psycho-options">
           <label class="psycho-option">
             <input type="radio" name="q15" value="0" onclick="selectPsychoOption(this)">
@@ -2913,7 +2913,7 @@ Historique Québec : 2-4% par an
   <h2>Évaluer un FNB</h2>
 
   <p style="color:#6b7280;font-size:0.9em;margin-bottom:20px;">
-    Entrez le symbole d'un FNB. Les données sont récupérées automatiquement et comparées à huit repères que j'ai choisis, pour une note de conformité sur 100. L'outil informe seulement, il ne recommande rien.
+    Entre le symbole d'un FNB. Les données sont récupérées automatiquement et comparées à huit repères que j'ai choisis, pour une note de conformité sur 100. L'outil informe seulement, il ne recommande rien.
     Chaque critère affiche son repère et sa source. Si une donnée est introuvable, le critère est exclu
     du calcul au lieu d'être deviné.
   </p>
@@ -2925,7 +2925,7 @@ Historique Québec : 2-4% par an
         <input type="text" id="fnb-ticker" maxlength="12" autocomplete="off" autocapitalize="characters"
                spellcheck="false" placeholder="Ex. XEQT.TO">
         <small style="display:block;margin-top:5px;color:#6b7280;">
-          Pour la Bourse de Toronto, ajoutez .TO (ex. VFV.TO). Pour les États-Unis, le symbole seul suffit (ex. SPY).
+          Pour la Bourse de Toronto, ajoute .TO (ex. VFV.TO). Pour les États-Unis, le symbole seul suffit (ex. SPY).
         </small>
       </div>
       <button type="submit" class="btn-primary" id="fnb-bouton">Évaluer ce FNB</button>
@@ -2946,9 +2946,9 @@ Historique Québec : 2-4% par an
     <p style="margin:0;font-size:0.85em;color:#6b7280;line-height:1.7;">
       <strong>Avertissement :</strong> cet outil est à des fins éducatives et informatives seulement.
       Il ne constitue pas un conseil en placement, ni une recommandation d'acheter ou de vendre un titre.
-      La note mesure la conformité à des repères généraux, pas la qualité d'un investissement pour votre situation.
+      La note mesure la conformité à des repères généraux, pas la qualité d'un investissement pour ta situation.
       Les rendements passés ne garantissent pas les rendements futurs. Les données proviennent de Yahoo Finance,
-      sans garantie d'exactitude ou de disponibilité. Avant toute décision, consultez un professionnel inscrit
+      sans garantie d'exactitude ou de disponibilité. Avant toute décision, consulte un professionnel inscrit
       auprès de l'Autorité des marchés financiers
       (<a href="https://lautorite.qc.ca/" target="_blank" rel="noopener noreferrer" style="color:#2563eb;">lautorite.qc.ca</a>).
     </p>
@@ -3563,7 +3563,7 @@ if(a4 > 0){
   htmlReer += '<p style="margin:5px 0;color:#dc2626;">Impôt estimé (40%): -' + fmt(impotLatent) + ' $</p>';
   htmlReer += '<p style="margin:5px 0;font-weight:bold;color:#047857;">Valeur REER nette estimée: ' + fmt(reerNet) + ' $</p>';
   htmlReer += '<p style="margin:10px 0;padding-top:10px;border-top:1px solid #f59e0b;font-weight:bold;color:#1e40af;">Valeur nette ajustée: ' + fmt(valeurNetteAjustee) + ' $</p>';
-  htmlReer += '<small style="display:block;margin-top:8px;color:#78350f;">Cette estimation suppose un taux marginal de 40%. Le taux réel dépendra de votre revenu et stratégie de retrait à la retraite.</small>';
+  htmlReer += '<small style="display:block;margin-top:8px;color:#78350f;">Cette estimation suppose un taux marginal de 40%. Le taux réel dépendra de ton revenu et stratégie de retrait à la retraite.</small>';
   htmlReer += '</div>';
   
   // Insérer dans le DOM (après la summary-box de valeur nette)
@@ -3667,7 +3667,7 @@ document.getElementById('rn').textContent=fmt(rn)+' $';
 function calc503020(){
 var rev=DATA.revenuTotal||0;
 if(rev<=0){
-document.getElementById('analyse-503020').innerHTML='<p>Entrez votre revenu mensuel dans Mon profil.</p>';
+document.getElementById('analyse-503020').innerHTML='<p>Entre ton revenu mensuel dans Mon profil.</p>';
 return;
 }
 var besoin50=rev*0.5;
@@ -3676,19 +3676,19 @@ var desirs30=rev*0.3;
 var html='<div style="margin:20px 0">';
 html+='<div style="margin:10px 0"><strong>Besoins (50%):</strong> '+fmt(besoin50)+' $ recommandés</div>';
 html+='<div class="progress-bar"><div class="progress-fill" style="width:50%;background:#3b82f6"></div></div>';
+html+='<div style="margin:10px 0;margin-top:20px"><strong>Désirs (30%):</strong> '+fmt(desirs30)+' $ recommandés</div>';
+html+='<div class="progress-bar"><div class="progress-fill" style="width:30%;background:#f59e0b"></div></div>';
 html+='<div style="margin:10px 0;margin-top:20px"><strong>Épargne (20%):</strong> '+fmt(epargne20)+' $ recommandés';
 var epargneActuelle=DATA.epargne||0;
 var pourc=rev>0?(epargneActuelle/rev*100):0;
 html+=' (Actuel: '+fmt(epargneActuelle)+' $ = '+pourc.toFixed(1)+'%)</div>';
 html+='<div class="progress-bar"><div class="progress-fill" style="width:20%;background:#10b981"></div></div>';
-html+='<div style="margin:10px 0;margin-top:20px"><strong>Désirs (30%):</strong> '+fmt(desirs30)+' $ recommandés</div>';
-html+='<div class="progress-bar"><div class="progress-fill" style="width:30%;background:#f59e0b"></div></div>';
 html+='</div>';
 if(epargneActuelle>=epargne20){
-html+='<div class="result-box green">✅ Félicitations! Vous atteignez l\'objectif d\'épargne de 20%.</div>';
+html+='<div class="result-box green">✅ Félicitations! Tu atteins l\'objectif d\'épargne de 20%.</div>';
 }else{
 var deficit=epargne20-epargneActuelle;
-html+='<div class="result-box orange">⚠️ Attention: Il vous manque '+fmt(deficit)+' $ pour atteindre les 20% d\'épargne recommandés.</div>';
+html+='<div class="result-box orange">⚠️ Attention: Il te manque '+fmt(deficit)+' $ pour atteindre les 20% d\'épargne recommandés.</div>';
 }
 document.getElementById('analyse-503020').innerHTML=html;
 }
@@ -3822,7 +3822,7 @@ var prog = capitalNecessaire > 0 ? (valeurFutureTotale / capitalNecessaire * 100
   var html = '';
   html += '<div class="result-box green">Capital nécessaire à la retraite: <span style="font-size:1.8em">' + fmt(capitalNecessaire) + ' $</span></div>';
   html += '<p style="margin:6px 0;font-size:0.9em;color:#6b7280;">Équivalent en dollars d’aujourd’hui : ' + fmt(capitalNecessaireAujourdhui) + ' $.</p>';
-  html += '<p style="margin-top:6px;font-size:0.9em;color:#6b7280;">💡 Ce calcul considère uniquement vos actifs financiers liquides (CELI, CELIAPP, CNE, REER). Les immobilisations et le compte bancaire ne sont pas inclus.</p>';
+  html += '<p style="margin-top:6px;font-size:0.9em;color:#6b7280;">💡 Ce calcul considère uniquement tes actifs financiers liquides (CELI, CELIAPP, CNE, REER). Les immobilisations et le compte bancaire ne sont pas inclus.</p>';
 
   html += '<p style="margin:10px 0;font-size:0.9em;color:#6b7280">';
   html += 'Revenu désiré: ' + fmt(revRet) + ' $ → Ajusté inflation: ' + fmt(revenuAjuste) + ' $<br>';
@@ -3843,16 +3843,16 @@ if(contributionMensuelle > 0) {
   var progAvecContrib = (valeurFutureTotale / capitalNecessaire * 100);
   
   html += '<div class="result-box blue">';
-  html += '<strong>📈 Impact de votre épargne actuelle</strong><br>';
+  html += '<strong>📈 Impact de ton épargne actuelle</strong><br>';
   html += 'Contribution mensuelle: ' + fmt(contributionMensuelle) + ' $/mois<br>';
   html += 'Valeur future des contributions: <span style="font-size:1.3em;color:#047857;">' + fmt(epargneAccumulee) + ' $</span><br>';
   html += '<strong style="font-size:1.1em;">Total dans ' + annees + ' ans: ' + fmt(valeurFutureTotale) + ' $</strong><br>';
   
   if(progAvecContrib >= 100) {
-    html += '<p style="margin-top:10px;color:#047857;font-weight:bold;">✅ Avec vos contributions actuelles, vous atteindrez votre objectif !</p>';
+    html += '<p style="margin-top:10px;color:#047857;font-weight:bold;">✅ Avec tes contributions actuelles, tu atteindras ton objectif !</p>';
   } else {
     var manqueEncore = capitalNecessaire - valeurFutureTotale;
-    html += '<p style="margin-top:10px;color:#ea580c;">⚠️ Il manquera encore ' + fmt(manqueEncore) + ' $ à votre objectif.</p>';
+    html += '<p style="margin-top:10px;color:#ea580c;">⚠️ Il manquera encore ' + fmt(manqueEncore) + ' $ à ton objectif.</p>';
   }
   html += '</div>';
 }
@@ -3879,12 +3879,12 @@ if(contributionMensuelle > 0) {
 
   // AFFICHAGE ÉPUISEMENT DU CAPITAL
   if (valeurFuture <= 0) {
-    html += '<div class="result-box red" style="margin-top:10px;">⚠️ Vous n\'avez actuellement aucun capital disponible pour la retraite.</div>';
+    html += '<div class="result-box red" style="margin-top:10px;">⚠️ Tu n\'as actuellement aucun capital disponible pour la retraite.</div>';
   } else if (ageEpuisement) {
-    html += '<div class="result-box yellow" style="margin-top:10px;">⏳ <strong>Votre capital serait épuisé après environ ' +
+    html += '<div class="result-box yellow" style="margin-top:10px;">⏳ <strong>Ton capital serait épuisé après environ ' +
             (ageEpuisement - ageRetraite) + ' ans de retraite</strong> (vers ' + ageEpuisement + ' ans).</div>';
   } else {
-    html += '<div class="result-box green" style="margin-top:10px;">💰 <strong>Votre capital ne s\'épuiserait pas avant 95 ans</strong> selon vos hypothèses actuelles.</div>';
+    html += '<div class="result-box green" style="margin-top:10px;">💰 <strong>Ton capital ne s\'épuiserait pas avant 95 ans</strong> selon tes hypothèses actuelles.</div>';
   }
 
   document.getElementById('resultat-retraite').innerHTML = html;
@@ -3894,7 +3894,7 @@ function calcImmobilier() {
   var revBrut = parseFloat(document.getElementById('revenu-brut-menage').value) || 0;
   // Vérification si revenu est 0
   if(revBrut === 0) {
-    document.getElementById('resultat-immobilier').innerHTML = '<div class="result-box red">⚠️ Veuillez entrer un revenu brut annuel pour calculer votre capacité d\'achat immobilier.</div>';
+    document.getElementById('resultat-immobilier').innerHTML = '<div class="result-box red">⚠️ Entre un revenu brut annuel pour calculer ta capacité d\'achat immobilier.</div>';
     return;
   }
   var tauxHypo = (parseFloat(document.getElementById('taux-hypo').value) || 5) / 100;
@@ -3996,7 +3996,7 @@ function calcImmobilier() {
         <p style="margin-top:10px;font-size:0.85em;color:#64748b;">
           Basé sur 32% du revenu brut (logement) et le taux actuel de ${(tauxHypo * 100).toFixed(2)}%.
         </p>
-        ${autresDettesMensuelles > 0 ? `<p style="margin-top:6px;font-size:0.85em;color:#64748b;">Tient aussi compte de vos ${fmt(autresDettesMensuelles)} $/mois d'autres dettes, pour respecter la règle du 40% (total des dettes/revenu).</p>` : ''}
+        ${autresDettesMensuelles > 0 ? `<p style="margin-top:6px;font-size:0.85em;color:#64748b;">Tient aussi compte de tes ${fmt(autresDettesMensuelles)} $/mois d'autres dettes, pour respecter la règle du 40% (total des dettes/revenu).</p>` : ''}
       </div>
     </div>
 
@@ -4005,8 +4005,8 @@ function calcImmobilier() {
     <div class="warning-box" style="background:#fef2f2;border-left:6px solid #dc2626;padding:25px;border-radius:12px;margin-bottom:30px;overflow:hidden;">
       <h4 style="margin:0 0 10px 0;color:#991b1b;">⚠️ Mise de fonds inférieure à 20%</h4>
       <p style="margin:0;color:#7f1d1d;font-size:0.95em;line-height:1.7;">
-        Avec une mise de fonds de ${(miseDeFondsPct*100).toFixed(0)}%, vous devrez payer une assurance prêt hypothécaire SCHL. 
-        Cette prime est ajoutée à votre emprunt et augmente vos paiements mensuels.
+        Avec une mise de fonds de ${(miseDeFondsPct*100).toFixed(0)}%, tu devras payer une assurance prêt hypothécaire SCHL. 
+        Cette prime est ajoutée à ton emprunt et augmente tes paiements mensuels.
       </p>
     </div>
     ` : ''}
@@ -4015,8 +4015,8 @@ function calcImmobilier() {
       <h4 style="margin:0 0 10px 0;color:#92400e;">💡 Comparaison des deux approches</h4>
       <p style="margin:0;color:#78350f;font-size:0.95em;line-height:1.7;">
         ${prixMaxMaison > prixRegleSimple 
-          ? `Avec le taux actuel de ${(tauxHypo * 100).toFixed(2)}%, vous pourriez emprunter <strong>${fmt(prixMaxMaison - prixRegleSimple)} $ de plus</strong> que la règle traditionnelle. Attention à ne pas vous surendetter!`
-          : `Avec le taux actuel de ${(tauxHypo * 100).toFixed(2)}%, votre capacité réelle est <strong>${fmt(prixRegleSimple - prixMaxMaison)} $ inférieure</strong> à la règle traditionnelle. Les taux élevés réduisent votre pouvoir d'achat.`
+          ? `Avec le taux actuel de ${(tauxHypo * 100).toFixed(2)}%, tu pourrais emprunter <strong>${fmt(prixMaxMaison - prixRegleSimple)} $ de plus</strong> que la règle traditionnelle. Attention à ne pas te surendetter!`
+          : `Avec le taux actuel de ${(tauxHypo * 100).toFixed(2)}%, ta capacité réelle est <strong>${fmt(prixRegleSimple - prixMaxMaison)} $ inférieure</strong> à la règle traditionnelle. Les taux élevés réduisent ton pouvoir d'achat.`
         }
       </p>
     </div>
@@ -4065,11 +4065,11 @@ function calcImmobilier() {
     if (conformeInstitution && Math.abs(ecartRegle / prixRegleSimple * 100) < 10) {
       html += `<div class="result-box green">✅ Le prix envisagé est raisonnable selon les deux approches (règle traditionnelle et capacité réelle).</div>`;
     } else if (!conformeLogement) {
-      html += `<div class="result-box red">❌ Le prix envisagé dépasse votre capacité de paiement mensuel de ${fmt(paiementReel - maxLog)} $/mois (règle du 32%). Les institutions financières risquent de refuser ce montant.</div>`;
+      html += `<div class="result-box red">❌ Le prix envisagé dépasse ta capacité de paiement mensuel de ${fmt(paiementReel - maxLog)} $/mois (règle du 32%). Les institutions financières risquent de refuser ce montant.</div>`;
     } else if (!conformeTotal) {
-      html += `<div class="result-box red">❌ En incluant vos autres dettes (${fmt(autresDettesMensuelles)} $/mois), vous dépassez la règle du 40% de ${fmt((paiementReel + autresDettesMensuelles) - maxTot)} $/mois. Les institutions financières risquent de refuser ce montant.</div>`;
+      html += `<div class="result-box red">❌ En incluant tes autres dettes (${fmt(autresDettesMensuelles)} $/mois), tu dépasses la règle du 40% de ${fmt((paiementReel + autresDettesMensuelles) - maxTot)} $/mois. Les institutions financières risquent de refuser ce montant.</div>`;
     } else {
-      html += `<div class="result-box orange">⚠️ Le prix envisagé utilise toute votre capacité d'emprunt. Budget serré mais acceptable.</div>`;
+      html += `<div class="result-box orange">⚠️ Le prix envisagé utilise toute ta capacité d'emprunt. Budget serré mais acceptable.</div>`;
     }
   }
 
@@ -4083,7 +4083,7 @@ function calcObjectif(){
   var tauxMensuel=tauxAnnuel/12;
   
   if(!date){
-    document.getElementById('resultat-objectif').innerHTML='Selectionnez une date';
+    document.getElementById('resultat-objectif').innerHTML='Sélectionne une date';
     return;
   }
   
@@ -4092,7 +4092,7 @@ function calcObjectif(){
   var mois=Math.max(1,(dateCible-aujourd)/(1000*60*60*24*30));
   var epargneAct=DATA.liquidite||0;
   
-  var html='<div class="result-box blue">Objectif: '+fmt(montant)+' $<br>Temps: '+Math.round(mois)+' mois<br>Epargne liquide actuelle: '+fmt(epargneAct)+' $</div>';
+  var html='<div class="result-box blue">Objectif: '+fmt(montant)+' $<br>Temps: '+Math.round(mois)+' mois<br>Épargne liquide actuelle: '+fmt(epargneAct)+' $</div>';
   
   if(epargneAct>=montant){
     html+='<div class="result-box green">✅ Objectif atteint!</div>';
@@ -4106,7 +4106,7 @@ function calcObjectif(){
       var manqueFutur=montant-valeurFutureActuelle;
       
       if(manqueFutur<=0){
-        html+='<div class="result-box green">✅ Votre épargne actuelle, avec les intérêts, atteindra '+fmt(valeurFutureActuelle)+' $ à la date cible. Objectif déjà atteint!</div>';
+        html+='<div class="result-box green">✅ Ton épargne actuelle, avec les intérêts, atteindra '+fmt(valeurFutureActuelle)+' $ à la date cible. Objectif déjà atteint!</div>';
       } else {
         var mensuel=manqueFutur/(((facteur-1)/tauxMensuel));
         var totalVerse=mensuel*mois;
@@ -4123,13 +4123,13 @@ function calcObjectif(){
       var mensuelSansInteret=manque/mois;
       if(mensuel<mensuelSansInteret){
         var economie=mensuelSansInteret-mensuel;
-        html+='<div class="result-box blue">💡 Grâce aux intérêts composés, vous épargnez '+fmt(economie)+' $/mois de moins qu\'un compte sans rendement ('+fmt(mensuelSansInteret)+' $/mois).</div>';
+        html+='<div class="result-box blue">💡 Grâce aux intérêts composés, tu épargnes '+fmt(economie)+' $/mois de moins qu\'un compte sans rendement ('+fmt(mensuelSansInteret)+' $/mois).</div>';
       }
       
     } else {
       // Calcul sans intérêts (taux = 0%)
       var mensuel=manque/mois;
-      html+='<div class="result-box orange">Epargne mensuelle necessaire: <span style="font-size:1.8em">'+fmt(mensuel)+' $/mois</span></div>';
+      html+='<div class="result-box orange">Épargne mensuelle nécessaire: <span style="font-size:1.8em">'+fmt(mensuel)+' $/mois</span></div>';
     }
   }
   
@@ -4471,7 +4471,7 @@ if(mois < 1) {
 }
 html+='</div>';
 
-html+='<div class="result-box '+(taux>=20?'green':taux>=10?'orange':'red')+'">Taux epargne: '+taux+'%';
+html+='<div class="result-box '+(taux>=20?'green':taux>=10?'orange':'red')+'">Taux épargne: '+taux+'%';
 if(taux>=20){
   html+=' - Excellent';
   score++;
@@ -4485,7 +4485,7 @@ if(taux>=20){
 }
 }
 if(taux<20 && DATA.revenuTotal>0){
-  html+='<p style="font-size:0.9em;margin-top:5px;">💡 Pour atteindre 20%, augmentez votre épargne de ' + fmt((DATA.revenuTotal * 0.20) - DATA.epargne) + ' $/mois</p>';
+  html+='<p style="font-size:0.9em;margin-top:5px;">💡 Pour atteindre 20%, augmente ton épargne de ' + fmt((DATA.revenuTotal * 0.20) - DATA.epargne) + ' $/mois</p>';
 }
 html+='</div>';
 
@@ -4493,7 +4493,7 @@ html+='<div class="result-box '+(DATA.totalA==0&&DATA.totalP>0?'red':ratio<=30?'
 if(DATA.totalA==0&&DATA.totalP>0){
   html+=' - Critique: dettes sans actifs';
   pointsFaibles.push("dettes sans actifs");
-  recommandations.push("🚨 <strong>Situation critique :</strong> Vos dettes dépassent vos actifs actuels. Les conseillers financiers recommandent généralement d'établir un plan de remboursement structuré en commençant par les dettes à taux d'intérêt élevé. Consultez un conseiller en crédit ou un planificateur financier.");
+  recommandations.push("🚨 <strong>Situation critique :</strong> Tes dettes dépassent tes actifs actuels. Les conseillers financiers recommandent généralement d'établir un plan de remboursement structuré en commençant par les dettes à taux d'intérêt élevé. Consulte un conseiller en crédit ou un planificateur financier.");
 }else if(ratio<=30){
   html+=' - Excellent';
   score++;
@@ -4501,7 +4501,7 @@ if(DATA.totalA==0&&DATA.totalP>0){
   html+=' - Modéré';
 }else{
   pointsFaibles.push("endettement élevé");
-  recommandations.push("💳 <strong>Endettement :</strong> Votre ratio dettes/actifs est de " + ratio.toFixed(1) + "%. Les experts financiers recommandent généralement de maintenir ce ratio sous 30%. La stratégie couramment conseillée est de rembourser en priorité les dettes à taux d'intérêt élevé (cartes de crédit, marges).");
+  recommandations.push("💳 <strong>Endettement :</strong> Ton ratio dettes/actifs est de " + ratio.toFixed(1) + "%. Les experts financiers recommandent généralement de maintenir ce ratio sous 30%. La stratégie couramment conseillée est de rembourser en priorité les dettes à taux d'intérêt élevé (cartes de crédit, marges).");
 }
 html+='</div>';
 
@@ -4516,7 +4516,7 @@ if(ratioDetteRevenu<=35){
 }else{
   html+=' - Trop élevé';
   pointsFaibles.push("ratio dettes/revenus trop élevé");
-  recommandations.push("⚠️ <strong>Dettes/revenus :</strong> Votre ratio est de " + ratioDetteRevenu.toFixed(1) + "% (les institutions financières recommandent généralement un ratio sous 35%). Les stratégies courantes incluent la réduction des dépenses fixes ou l'augmentation des revenus.");
+  recommandations.push("⚠️ <strong>Dettes/revenus :</strong> Ton ratio est de " + ratioDetteRevenu.toFixed(1) + "% (les institutions financières recommandent généralement un ratio sous 35%). Les stratégies courantes incluent la réduction des dépenses fixes ou l'augmentation des revenus.");
 }
 
 html+='</div>';
@@ -4534,7 +4534,7 @@ if(DATA.vn>100000){
   html+=' - En construction';
 }else{
   pointsFaibles.push("valeur nette négative");
-  recommandations.push("📉 <strong>Valeur nette négative :</strong> Vos dettes dépassent actuellement vos actifs. Les conseillers financiers recommandent généralement une approche combinée : remboursement structuré des dettes et accumulation progressive d'épargne. Un plan financier personnalisé avec un professionnel peut aider à prioriser ces actions.");
+  recommandations.push("📉 <strong>Valeur nette négative :</strong> Tes dettes dépassent actuellement tes actifs. Les conseillers financiers recommandent généralement une approche combinée : remboursement structuré des dettes et accumulation progressive d'épargne. Un plan financier personnalisé avec un professionnel peut aider à prioriser ces actions.");
 }
 
 html+='</div>';
@@ -4544,7 +4544,7 @@ html+='<div class="progress-bar"><div class="progress-fill" style="width:'+Math.
 
 // Commentaire selon le score
 if(score>=5){
-  html+='<div style="background:#d1fae5;padding:15px;border-radius:8px;margin-top:15px;color:#065f46;">🎉 Excellente santé financière ! Continuez sur cette lancée.</div>';
+  html+='<div style="background:#d1fae5;padding:15px;border-radius:8px;margin-top:15px;color:#065f46;">🎉 Excellente santé financière ! Continue sur cette lancée.</div>';
 }else if(score>=3){
   html+='<div style="background:#dbeafe;padding:15px;border-radius:8px;margin-top:15px;color:#1e40af;">👍 Bonne base financière, mais place à amélioration.';
   if(pointsFaibles.length>0){
@@ -4554,10 +4554,10 @@ if(score>=5){
 
 }else if(score>=1){
   html+='<div style="background:#fed7aa;padding:15px;border-radius:8px;margin-top:15px;color:#92400e;"><h4 style="color:#92400e;margin:0 0 10px 0;">⚠️ Situation à améliorer</h4>';
-  html+='<p style="margin:0;color:#374151;line-height:1.6;">Votre situation financière présente plusieurs aspects à améliorer. Ne vous découragez pas ! Les experts recommandent une approche progressive : discipline budgétaire et plan d\'action structuré. Consultez un conseiller financier pour établir des priorités adaptées à votre situation.</p>';
+  html+='<p style="margin:0;color:#374151;line-height:1.6;">Ta situation financière présente plusieurs aspects à améliorer. Ne te décourage pas ! Les experts recommandent une approche progressive : discipline budgétaire et plan d\'action structuré. Consulte un conseiller financier pour établir des priorités adaptées à ta situation.</p>';
 }else{
   html+='<div style="background:#fee2e2;padding:15px;border-radius:8px;margin-top:15px;border-left:4px solid #dc2626;"><h4 style="color:#991b1b;margin:0 0 10px 0;">🚨 Situation nécessitant attention</h4>';
-  html+='<p style="margin:0;color:#374151;line-height:1.6;">Votre situation financière nécessite une attention particulière. Les principes de base incluent : établir un budget réaliste, identifier les dépenses réductibles et créer un plan de remboursement. <strong>Il est fortement recommandé de consulter un conseiller financier autorisé ou un conseiller en crédit</strong> pour vous accompagner.</p>';
+  html+='<p style="margin:0;color:#374151;line-height:1.6;">Ta situation financière nécessite une attention particulière. Les principes de base incluent : établir un budget réaliste, identifier les dépenses réductibles et créer un plan de remboursement. <strong>Il est fortement recommandé de consulter un conseiller financier autorisé ou un conseiller en crédit</strong> pour t\'accompagner.</p>';
 }
 
 // Recommandations personnalisées
@@ -4580,13 +4580,13 @@ if(taux > 0) {
   var tauxMoyen = 5;
   html+='<div style="margin-bottom:15px;padding:10px;background:white;border-radius:6px;">';
   html+='<strong>Taux d\'épargne</strong><br>';
-  html+='<span style="font-size:0.9em;color:#6b7280;">Vous : <strong style="color:#2563eb;">' + taux + '%</strong> | Moyenne québécoise : ~5-6%</span><br>';
+  html+='<span style="font-size:0.9em;color:#6b7280;">Toi : <strong style="color:#2563eb;">' + taux + '%</strong> | Moyenne québécoise : ~5-6%</span><br>';
   if(taux >= 15) {
-    html+='<span style="color:#047857;">✅ Excellent ! Vous épargnez bien plus que la moyenne.</span>';
+    html+='<span style="color:#047857;">✅ Excellent ! Tu épargnes bien plus que la moyenne.</span>';
   } else if(taux >= tauxMoyen) {
     html+='<span style="color:#047857;">👍 Au-dessus de la moyenne québécoise.</span>';
   } else {
-    html+='<span style="color:#ea580c;">⚠️ Sous la moyenne. Essayez d\'augmenter progressivement.</span>';
+    html+='<span style="color:#ea580c;">⚠️ Sous la moyenne. Essaie d\'augmenter progressivement.</span>';
   }
   html+='</div>';
 }
@@ -4595,7 +4595,7 @@ if(taux > 0) {
 if(DATA.totalA > 0) {
   html+='<div style="margin-bottom:15px;padding:10px;background:white;border-radius:6px;">';
   html+='<strong>Endettement (dette/actifs)</strong><br>';
-  html+='<span style="font-size:0.9em;color:#6b7280;">Vous : <strong style="color:#2563eb;">' + ratio.toFixed(1) + '%</strong> | Recommandé : sous 30%</span><br>';
+  html+='<span style="font-size:0.9em;color:#6b7280;">Toi : <strong style="color:#2563eb;">' + ratio.toFixed(1) + '%</strong> | Recommandé : sous 30%</span><br>';
   if(ratio <= 20) {
     html+='<span style="color:#047857;">✅ Excellent niveau d\'endettement.</span>';
   } else if(ratio <= 30) {
@@ -4609,20 +4609,20 @@ if(DATA.totalA > 0) {
 // Fonds d'urgence
 html+='<div style="margin-bottom:15px;padding:10px;background:white;border-radius:6px;">';
 html+='<strong>Fonds d\'urgence</strong><br>';
-html+='<span style="font-size:0.9em;color:#6b7280;">Vous : <strong style="color:#2563eb;">' + mois.toFixed(1) + ' mois</strong> | Environ 40% des Canadiens n\'ont pas 3 mois d\'épargne</span><br>';
+html+='<span style="font-size:0.9em;color:#6b7280;">Toi : <strong style="color:#2563eb;">' + mois.toFixed(1) + ' mois</strong> | Environ 40% des Canadiens n\'ont pas 3 mois d\'épargne</span><br>';
 if(mois >= 6) {
-  html+='<span style="color:#047857;">✅ Vous faites partie des 30% les mieux préparés !</span>';
+  html+='<span style="color:#047857;">✅ Tu fais partie des 30% les mieux préparés !</span>';
 } else if(mois >= 3) {
   html+='<span style="color:#047857;">👍 Mieux que 60% des Canadiens.</span>';
 } else {
-  html+='<span style="color:#ea580c;">⚠️ 60% des Canadiens ont au moins 3 mois. Continuez à bâtir votre fonds.</span>';
+  html+='<span style="color:#ea580c;">⚠️ 60% des Canadiens ont au moins 3 mois. Continue à bâtir ton fonds.</span>';
 }
 html+='</div>';
 
 // Valeur nette (optionnel - si l'utilisateur veut partager son âge)
 html+='<div style="margin-bottom:15px;padding:10px;background:white;border-radius:6px;">';
 html+='<strong>Valeur nette</strong><br>';
-html+='<span style="font-size:0.9em;color:#6b7280;">Vous : <strong style="color:#2563eb;">' + fmt(DATA.vn) + ' $</strong></span><br>';
+html+='<span style="font-size:0.9em;color:#6b7280;">Toi : <strong style="color:#2563eb;">' + fmt(DATA.vn) + ' $</strong></span><br>';
 html+='<span style="font-size:0.85em;color:#6b7280;">Valeur nette médiane au Canada (selon l\'âge) :<br>';
 html+='• Moins de 35 ans : ~50 000$<br>';
 html+='• 35-44 ans : ~250 000$<br>';
@@ -4854,7 +4854,7 @@ function afficherDettes() {
   var html = '';
   
   if(listeDettes.length === 0) {
-    html = '<p style="color:#6b7280;font-style:italic;">Aucune dette ajoutée. Cliquez sur "Ajouter une dette" pour commencer.</p>';
+    html = '<p style="color:#6b7280;font-style:italic;">Aucune dette ajoutée. Clique sur "Ajouter une dette" pour commencer.</p>';
   }
   
   for(var i = 0; i < listeDettes.length; i++) {
@@ -4916,7 +4916,7 @@ function mettreAJourDette(id) {
 function calculerStrategies() {
   if(listeDettes.length === 0) {
     document.getElementById('resultats-strategies').innerHTML =
-      '<div class="card"><p style="color:#6b7280;">Ajoutez au moins une dette pour voir les calculs.</p></div>';
+      '<div class="card"><p style="color:#6b7280;">Ajoute au moins une dette pour voir les calculs.</p></div>';
     return;
   }
 
@@ -4935,7 +4935,7 @@ function calculerStrategies() {
 
   if(dettesValides.length === 0) {
     document.getElementById('resultats-strategies').innerHTML =
-      '<div class="card"><p style="color:#dc2626;">Entrez au moins une dette avec un solde supérieur à 0.</p></div>';
+      '<div class="card"><p style="color:#dc2626;">Entre au moins une dette avec un solde supérieur à 0.</p></div>';
     return;
   }
 
@@ -4954,8 +4954,8 @@ function calculerStrategies() {
     avertissement = `
       <div class="card" style="background:#fee2e2;border-left:4px solid #dc2626;margin-top:20px;">
         <h3 style="color:#991b1b;">⚠️ Amortisation négative</h3>
-        <p>Vos intérêts mensuels (~${fmt(totalInteretsMensuels)} $) dépassent vos paiements (min + extra = ${fmt(totalMin + paiementExtra)} $).</p>
-        <p><strong>Ajoutez au moins ${fmt(manque)} $/mois</strong> pour commencer à réduire le capital.</p>
+        <p>Tes intérêts mensuels (~${fmt(totalInteretsMensuels)} $) dépassent tes paiements (min + extra = ${fmt(totalMin + paiementExtra)} $).</p>
+        <p><strong>Ajoute au moins ${fmt(manque)} $/mois</strong> pour commencer à réduire le capital.</p>
       </div>`;
   }
 
@@ -4967,7 +4967,7 @@ function calculerStrategies() {
     document.getElementById('resultats-strategies').innerHTML =
       '<div class="card" style="background:#fee2e2;border-left:4px solid #dc2626;margin-top:20px;">' +
       '<h3 style="color:#991b1b;">Paiements insuffisants</h3>' +
-      '<p>Avec les paiements saisis, au moins une dette ne se rembourse pas. Augmentez le paiement mensuel avant de comparer les stratégies.</p>' +
+      '<p>Avec les paiements saisis, au moins une dette ne se rembourse pas. Augmente le paiement mensuel avant de comparer les stratégies.</p>' +
       '</div>';
     return;
   }
@@ -5090,7 +5090,7 @@ function afficherComparaison(avalanche, bouleNeige, dettes, paiementExtra) {
   
   // Résumé situation
   html += '<div class="card" style="background:#f0f9ff;margin-top:20px;">';
-  html += '<h3 style="color:#1e40af;">📋 Votre situation</h3>';
+  html += '<h3 style="color:#1e40af;">📋 Ta situation</h3>';
   html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-top:15px;">';
   html += '<div><p style="color:#6b7280;font-size:0.9em;margin:0;">Total des dettes</p><p style="font-size:1.5em;font-weight:bold;color:#1f2937;margin:5px 0 0 0;">' + fmt(totalDettes) + ' $</p></div>';
   html += '<div><p style="color:#6b7280;font-size:0.9em;margin:0;">Paiements minimums</p><p style="font-size:1.5em;font-weight:bold;color:#1f2937;margin:5px 0 0 0;">' + fmt(totalMin) + ' $/mois</p></div>';
@@ -5128,71 +5128,71 @@ html += '<div class="card" style="margin-top:20px;">';
 html += '<h3>🏆 Verdict</h3>';
 
 if(Math.abs(diff) < 10) {
-  html += '<div class="result-box blue">Les deux méthodes donnent des résultats très similaires. Choisissez celle qui vous motive le plus !</div>';
+  html += '<div class="result-box blue">Les deux méthodes donnent des résultats très similaires. Choisis celle qui te motive le plus !</div>';
   
   // Conseil NEUTRE quand les résultats sont similaires
   html += '<div style="background:#fef3c7;padding:20px;border-radius:10px;margin-top:20px;border-left:4px solid #f59e0b;">';
   html += '<h4 style="margin:0 0 10px 0;color:#92400e;">💡 Comment choisir ?</h4>';
   html += '<p style="margin:0 0 10px 0;color:#78350f;line-height:1.7;">';
-  html += 'Les deux méthodes donnent des résultats pratiquement identiques. Choisissez selon votre personnalité :';
+  html += 'Les deux méthodes donnent des résultats pratiquement identiques. Choisis selon ta personnalité :';
   html += '</p>';
   html += '<ul style="margin:10px 0;padding-left:20px;color:#78350f;line-height:1.8;">';
-  html += '<li><strong>Avalanche</strong> : Vous êtes motivé par la logique mathématique</li>';
-  html += '<li><strong>Boule de neige</strong> : Vous préférez les victoires rapides</li>';
+  html += '<li><strong>Avalanche</strong> : Tu es motivé par la logique mathématique</li>';
+  html += '<li><strong>Boule de neige</strong> : Tu préfères les victoires rapides</li>';
   html += '</ul>';
   html += '<p style="margin:10px 0 0 0;padding-top:10px;border-top:1px solid #fcd34d;color:#78350f;font-size:0.9em;">';
-  html += '⚡ <strong>Astuce :</strong> Payez les minimums sur toutes vos dettes, puis concentrez ' + fmt(paiementExtra) + ' $/mois sur UNE dette à la fois.';
+  html += '⚡ <strong>Astuce :</strong> Paie les minimums sur toutes tes dettes, puis concentre ' + fmt(paiementExtra) + ' $/mois sur UNE dette à la fois.';
   html += '</p>';
   html += '</div>';
   
 } else if(diff > 0) {
   html += '<div class="result-box green">';
-  html += '✅ La méthode <strong>Avalanche</strong> vous fait économiser <strong>' + fmt(diff) + ' $</strong> en intérêts ';
-  html += 'et vous libère <strong>' + Math.abs(diffMois) + ' mois plus tôt</strong> (' + Math.round(Math.abs(diffMois)/12*10)/10 + ' ans).';
+  html += '✅ La méthode <strong>Avalanche</strong> te fait économiser <strong>' + fmt(diff) + ' $</strong> en intérêts ';
+  html += 'et te libère <strong>' + Math.abs(diffMois) + ' mois plus tôt</strong> (' + Math.round(Math.abs(diffMois)/12*10)/10 + ' ans).';
   html += '</div>';
   
   // Plan d'action AVALANCHE
   html += '<div style="background:#f0f9ff;padding:20px;border-radius:10px;margin-top:20px;border-left:4px solid #2563eb;">';
   html += '<h4 style="margin:0 0 15px 0;color:#1e40af;">📋 Plan d\'action recommandé</h4>';
-  html += '<p style="margin:0 0 10px 0;"><strong>Suivez la méthode Avalanche :</strong></p>';
+  html += '<p style="margin:0 0 10px 0;"><strong>Suis la méthode Avalanche :</strong></p>';
   html += '<ol style="margin:0;padding-left:20px;line-height:2;">';
 
   for(var i = 0; i < avalanche.ordre.length; i++) {
     html += '<li><strong>' + avalanche.ordre[i].nom + '</strong> - sera remboursée au mois ' + avalanche.ordre[i].mois;
     if(i === 0) {
-      html += ' <span style="color:#047857;font-weight:bold;">← Concentrez votre paiement supplémentaire ici en premier</span>';
+      html += ' <span style="color:#047857;font-weight:bold;">← Concentre ton paiement supplémentaire ici en premier</span>';
     }
     html += '</li>';
   }
 
   html += '</ol>';
   html += '<p style="margin:15px 0 0 0;padding-top:15px;border-top:1px solid #bfdbfe;color:#6b7280;font-size:0.9em;">';
-  html += '💡 <strong>Astuce :</strong> Payez les minimums sur toutes les dettes, puis concentrez ' + fmt(paiementExtra) + ' $/mois sur la dette prioritaire.';
+  html += '💡 <strong>Astuce :</strong> Paie les minimums sur toutes les dettes, puis concentre ' + fmt(paiementExtra) + ' $/mois sur la dette prioritaire.';
   html += '</p>';
   html += '</div>';
   
 } else {
   html += '<div class="result-box green">';
-  html += '✅ La méthode <strong>Boule de neige</strong> est légèrement avantageuse dans votre cas.';
+  html += '✅ La méthode <strong>Boule de neige</strong> est légèrement avantageuse dans ton cas.';
   html += '</div>';
   
   // Plan d'action BOULE DE NEIGE
   html += '<div style="background:#f0f9ff;padding:20px;border-radius:10px;margin-top:20px;border-left:4px solid #2563eb;">';
   html += '<h4 style="margin:0 0 15px 0;color:#1e40af;">📋 Plan d\'action recommandé</h4>';
-  html += '<p style="margin:0 0 10px 0;"><strong>Suivez la méthode Boule de neige :</strong></p>';
+  html += '<p style="margin:0 0 10px 0;"><strong>Suis la méthode Boule de neige :</strong></p>';
   html += '<ol style="margin:0;padding-left:20px;line-height:2;">';
 
   for(var i = 0; i < bouleNeige.ordre.length; i++) {
     html += '<li><strong>' + bouleNeige.ordre[i].nom + '</strong> - sera remboursée au mois ' + bouleNeige.ordre[i].mois;
     if(i === 0) {
-      html += ' <span style="color:#047857;font-weight:bold;">← Concentrez votre paiement supplémentaire ici en premier</span>';
+      html += ' <span style="color:#047857;font-weight:bold;">← Concentre ton paiement supplémentaire ici en premier</span>';
     }
     html += '</li>';
   }
 
   html += '</ol>';
   html += '<p style="margin:15px 0 0 0;padding-top:15px;border-top:1px solid #bfdbfe;color:#6b7280;font-size:0.9em;">';
-  html += '💡 <strong>Astuce :</strong> Payez les minimums sur toutes les dettes, puis concentrez ' + fmt(paiementExtra) + ' $/mois sur la dette prioritaire.';
+  html += '💡 <strong>Astuce :</strong> Paie les minimums sur toutes les dettes, puis concentre ' + fmt(paiementExtra) + ' $/mois sur la dette prioritaire.';
   html += '</p>';
   html += '</div>';
 }
@@ -5347,7 +5347,7 @@ function calcCouple() {
       titre: '⚠️ Déséquilibre financier important détecté',
       message: 'L\'un des partenaires a un niveau d\'endettement significativement plus élevé (' + 
                (ratioDetteA > ratioDetteB ? 'Personne A: ' + ratioDetteA.toFixed(1) : 'Personne B: ' + ratioDetteB.toFixed(1)) + 
-               '%). Ceci peut créer des dynamiques de pouvoir inégales. Avant d\'établir un budget commun, considérez un plan de remboursement.'
+               '%). Ceci peut créer des dynamiques de pouvoir inégales. Avant d\'établir un budget commun, considère un plan de remboursement.'
     });
   }
   
@@ -5378,7 +5378,7 @@ function calcCouple() {
   // Si alertes critiques, arrêter là
   if(alertes.length > 0 && (ratioDetteA > 50 || ratioDetteB > 50)) {
     html += '<div style="background:#fee2e2;padding:20px;border-radius:10px;margin:20px 0;border-left:6px solid #dc2626;">';
-    html += '<strong style="color:#991b1b;font-size:1.1em;">🛑 Recommandation : Stabilisez d\'abord vos situations individuelles</strong>';
+    html += '<strong style="color:#991b1b;font-size:1.1em;">🛑 Recommandation : Stabilise d\'abord tes situations individuelles</strong>';
     html += '<p style="margin:10px 0 0 0;color:#7f1d1d;line-height:1.7;">Avant de créer un budget commun, il est préférable de consulter un conseiller financier (ACEF) pour établir des plans de remboursement de dettes individuels.</p>';
     html += '</div>';
     document.getElementById('resultats-couple').innerHTML = html;
@@ -5388,7 +5388,7 @@ function calcCouple() {
   // ===== CALCULS DE RÉPARTITION =====
   
   if(depensesCommunes === 0) {
-    html += '<div class="card"><p style="color:#6b7280;">Entrez vos dépenses communes pour voir les calculs de répartition.</p></div>';
+    html += '<div class="card"><p style="color:#6b7280;">Entre tes dépenses communes pour voir les calculs de répartition.</p></div>';
     document.getElementById('resultats-couple').innerHTML = html;
     return;
   }
@@ -6034,8 +6034,8 @@ function calcAcheterLouer() {
   html += '<div style="background:#f0f9ff;padding:15px;border-radius:8px;margin-top:15px;border-left:4px solid #2563eb;">';
   html += '<p style="margin:0;font-size:0.9em;color:#1e40af;"><strong>📊 Comment lire les résultats :</strong></p>';
   html += '<p style="margin:5px 0 0 0;font-size:0.85em;color:#1e3a8a;">';
-  html += '• Un montant positif = vous payez ce montant<br>';
-  html += '• Un montant négatif = vous gagnez ce montant (votre patrimoine augmente)';
+  html += '• Un montant positif = tu paies ce montant<br>';
+  html += '• Un montant négatif = tu gagnes ce montant (ton patrimoine augmente)';
   html += '</p></div>';
   
   // Verdict final
@@ -6059,7 +6059,7 @@ function calcAcheterLouer() {
   html += '<div style="background:#fef3c7;padding:20px;border-radius:10px;margin-top:20px;">';
   html += '<h4 style="color:#92400e;margin:0 0 10px 0;">⏱️ Point mort (break-even)</h4>';
   html += '<p style="margin:0;color:#78350f;line-height:1.7;">Pour trouver le point mort exact, il faudrait calculer année par année jusqu\'à ce que les deux options s\'égalisent. ';
-  html += 'Généralement, l\'achat devient avantageux après <strong>5-7 ans</strong> si la maison s\'apprécie bien et que vous restez longtemps.</p>';
+  html += 'Généralement, l\'achat devient avantageux après <strong>5-7 ans</strong> si la maison s\'apprécie bien et que tu restes longtemps.</p>';
   html += '</div>';
   
   // Facteurs à considérer
@@ -6106,7 +6106,7 @@ var userAnswers = {};
 var questions = [
   {
     id: 'profil',
-    question: 'Quelle est votre situation actuelle ?',
+    question: 'Quelle est ta situation actuelle ?',
     options: [
       { value: 'etudiant', label: '🎓 Étudiant / Début de carrière' },
       { value: 'jeune', label: '💼 Jeune professionnel (25-35 ans)' },
@@ -6117,7 +6117,7 @@ var questions = [
   },
   {
     id: 'priorite',
-    question: 'Quelle est votre priorité #1 aujourd\'hui ?',
+    question: 'Quelle est ta priorité #1 aujourd\'hui ?',
     options: [
       { value: 'comprendre', label: '📊 Comprendre ma situation financière' },
       { value: 'dettes', label: '💳 Rembourser mes dettes' },
@@ -6129,7 +6129,7 @@ var questions = [
   },
   {
     id: 'logement',
-    question: 'Votre situation de logement actuelle :',
+    question: 'Ta situation de logement actuelle :',
     options: [
       { value: 'locataire', label: '🔑 Locataire' },
       { value: 'proprio-hypo', label: '🏠 Propriétaire avec hypothèque' },
@@ -6139,7 +6139,7 @@ var questions = [
   },
   {
     id: 'dettes',
-    question: 'Avez-vous des dettes (hors hypothèque) ?',
+    question: 'As-tu des dettes (hors hypothèque) ?',
     options: [
       { value: 'aucune', label: '✅ Aucune dette' },
       { value: 'petite', label: '📊 Moins de 5 000 $' },
@@ -6149,7 +6149,7 @@ var questions = [
   },
   {
     id: 'urgence',
-    question: 'Avez-vous un fonds d\'urgence ?',
+    question: 'As-tu un fonds d\'urgence ?',
     options: [
       { value: 'oui', label: '✅ Oui, au moins 3 mois de dépenses' },
       { value: 'partiel', label: '📊 Un peu, mais pas assez' },
@@ -6268,7 +6268,7 @@ function showResults() {
     score -= userAnswers.dettes === 'grosse' ? 25 : 10;
     priorities.push({
       icon: '💳',
-      title: urgence + 'Rembourser vos dettes',
+      title: urgence + 'Rembourser tes dettes',
       desc: 'Stratégie avalanche ou boule de neige',
       action: 'dettes'
     });
@@ -6278,8 +6278,8 @@ function showResults() {
     score -= 15;
     priorities.push({
       icon: '📊',
-      title: 'Créer votre budget',
-      desc: 'Commencez par la règle 50/30/20',
+      title: 'Créer ton budget',
+      desc: 'Commence par la règle 50/30/20',
       action: 'profil'
     });
   }
@@ -6298,19 +6298,19 @@ function showResults() {
   
   // Recommandations selon la priorité
   if (userAnswers.priorite === 'comprendre') {
-    recommendations.push({text: 'Commencez par compléter votre <strong>profil</strong>', action: 'profil'});
+    recommendations.push({text: 'Commence par compléter ton <strong>profil</strong>', action: 'profil'});
   }
   if (userAnswers.priorite === 'maison') {
-    recommendations.push({text: 'Utilisez le calculateur <strong>Acheter vs Louer</strong>', action: 'acheter-louer'});
+    recommendations.push({text: 'Utilise le calculateur <strong>Acheter vs Louer</strong>', action: 'acheter-louer'});
   }
   if (userAnswers.priorite === 'retraite') {
-    recommendations.push({text: 'Calculez votre <strong>Plan de retraite</strong>', action: 'objectifs'});
+    recommendations.push({text: 'Calcule ton <strong>Plan de retraite</strong>', action: 'objectifs'});
   }
   if (userAnswers.priorite === 'epargne') {
-    recommendations.push({text: 'Définissez vos <strong>Objectifs d\'épargne</strong>', action: 'objectifs'});
+    recommendations.push({text: 'Définis tes <strong>Objectifs d\'épargne</strong>', action: 'objectifs'});
   }
-  recommendations.push({text: 'Calculez votre budget idéal avec la règle <strong>50/30/20</strong>', action: 'profil'});
-  recommendations.push({text: 'Optimisez vos <strong>Impôts</strong>', action: 'impôts'});
+  recommendations.push({text: 'Calcule ton budget idéal avec la règle <strong>50/30/20</strong>', action: 'profil'});
+  recommendations.push({text: 'Optimise tes <strong>Impôts</strong>', action: 'impôts'});
   
   var allActions = priorities.concat(recommendations.slice(0, Math.max(0, 5 - priorities.length)));
   var prioriteAction = priorities[0] ? priorities[0].action : 'profil';
@@ -6318,7 +6318,7 @@ function showResults() {
   // Construire le HTML
   var html = '<div class="results-container">';
   html += '<div class="welcome-header">';
-  html += '<h1>📋 Votre plan d\'action personnalisé</h1>';
+  html += '<h1>📋 Ton plan d\'action personnalisé</h1>';
   html += '</div>';
   
   if (priorities.length > 0) {
@@ -6348,13 +6348,13 @@ function showResults() {
   html += '<div style="background:#f0fdf4;border-left:4px solid #10b981;padding:20px;border-radius:10px;margin-bottom:20px;">';
   html += '<h3 style="color:#065f46;margin:0 0 10px 0;">📅 Plan 7 jours</h3>';
   if (userAnswers.dettes === 'grosse') {
-    html += '<p><strong>Jours 1-2 :</strong> Listez toutes vos dettes avec taux et soldes</p>';
-    html += '<p><strong>Jours 3-4 :</strong> Choisissez votre stratégie (avalanche ou boule de neige)</p>';
-    html += '<p><strong>Jours 5-7 :</strong> Contactez vos créanciers pour négocier les taux</p>';
+    html += '<p><strong>Jours 1-2 :</strong> Liste toutes tes dettes avec taux et soldes</p>';
+    html += '<p><strong>Jours 3-4 :</strong> Choisis ta stratégie (avalanche ou boule de neige)</p>';
+    html += '<p><strong>Jours 5-7 :</strong> Contacte tes créanciers pour négocier les taux</p>';
   } else {
-    html += '<p><strong>Jours 1-2 :</strong> Complétez votre profil financier</p>';
-    html += '<p><strong>Jours 3-5 :</strong> Établissez votre budget mensuel</p>';
-    html += '<p><strong>Jours 6-7 :</strong> Définissez un objectif d\'épargne pour 6 mois</p>';
+    html += '<p><strong>Jours 1-2 :</strong> Complète ton profil financier</p>';
+    html += '<p><strong>Jours 3-5 :</strong> Établis ton budget mensuel</p>';
+    html += '<p><strong>Jours 6-7 :</strong> Définis un objectif d\'épargne pour 6 mois</p>';
   }
   html += '</div>';
 
@@ -6428,7 +6428,7 @@ function calculatePsychoResults() {
   }
   
   if(answeredCount < totalQuestions) {
-    alert('Veuillez répondre à toutes les questions avant de continuer.');
+    alert('Réponds à toutes les questions avant de continuer.');
     return;
   }
   
@@ -6567,18 +6567,18 @@ function determineProfile(scores) {
       },
       color: "#10b981",
       emoji: "🧘",
-      description: "Vous incarnez la philosophie de Morgan Housel. Vous comprenez que la richesse est un marathon, pas un sprint.",
+      description: "Tu incarnes la philosophie de Morgan Housel. Tu comprends que la richesse est un marathon, pas un sprint.",
       strengths: [
         "Excellente maîtrise émotionnelle face aux fluctuations",
-        "Vision claire de ce qui compte vraiment pour vous",
+        "Vision claire de ce qui compte vraiment pour toi",
         "Indépendance vis-à-vis des influences sociales",
         "Reconnaissance du rôle de la chance et de l'incertitude"
       ],
       warnings: [
-        "Attention à ne pas devenir trop rigide dans votre approche",
-        "Restez ouvert aux opportunités même si elles sortent de votre plan"
+        "Attention à ne pas devenir trop rigide dans ton approche",
+        "Reste ouvert aux opportunités même si elles sortent de ton plan"
       ],
-      quote: "« Être raisonnable > Être rationnel. Des résultats raisonnables que vous pouvez maintenir battront des résultats optimaux que vous ne pouvez pas tenir. »"
+      quote: "« Être raisonnable > Être rationnel. Des résultats raisonnables que tu peux maintenir battront des résultats optimaux que tu ne peux pas tenir. »"
     },
     {
       name: "L'Optimiste Prudent",
@@ -6587,17 +6587,17 @@ function determineProfile(scores) {
       },
       color: "#3b82f6",
       emoji: "🌱",
-      description: "Vous croyez en l'avenir tout en restant pragmatique. Vous prenez des risques calculés.",
+      description: "Tu crois en l'avenir tout en restant pragmatique. Tu prends des risques calculés.",
       strengths: [
         "Bon équilibre entre optimisme et prudence",
         "Capacité à voir les opportunités sans être imprudent",
         "Patience pour laisser le temps faire son œuvre"
       ],
       warnings: [
-        "Surveillez que votre optimisme ne devienne pas de la complaisance",
-        "Gardez toujours une marge de sécurité"
+        "Surveille que ton optimisme ne devienne pas de la complaisance",
+        "Garde toujours une marge de sécurité"
       ],
-      quote: "« L'optimisme est la croyance que les probabilités de succès sont en votre faveur, même si le chemin est incertain. »"
+      quote: "« L'optimisme est la croyance que les probabilités de succès sont en ta faveur, même si le chemin est incertain. »"
     },
     {
       name: "Le Minimaliste Libre",
@@ -6606,17 +6606,17 @@ function determineProfile(scores) {
       },
       color: "#8b5cf6",
       emoji: "🕊️",
-      description: "Vous avez compris que la vraie richesse, c'est la liberté. Vous savez dire 'c'est assez'.",
+      description: "Tu as compris que la vraie richesse, c'est la liberté. Tu sais dire 'c'est assez'.",
       strengths: [
         "Forte indépendance face aux pressions sociales",
-        "Excellente compréhension de vos vrais besoins",
-        "Capacité à apprécier ce que vous avez"
+        "Excellente compréhension de tes vrais besoins",
+        "Capacité à apprécier ce que tu as"
       ],
       warnings: [
-        "Attention à ne pas sous-estimer vos besoins futurs",
-        "Gardez une certaine ambition financière pour votre sécurité"
+        "Attention à ne pas sous-estimer tes besoins futurs",
+        "Garde une certaine ambition financière pour ta sécurité"
       ],
-      quote: "« La capacité de faire ce que vous voulez, quand vous voulez, avec qui vous voulez, aussi longtemps que vous voulez - c'est la richesse. »"
+      quote: "« La capacité de faire ce que tu veux, quand tu veux, avec qui tu veux, aussi longtemps que tu veux - c'est la richesse. »"
     },
     {
       name: "L'Investisseur Impulsif",
@@ -6625,18 +6625,18 @@ function determineProfile(scores) {
       },
       color: "#ef4444",
       emoji: "🎲",
-      description: "Vous aimez l'action et cherchez des gains rapides. Cette approche comporte des risques importants.",
+      description: "Tu aimes l'action et cherches des gains rapides. Cette approche comporte des risques importants.",
       strengths: [
         "Courage pour saisir des opportunités",
-        "Confiance en vos décisions"
+        "Confiance en tes décisions"
       ],
       warnings: [
-        "ATTENTION: Votre profil présente des risques élevés",
+        "ATTENTION: Ton profil présente des risques élevés",
         "L'impatience est l'ennemi de la richesse à long terme",
         "Les décisions rapides mènent souvent aux regrets",
-        "Lisez 'The Psychology of Money' - chapitre sur la patience"
+        "Lis 'The Psychology of Money' - chapitre sur la patience"
       ],
-      quote: "« Les bonnes décisions d'investissement sont ennuyeuses. C'est votre patience qui gagne, pas votre intelligence. »"
+      quote: "« Les bonnes décisions d'investissement sont ennuyeuses. C'est ta patience qui gagne, pas ton intelligence. »"
     },
     {
       name: "Le Suiveur Social",
@@ -6645,16 +6645,16 @@ function determineProfile(scores) {
       },
       color: "#f59e0b",
       emoji: "👥",
-      description: "Vous êtes fortement influencé par votre entourage et les comparaisons sociales.",
+      description: "Tu es fortement influencé par ton entourage et les comparaisons sociales.",
       strengths: [
         "Motivation à réussir",
-        "Conscience de votre environnement"
+        "Conscience de ton environnement"
       ],
       warnings: [
-        "ATTENTION: Votre profil présente des vulnérabilités",
-        "Comparer votre situation à celle des autres est un jeu sans fin",
-        "Définissez VOS propres critères de succès",
-        "La vraie richesse est invisible - arrêtez de regarder les autres"
+        "ATTENTION: Ton profil présente des vulnérabilités",
+        "Comparer ta situation à celle des autres est un jeu sans fin",
+        "Définis TES propres critères de succès",
+        "La vraie richesse est invisible - arrête de regarder les autres"
       ],
       quote: "« Les gens ont tendance à vouloir devenir riches pour impressionner les gens qui... se fichent qu'ils soient riches. »"
     },
@@ -6665,16 +6665,16 @@ function determineProfile(scores) {
       },
       color: "#6366f1",
       emoji: "🛡️",
-      description: "Vous privilégiez la sécurité et la préservation du capital. Approche très prudente.",
+      description: "Tu privilégies la sécurité et la préservation du capital. Approche très prudente.",
       strengths: [
         "Excellente protection contre les pertes majeures",
         "Stabilité émotionnelle face aux marchés",
         "Approche disciplinée"
       ],
       warnings: [
-        "Attention à l'excès de prudence - l'inflation érode votre épargne",
+        "Attention à l'excès de prudence - l'inflation érode ton épargne",
         "Un peu de risque calculé est nécessaire pour croître",
-        "Ne laissez pas la peur vous paralyser"
+        "Ne laisse pas la peur te paralyser"
       ],
       quote: "« La survie est le meilleur objectif. Tout le reste vient après. »"
     },
@@ -6685,17 +6685,17 @@ function determineProfile(scores) {
       },
       color: "#14b8a6",
       emoji: "📚",
-      description: "Vous êtes en apprentissage constant. Votre profil montre un équilibre en développement.",
+      description: "Tu es en apprentissage constant. Ton profil montre un équilibre en développement.",
       strengths: [
         "Ouverture d'esprit et volonté d'apprendre",
         "Approche équilibrée en construction"
       ],
       warnings: [
-        "Continuez à vous éduquer sur la psychologie financière",
-        "Identifiez vos faiblesses et travaillez dessus",
+        "Continue à t'éduquer sur la psychologie financière",
+        "Identifie tes faiblesses et travaille dessus",
         "La conscience de soi est le premier pas vers la sagesse financière"
       ],
-      quote: "« Votre expérience personnelle avec l'argent représente peut-être 0.00000001% de ce qui s'est passé dans le monde, mais peut-être 80% de votre façon de penser l'argent. »"
+      quote: "« Ton expérience personnelle avec l'argent représente peut-être 0.00000001% de ce qui s'est passé dans le monde, mais peut-être 80% de ta façon de penser l'argent. »"
     }
   ];
   
@@ -6714,7 +6714,7 @@ function displayPsychoResults(scores, profile) {
   
   // En-tête du profil
   html += '<div class="psycho-result-card" style="text-align:center;border-top:6px solid ' + profile.color + ';">';
-  html += '<h2 style="color:#1f2937;margin:0 0 20px 0;">Votre Profil Psychologique</h2>';
+  html += '<h2 style="color:#1f2937;margin:0 0 20px 0;">Ton Profil Psychologique</h2>';
   html += '<div style="font-size:4em;margin:20px 0;">' + profile.emoji + '</div>';
   html += '<div class="psycho-profile-badge" style="background:' + profile.color + '20;color:' + profile.color + ';border:2px solid ' + profile.color + ';">';
   html += profile.name;
@@ -6730,7 +6730,7 @@ function displayPsychoResults(scores, profile) {
   
   // Scores détaillés
   html += '<div class="psycho-result-card">';
-  html += '<h3 style="color:#1f2937;margin:0 0 30px 0;">📊 Vos 5 Dimensions Psychologiques</h3>';
+  html += '<h3 style="color:#1f2937;margin:0 0 30px 0;">📊 Tes 5 Dimensions Psychologiques</h3>';
   
   var dimensions = [
     { key: 'risque', label: 'Tolérance au Risque', color: '#ef4444' },
@@ -6758,7 +6758,7 @@ function displayPsychoResults(scores, profile) {
   
   // Points forts
   html += '<div class="psycho-result-card" style="background:#d1fae5;border-left:4px solid #10b981;">';
-  html += '<h3 style="color:#065f46;margin:0 0 15px 0;">✅ Vos Forces</h3>';
+  html += '<h3 style="color:#065f46;margin:0 0 15px 0;">✅ Tes Forces</h3>';
   html += '<ul style="margin:0;padding-left:20px;color:#047857;line-height:1.8;">';
   for(var j = 0; j < profile.strengths.length; j++) {
     html += '<li>' + profile.strengths[j] + '</li>';
@@ -6785,49 +6785,49 @@ function displayPsychoResults(scores, profile) {
   
   if(scores.patience < 50) {
     recommendations.push({
-      title: "Développez votre patience",
-      desc: "Arrêtez de consulter vos placements quotidiennement. Fixez-vous des rendez-vous trimestriels.",
-      action: "Conseil: Activez les contributions automatiques mensuelles et oubliez vos comptes."
+      title: "Développe ta patience",
+      desc: "Arrête de consulter tes placements quotidiennement. Fixe-toi des rendez-vous trimestriels.",
+      action: "Conseil: Active les contributions automatiques mensuelles et oublie tes comptes."
     });
   }
   
   if(scores.suffisance < 50) {
     recommendations.push({
-      title: "Définissez votre 'assez'",
-      desc: "Écrivez noir sur blanc: combien d'argent vous faut-il pour être satisfait ? Sinon, vous courrez après une cible mobile.",
-      action: "Exercice: Calculez votre nombre de liberté financière (25x vos dépenses annuelles)."
+      title: "Définis ton 'assez'",
+      desc: "Écris noir sur blanc: combien d'argent te faut-il pour être satisfait ? Sinon, tu cours après une cible mobile.",
+      action: "Exercice: Calcule ton nombre de liberté financière (25x tes dépenses annuelles)."
     });
   }
   
   if(scores.independance < 50) {
     recommendations.push({
-      title: "Arrêtez de vous comparer",
-      desc: "Vous ne connaissez pas la situation réelle des autres. Concentrez-vous sur VOTRE chemin.",
-      action: "Conseil: Désactivez les notifications de réseaux sociaux pendant 30 jours."
+      title: "Arrête de te comparer",
+      desc: "Tu ne connais pas la situation réelle des autres. Concentre-toi sur TON chemin.",
+      action: "Conseil: Désactive les notifications de réseaux sociaux pendant 30 jours."
     });
   }
   
   if(scores.risque > 75) {
     recommendations.push({
-      title: "Modérez votre prise de risque",
+      title: "Modère ta prise de risque",
       desc: "L'excès de confiance détruit plus de fortunes que la prudence.",
-      action: "Règle: Ne jamais investir plus de 5% de votre capital sur une seule opportunité."
+      action: "Règle: Ne jamais investir plus de 5% de ton capital sur une seule opportunité."
     });
   }
   
   if(scores.humilite < 50) {
     recommendations.push({
-      title: "Cultivez l'humilité",
-      desc: "Reconnaissez le rôle de la chance dans vos succès - et celui de la malchance possible dans votre futur.",
-      action: "Conseil: Maintenez toujours 6-12 mois de dépenses en fonds d'urgence."
+      title: "Cultive l'humilité",
+      desc: "Reconnais le rôle de la chance dans tes succès - et celui de la malchance possible dans ton futur.",
+      action: "Conseil: Maintiens toujours 6-12 mois de dépenses en fonds d'urgence."
     });
   }
   
   if(recommendations.length === 0) {
     recommendations.push({
-      title: "Maintenez le cap",
-      desc: "Votre profil est très équilibré. Continuez sur cette voie.",
-      action: "Conseil: Révisez votre stratégie une fois par an, pas plus."
+      title: "Maintiens le cap",
+      desc: "Ton profil est très équilibré. Continue sur cette voie.",
+      action: "Conseil: Révise ta stratégie une fois par an, pas plus."
     });
   }
   
@@ -8214,13 +8214,13 @@ header .container { overflow:visible; }
         'Le nom ou la catégorie évoque un levier (ou une structure de type split corp). Le mécanisme de récupération d\'une baisse n\'est pas celui d\'un indice large.');
     } else if (ameliore) {
       ajouter(6, 'Frais élevés ou structure à levier', 'warn',
-        'Le nom contient « enhanced » (ou équivalent). Plusieurs fonds de ce type empruntent pour investir davantage. Vérifiez la fiche du fonds pour le levier et les frais réels' +
+        'Le nom contient « enhanced » (ou équivalent). Plusieurs fonds de ce type empruntent pour investir davantage. Vérifie la fiche du fonds pour le levier et les frais réels' +
         (prof.frais === null ? '.' : ' (frais lus : ' + fp(prof.frais, 2) + ').'));
     } else if (prof.frais === null) {
       ajouter(6, 'Frais élevés ou structure à levier', 'nd', 'Frais non disponibles. Les coûts de financement d\'un levier éventuel ne sont pas mesurés.');
     } else {
       ajouter(6, 'Frais élevés ou structure à levier', prof.frais > 0.015 ? 'bad' : (prof.frais > 0.01 ? 'warn' : 'ok'),
-        'Frais de gestion : ' + fp(prof.frais, 2) + '. Aucun indice de levier dans le nom, mais seul le nom est vérifié : consultez la fiche du fonds.');
+        'Frais de gestion : ' + fp(prof.frais, 2) + '. Aucun indice de levier dans le nom, mais seul le nom est vérifié : consulte la fiche du fonds.');
     }
 
     // 7. Concentration sur un secteur ou un titre
@@ -8261,12 +8261,12 @@ header .container { overflow:visible; }
     var saisie = k.cle && SAISIES[k.cle];
     if (k.valeur === null) {
       return 'Non disponible' + (saisie
-        ? '<span class="fnb-sous">Si vous la connaissez, saisissez-la (' + saisie.aide + ')</span>' +
+        ? '<span class="fnb-sous">Si tu la connais, saisis-la (' + saisie.aide + ')</span>' +
           '<input type="text" inputmode="decimal" class="fnb-saisie" data-cle="' + k.cle + '" placeholder="ex. ' + saisie.ex + '" aria-label="' + esc(saisie.libelle) + '">'
         : '');
     }
     return k.valeur + (k.cle && res.saisi && res.saisi[k.cle]
-      ? '<span class="fnb-sous">Saisi par vous <button type="button" class="fnb-retirer" data-retirer="' + k.cle + '">Retirer</button></span>'
+      ? '<span class="fnb-sous">Saisi par toi <button type="button" class="fnb-retirer" data-retirer="' + k.cle + '">Retirer</button></span>'
       : '');
   }
 
@@ -8303,15 +8303,15 @@ header .container { overflow:visible; }
         'Seuls les critères calculés à partir de l\'historique de prix sont évalués.');
     }
     if (res.symbole && res.symbole.indexOf('.') === -1) {
-      h += alerte('bleu', 'Symbole sans suffixe : Yahoo cherche d\'abord un titre américain. Pour un FNB canadien, ajoutez .TO (ex. VGRO.TO). ' +
-        'Vérifiez que le nom affiché ci-dessus correspond bien au fonds visé.');
+      h += alerte('bleu', 'Symbole sans suffixe : Yahoo cherche d\'abord un titre américain. Pour un FNB canadien, ajoute .TO (ex. VGRO.TO). ' +
+        'Vérifie que le nom affiché ci-dessus correspond bien au fonds visé.');
     }
     if (res.mesures && res.mesures.annees < 3 && res.note !== null) {
       h += alerte('jaune', '<strong>Historique court.</strong> Ce fonds a moins de 3 ans de données : Sharpe, tendance et recul maximal reposent sur peu de points, et la note est moins fiable.');
     }
     if (nbSaisi > 0) {
-      h += alerte('bleu', '<strong>Cette note inclut ' + (nbSaisi === 1 ? 'une donnée saisie par vous' : nbSaisi + ' données saisies par vous') +
-        '.</strong> Je n\'en vérifie pas l\'exactitude. Ces données restent dans votre navigateur.');
+      h += alerte('bleu', '<strong>Cette note inclut ' + (nbSaisi === 1 ? 'une donnée saisie par toi' : nbSaisi + ' données saisies par toi') +
+        '.</strong> Je n\'en vérifie pas l\'exactitude. Ces données restent dans ton navigateur.');
     }
     if (noteMasquee) {
       h += alerte('jaune', '<strong>Pas de note.</strong> Seulement ' + Math.round(res.couverture * 100) +
@@ -8325,7 +8325,7 @@ header .container { overflow:visible; }
     }
 
     h += alerte('bleu', '<strong>Comment lire cette note.</strong> J\'ai choisi huit repères pour comparer les FNB sur une base commune. Ce sont mes hypothèses de travail, pas des normes. ' +
-      'La note indique dans quelle mesure le fonds les respecte. Elle ne tient pas compte de votre situation et ne recommande ni d\'acheter, ni de conserver, ni de vendre. ' +
+      'La note indique dans quelle mesure le fonds les respecte. Elle ne tient pas compte de ta situation et ne recommande ni d\'acheter, ni de conserver, ni de vendre. ' +
       'Mes repères favorisent les fonds très diversifiés, donc un fonds à revenu ou à options obtient souvent une note plus basse. Cela ne juge pas sa qualité.');
 
     h += '<div class="card"><h3>Détail des critères</h3><div class="fnb-scroll"><table class="fnb-table"><thead><tr>' +
@@ -8406,7 +8406,7 @@ header .container { overflow:visible; }
       var v = parseFloat((el.value || '').replace(/\s/g, '').replace(',', '.'));
       var bornes = { frais: [0, 10], actifs: [0, 1e7], pe: [0, 1000] }[cle];
       if (!(v > bornes[0] && v <= bornes[1])) {
-        majStatut('Valeur non valide : entrez un nombre positif, ' + SAISIES[cle].aide + '.');
+        majStatut('Valeur non valide : entre un nombre positif, ' + SAISIES[cle].aide + '.');
         return;
       }
       majStatut('');
@@ -8429,7 +8429,7 @@ header .container { overflow:visible; }
     if (mUn) { t = mUn[1] + '-UN.TO'; document.getElementById('fnb-ticker').value = t; }
     document.getElementById('fnb-ticker').value = t;
     if (!/^[A-Z0-9.\-]{1,12}$/.test(t)) {
-      majStatut('Entrez un symbole valide (lettres, chiffres, point ou tiret).');
+      majStatut('Entre un symbole valide (lettres, chiffres, point ou tiret).');
       return false;
     }
     if (CONFIG.URL_RELAIS.indexOf('REMPLACER') !== -1) {
@@ -8461,8 +8461,8 @@ header .container { overflow:visible; }
       .catch(function (err) {
         var msg = err && err.message;
         majStatut(msg === 'invalide' ? 'Ce symbole n\'est pas valide.'
-          : (msg === 'introuvable' ? 'Aucune donnée trouvée pour ' + t + '. Pour la Bourse de Toronto, ajoutez .TO (ex. VFV.TO). Pour une part de fiducie cotée en .UN, écrivez par exemple EIT-UN.TO.'
-          : 'Le service de données est temporairement indisponible. Réessayez dans quelques minutes.'));
+          : (msg === 'introuvable' ? 'Aucune donnée trouvée pour ' + t + '. Pour la Bourse de Toronto, ajoute .TO (ex. VFV.TO). Pour une part de fiducie cotée en .UN, écris par exemple EIT-UN.TO.'
+          : 'Le service de données est temporairement indisponible. Réessaie dans quelques minutes.'));
       })
       .then(function () { btn.disabled = false; });
     return false;
