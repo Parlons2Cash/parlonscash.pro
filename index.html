@@ -1088,6 +1088,7 @@ button:hover, .tab-button:hover {
 </div>
 <div class="subnav" id="subnav-investissement" style="display:none">
 <button onclick="changeTab('fnb')" id="btn-fnb">Évaluer un FNB</button>
+<button onclick="changeTab('comparateur')" id="btn-comparateur">Mon rendement vs indices</button>
 <button onclick="changeTab('psychologie')" id="btn-psychologie">Psychologie</button>
 <button onclick="changeTab('aide')" id="btn-aide">Aide à la décision</button>
 </div>
@@ -1133,12 +1134,27 @@ button:hover, .tab-button:hover {
     <p style="font-size:0.88em;color:#6b7280;margin:-8px 0 20px;">🔒 Tes données sont sauvegardées sur cet appareil seulement, pas sur nos serveurs.</p>
 
   <div class="card start-here" id="par-ou-commencer">
-    <h3 style="color:#2563eb;">Par où commencer ?</h3>
-    <div class="start-grid">
-      <button type="button" class="start-opt recommended" onclick="document.getElementById('assistant-profil').scrollIntoView({behavior:'smooth',block:'start'})"><strong>Faire mon bilan et mon budget</strong><span>L'assistant te pose une question à la fois. C'est le point de départ recommandé.</span></button>
-      <button type="button" class="start-opt" onclick="ouvrirDiagnostic()"><strong>Faire le diagnostic rapide</strong><span>5 questions pour savoir quoi régler en premier.</span></button>
-      <button type="button" class="start-opt" onclick="changeTab('impôts')"><strong>Aller directement aux calculateurs</strong><span>Tu sais déjà ce que tu cherches.</span></button>
-    </div>
+    <h3 style="color:#2563eb;">Commence ici</h3>
+    <p class="start-intro">Trois étapes, dans cet ordre. Compte environ 15 minutes en tout. Tu peux t'arrêter et revenir, tout est gardé sur cet appareil.</p>
+    <div class="start-progress"><div class="start-progress-bar"><div id="start-fill" style="width:0%"></div></div><span id="start-compteur">0 sur 3 étapes faites</span></div>
+    <ol class="start-steps">
+      <li id="step-bilan" class="start-step">
+        <span class="start-num">1</span>
+        <div class="start-body"><strong>Ton bilan</strong><span>Ce que tu as et ce que tu dois. L'assistant te pose une question à la fois.</span></div>
+        <button type="button" class="start-go" id="step-bilan-btn"></button>
+      </li>
+      <li id="step-budget" class="start-step">
+        <span class="start-num">2</span>
+        <div class="start-body"><strong>Ton budget</strong><span>Ce qui entre et ce qui sort chaque mois. Le même assistant remplit aussi cette partie.</span></div>
+        <button type="button" class="start-go" id="step-budget-btn"></button>
+      </li>
+      <li id="step-objectifs" class="start-step">
+        <span class="start-num">3</span>
+        <div class="start-body"><strong>Tes objectifs</strong><span>Une maison, un projet ou la retraite. Tu vois ce qu'il faut mettre de côté.</span></div>
+        <button type="button" class="start-go" id="step-objectifs-btn"></button>
+      </li>
+    </ol>
+    <p class="start-autres">Pas envie de suivre le parcours ? <a href="#" onclick="ouvrirDiagnostic();return false;">Fais le diagnostic rapide</a> ou <a href="#" onclick="changeTab('impôts');return false;">va directement aux calculateurs</a>.</p>
   </div>
 
   <div class="card">
@@ -1248,7 +1264,7 @@ button:hover, .tab-button:hover {
 </select>
 </div>
 <div class="form-group" id="loyer-group"><label>Loyer</label><input type="number" id="loyer" value="0" onchange="calc()"></div>
-<div class="form-group hidden" id="hypo-group"><label>Paiement hypothecaire</label><input type="number" id="paiement-hypo" value="0" onchange="calc()"></div>
+<div class="form-group hidden" id="hypo-group"><label>Paiement hypothécaire</label><input type="number" id="paiement-hypo" value="0" onchange="calc()"></div>
 <div class="form-group hidden" id="taxes-proprio-group">
   <label>Taxes et entretien (mensuels)</label>
   <input type="number" id="taxes-entretien" value="0" onchange="calc()">
@@ -2071,7 +2087,7 @@ Historique Québec : 2-4% par an
   </div>
 
   <div class="card" style="margin-top:20px;">
-    <h3>2️⃣ Suivre ses dépenses</h3>
+    <h3>2️⃣ Suivre tes dépenses</h3>
     <p>Avant d'ajuster, il faut observer. Liste tes dépenses pendant 1 à 3 mois et classe-les par catégorie :</p>
     <ul style="margin-left:20px;line-height:1.8;">
       <li>Logement</li>
@@ -2432,7 +2448,7 @@ Historique Québec : 2-4% par an
       </p>
     </div>
     <p style="line-height:1.7;">
-      <strong>Exception :</strong> dans l'onglet « Évaluer un FNB », le symbole boursier que vous saisissez (par exemple XEQT.TO) est transmis à un service de relais hébergé chez Cloudflare, qui interroge Yahoo Finance pour récupérer les données publiques du fonds. Aucune donnée personnelle n'est envoyée.
+      <strong>Exception :</strong> dans l'onglet « Évaluer un FNB », le symbole boursier que vous saisissez (par exemple XEQT.TO) est transmis à un service de relais hébergé chez Cloudflare, qui interroge Yahoo Finance pour récupérer les données publiques du fonds. Aucune donnée personnelle n'est envoyée. L'onglet « Mon rendement vs indices » utilise le même relais, mais seuls les symboles des indices de référence (VFV.TO, XIC.TO, XAW.TO et VAB.TO) sont transmis. Vos montants et vos dates restent dans votre navigateur.
     </p>
     <p style="line-height:1.7;">
       Toutes les données que vous entrez dans les calculateurs restent <strong>localement dans votre navigateur</strong>, sur cet appareil.
@@ -2955,6 +2971,77 @@ Historique Québec : 2-4% par an
   </div>
 </div>
 
+<div id="tab-comparateur" class="tab-content">
+  <h2>Mon rendement vs les indices</h2>
+
+  <p style="color:#6b7280;font-size:0.9em;margin-bottom:20px;">
+    Est-ce que ta stratégie te rapporte vraiment plus qu'un simple fonds indiciel ? Entre la valeur de ton portefeuille au début et à la fin d'une période. L'outil calcule ton rendement total et le compare à celui de quelques fonds indiciels sur les mêmes dates. C'est un miroir de lucidité, pas un conseil.
+  </p>
+
+  <div class="card">
+    <form id="cmp-form" onsubmit="return window.cmpLancer(event)">
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="cmp-vdebut">Valeur du portefeuille au début ($)</label>
+          <input type="number" id="cmp-vdebut" min="0" step="any" inputmode="decimal" placeholder="Ex. 50000">
+        </div>
+        <div class="form-group">
+          <label for="cmp-ddebut">Date de début</label>
+          <input type="date" id="cmp-ddebut">
+        </div>
+        <div class="form-group">
+          <label for="cmp-vfin">Valeur du portefeuille à la fin ($)</label>
+          <input type="number" id="cmp-vfin" min="0" step="any" inputmode="decimal" placeholder="Ex. 78000">
+        </div>
+        <div class="form-group">
+          <label for="cmp-dfin">Date de fin</label>
+          <input type="date" id="cmp-dfin">
+        </div>
+      </div>
+
+      <div class="form-group" id="cmp-groupe-versements">
+        <label for="cmp-versements">Versements nets durant la période ($)</label>
+        <input type="number" id="cmp-versements" step="any" inputmode="decimal" value="0">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Tes apports moins tes retraits, en un seul montant. L'outil suppose qu'ils ont eu lieu à la mi-période. Un retrait net se saisit en négatif.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="cmp-distrib">Distributions reçues en espèces et non réinvesties ($)</label>
+        <input type="number" id="cmp-distrib" min="0" step="any" inputmode="decimal" value="0">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Les distributions que tu as encaissées sans les réinvestir. Sans ce montant, ton rendement total est sous-évalué.</small>
+      </div>
+
+      <div class="form-group">
+        <label style="display:flex;align-items:center;gap:8px;font-weight:600;">
+          <input type="checkbox" id="cmp-avance" style="width:auto;margin:0;">
+          Mode avancé : saisir des flux datés (calcul du TRI)
+        </label>
+      </div>
+
+      <div id="cmp-flux" class="hidden">
+        <p style="color:#6b7280;font-size:0.9em;margin:0 0 10px 0;">Ajoute chaque apport (montant positif) et chaque retrait (montant négatif) avec sa date. Les dates doivent tomber entre le début et la fin. Les distributions non réinvesties sont placées à la mi-période.</p>
+        <div id="cmp-flux-lignes"></div>
+        <button type="button" class="btn-secondary" id="cmp-flux-ajouter" style="margin-bottom:14px;">Ajouter un flux</button>
+      </div>
+
+      <button type="submit" class="btn-primary" id="cmp-bouton">Comparer</button>
+      <button type="button" class="btn-secondary" id="cmp-exemple" style="margin-left:8px;">Voir un exemple</button>
+    </form>
+  </div>
+
+  <div id="cmp-statut" class="cmp-statut" role="status" aria-live="polite"></div>
+  <div id="cmp-resultat"></div>
+
+  <div style="background:#f9fafb;border-top:2px solid #e5e7eb;padding:20px;margin-top:30px;border-radius:8px;">
+    <p style="margin:0;font-size:0.85em;color:#6b7280;line-height:1.7;">
+      <strong>Avertissement :</strong> cet outil est à des fins éducatives seulement. Il ne constitue pas un conseil en placement.
+      Les rendements passés ne garantissent pas les rendements futurs.
+      Les indices ne tiennent pas compte des frais de gestion, des impôts ni de ta situation personnelle.
+      Les données proviennent de Yahoo Finance via un relais, sans garantie d'exactitude. Tes montants et tes dates restent dans ton navigateur. Seuls les symboles des indices transitent par le relais.
+    </p>
+  </div>
+</div>
+
 <div id="tab-blog" class="tab-content">
   <h2>📰 Blog — Parlons Cash</h2>
   <p style="color:#6b7280;margin-bottom:8px;">Réflexions, stratégies et perspectives sur la finance personnelle au Québec.</p>
@@ -3465,7 +3552,7 @@ function blogFiltrer(cat, btn) {
 
 blogAfficherListe();
 
-var TAB_GROUPS={calculateurs:['impôts','objectifs','acheter-louer','dettes','plaisirs','besoin','couple'],investissement:['fnb','psychologie','aide']};
+var TAB_GROUPS={calculateurs:['impôts','objectifs','acheter-louer','dettes','plaisirs','besoin','couple'],investissement:['fnb','comparateur','psychologie','aide']};
 var lastTab={calculateurs:'impôts',investissement:'fnb'};
 function changeTab(t){
   var panel=document.getElementById('tab-'+t);
@@ -3492,7 +3579,7 @@ function changeTab(t){
 // Cacher les bandeaux d'avertissement
 var warnings = document.querySelectorAll('.warning-box, .danger-box');
 for(var i = 0; i < warnings.length; i++) {
-  if(t === 'apropos' || t === 'confidentialite' || t === 'aide' || t === 'besoin' || t === 'couple' || t === 'plaisirs' || t === 'acheter-louer' || t === 'blog' || t === 'psychologie' || t === 'fnb') {
+  if(t === 'apropos' || t === 'confidentialite' || t === 'aide' || t === 'besoin' || t === 'couple' || t === 'plaisirs' || t === 'acheter-louer' || t === 'blog' || t === 'psychologie' || t === 'fnb' || t === 'comparateur') {
     warnings[i].style.display = 'none';
   } else {
     warnings[i].style.display = 'block';
@@ -4692,6 +4779,8 @@ function construireCSVDonnees() {
    'couple-assurance-b','couple-abonnements-b','couple-pension-b','couple-epargne-b',
    'couple-loyer','couple-epicerie','couple-services','couple-transport','couple-loisirs','couple-autres',
    'couple-taux-epargne'].forEach(function(id){ add('Couple', id); });
+
+  ['cmp-vdebut','cmp-ddebut','cmp-vfin','cmp-dfin','cmp-versements','cmp-distrib'].forEach(function(id){ add('Comparateur', id); });
 
   return rows.map(function(r){ return r.map(csvVal).join(';'); }).join('\r\n');
 }
@@ -6393,6 +6482,438 @@ function closeModal() {
 }
 </script>
 
+<script>
+/* ============================================================
+   Onglet « Mon rendement vs les indices » - Parlons Cash
+   Même relais que « Évaluer un FNB » (Yahoo Finance). Les montants de l'utilisateur
+   ne quittent jamais le navigateur : seuls les symboles des indices sont transmis.
+   ============================================================ */
+(function () {
+  'use strict';
+  var URL_RELAIS = 'https://fnb-relais.azizguellouz.workers.dev/';
+  var DUREE_CACHE_MS = 15 * 60 * 1000;
+  var JOUR = 86400000;
+  var INDICES = [
+    { sym: 'VFV.TO', nom: 'S&P 500', role: 'La référence mondiale' },
+    { sym: 'XIC.TO', nom: 'S&P/TSX composé', role: 'Le marché canadien' },
+    { sym: 'XAW.TO', nom: 'Marchés mondiaux hors Canada', role: 'La diversification globale' },
+    { sym: 'VAB.TO', nom: 'Obligations canadiennes', role: 'Le repère prudent' }
+  ];
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s === null || s === undefined ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function fr(x, d) { return x.toFixed(d).replace('.', ','); }
+  function fp(x, d) { return fr(x * 100, d === undefined ? 1 : d) + ' %'; }
+  function argent(x) { return x.toLocaleString('fr-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' $'; }
+  function argentSigne(x) { return (x > 0 ? '+' : (x < 0 ? '−' : '')) + argent(Math.abs(x)); }
+  function ptsSigne(x) { return (x > 0 ? '+' : (x < 0 ? '−' : '')) + fr(Math.abs(x) * 100, 1) + ' pts'; }
+  function classeSigne(x) { return x > 0 ? 'cmp-pos' : (x < 0 ? 'cmp-neg' : ''); }
+  function parseDate(v) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
+    if (!m) return null;
+    var t = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+    return isNaN(t) ? null : t;
+  }
+  function formatDate(t) {
+    var d = new Date(t);
+    var mois = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+    return d.getUTCDate() + ' ' + mois[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
+  }
+  function aujourdhui() { var n = new Date(); return Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()); }
+  function num(id) { var v = parseFloat($(id).value); return isNaN(v) ? null : v; }
+
+  /* ---------- Statut de chargement ---------- */
+  var minuteurAttente = null;
+  function statut(texte, mode) {
+    var el = $('cmp-statut');
+    el.className = 'cmp-statut' + (mode === 'charge' ? ' cmp-chargement' : (mode === 'erreur' ? ' cmp-erreur' : ''));
+    if (mode === 'charge') {
+      el.innerHTML = '<span class="cmp-barre" aria-hidden="true"><i></i></span><span class="cmp-texte"></span><span class="cmp-compteur" aria-hidden="true"></span>';
+      el.querySelector('.cmp-texte').textContent = texte;
+    } else {
+      el.textContent = texte || '';
+    }
+  }
+  function arreterAttente() { if (minuteurAttente) { clearInterval(minuteurAttente); minuteurAttente = null; } }
+  function demarrerAttente() {
+    arreterAttente();
+    var debut = Date.now(), long = false;
+    minuteurAttente = setInterval(function () {
+      var sec = Math.round((Date.now() - debut) / 1000);
+      var c = document.querySelector('#cmp-statut .cmp-compteur');
+      if (c) c.textContent = ' · ' + sec + ' s';
+      if (sec >= 6 && !long) {
+        long = true;
+        var tx = document.querySelector('#cmp-statut .cmp-texte');
+        if (tx) tx.textContent = 'Toujours en cours : le service de données peut être lent, surtout au premier appel. Compte jusqu\'à 20 secondes.';
+      }
+    }, 1000);
+  }
+
+  /* ---------- Données des indices ---------- */
+  function lireCache(t) {
+    try {
+      var j = JSON.parse(sessionStorage.getItem('fnb:' + t));
+      if (j && Date.now() - j.t < DUREE_CACHE_MS) return j.data;
+    } catch (e) {}
+    return null;
+  }
+  function ecrireCache(t, data) {
+    try { sessionStorage.setItem('fnb:' + t, JSON.stringify({ t: Date.now(), data: data })); } catch (e) {}
+  }
+  function chercher(sym) {
+    var cache = lireCache(sym);
+    if (cache) return Promise.resolve({ sym: sym, data: cache });
+    var url = new URL(URL_RELAIS);
+    url.searchParams.set('symbol', sym);
+    var ctrl = new AbortController();
+    var minuteur = setTimeout(function () { ctrl.abort(); }, 20000);
+    return fetch(url.toString(), { signal: ctrl.signal })
+      .then(function (r) {
+        clearTimeout(minuteur);
+        if (r.status === 404) throw new Error('introuvable');
+        if (!r.ok) throw new Error('service');
+        return r.json();
+      })
+      .then(function (data) { ecrireCache(sym, data); return { sym: sym, data: data }; })
+      .catch(function (err) {
+        clearTimeout(minuteur);
+        return { sym: sym, erreur: (err && err.message === 'introuvable') ? 'donnée introuvable' : 'service de données indisponible' };
+      });
+  }
+
+  /* Série mensuelle de cours ajustés (distributions incluses). Chaque point a la date de sa valeur. */
+  function serie(data) {
+    var chart = (data && data.chart) || {};
+    var t = chart.t || [], c = chart.close || [], a = chart.adj || [], divs = chart.dividendes || [];
+    if (!t.length) return [];
+    var recu = Date.parse(data.recuLe);
+    var pts = [], facteur = 1, k = 0, i, cl, aj;
+    var utiliserAdj = true;
+    for (i = 0; i < t.length; i++) { if (c[i] !== null && c[i] !== undefined && (a[i] === null || a[i] === undefined)) { utiliserAdj = false; break; } }
+    for (i = 0; i < t.length; i++) {
+      cl = c[i];
+      if (cl === null || cl === undefined) continue;
+      if (utiliserAdj) { aj = a[i]; }
+      else {
+        var fin = (i + 1 < t.length) ? t[i + 1] : Infinity;
+        while (k < divs.length && divs[k].t < t[i]) k++;
+        while (k < divs.length && divs[k].t < fin) {
+          if (cl > 0 && divs[k].montant > 0) facteur *= (1 + divs[k].montant / cl);
+          k++;
+        }
+        aj = cl * facteur;
+      }
+      if (!(aj > 0)) continue;
+      pts.push({ t: t[i] * 1000, a: aj });
+    }
+    // un seul point par mois (le dernier)
+    var mensuel = [], cle = null;
+    for (var q = 0; q < pts.length; q++) {
+      var d = new Date(pts[q].t), cm = d.getUTCFullYear() * 12 + d.getUTCMonth();
+      if (cm === cle) mensuel[mensuel.length - 1] = pts[q]; else { mensuel.push(pts[q]); cle = cm; }
+    }
+    // date de la valeur : fin du mois, ou date de réception des données pour le mois en cours
+    for (var m = 0; m < mensuel.length; m++) {
+      var dm = new Date(mensuel[m].t);
+      var finMois = Date.UTC(dm.getUTCFullYear(), dm.getUTCMonth() + 1, 1) - JOUR;
+      if (m === mensuel.length - 1 && !isNaN(recu) && recu < finMois) finMois = Math.floor(recu / JOUR) * JOUR;
+      mensuel[m].v = finMois;
+    }
+    return mensuel;
+  }
+  function pointAvant(pts, date) {
+    var res = -1;
+    for (var i = 0; i < pts.length; i++) { if (pts[i].v <= date) res = i; else break; }
+    return res;
+  }
+  function rendementIndice(data, d0, d1) {
+    var pts = serie(data);
+    if (pts.length < 2) return { exclu: 'historique insuffisant' };
+    var i0 = pointAvant(pts, d0), i1 = pointAvant(pts, d1);
+    if (i0 < 0) return { exclu: 'historique disponible seulement à partir du ' + formatDate(pts[0].v) };
+    if (i1 <= i0) return { exclu: 'période trop courte pour des données mensuelles' };
+    if (d1 - pts[i1].v > 45 * JOUR) return { exclu: 'données disponibles seulement jusqu\'au ' + formatDate(pts[pts.length - 1].v) };
+    var r = pts[i1].a / pts[i0].a - 1;
+    return { r: r, jours: (pts[i1].v - pts[i0].v) / JOUR, d0: pts[i0].v, d1: pts[i1].v };
+  }
+
+  /* ---------- Calculs du portefeuille ---------- */
+  function annualiser(r, jours) {
+    if (jours < 365 || !(1 + r > 0)) return null;
+    return Math.pow(1 + r, 365 / jours) - 1;
+  }
+  function xnpv(taux, flux, t0) {
+    var s = 0;
+    for (var i = 0; i < flux.length; i++) s += flux[i].m / Math.pow(1 + taux, (flux[i].t - t0) / (365 * JOUR));
+    return s;
+  }
+  function xirr(flux, t0) {
+    var lo = -0.99, hi = 100, flo = xnpv(lo, flux, t0), fhi = xnpv(hi, flux, t0);
+    if (!isFinite(flo) || !isFinite(fhi) || flo * fhi > 0) return null;
+    for (var i = 0; i < 200; i++) {
+      var mid = (lo + hi) / 2, fm = xnpv(mid, flux, t0);
+      if (Math.abs(fm) < 1e-7) return mid;
+      if (flo * fm < 0) { hi = mid; fhi = fm; } else { lo = mid; flo = fm; }
+    }
+    return (lo + hi) / 2;
+  }
+
+  /* ---------- Flux datés ---------- */
+  function ajouterFlux(date, montant) {
+    var zone = $('cmp-flux-lignes');
+    var ligne = document.createElement('div');
+    ligne.className = 'cmp-flux-ligne';
+    ligne.innerHTML = '<input type="date" class="cmp-flux-date" aria-label="Date du flux">' +
+      '<input type="number" step="any" inputmode="decimal" class="cmp-flux-montant" placeholder="Montant ($), négatif pour un retrait" aria-label="Montant du flux">' +
+      '<button type="button" class="btn-secondary cmp-flux-retirer">Retirer</button>';
+    if (date) ligne.querySelector('.cmp-flux-date').value = date;
+    if (montant !== undefined) ligne.querySelector('.cmp-flux-montant').value = montant;
+    ligne.querySelector('.cmp-flux-retirer').addEventListener('click', function () { ligne.parentNode.removeChild(ligne); });
+    zone.appendChild(ligne);
+  }
+  function lireFlux() {
+    var lignes = document.querySelectorAll('#cmp-flux-lignes .cmp-flux-ligne'), out = [];
+    for (var i = 0; i < lignes.length; i++) {
+      var d = parseDate(lignes[i].querySelector('.cmp-flux-date').value);
+      var m = parseFloat(lignes[i].querySelector('.cmp-flux-montant').value);
+      if (d === null && isNaN(m)) continue;
+      if (d === null || isNaN(m)) return { erreur: 'Chaque flux doit avoir une date et un montant.' };
+      out.push({ t: d, m: m });
+    }
+    return { flux: out };
+  }
+  function basculerAvance() {
+    var avance = $('cmp-avance').checked;
+    $('cmp-flux').classList.toggle('hidden', !avance);
+    $('cmp-groupe-versements').classList.toggle('hidden', avance);
+    if (avance && !document.querySelector('#cmp-flux-lignes .cmp-flux-ligne')) ajouterFlux();
+  }
+
+  /* ---------- Lancement ---------- */
+  var confirme = false;
+  function lancer(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    var zone = $('cmp-resultat');
+    zone.innerHTML = '';
+    var vd = num('cmp-vdebut'), vf = num('cmp-vfin'), dist = num('cmp-distrib');
+    if (dist === null) dist = 0;
+    var d0 = parseDate($('cmp-ddebut').value), d1 = parseDate($('cmp-dfin').value);
+    var avance = $('cmp-avance').checked;
+    var vers = avance ? 0 : num('cmp-versements');
+    if (vers === null) vers = 0;
+
+    if (vd === null || vf === null || d0 === null || d1 === null) { statut('Remplis la valeur et la date de début, ainsi que la valeur et la date de fin.', 'erreur'); return false; }
+    if (vd < 0 || vf < 0 || dist < 0) { statut('Les valeurs du portefeuille et les distributions ne peuvent pas être négatives.', 'erreur'); return false; }
+    if (d1 > aujourdhui()) { statut('La date de fin ne peut pas être dans le futur.', 'erreur'); return false; }
+    if (d1 <= d0) { statut('La date de fin doit venir après la date de début.', 'erreur'); return false; }
+    var jours = (d1 - d0) / JOUR;
+
+    var flux = [];
+    if (avance) {
+      var lu = lireFlux();
+      if (lu.erreur) { statut(lu.erreur, 'erreur'); return false; }
+      flux = lu.flux;
+      for (var i = 0; i < flux.length; i++) {
+        if (flux[i].t < d0 || flux[i].t > d1) { statut('Chaque flux doit tomber entre la date de début et la date de fin.', 'erreur'); return false; }
+        vers += flux[i].m;
+      }
+    }
+    if (!avance && vd + vers / 2 <= 0) { statut('Ces montants ne permettent pas de calculer un rendement. Vérifie la valeur de départ et les versements.', 'erreur'); return false; }
+    if (Math.abs(vers) > Math.max(vd, vf) && !confirme) {
+      statut('');
+      zone.innerHTML = '<div class="cmp-alerte jaune"><strong>Vérifie tes versements.</strong> Les versements nets (' + esc(argent(vers)) + ') dépassent la valeur de ton portefeuille. C\'est possible, mais c\'est souvent une erreur de saisie.' +
+        '<br><button type="button" class="btn-secondary" id="cmp-confirmer">Les montants sont corrects, continuer</button></div>';
+      $('cmp-confirmer').addEventListener('click', function () { confirme = true; lancer(); confirme = false; });
+      return false;
+    }
+
+    // rendement du portefeuille
+    var moi = { jours: jours };
+    if (avance) {
+      var fl = [];
+      if (vd > 0) fl.push({ t: d0, m: -vd });
+      for (var j = 0; j < flux.length; j++) fl.push({ t: flux[j].t, m: -flux[j].m });
+      if (dist > 0) fl.push({ t: d0 + Math.round(jours / 2) * JOUR, m: dist });
+      fl.push({ t: d1, m: vf });
+      var tri = xirr(fl, d0);
+      if (tri === null) { statut('Impossible de calculer un TRI avec ces flux. Il faut au moins un flux sortant et un flux entrant, avec des montants réalistes.', 'erreur'); return false; }
+      moi.r = Math.pow(1 + tri, jours / 365) - 1;
+      moi.ann = jours >= 365 ? tri : null;
+      moi.methode = 'TRI (taux de rendement interne) calculé sur tes flux datés';
+    } else {
+      moi.r = (vf - vd - vers + dist) / (vd + vers / 2);
+      moi.ann = annualiser(moi.r, jours);
+      moi.methode = 'Méthode de Dietz modifiée (versements supposés à la mi-période)';
+    }
+
+    $('cmp-bouton').disabled = true;
+    $('cmp-bouton').textContent = 'Analyse en cours…';
+    statut('Récupération des données des indices…', 'charge');
+    demarrerAttente();
+    var promesses = INDICES.map(function (ix) { return chercher(ix.sym); });
+    Promise.all(promesses).then(function (res) {
+      arreterAttente();
+      var lignes = [];
+      for (var k = 0; k < INDICES.length; k++) {
+        var rep = res[k], ix = INDICES[k], calc;
+        if (rep.erreur) calc = { exclu: rep.erreur };
+        else calc = rendementIndice(rep.data, d0, d1);
+        lignes.push({ ix: ix, c: calc });
+      }
+      var utilisables = lignes.filter(function (l) { return !l.c.exclu; }).length;
+      if (utilisables === 0) {
+        statut('Aucun indice n\'a pu être comparé : ' + lignes.map(function (l) { return l.ix.sym + ' (' + l.c.exclu + ')'; }).join(', ') + '. Réessaie dans quelques minutes ou choisis une période plus récente.', 'erreur');
+        return;
+      }
+      statut('');
+      zone.innerHTML = rendre({ vd: vd, vf: vf, vers: vers, dist: dist, d0: d0, d1: d1, moi: moi, lignes: lignes, avance: avance });
+      zone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }).catch(function () {
+      arreterAttente();
+      statut('Le service de données est temporairement indisponible. Réessaie dans quelques minutes.', 'erreur');
+    }).then(function () {
+      arreterAttente();
+      $('cmp-bouton').disabled = false;
+      $('cmp-bouton').textContent = 'Comparer';
+    });
+    return false;
+  }
+
+  /* ---------- Affichage ---------- */
+  function rendre(s) {
+    var moi = s.moi, jours = moi.jours, ann = moi.ann !== null;
+    var h = '';
+    var rMoi = ann ? moi.ann : moi.r;
+    h += '<div class="card"><h3>Ton rendement total</h3>';
+    h += '<div class="cmp-grand">' + fp(rMoi, 1) + (ann ? ' par an' : '') + '</div>';
+    h += '<div class="cmp-sous">' + (ann ? 'Rendement annualisé sur ' + Math.round(jours) + ' jours, soit un rendement de période de ' + fp(moi.r, 1) + '.'
+      : 'Rendement de la période (' + Math.round(jours) + ' jours), non annualisé.') + ' ' + esc(moi.methode) + '.</div>';
+    h += '</div>';
+
+    if (jours < 90) {
+      h += '<div class="cmp-alerte jaune"><strong>Période très courte.</strong> Sur moins de 3 mois, la comparaison n\'est pas significative. Un bon ou un mauvais résultat peut venir du hasard.</div>';
+    }
+
+    h += '<div class="card"><h3>Comparaison avec les indices</h3><div class="cmp-scroll"><table class="cmp-table"><thead><tr>' +
+      '<th>Portefeuille ou indice</th><th>Rendement total' + (ann ? ' annualisé' : ' de la période') + '</th><th>Écart avec toi</th><th>Écart en dollars</th></tr></thead><tbody>';
+    h += '<tr class="cmp-moi"><td>Mon portefeuille<span class="cmp-sous">Du ' + esc(formatDate(s.d0)) + ' au ' + esc(formatDate(s.d1)) + '</span></td><td>' + fp(rMoi, 1) + '</td><td>&ndash;</td><td>&ndash;</td></tr>';
+    var exclus = [];
+    for (var i = 0; i < s.lignes.length; i++) {
+      var l = s.lignes[i], c = l.c;
+      if (c.exclu) { exclus.push(l.ix.nom + ' (' + l.ix.sym + ') : ' + c.exclu); continue; }
+      var rIx = ann ? annualiser(c.r, c.jours) : c.r;
+      if (rIx === null) { rIx = c.r; }
+      var ecart = rMoi - rIx;
+      var ecartDollars = s.vd > 0 ? s.vd * (c.r - moi.r) : null;
+      h += '<tr><td>' + esc(l.ix.nom) + '<span class="cmp-sous">' + esc(l.ix.sym) + ' &middot; ' + esc(l.ix.role) + '<br>Du ' + esc(formatDate(c.d0)) + ' au ' + esc(formatDate(c.d1)) + '</span></td>' +
+        '<td>' + fp(rIx, 1) + '</td>' +
+        '<td class="' + classeSigne(ecart) + '">' + ptsSigne(ecart) + '</td>' +
+        '<td>' + (ecartDollars === null ? '&ndash;' :
+          '<span class="' + classeSigne(-ecartDollars) + '">' + (ecartDollars > 0 ? 'L\'indice aurait donné ' + esc(argent(ecartDollars)) + ' de plus' : (ecartDollars < 0 ? 'L\'indice aurait donné ' + esc(argent(-ecartDollars)) + ' de moins' : 'Aucun écart')) + '</span><span class="cmp-sous">Avec ton capital de départ, de façon indicative</span>') + '</td></tr>';
+    }
+    h += '</tbody></table></div>';
+    h += '<p class="cmp-sous" style="margin-top:12px;">Les données des indices sont mensuelles. Les dates sont donc arrondies à la fin du mois précédent. Les dates réellement utilisées sont indiquées sous chaque indice. Le rendement des indices est un rendement total, les distributions sont incluses.</p>';
+    h += '</div>';
+    if (exclus.length) {
+      h += '<div class="cmp-alerte bleu"><strong>Indices exclus de la comparaison.</strong> Je préfère ne rien afficher plutôt que deviner.<br>' + exclus.map(esc).join('<br>') + '</div>';
+    }
+
+    var moyenne = (s.vd + s.vf) / 2;
+    h += '<div class="card"><h3>Revenu encaissé</h3>';
+    if (s.dist > 0 && moyenne > 0) {
+      var taux = s.dist / moyenne;
+      h += '<p style="margin:0;"><strong>' + esc(argent(s.dist)) + '</strong> encaissés sur la période, soit un taux de distribution réel de <strong>' + fp(taux, 1) + '</strong> de la valeur moyenne du portefeuille.';
+      if (jours >= 365) h += ' Cela équivaut à environ ' + fp(taux * 365 / jours, 1) + ' par an.';
+      h += '</p>';
+    } else {
+      h += '<p style="margin:0;">Aucune distribution non réinvestie saisie. Si tu encaisses un revenu de ton portefeuille, ajoute-le pour que ton rendement total soit complet.</p>';
+    }
+    h += '</div>';
+
+    h += '<div class="cmp-alerte bleu"><strong>Comment lire ce résultat.</strong><ul style="margin:8px 0 0 20px;line-height:1.7;">' +
+      '<li>Battre un indice en rendement total, sur une longue période, est rare. C\'est vrai même chez les professionnels.</li>' +
+      '<li>Un portefeuille à distribution peut légitimement sous-performer en rendement total tout en atteignant son objectif : te verser un revenu. Les deux mesures comptent.</li>' +
+      '<li>La période choisie change tout. Privilégie cinq ans et plus, et méfie-toi des comparaisons sur quelques mois.</li>' +
+      '</ul></div>';
+    return h;
+  }
+
+  /* ---------- Exemple ---------- */
+  function exemple() {
+    $('cmp-avance').checked = false; basculerAvance();
+    $('cmp-vdebut').value = 50000;
+    $('cmp-ddebut').value = '2021-09-30';
+    $('cmp-vfin').value = 78000;
+    $('cmp-dfin').value = '2026-09-30';
+    $('cmp-versements').value = 10000;
+    $('cmp-distrib').value = 0;
+    statut('Exemple fictif pré-rempli. Remplace ces chiffres par les tiens, puis clique sur Comparer.');
+  }
+
+  window.cmpLancer = lancer;
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!$('cmp-form')) return;
+    $('cmp-avance').addEventListener('change', basculerAvance);
+    $('cmp-flux-ajouter').addEventListener('click', function () { ajouterFlux(); });
+    $('cmp-exemple').addEventListener('click', exemple);
+  });
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { xirr: xirr, annualiser: annualiser, rendementIndice: rendementIndice, serie: serie };
+  }
+}());
+</script>
+
+<script>
+(function(){
+  function v(id){var e=document.getElementById(id);var n=e?parseFloat(e.value):0;return isNaN(n)?0:n;}
+  function somme(ids){var t=0;for(var i=0;i<ids.length;i++){t+=Math.abs(v(ids[i]));}return t;}
+  function allerAssistant(){var a=document.getElementById('assistant-profil');if(a){a.scrollIntoView({behavior:'smooth',block:'start'});}}
+  function etat(){
+    var bilan=somme(['cb','celi','celiapp','cne','reer','immob','autre-actif','cc','mc','pa','hypo','autre-passif'])>0;
+    var budget=v('revenu')>0 && somme(['loyer','paiement-hypo','d2','d3','d4','d5','d6','d7'])>0;
+    var obj=somme(['prix-maison','obj-montant','age-actuel','contribution-mensuelle-actuelle'])>0;
+    return [bilan,budget,obj];
+  }
+  var cfg=[
+    {li:'step-bilan',btn:'step-bilan-btn',faite:'Revoir mon bilan',aFaire:'Commencer avec l\'assistant',
+      go:function(f){if(f){changeTab('bilan');}else{allerAssistant();}}},
+    {li:'step-budget',btn:'step-budget-btn',faite:'Revoir mon budget',aFaire:'Continuer avec l\'assistant',
+      go:function(f){if(f){changeTab('budget');}else{allerAssistant();}}},
+    {li:'step-objectifs',btn:'step-objectifs-btn',faite:'Revoir mes objectifs',aFaire:'Fixer un objectif',
+      go:function(){changeTab('objectifs');}}
+  ];
+  var dernier='';
+  function maj(){
+    var el=document.getElementById('par-ou-commencer');
+    if(!el){return;}
+    var e=etat(),cle=e.join(),faites=0,courante=-1;
+    for(var i=0;i<3;i++){if(e[i]){faites++;}else if(courante<0){courante=i;}}
+    if(cle===dernier){return;}
+    dernier=cle;
+    for(var j=0;j<3;j++){
+      var li=document.getElementById(cfg[j].li),b=document.getElementById(cfg[j].btn);
+      if(!li||!b){continue;}
+      li.className='start-step'+(e[j]?' faite':(j===courante?' courante':''));
+      b.textContent=e[j]?cfg[j].faite:cfg[j].aFaire;
+      b.setAttribute('aria-label',(e[j]?'Étape faite. ':'')+b.textContent);
+    }
+    document.getElementById('start-fill').style.width=Math.round(faites/3*100)+'%';
+    document.getElementById('start-compteur').textContent=faites===3?'Les 3 étapes sont faites':faites+' sur 3 étapes faites';
+  }
+  for(var k=0;k<cfg.length;k++){(function(c){
+    var b=document.getElementById(c.btn);
+    if(b){b.addEventListener('click',function(){var f=etat()[cfg.indexOf(c)];c.go(f);});}
+  })(cfg[k]);}
+  document.addEventListener('input',maj);
+  document.addEventListener('change',maj);
+  setInterval(maj,1500);
+  maj();
+})();
+</script>
 <footer style="background:#1f2937;color:white;padding:40px 20px;margin-top:50px;">
   <div class="container">
     <div style="text-align:center;color:#9ca3af;">
@@ -6933,6 +7454,25 @@ header .container { overflow:visible; }
 .start-opt span { font-weight:400; font-size:.9em; color:#6b7280; }
 .start-opt:hover { border-color:#2563eb; background:#eff6ff; }
 .start-opt.recommended { border-color:#2563eb; background:#eff6ff; }
+
+.start-intro { color:#6b7280; font-size:.92em; margin:0 0 14px; }
+.start-progress { display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
+.start-progress-bar { flex:1; min-width:140px; height:10px; background:#e5e7eb; border-radius:99px; overflow:hidden; }
+.start-progress-bar div { height:100%; background:#059669; border-radius:99px; transition:width .4s; }
+#start-compteur { font-size:.85em; font-weight:600; color:#374151; }
+.start-steps { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+.start-step { display:flex; align-items:center; gap:14px; border:2px solid #e5e7eb; border-radius:12px; padding:14px 16px; background:#fff; }
+.start-step.courante { border-color:#2563eb; background:#eff6ff; }
+.start-step.faite { border-color:#a7f3d0; background:#f0fdf4; }
+.start-num { flex:none; width:34px; height:34px; border-radius:50%; background:#e5e7eb; color:#374151; display:flex; align-items:center; justify-content:center; font-weight:700; }
+.start-step.courante .start-num { background:#2563eb; color:#fff; }
+.start-step.faite .start-num { background:#059669; color:#fff; }
+.start-body { flex:1; display:flex; flex-direction:column; gap:3px; min-width:0; }
+.start-body span { font-size:.88em; color:#6b7280; }
+.start-go { flex:none; background:#2563eb; color:#fff; border:0; border-radius:.5rem; padding:.6rem 1rem; font:inherit; font-weight:600; cursor:pointer; min-height:2.5rem; }
+.start-step.faite .start-go { background:#fff; color:#047857; border:1px solid #6ee7b7; }
+.start-autres { margin:14px 0 0; font-size:.88em; color:#6b7280; }
+@media (max-width:560px){ .start-step { flex-wrap:wrap; } .start-go { width:100%; } }
 #assistant-profil { scroll-margin-top:130px; }
 .newsletter-cta { margin:30px 0 0; background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:22px; text-align:center; }
 .newsletter-cta h3 { margin:0 0 6px; color:#1e3a8a; }
@@ -6940,6 +7480,27 @@ header .container { overflow:visible; }
 .newsletter-btn { display:inline-block; background:#2563eb; color:#fff !important; text-decoration:none; font-weight:700; padding:.75rem 1.3rem; border-radius:.55rem; min-height:2.75rem; box-sizing:border-box; }
 .newsletter-btn:hover { background:#1d4ed8; }
 .footer-links a { color:#93c5fd; font-size:.85em; text-decoration:underline; margin:0 .7rem; display:inline-block; padding:.3rem 0; }
+#tab-comparateur .cmp-statut { margin: 14px 0; color: #374151; }
+#tab-comparateur .cmp-chargement { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 14px 18px; color: #1e3a8a; }
+#tab-comparateur .cmp-barre { display: block; height: 6px; border-radius: 999px; background: #dbeafe; overflow: hidden; margin-bottom: 10px; }
+#tab-comparateur .cmp-barre i { display: block; height: 100%; width: 35%; border-radius: 999px; background: #2563eb; animation: fnb-glisse 1.2s ease-in-out infinite; }
+#tab-comparateur .cmp-erreur { background: #fef2f2; border-left: 5px solid #dc2626; border-radius: 10px; padding: 14px 18px; color: #7f1d1d; }
+#tab-comparateur .cmp-alerte { padding: 14px 18px; border-radius: 10px; margin: 16px 0; border-left: 5px solid; font-size: 0.95em; line-height: 1.6; }
+#tab-comparateur .cmp-alerte.jaune { background: #fffbeb; border-color: #f59e0b; color: #78350f; }
+#tab-comparateur .cmp-alerte.bleu { background: #eff6ff; border-color: #2563eb; color: #1e3a8a; }
+#tab-comparateur .cmp-alerte button { margin-top: 8px; }
+#tab-comparateur .cmp-flux-ligne { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+#tab-comparateur .cmp-flux-ligne input { flex: 1 1 140px; min-width: 0; }
+#tab-comparateur .cmp-flux-ligne button { flex: 0 0 auto; }
+#tab-comparateur .cmp-scroll { overflow-x: auto; }
+#tab-comparateur .cmp-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; min-width: 560px; }
+#tab-comparateur .cmp-table th { text-align: left; padding: 10px; border-bottom: 2px solid #e5e7eb; background: #f9fafb; }
+#tab-comparateur .cmp-table td { padding: 10px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+#tab-comparateur .cmp-table tr.cmp-moi td { background: #eff6ff; font-weight: 600; }
+#tab-comparateur .cmp-sous { display: block; color: #6b7280; font-size: 0.85em; font-weight: 400; margin-top: 2px; }
+#tab-comparateur .cmp-pos { color: #047857; font-weight: 700; }
+#tab-comparateur .cmp-neg { color: #b91c1c; font-weight: 700; }
+#tab-comparateur .cmp-grand { font-size: 1.5em; font-weight: 700; color: #1e3a8a; }
 @media print { .nav-wrap,.subnav,.data-menu,.hero-btn,.newsletter-cta { display:none !important; } }
 </style>
 <a class="skip-to-content" href="#main-content">Aller au contenu principal</a>
@@ -7255,12 +7816,16 @@ header .container { overflow:visible; }
 #tab-fnb .fnb-alerte.bleu   { background: #eff6ff; border-color: #2563eb; color: #1e3a8a; }
 
 #tab-fnb .fnb-statut { margin: 14px 0; color: #374151; }
-#tab-fnb .fnb-chargement::after {
-  content: ""; display: inline-block; width: 14px; height: 14px; margin-left: 10px;
-  border: 2px solid #2563eb; border-top-color: transparent; border-radius: 50%;
-  animation: fnb-tourne 0.8s linear infinite; vertical-align: -2px;
-}
-@keyframes fnb-tourne { to { transform: rotate(360deg); } }
+#tab-fnb .fnb-chargement { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 14px 18px; color: #1e3a8a; }
+#tab-fnb .fnb-barre { display: block; height: 6px; border-radius: 999px; background: #dbeafe; overflow: hidden; margin-bottom: 10px; }
+#tab-fnb .fnb-barre i { display: block; height: 100%; width: 35%; border-radius: 999px; background: #2563eb; animation: fnb-glisse 1.2s ease-in-out infinite; }
+@keyframes fnb-glisse { 0% { transform: translateX(-100%); } 100% { transform: translateX(300%); } }
+#tab-fnb .fnb-sousnote { display: block; margin-top: 2px; font-size: 0.92em; font-style: italic; color: #6b7280; font-weight: 400; }
+#tab-fnb .fnb-signes { list-style: none; margin: 0; padding: 0; }
+#tab-fnb .fnb-signe { padding: 12px 0; border-bottom: 1px solid #e5e7eb; }
+#tab-fnb .fnb-signe:last-child { border-bottom: 0; }
+#tab-fnb .fnb-signe-tete { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+#tab-fnb .fnb-signe-detail { margin-top: 6px; color: #4b5563; font-size: 0.92rem; line-height: 1.6; }
 
 #tab-fnb .fnb-exemples button {
   background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe;
@@ -8291,7 +8856,8 @@ header .container { overflow:visible; }
       ? '<strong style="color:#1f2937;">Note non calculée : données insuffisantes</strong> · repères évaluables : ' + Math.round(res.couverture * 100) + ' % du total'
       : res.note !== null
       ? '<strong style="color:#1f2937;">Note de conformité aux repères : ' + res.note + ' sur 100</strong> · ' +
-        'repères évaluables : ' + Math.round(res.couverture * 100) + ' % du total'
+        'repères évaluables : ' + Math.round(res.couverture * 100) + ' % du total' +
+        '<span class="fnb-sousnote">Conformité à mes repères personnels, pas un conseil.</span>'
       : 'Aucun critère n\'a pu être évalué.';
     h += '<br>Données récupérées le ' + esc((res.recuLe || '').slice(0, 10)) + '</div></div></div>';
 
@@ -8344,12 +8910,13 @@ header .container { overflow:visible; }
       h += '<div class="card"><h3>Module revenu élevé : 7 signes d\'érosion de la valeur liquidative</h3>';
       h += alerte('bleu', 'Module activé : ' + esc(res.raisons.join(' ; ')) + '. Le taux de distribution affiché ne dit rien à lui seul. ' +
         'Ce qui compte est le rendement total, c\'est-à-dire le prix plus les distributions.');
-      h += '<div class="fnb-scroll"><table class="fnb-table"><thead><tr><th>Signe</th><th>Statut</th><th>Détail</th></tr></thead><tbody>';
+      h += '<ul class="fnb-signes">';
       for (var s = 0; s < res.signes.length; s++) {
         var sg = res.signes[s];
-        h += '<tr><td><strong>' + sg.num + '. ' + esc(sg.titre) + '</strong></td><td>' + badge(sg.statut) + '</td><td>' + esc(sg.detail) + '</td></tr>';
+        h += '<li class="fnb-signe"><div class="fnb-signe-tete"><strong>' + sg.num + '. ' + esc(sg.titre) + '</strong>' +
+          badge(sg.statut, LIBELLES_SIGNES[sg.statut]) + '</div><div class="fnb-signe-detail">' + esc(sg.detail) + '</div></li>';
       }
-      h += '</tbody></table></div></div>';
+      h += '</ul></div>';
     }
 
     h += '<div class="card" style="background:#f9fafb;"><h4 style="margin-bottom:8px;">Limites de cette évaluation</h4>' +
@@ -8367,8 +8934,29 @@ header .container { overflow:visible; }
   function majStatut(texte, chargement) {
     var el = document.getElementById('fnb-statut');
     if (!el) return;
-    el.textContent = texte || '';
     el.className = 'fnb-statut' + (chargement ? ' fnb-chargement' : '');
+    if (chargement) {
+      el.innerHTML = '<span class="fnb-barre" aria-hidden="true"><i></i></span><span class="fnb-statut-texte"></span><span class="fnb-compteur" aria-hidden="true"></span>';
+      el.querySelector('.fnb-statut-texte').textContent = texte;
+    } else {
+      el.textContent = texte || '';
+    }
+  }
+  var minuteurAttente = null;
+  function arreterAttente() { if (minuteurAttente) { clearInterval(minuteurAttente); minuteurAttente = null; } }
+  function demarrerAttente() {
+    arreterAttente();
+    var debut = Date.now(), long = false;
+    minuteurAttente = setInterval(function () {
+      var sec = Math.round((Date.now() - debut) / 1000);
+      var c = document.querySelector('#fnb-statut .fnb-compteur');
+      if (c) c.textContent = ' · ' + sec + ' s';
+      if (sec >= 6 && !long) {
+        long = true;
+        var tx = document.querySelector('#fnb-statut .fnb-statut-texte');
+        if (tx) tx.textContent = 'Toujours en cours : le service de données peut être lent, surtout au premier appel. Compte jusqu\'à 20 secondes.';
+      }
+    }, 1000);
   }
   function lireCache(t) {
     try {
@@ -8441,8 +9029,10 @@ header .container { overflow:visible; }
 
     var btn = document.getElementById('fnb-bouton');
     btn.disabled = true;
+    btn.textContent = 'Analyse en cours…';
     document.getElementById('fnb-resultat').innerHTML = '';
-    majStatut('Récupération des données de ' + t, true);
+    majStatut('Récupération des données de ' + t + '…', true);
+    demarrerAttente();
 
     var url = new URL(CONFIG.URL_RELAIS);
     url.searchParams.set('symbol', t);
@@ -8464,7 +9054,7 @@ header .container { overflow:visible; }
           : (msg === 'introuvable' ? 'Aucune donnée trouvée pour ' + t + '. Pour la Bourse de Toronto, ajoute .TO (ex. VFV.TO). Pour une part de fiducie cotée en .UN, écris par exemple EIT-UN.TO.'
           : 'Le service de données est temporairement indisponible. Réessaie dans quelques minutes.'));
       })
-      .then(function () { btn.disabled = false; });
+      .then(function () { arreterAttente(); btn.disabled = false; btn.textContent = 'Évaluer ce FNB'; });
     return false;
   }
 
