@@ -1096,6 +1096,14 @@ button:hover, .tab-button:hover {
 </div>
 
 <div class="container" id="main-content">
+<div id="invest-chapeau" class="invest-chapeau" style="display:none">
+  <p>Trois miroirs pour investir les yeux ouverts : évalue un titre, mesure tes résultats, calcule le poids de tes frais.</p>
+  <div class="invest-etapes">
+    <button type="button" onclick="changeTab('fnb')" id="etape-fnb"><span>1</span>Évaluer un FNB</button>
+    <button type="button" onclick="changeTab('comparateur')" id="etape-comparateur"><span>2</span>Mon rendement vs indices</button>
+    <button type="button" onclick="changeTab('frais')" id="etape-frais"><span>3</span>Frais d'investissement</button>
+  </div>
+</div>
 <div id="tab-dashboard" class="tab-content">
 
   <h2>Tableau de bord financier</h2>
@@ -2973,7 +2981,7 @@ Historique Québec : 2-4% par an
 </div>
 
 <div id="tab-comparateur" class="tab-content">
-  <h2>Mon rendement vs les indices</h2>
+  <h2>Mon rendement vs indices</h2>
 
   <p style="color:#6b7280;font-size:0.9em;margin-bottom:20px;">
     Est-ce que ta stratégie te rapporte vraiment plus qu'un simple fonds indiciel ? Entre la valeur de ton portefeuille au début et à la fin d'une période. L'outil calcule ton rendement total et le compare à celui de quelques fonds indiciels sur les mêmes dates. C'est un miroir de lucidité, pas un conseil.
@@ -3056,7 +3064,7 @@ Historique Québec : 2-4% par an
   <h2>Frais d'investissement</h2>
 
   <p style="color:#6b7280;font-size:0.9em;margin-bottom:20px;">
-    Quelques points de pourcentage de frais par année semblent minuscules. Sur vingt ans, ils pèsent lourd. L'outil compare tes frais actuels à une alternative moins chère. Il reprend tes chiffres de « Mon rendement vs indices » quand ils sont remplis. C'est un miroir de lucidité, pas un conseil.
+    Quelques points de pourcentage de frais par année semblent minuscules. Sur vingt ans, ils pèsent lourd. L'outil compare tes frais actuels à une alternative moins chère. Quand tu ouvres cet onglet, il reprend automatiquement ta valeur de fin, tes cotisations et ton rendement de « Mon rendement vs indices », si tu les as remplis. Le bouton plus bas les remet à jour si tu as modifié des champs. Les autres champs sont des valeurs par défaut à ajuster. C'est un miroir de lucidité, pas un conseil.
   </p>
 
   <div class="card">
@@ -3073,6 +3081,7 @@ Historique Québec : 2-4% par an
       <div class="form-group">
         <label for="frais-horizon">Horizon (années)</label>
         <input type="text" id="frais-horizon" inputmode="numeric" value="20" autocomplete="off">
+        <small style="display:block;margin-top:5px;color:#6b7280;">20 ans par défaut. Ce n'est pas tiré de tes données.</small>
       </div>
       <div class="form-group">
         <label for="frais-brut">Rendement annuel avant frais (%)</label>
@@ -3087,7 +3096,7 @@ Historique Québec : 2-4% par an
       <div class="form-group">
         <label for="frais-alt">Frais de l'alternative (%)</label>
         <input type="text" id="frais-alt" inputmode="decimal" value="0,25" autocomplete="off">
-        <small style="display:block;margin-top:5px;color:#6b7280;">Par exemple le RFG d'un fonds indiciel. Modifie-le à ta convenance.</small>
+        <small style="display:block;margin-top:5px;color:#6b7280;">0,25 % par défaut, à titre d'exemple de RFG d'un fonds indiciel. Remplace-le par le chiffre réel de l'alternative que tu envisages.</small>
       </div>
     </div>
     <button type="button" class="btn-secondary" id="frais-reprendre">Reprendre mes données de « Mon rendement vs indices »</button>
@@ -3633,6 +3642,12 @@ function changeTab(t){
     if(gb){gb.classList.toggle('active',inGroup);}
     var sub=document.getElementById('subnav-'+g);
     if(sub){sub.style.display=inGroup?'flex':'none';}
+  }
+  var chap=document.getElementById('invest-chapeau');
+  if(chap){
+    var tri=['fnb','comparateur','frais'];
+    chap.style.display=(tri.indexOf(t)>=0)?'block':'none';
+    for(var q=0;q<tri.length;q++){var eb=document.getElementById('etape-'+tri[q]);if(eb){eb.classList.toggle('active',tri[q]===t);}}
   }
   var cta=document.getElementById('newsletter-cta');
   if(cta){cta.style.display='block';}
@@ -6547,7 +6562,7 @@ function closeModal() {
 
 <script>
 /* ============================================================
-   Onglet « Mon rendement vs les indices » - Parlons Cash
+   Onglet « Mon rendement vs indices » - Parlons Cash
    Même relais que « Évaluer un FNB » (Yahoo Finance). Les montants de l'utilisateur
    ne quittent jamais le navigateur : seuls les symboles des indices sont transmis.
    ============================================================ */
@@ -6595,6 +6610,16 @@ function closeModal() {
     var el = e.target;
     if (!el.classList || !el.classList.contains('cmp-date')) return;
     if (e.inputType && e.inputType.indexOf('delete') === 0) return;
+    var brut = el.value, pos = brut.indexOf('-');
+    if (pos > 0 && brut.slice(0, pos).replace(/\//g, '').length === 4) {
+      brut = brut.slice(0, pos).replace(/\//g, '') + brut.slice(pos);
+      el.value = brut;
+    }
+    if (/^\d{4}[-\/]/.test(el.value)) {
+      var iso = /^(\d{4})[-\/](\d{1,2})[-\/](\d{2})$/.exec(el.value);
+      if (iso) el.value = iso[3] + '/' + ('0' + iso[2]).slice(-2) + '/' + iso[1];
+      return;
+    }
     var c = el.value.replace(/[^0-9]/g, '').slice(0, 8), o = c.slice(0, 2);
     if (c.length > 2) o += '/' + c.slice(2, 4);
     if (c.length > 4) o += '/' + c.slice(4);
@@ -7103,6 +7128,7 @@ function closeModal() {
       '<li>Un portefeuille à distribution peut légitimement sous-performer en rendement total tout en atteignant son objectif : te verser un revenu. Les deux mesures comptent.</li>' +
       '<li>La période choisie change tout. Privilégie cinq ans et plus, et méfie-toi des comparaisons sur quelques mois.</li>' +
       '</ul></div>';
+    h += '<div class="passerelle"><p><strong>Et tes frais ?</strong> Vois ce qu\'ils te coûtent sur 20 ans. Tes chiffres sont déjà repris.</p><button type="button" onclick="changeTab(\'frais\')">Calculer le poids de mes frais</button></div>';
     return h;
   }
 
@@ -7115,11 +7141,12 @@ function closeModal() {
     $('cmp-dfin').value = '30/09/2026';
     $('cmp-versements').value = 10000;
     $('cmp-distrib').value = 0;
+    exempleActif = true;
     construireAnnuel();
     statut('Exemple fictif pré-rempli. Remplace ces chiffres par les tiens, puis clique sur Comparer.');
   }
 
-  var dernierCmp = null;
+  var dernierCmp = null, exempleActif = false;
   window.cmpDonnees = function () {
     var vf = num('cmp-vfin'), d0 = parseDate($('cmp-ddebut').value), d1 = parseDate($('cmp-dfin').value);
     var vers = $('cmp-avance').checked ? null : num('cmp-versements');
@@ -7127,14 +7154,19 @@ function closeModal() {
     var cotis = null;
     if (d0 !== null && d1 !== null && d1 > d0 && vers !== null) cotis = vers / ((d1 - d0) / JOUR / 30.4375);
     else if (dernierCmp && dernierCmp.jours > 0) cotis = dernierCmp.vers / (dernierCmp.jours / 30.4375);
-    return { vfin: vf !== null ? vf : (dernierCmp ? dernierCmp.vf : null), cotisMensuelle: cotis, annualise: dernierCmp && dernierCmp.ann !== null ? dernierCmp.ann : null };
+    return { vfin: vf !== null ? vf : (dernierCmp ? dernierCmp.vf : null), cotisMensuelle: cotis, annualise: dernierCmp && dernierCmp.ann !== null ? dernierCmp.ann : null, exemple: exempleActif, dfin: d1 !== null ? formatDate(d1) : null };
   };
   window.cmpLancer = lancer;
   document.addEventListener('DOMContentLoaded', function () {
     if (!$('cmp-form')) return;
     $('cmp-avance').addEventListener('change', basculerAvance);
     document.addEventListener('input', masqueDate);
+    document.addEventListener('focusout', function (e) {
+      var el = e.target, iso = el.classList && el.classList.contains('cmp-date') ? /^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/.exec(el.value) : null;
+      if (iso) { el.value = ('0' + iso[3]).slice(-2) + '/' + ('0' + iso[2]).slice(-2) + '/' + iso[1]; construireAnnuel(); }
+    });
     document.addEventListener('input', surSaisieAnnuel);
+    $('cmp-form').addEventListener('input', function () { exempleActif = false; });
     $('cmp-flux-ajouter').addEventListener('click', function () { ajouterFlux(); });
     $('cmp-exemple').addEventListener('click', exemple);
   });
@@ -7219,7 +7251,7 @@ function closeModal() {
   }
   function synchroniser(force) {
     var c = donneesComparateur(), lien = $('frais-lien'), repris = [];
-    if (c && c.vfin > 0 && (force || libre('frais-valeur'))) { ecrire('frais-valeur', String(Math.round(c.vfin)), true); repris.push('valeur du portefeuille'); }
+    if (c && c.vfin > 0 && (force || libre('frais-valeur'))) { ecrire('frais-valeur', String(Math.round(c.vfin)), true); repris.push('valeur actuelle (la valeur de fin du comparateur' + (c.dfin ? ', au ' + c.dfin : '') + ')'); }
     if (c && c.cotisMensuelle !== null && (force || libre('frais-cotis'))) { ecrire('frais-cotis', String(Math.max(0, Math.round(c.cotisMensuelle))), true); repris.push('cotisation mensuelle'); }
     var frais = nombre('frais-actuels');
     var aide = $('frais-brut-aide');
@@ -7233,7 +7265,7 @@ function closeModal() {
         aide.textContent = c && c.annualise !== null ? 'Entre tes frais actuels pour reprendre ton rendement observé. En attendant, 6 % sert d\'hypothèse de travail, pas de prévision.' : 'Une hypothèse de travail, pas une prévision.';
       }
     }
-    if (c && repris.length) lien.textContent = 'Repris de « Mon rendement vs indices » : ' + repris.join(', ') + '. Tu peux tout modifier.';
+    if (c && repris.length) lien.textContent = (c.exemple ? 'Attention, ce sont les chiffres fictifs de l\'exemple du comparateur, pas les tiens. ' : '') + 'Repris de « Mon rendement vs indices » : ' + repris.join(', ') + '. Tu peux tout modifier.';
     else if (!c) lien.textContent = 'Remplis « Mon rendement vs indices » pour reprendre automatiquement ta valeur, tes cotisations et ton rendement.';
     else lien.textContent = '';
     lien.style.display = lien.textContent ? 'block' : 'none';
@@ -7303,6 +7335,7 @@ function closeModal() {
       '<li>Des frais plus élevés peuvent couvrir un service réel, comme des conseils ou un suivi. La question est de savoir si ce service vaut la différence en dollars.</li>' +
       '<li>Les rendements futurs sont inconnus. Seuls les frais sont connus d\'avance, et ce sont eux que tu contrôles le plus.</li>' +
       '</ul></div>';
+    h += '<div class="passerelle"><p><strong>Le titre que tu détiens vaut-il ses frais ?</strong> Évalue-le avec la grille de repères.</p><button type="button" onclick="changeTab(\'fnb\')">Évaluer un titre</button></div>';
     zone.innerHTML = h;
   }
 
@@ -7864,6 +7897,17 @@ header .container { overflow:visible; }
 .start-opt:hover { border-color:#2563eb; background:#eff6ff; }
 .start-opt.recommended { border-color:#2563eb; background:#eff6ff; }
 
+.invest-chapeau { background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:16px 18px; margin:0 0 20px; }
+.invest-chapeau p { margin:0 0 12px; color:#1e3a8a; font-weight:600; }
+.invest-etapes { display:flex; gap:10px; flex-wrap:wrap; }
+.invest-etapes button { display:inline-flex; align-items:center; gap:8px; background:#fff; border:2px solid #bfdbfe; color:#1e3a8a; border-radius:999px; padding:.45rem .9rem .45rem .5rem; font:inherit; font-weight:600; cursor:pointer; min-height:2.5rem; }
+.invest-etapes button span { width:26px; height:26px; border-radius:50%; background:#dbeafe; display:inline-flex; align-items:center; justify-content:center; font-size:.85em; }
+.invest-etapes button.active { background:#2563eb; border-color:#2563eb; color:#fff; }
+.invest-etapes button.active span { background:#fff; color:#2563eb; }
+.passerelle { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; background:#f5f3ff; border:1px solid #ddd6fe; border-radius:12px; padding:14px 18px; margin:16px 0; color:#4c1d95; }
+.passerelle p { margin:0; flex:1 1 260px; line-height:1.55; }
+.passerelle button { background:#7c3aed; color:#fff; border:0; border-radius:.5rem; padding:.6rem 1.1rem; font:inherit; font-weight:600; cursor:pointer; min-height:2.5rem; }
+.passerelle button:hover { background:#6d28d9; }
 .start-intro { color:#6b7280; font-size:.92em; margin:0 0 14px; }
 .start-progress { display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
 .start-progress-bar { flex:1; min-width:140px; height:10px; background:#e5e7eb; border-radius:99px; overflow:hidden; }
@@ -8414,12 +8458,13 @@ header .container { overflow:visible; }
 
     var cmpHTML = contenuElement('cmp-resultat');
     if (cmpHTML && cmpHTML.indexOf('Ton rendement total') >= 0) {
-      cmpHTML = cmpHTML.replace(/<button[\s\S]*?<\/button>/g, '');
-      html += section('Mon rendement vs les indices', cmpHTML).replace('class="rapport-section"', 'class="rapport-section cmp-rapport"');
+      cmpHTML = cmpHTML.replace(/<div class="passerelle">[\s\S]*?<\/div>/g, '').replace(/<button[\s\S]*?<\/button>/g, '');
+      html += section('Mon rendement vs indices', cmpHTML).replace('class="rapport-section"', 'class="rapport-section cmp-rapport"');
     }
 
     var fraisHTML = contenuElement('frais-resultat');
     if (fraisHTML && fraisHTML.indexOf('Ce que tes frais te coûtent') >= 0) {
+      fraisHTML = fraisHTML.replace(/<div class="passerelle">[\s\S]*?<\/div>/g, '');
       html += section("Frais d'investissement", fraisHTML).replace('class="rapport-section"', 'class="rapport-section cmp-rapport"');
     }
 
@@ -9373,6 +9418,11 @@ header .container { overflow:visible; }
       '<li>La fiscalité (retenues à la source étrangères, type de compte) n\'est pas évaluée.</li>' +
       (res.prof.peInverse ? '<li>Le P/E a été converti à partir d\'un rendement des bénéfices fourni par la source.</li>' : '') +
       '</ul></div>';
+    var faible = (res.note !== null && !noteMasquee && res.note < 60) || nbBad >= 2;
+    h += '<div class="passerelle"><p>' + (faible
+      ? '<strong>Cette note invite à vérifier la réalité.</strong> Mesure maintenant ce que ton portefeuille a réellement rendu, et compare-le aux indices.'
+      : '<strong>Prochaine étape.</strong> Mesure maintenant ton rendement réel et compare-le aux indices.') +
+      '</p><button type="button" onclick="changeTab(\'comparateur\')">Mesurer mon rendement</button></div>';
     return h;
   }
 
