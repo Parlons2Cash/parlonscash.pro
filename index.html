@@ -77,6 +77,142 @@
 <!-- ═══ SCHEMA.ORG JSON-LD ═══ -->
 <script type="application/ld+json">
 {
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Est-ce que mes données sont envoyées quelque part ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Non, pas tes chiffres. Tes revenus, tes dettes, tes actifs, tes montants et tes dates restent dans ton navigateur, sur cet appareil. Une seule exception : quand tu évalues un FNB ou que tu utilises « Mon rendement vs indices », le symbole boursier (par exemple VFV.TO) passe par un relais qui interroge Yahoo Finance. Rien d'autre n'est transmis. Les témoins de statistiques et de publicité ne se chargent qu'avec ton accord. Tous les détails sont dans la politique de confidentialité."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Comment sauvegarder mes données ou les changer d'appareil ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Le site garde tes données dans la mémoire de ton navigateur, donc tu n'as pas à tout ressaisir à ta prochaine visite. Elles disparaissent si tu vides les données de navigation. Pour une copie de sécurité ou un changement d'appareil, ouvre le menu « Mes données » en haut de la page, puis choisis « Exporter en CSV ». Sur l'autre appareil, utilise « Importer un CSV ». Le même menu permet d'effacer tes données."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Comment obtenir mon rapport en PDF ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Dans le menu « Mes données », choisis « Rapport PDF ». La fenêtre d'impression de ton navigateur s'ouvre. Choisis « Enregistrer au format PDF » comme imprimante. Le rapport ne contient que les sections que tu as remplies. Les résultats de « Mon rendement vs indices » et de « Frais d'investissement » y figurent s'ils sont affichés au moment où tu génères le rapport."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Par où commencer ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Dans Mon profil, le bloc « Commence ici » propose trois étapes : ton bilan, ton budget, puis tes objectifs. L'assistant te pose une question à la fois. Tu peux aussi faire le diagnostic rapide, ou aller directement au calculateur qui t'intéresse."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Est-ce que le site me donne des conseils financiers ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Non. Les calculateurs sont des outils éducatifs. Ils produisent des estimations simplifiées, pas des recommandations. Avant une décision importante, consulte un conseiller financier autorisé, un fiscaliste ou un planificateur financier."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Les chiffres de l'impôt, du REER ou du CELI sont-ils à jour ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Les plafonds et les barèmes utilisés sont ceux de 2026 au moment de la dernière mise à jour du site, par exemple 33 810 $ pour le REER et 7 000 $ pour le CELI. Les montants du RRQ et de la PSV sont des estimations. Vérifie toujours les chiffres officiels de Retraite Québec, de l'Agence du revenu du Canada et de Revenu Québec pour ta situation."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Qu'est-ce que la règle 50/30/20 ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "C'est un repère de budget : environ 50 % de ton revenu net pour les besoins essentiels, 30 % pour les envies et 20 % pour l'épargne et le remboursement de dettes. C'est un point de comparaison, pas une loi. Ta situation peut justifier des proportions différentes."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Que veut dire la note de conformité d'un FNB ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Dans Évaluer un FNB, la note indique dans quelle mesure un fonds respecte huit repères que j'ai choisis. Ce sont mes hypothèses de travail, pas des normes. La note ne tient pas compte de ta situation et ne recommande ni d'acheter, ni de conserver, ni de vendre. Mes repères favorisent les fonds très diversifiés. Un fonds à revenu ou à options obtient donc souvent une note plus basse, sans que cela juge sa qualité. Quand trop de données manquent, la note n'est pas calculée."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "D'où viennent les données des FNB et des indices ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Elles viennent de Yahoo Finance, par l'intermédiaire d'un relais, sans garantie d'exactitude. Elles peuvent être lentes ou indisponibles, surtout au premier appel, qui peut prendre jusqu'à 20 secondes. Si un indice n'a pas de données pour ta période, il est exclu de la comparaison au lieu d'être estimé."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Comment mon rendement est-il calculé dans le comparateur ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Dans Mon rendement vs indices, le mode simple utilise la méthode de Dietz modifiée : il suppose que tes versements nets ont eu lieu au milieu de la période. Le résultat est annualisé seulement à partir d'un an. Le mode avancé calcule un taux de rendement interne à partir de tes flux datés. Le rendement des indices est un rendement total, donc les distributions sont incluses."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Pourquoi les dates des indices ne sont pas les mêmes que les miennes ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Les données des indices sont mensuelles. Les dates sont donc arrondies à la fin du mois précédent. Les dates réellement utilisées sont affichées sous chaque indice."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Pourquoi mon rendement diffère de celui de mon relevé ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Les méthodes de calcul ne sont pas toutes les mêmes. Un relevé peut tenir compte de la date exacte de tes apports, d'autres non, et les dates de début et de fin peuvent différer des tiennes. Le calcul du comparateur reste une approximation à partir de tes valeurs. Dans le détail par année, tu peux entrer directement le rendement indiqué sur ton relevé. Il remplace alors le calcul pour cette année."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Faut-il absolument battre un indice ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Non. Battre un indice en rendement total sur une longue période est rare. De plus, un portefeuille construit pour verser un revenu peut sous-performer en rendement total tout en atteignant son objectif. Le rendement global répond à « est-ce que ça marche ? ». Le détail année par année répond à « est-ce que c'est régulier ? ». Les deux mesures comptent."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Comment fonctionne le calculateur de frais ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Dans Frais d'investissement, tu compares tes frais annuels actuels à ceux d'une alternative, sur l'horizon de ton choix. Les frais incluent le ratio des frais de gestion (RFG), plus les frais de conseiller et de courtage s'il y en a. Le rendement avant frais est une hypothèse constante, sans impôts ni inflation. Ce n'est pas une prévision."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Pourquoi le calculateur de frais reprend mes chiffres du comparateur ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Il reprend la valeur de fin du comparateur comme valeur actuelle, tes versements divisés par la durée comme cotisation mensuelle, et ton rendement annualisé comme point de départ du rendement avant frais. Ton rendement observé est déjà net de frais. L'outil y ajoute donc tes frais actuels pour retrouver un rendement avant frais. Tu peux modifier tous les champs."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Puis-je téléverser mon relevé de placement ?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Pas pour le moment. Il faut saisir les montants à la main. Pour te faciliter la tâche, tu peux entrer le rendement indiqué sur ton relevé, année par année, dans le comparateur."
+   }
+  }
+ ]
+}
+</script>
+<script type="application/ld+json">
+{
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -1166,6 +1302,32 @@ button:hover, .tab-button:hover {
     <p class="start-autres">Pas envie de suivre le parcours ? <a href="#" onclick="ouvrirDiagnostic();return false;">Fais le diagnostic rapide</a> ou <a href="#" onclick="changeTab('impôts');return false;">va directement aux calculateurs</a>.</p>
   </div>
 
+  <!-- ===== BLOC « À SURVEILLER » : seule zone à modifier pour le mettre à jour =====
+       Règles : 3 items maximum, pas de dates affichées. Pour en ajouter un, retirer le plus ancien.
+       Liens externes : target="_blank" rel="noopener". Lien interne optionnel : changeTab('nom-de-l-onglet').
+       Vérifier environ une fois par mois que les liens externes fonctionnent encore. ===== -->
+  <section class="card surveiller" id="a-surveiller" aria-labelledby="surveiller-titre">
+    <h3 id="surveiller-titre" style="color:#2563eb;">À surveiller</h3>
+    <ul class="surveiller-liste">
+      <li class="surveiller-item">
+        <h4>Moins de conflits d'intérêts sur les fonds</h4>
+        <p>Les ACVM ont publié les règles finales qui interdisent la rétrofacturation, une rémunération de courtier à rembourser si tu vends tes fonds trop tôt.</p>
+        <a class="surveiller-lien" href="https://lautorite.qc.ca/grand-public/salle-de-presse/actualites/fiche-dactualite/les-acvm-publient-des-modifications-definitives-visant-a-interdire-la-retrofacturation-dans-le-cadre-du-placement-de-titres-de-fonds-dinvestissement" target="_blank" rel="noopener" aria-label="Ce que ça change pour toi : annonce de l'AMF sur l'interdiction de la rétrofacturation, s'ouvre dans un nouvel onglet">Ce que ça change pour toi</a>
+        <a class="surveiller-lien second" href="#" onclick="changeTab('frais');window.scrollTo(0,0);return false;">Calcule ce que tes frais te coûtent vraiment</a>
+      </li>
+      <li class="surveiller-item">
+        <h4>Octobre : mois de l'éducation des investisseurs</h4>
+        <p>L'AMF met en avant des ressources gratuites pour investir de façon éclairée.</p>
+        <a class="surveiller-lien" href="https://lautorite.qc.ca/grand-public/salle-de-presse/actualites/fiche-dactualite/mois-de-leducation-des-investisseurs-les-acvm-preconisent-linvestissement-eclaire-et-la-prevention-de-la-fraude" target="_blank" rel="noopener" aria-label="À explorer ici : annonce de l'AMF sur le mois de l'éducation des investisseurs, s'ouvre dans un nouvel onglet">À explorer ici</a>
+      </li>
+      <li class="surveiller-item">
+        <h4>Vérifie avant d'investir</h4>
+        <p>Une plateforme te promet des rendements alléchants ?</p>
+        <a class="surveiller-lien" href="https://lautorite.qc.ca/grand-public/salle-de-presse/mises-en-garde" target="_blank" rel="noopener" aria-label="Consulte les mises en garde de l'AMF avant d'y mettre un dollar, s'ouvre dans un nouvel onglet">Consulte les mises en garde de l'AMF avant d'y mettre un dollar</a>
+      </li>
+    </ul>
+  </section>
+
   <div class="card">
     <h3 style="color:#2563eb;">💰 Revenu brut annuel</h3>
     <div class="form-group">
@@ -1731,6 +1893,11 @@ Historique Québec : 2-4% par an
       <li><strong>Impact local</strong> – Contribuer concrètement à la vitalité économique de Montréal.</li>
       <li><strong>Innovation utile</strong> – Créer des outils simples qui font gagner du temps et de la clarté.</li>
     </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="color:#1e3a8a;">Une question sur le site ?</h3>
+    <p style="margin-top:10px;">Tes données, le rapport PDF, les outils d'investissement : les réponses sont dans les <a href="#" onclick="changeTab('faq');window.scrollTo(0,0);return false;">questions fréquentes</a>.</p>
   </div>
   
 </div>
@@ -3112,6 +3279,34 @@ Historique Québec : 2-4% par an
   </div>
 </div>
 
+<div id="tab-faq" class="tab-content">
+  <h2>Questions fréquentes</h2>
+  <p style="color:#6b7280;font-size:0.9em;margin-bottom:16px;">Les réponses aux questions qui reviennent le plus souvent sur le site, tes données et les outils d'investissement.</p>
+  <div class="form-group"><label for="faq-recherche" class="faq-etiq">Chercher une question</label><input type="search" id="faq-recherche" placeholder="Ex. PDF, frais, confidentialité" autocomplete="off"></div>
+  <div class="faq-groupe"><h3 class="faq-titre">Le site et tes données</h3>
+    <details class="faq-item"><summary>Est-ce que mes données sont envoyées quelque part ?</summary><div class="faq-reponse"><p>Non, pas tes chiffres. Tes revenus, tes dettes, tes actifs, tes montants et tes dates restent dans ton navigateur, sur cet appareil.</p><p>Une seule exception : quand tu évalues un FNB ou que tu utilises « Mon rendement vs indices », le symbole boursier (par exemple VFV.TO) passe par un relais qui interroge Yahoo Finance. Rien d'autre n'est transmis. Les témoins de statistiques et de publicité ne se chargent qu'avec ton accord. Tous les détails sont dans la <a href="#" onclick="changeTab('confidentialite');window.scrollTo(0,0);return false;">politique de confidentialité</a>.</p></div></details>
+    <details class="faq-item"><summary>Comment sauvegarder mes données ou les changer d'appareil ?</summary><div class="faq-reponse"><p>Le site garde tes données dans la mémoire de ton navigateur, donc tu n'as pas à tout ressaisir à ta prochaine visite. Elles disparaissent si tu vides les données de navigation.</p><p>Pour une copie de sécurité ou un changement d'appareil, ouvre le menu « Mes données » en haut de la page, puis choisis « Exporter en CSV ». Sur l'autre appareil, utilise « Importer un CSV ». Le même menu permet d'effacer tes données.</p></div></details>
+    <details class="faq-item"><summary>Comment obtenir mon rapport en PDF ?</summary><div class="faq-reponse"><p>Dans le menu « Mes données », choisis « Rapport PDF ». La fenêtre d'impression de ton navigateur s'ouvre. Choisis « Enregistrer au format PDF » comme imprimante.</p><p>Le rapport ne contient que les sections que tu as remplies. Les résultats de « Mon rendement vs indices » et de « Frais d'investissement » y figurent s'ils sont affichés au moment où tu génères le rapport.</p></div></details>
+    <details class="faq-item"><summary>Par où commencer ?</summary><div class="faq-reponse"><p>Dans <a href="#" onclick="changeTab('profil');window.scrollTo(0,0);return false;">Mon profil</a>, le bloc « Commence ici » propose trois étapes : ton bilan, ton budget, puis tes objectifs. L'assistant te pose une question à la fois. Tu peux aussi faire le diagnostic rapide, ou aller directement au calculateur qui t'intéresse.</p></div></details>
+    <details class="faq-item"><summary>Est-ce que le site me donne des conseils financiers ?</summary><div class="faq-reponse"><p>Non. Les calculateurs sont des outils éducatifs. Ils produisent des estimations simplifiées, pas des recommandations. Avant une décision importante, consulte un conseiller financier autorisé, un fiscaliste ou un planificateur financier.</p></div></details>
+    <details class="faq-item"><summary>Les chiffres de l'impôt, du REER ou du CELI sont-ils à jour ?</summary><div class="faq-reponse"><p>Les plafonds et les barèmes utilisés sont ceux de 2026 au moment de la dernière mise à jour du site, par exemple 33 810 $ pour le REER et 7 000 $ pour le CELI. Les montants du RRQ et de la PSV sont des estimations. Vérifie toujours les chiffres officiels de Retraite Québec, de l'Agence du revenu du Canada et de Revenu Québec pour ta situation.</p></div></details>
+    <details class="faq-item"><summary>Qu'est-ce que la règle 50/30/20 ?</summary><div class="faq-reponse"><p>C'est un repère de budget : environ 50 % de ton revenu net pour les besoins essentiels, 30 % pour les envies et 20 % pour l'épargne et le remboursement de dettes. C'est un point de comparaison, pas une loi. Ta situation peut justifier des proportions différentes.</p></div></details>
+  </div>
+  <div class="faq-groupe"><h3 class="faq-titre">Investissement</h3>
+    <details class="faq-item"><summary>Que veut dire la note de conformité d'un FNB ?</summary><div class="faq-reponse"><p>Dans <a href="#" onclick="changeTab('fnb');window.scrollTo(0,0);return false;">Évaluer un FNB</a>, la note indique dans quelle mesure un fonds respecte huit repères que j'ai choisis. Ce sont mes hypothèses de travail, pas des normes. La note ne tient pas compte de ta situation et ne recommande ni d'acheter, ni de conserver, ni de vendre.</p><p>Mes repères favorisent les fonds très diversifiés. Un fonds à revenu ou à options obtient donc souvent une note plus basse, sans que cela juge sa qualité. Quand trop de données manquent, la note n'est pas calculée.</p></div></details>
+    <details class="faq-item"><summary>D'où viennent les données des FNB et des indices ?</summary><div class="faq-reponse"><p>Elles viennent de Yahoo Finance, par l'intermédiaire d'un relais, sans garantie d'exactitude. Elles peuvent être lentes ou indisponibles, surtout au premier appel, qui peut prendre jusqu'à 20 secondes. Si un indice n'a pas de données pour ta période, il est exclu de la comparaison au lieu d'être estimé.</p></div></details>
+    <details class="faq-item"><summary>Comment mon rendement est-il calculé dans le comparateur ?</summary><div class="faq-reponse"><p>Dans <a href="#" onclick="changeTab('comparateur');window.scrollTo(0,0);return false;">Mon rendement vs indices</a>, le mode simple utilise la méthode de Dietz modifiée : il suppose que tes versements nets ont eu lieu au milieu de la période. Le résultat est annualisé seulement à partir d'un an. Le mode avancé calcule un taux de rendement interne à partir de tes flux datés.</p><p>Le rendement des indices est un rendement total, donc les distributions sont incluses.</p></div></details>
+    <details class="faq-item"><summary>Pourquoi les dates des indices ne sont pas les mêmes que les miennes ?</summary><div class="faq-reponse"><p>Les données des indices sont mensuelles. Les dates sont donc arrondies à la fin du mois précédent. Les dates réellement utilisées sont affichées sous chaque indice.</p></div></details>
+    <details class="faq-item"><summary>Pourquoi mon rendement diffère de celui de mon relevé ?</summary><div class="faq-reponse"><p>Les méthodes de calcul ne sont pas toutes les mêmes. Un relevé peut tenir compte de la date exacte de tes apports, d'autres non, et les dates de début et de fin peuvent différer des tiennes. Le calcul du comparateur reste une approximation à partir de tes valeurs.</p><p>Dans le détail par année, tu peux entrer directement le rendement indiqué sur ton relevé. Il remplace alors le calcul pour cette année.</p></div></details>
+    <details class="faq-item"><summary>Faut-il absolument battre un indice ?</summary><div class="faq-reponse"><p>Non. Battre un indice en rendement total sur une longue période est rare. De plus, un portefeuille construit pour verser un revenu peut sous-performer en rendement total tout en atteignant son objectif. Le rendement global répond à « est-ce que ça marche ? ». Le détail année par année répond à « est-ce que c'est régulier ? ». Les deux mesures comptent.</p></div></details>
+    <details class="faq-item"><summary>Comment fonctionne le calculateur de frais ?</summary><div class="faq-reponse"><p>Dans <a href="#" onclick="changeTab('frais');window.scrollTo(0,0);return false;">Frais d'investissement</a>, tu compares tes frais annuels actuels à ceux d'une alternative, sur l'horizon de ton choix. Les frais incluent le ratio des frais de gestion (RFG), plus les frais de conseiller et de courtage s'il y en a.</p><p>Le rendement avant frais est une hypothèse constante, sans impôts ni inflation. Ce n'est pas une prévision.</p></div></details>
+    <details class="faq-item"><summary>Pourquoi le calculateur de frais reprend mes chiffres du comparateur ?</summary><div class="faq-reponse"><p>Il reprend la valeur de fin du comparateur comme valeur actuelle, tes versements divisés par la durée comme cotisation mensuelle, et ton rendement annualisé comme point de départ du rendement avant frais. Ton rendement observé est déjà net de frais. L'outil y ajoute donc tes frais actuels pour retrouver un rendement avant frais. Tu peux modifier tous les champs.</p></div></details>
+    <details class="faq-item"><summary>Puis-je téléverser mon relevé de placement ?</summary><div class="faq-reponse"><p>Pas pour le moment. Il faut saisir les montants à la main. Pour te faciliter la tâche, tu peux entrer le rendement indiqué sur ton relevé, année par année, dans le comparateur.</p></div></details>
+  </div>
+  <p id="faq-vide" class="faq-vide" style="display:none">Aucune question ne correspond à ta recherche.</p>
+  <p style="margin-top:20px;font-size:0.9em;color:#6b7280;">Ta question n'y est pas ? Écris à <a href="mailto:azizguellouz@gmail.com">azizguellouz@gmail.com</a>.</p>
+</div>
+
 <div id="tab-blog" class="tab-content">
   <h2>📰 Blog — Parlons Cash</h2>
   <p style="color:#6b7280;margin-bottom:8px;">Réflexions, stratégies et perspectives sur la finance personnelle au Québec.</p>
@@ -3577,7 +3772,7 @@ function blogAfficherListe() {
   var grid = document.getElementById('blog-grid');
   if (!grid) return;
   var html = '';
-  for (var i = 0; i < BLOG_ARTICLES.length; i++) {
+  for (var i = BLOG_ARTICLES.length - 1; i >= 0; i--) {
     var a = BLOG_ARTICLES[i];
     html += '<div class="blog-card" data-categorie="' + a.categorie + '" onclick="blogLireArticle(' + a.id + ')">';
     html += '<span class="blog-card-categorie">' + a.categorie + '</span>';
@@ -3655,7 +3850,7 @@ function changeTab(t){
 // Cacher les bandeaux d'avertissement
 var warnings = document.querySelectorAll('.warning-box, .danger-box');
 for(var i = 0; i < warnings.length; i++) {
-  if(t === 'apropos' || t === 'confidentialite' || t === 'aide' || t === 'besoin' || t === 'couple' || t === 'plaisirs' || t === 'acheter-louer' || t === 'blog' || t === 'psychologie' || t === 'fnb' || t === 'comparateur' || t === 'frais') {
+  if(t === 'apropos' || t === 'confidentialite' || t === 'aide' || t === 'besoin' || t === 'couple' || t === 'plaisirs' || t === 'acheter-louer' || t === 'blog' || t === 'psychologie' || t === 'fnb' || t === 'comparateur' || t === 'frais' || t === 'faq') {
     warnings[i].style.display = 'none';
   } else {
     warnings[i].style.display = 'block';
@@ -7356,6 +7551,32 @@ function closeModal() {
 }());
 </script>
 
+<script>
+(function () {
+  function norm(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  document.addEventListener('DOMContentLoaded', function () {
+    var champ = document.getElementById('faq-recherche');
+    if (!champ) return;
+    champ.addEventListener('input', function () {
+      var q = norm(champ.value).trim(), total = 0;
+      var groupes = document.querySelectorAll('#tab-faq .faq-groupe');
+      for (var g = 0; g < groupes.length; g++) {
+        var items = groupes[g].querySelectorAll('.faq-item'), visibles = 0;
+        for (var i = 0; i < items.length; i++) {
+          var ok = q === '' || norm(items[i].textContent).indexOf(q) >= 0;
+          items[i].style.display = ok ? '' : 'none';
+          if (q !== '' && ok) items[i].open = true; else if (q === '') items[i].open = false;
+          if (ok) visibles++;
+        }
+        groupes[g].style.display = visibles ? '' : 'none';
+        total += visibles;
+      }
+      document.getElementById('faq-vide').style.display = total ? 'none' : 'block';
+    });
+  });
+}());
+</script>
+
 <footer style="background:#1f2937;color:white;padding:40px 20px;margin-top:50px;">
   <div class="container">
     <div style="text-align:center;color:#9ca3af;">
@@ -7369,6 +7590,7 @@ function closeModal() {
         <a href="#" onclick="ouvrirDiagnostic();return false;">Refaire le mini-diagnostic financier</a>
         <a href="https://substack.com/@parlonscash" target="_blank" rel="noopener">Infolettre</a>
         <a href="#" onclick="changeTab('blog');window.scrollTo(0,0);return false;">Blog</a>
+        <a href="#" onclick="changeTab('faq');window.scrollTo(0,0);return false;">Questions fréquentes</a>
         <a href="#" onclick="changeTab('confidentialite');window.scrollTo(0,0);return false;">Confidentialité</a>
       </p>
     </div>
@@ -7908,6 +8130,28 @@ header .container { overflow:visible; }
 .passerelle p { margin:0; flex:1 1 260px; line-height:1.55; }
 .passerelle button { background:#7c3aed; color:#fff; border:0; border-radius:.5rem; padding:.6rem 1.1rem; font:inherit; font-weight:600; cursor:pointer; min-height:2.5rem; }
 .passerelle button:hover { background:#6d28d9; }
+.faq-etiq { font-weight:600; }
+#faq-recherche { width:100%; box-sizing:border-box; }
+.faq-groupe { margin:24px 0; }
+.faq-titre { color:#1e3a8a; margin:0 0 10px; }
+.faq-item { background:#fff; border:1px solid #e5e7eb; border-radius:10px; margin-bottom:8px; }
+.faq-item[open] { border-color:#bfdbfe; background:#f8fbff; }
+.faq-item summary { cursor:pointer; padding:14px 16px; font-weight:600; color:#1f2937; list-style:none; display:flex; justify-content:space-between; gap:12px; align-items:center; min-height:2.75rem; }
+.faq-item summary::-webkit-details-marker { display:none; }
+.faq-item summary::after { content:"+"; font-size:1.3em; color:#2563eb; flex:none; }
+.faq-item[open] summary::after { content:"\2212"; }
+.faq-reponse { padding:0 16px 14px; color:#374151; line-height:1.7; }
+.faq-reponse p { margin:0 0 10px; }
+.faq-vide { color:#6b7280; font-style:italic; }
+.surveiller-liste { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; }
+.surveiller-item { background:#f9fafb; border:1px solid #e5e7eb; border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+.surveiller-item h4 { margin:0; color:#1f2937; font-size:1rem; }
+.surveiller-item p { margin:0; color:#4b5563; font-size:.92em; line-height:1.55; }
+.surveiller-lien { color:#1d4ed8; font-weight:600; font-size:.92em; text-decoration:underline; padding:.2rem 0; }
+.surveiller-lien.second { color:#6d28d9; }
+.surveiller-lien::after { content:" \2197"; text-decoration:none; display:inline-block; }
+.surveiller-lien.second::after { content:" \2192"; }
+.surveiller-item .surveiller-lien:first-of-type { margin-top:auto; }
 .start-intro { color:#6b7280; font-size:.92em; margin:0 0 14px; }
 .start-progress { display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
 .start-progress-bar { flex:1; min-width:140px; height:10px; background:#e5e7eb; border-radius:99px; overflow:hidden; }
