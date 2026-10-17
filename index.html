@@ -139,10 +139,10 @@
   },
   {
    "@type": "Question",
-   "name": "Que veut dire la note de conformité d'un FNB ?",
+   "name": "Que veut dire la conformité à mes repères pour un FNB ?",
    "acceptedAnswer": {
     "@type": "Answer",
-    "text": "Dans Évaluer un FNB, la note indique dans quelle mesure un fonds respecte huit repères que j'ai choisis. Ce sont mes hypothèses de travail, pas des normes. La note ne tient pas compte de ta situation et ne recommande ni d'acheter, ni de conserver, ni de vendre. Mes repères favorisent les fonds très diversifiés. Un fonds à revenu ou à options obtient donc souvent une note plus basse, sans que cela juge sa qualité. Quand trop de données manquent, la note n'est pas calculée."
+    "text": "Dans Évaluer un FNB, le résultat indique dans quelle mesure un fonds respecte huit repères que j'ai choisis. Ce sont mes hypothèses de travail, pas des normes. Il ne tient pas compte de ta situation et ne recommande ni d'acheter, ni de conserver, ni de vendre. Mes repères favorisent les fonds très diversifiés. Un fonds à revenu ou à options s'écarte donc souvent davantage de mes repères, sans que cela juge sa qualité. Quand trop de données manquent, le résultat n'est pas calculé."
    }
   },
   {
@@ -3428,7 +3428,7 @@ Historique Québec : 2-4% par an
   <h2>Évaluer un FNB</h2>
 
   <p style="color:#6b7280;font-size:0.9em;margin-bottom:20px;">
-    Entre le symbole d'un FNB. Les données sont récupérées automatiquement et comparées à huit repères que j'ai choisis, pour une note de conformité sur 100. L'outil informe seulement, il ne recommande rien.
+    Entre le symbole d'un FNB. Les données sont récupérées automatiquement et comparées à huit repères que j'ai choisis, pour un résultat de conformité à mes repères, sur 100. L'outil informe seulement, il ne recommande rien.
     Chaque critère affiche son repère et sa source. Si une donnée est introuvable, le critère est exclu
     du calcul au lieu d'être deviné.
   </p>
@@ -3461,7 +3461,7 @@ Historique Québec : 2-4% par an
     <p style="margin:0;font-size:0.85em;color:#6b7280;line-height:1.7;">
       <strong>Avertissement :</strong> cet outil est à des fins éducatives et informatives seulement.
       Il ne constitue pas un conseil en placement, ni une recommandation d'acheter ou de vendre un titre.
-      La note mesure la conformité à des repères généraux, pas la qualité d'un investissement pour ta situation.
+      Le résultat mesure la conformité à des repères généraux, pas la qualité d'un investissement pour ta situation.
       Les rendements passés ne garantissent pas les rendements futurs. Les données proviennent de Yahoo Finance,
       sans garantie d'exactitude ou de disponibilité. Avant toute décision, consulte un professionnel inscrit
       auprès de l'Autorité des marchés financiers
@@ -3616,7 +3616,7 @@ Historique Québec : 2-4% par an
     <details class="faq-item"><summary>Qu'est-ce que la règle 50/30/20 ?</summary><div class="faq-reponse"><p>C'est un repère de budget : environ 50 % de ton revenu net pour les besoins essentiels, 30 % pour les envies et 20 % pour l'épargne et le remboursement de dettes. C'est un point de comparaison, pas une loi. Ta situation peut justifier des proportions différentes.</p></div></details>
   </div>
   <div class="faq-groupe"><h3 class="faq-titre">Investissement</h3>
-    <details class="faq-item"><summary>Que veut dire la note de conformité d'un FNB ?</summary><div class="faq-reponse"><p>Dans <a href="#" onclick="changeTab('fnb');window.scrollTo(0,0);return false;">Évaluer un FNB</a>, la note indique dans quelle mesure un fonds respecte huit repères que j'ai choisis. Ce sont mes hypothèses de travail, pas des normes. La note ne tient pas compte de ta situation et ne recommande ni d'acheter, ni de conserver, ni de vendre.</p><p>Mes repères favorisent les fonds très diversifiés. Un fonds à revenu ou à options obtient donc souvent une note plus basse, sans que cela juge sa qualité. Quand trop de données manquent, la note n'est pas calculée.</p></div></details>
+    <details class="faq-item"><summary>Que veut dire la conformité à mes repères pour un FNB ?</summary><div class="faq-reponse"><p>Dans <a href="#" onclick="changeTab('fnb');window.scrollTo(0,0);return false;">Évaluer un FNB</a>, le résultat indique dans quelle mesure un fonds respecte huit repères que j'ai choisis. Ce sont mes hypothèses de travail, pas des normes. Il ne tient pas compte de ta situation et ne recommande ni d'acheter, ni de conserver, ni de vendre.</p><p>Mes repères favorisent les fonds très diversifiés. Un fonds à revenu ou à options s'écarte donc souvent davantage de mes repères, sans que cela juge sa qualité. Quand trop de données manquent, le résultat n'est pas calculé.</p></div></details>
     <details class="faq-item"><summary>D'où viennent les données des FNB et des indices ?</summary><div class="faq-reponse"><p>Elles viennent de Yahoo Finance, par l'intermédiaire d'un relais, sans garantie d'exactitude. Elles peuvent être lentes ou indisponibles, surtout au premier appel, qui peut prendre jusqu'à 20 secondes. Si un indice n'a pas de données pour ta période, il est exclu de la comparaison au lieu d'être estimé.</p></div></details>
     <details class="faq-item"><summary>Comment mon rendement est-il calculé dans le comparateur ?</summary><div class="faq-reponse"><p>Dans <a href="#" onclick="changeTab('comparateur');window.scrollTo(0,0);return false;">Mon rendement vs indices</a>, le mode simple utilise la méthode de Dietz modifiée : il suppose que tes versements nets ont eu lieu au milieu de la période. Le résultat est annualisé seulement à partir d'un an. Le mode avancé calcule un taux de rendement interne à partir de tes flux datés.</p><p>Le rendement des indices est un rendement total, donc les distributions sont incluses.</p></div></details>
     <details class="faq-item"><summary>Pourquoi les dates des indices ne sont pas les mêmes que les miennes ?</summary><div class="faq-reponse"><p>Les données des indices sont mensuelles. Les dates sont donc arrondies à la fin du mois précédent. Les dates réellement utilisées sont affichées sous chaque indice.</p></div></details>
@@ -8867,6 +8867,7 @@ header .container { overflow:visible; }
 #tab-fnb .fnb-barre { display: block; height: 6px; border-radius: 999px; background: #dbeafe; overflow: hidden; margin-bottom: 10px; }
 #tab-fnb .fnb-barre i { display: block; height: 100%; width: 35%; border-radius: 999px; background: #2563eb; animation: fnb-glisse 1.2s ease-in-out infinite; }
 @keyframes fnb-glisse { 0% { transform: translateX(-100%); } 100% { transform: translateX(300%); } }
+#tab-fnb .fnb-pasconseil { margin: 14px 0 0; padding: 10px 14px; background: #f3f4f6; border-left: 4px solid #6b7280; border-radius: 6px; font-size: 0.92em; color: #374151; line-height: 1.5; flex-basis: 100%; }
 #tab-fnb .fnb-sousnote { display: block; margin-top: 2px; font-size: 0.92em; font-style: italic; color: #6b7280; font-weight: 400; }
 #tab-fnb .fnb-signes { list-style: none; margin: 0; padding: 0; }
 #tab-fnb .fnb-signe { padding: 12px 0; border-bottom: 1px solid #e5e7eb; }
@@ -9903,22 +9904,22 @@ header .container { overflow:visible; }
     for (var cs in (res.saisi || {})) nbSaisi++;
     var noteMasquee = res.note !== null && res.couverture < 0.6;
     if (noteMasquee) {
-      h += '<div class="score-circle fnb-sans-note" aria-label="Note non calculée">&ndash;</div>';
+      h += '<div class="score-circle fnb-sans-note" aria-label="Conformité non calculée">&ndash;</div>';
     } else if (res.note !== null) {
-      h += '<div class="score-circle ' + res.verdict.cls + '" aria-label="Note de ' + res.note + ' sur 100">' + res.note + '</div>';
+      h += '<div class="score-circle ' + res.verdict.cls + '" aria-label="Conformité à mes repères : ' + res.note + ' sur 100">' + res.note + '</div>';
     }
     h += '<div><h3 style="margin:0 0 6px 0;">' + esc(p.nom || res.symbole) + '</h3>';
     h += '<div class="fnb-meta">Symbole : ' + esc(res.symbole) +
       (p.devise ? ' · Devise : ' + esc(p.devise) : '') +
       (p.categorie ? ' · Catégorie : ' + esc(p.categorie) : '') + '<br>';
     h += noteMasquee
-      ? '<strong style="color:#1f2937;">Note non calculée : données insuffisantes</strong> · repères évaluables : ' + Math.round(res.couverture * 100) + ' % du total'
+      ? '<strong style="color:#1f2937;">Conformité non calculée : données insuffisantes</strong> · repères évaluables : ' + Math.round(res.couverture * 100) + ' % du total'
       : res.note !== null
-      ? '<strong style="color:#1f2937;">Note de conformité aux repères : ' + res.note + ' sur 100</strong> · ' +
-        'repères évaluables : ' + Math.round(res.couverture * 100) + ' % du total' +
-        '<span class="fnb-sousnote">Conformité à mes repères personnels, pas un conseil.</span>'
+      ? '<strong style="color:#1f2937;">Conformité à mes repères : ' + res.note + ' sur 100</strong> · ' +
+        'repères évaluables : ' + Math.round(res.couverture * 100) + ' % du total'
       : 'Aucun critère n\'a pu être évalué.';
-    h += '<br>Données récupérées le ' + esc((res.recuLe || '').slice(0, 10)) + '</div></div></div>';
+    h += '<br>Données récupérées le ' + esc((res.recuLe || '').slice(0, 10)) + '</div></div>';
+    h += '<p class="fnb-pasconseil"><strong>Pas un conseil.</strong> Ce résultat mesure l\'écart à mes repères personnels. Il ne recommande ni d\'acheter, ni de conserver, ni de vendre.</p></div>';
 
     if (p.type && !/ETF|MUTUALFUND|FUND/i.test(p.type)) {
       h += alerte('jaune', 'Ce symbole est de type « ' + esc(p.type) + ' » et non un FNB. Plusieurs critères ne s\'appliquent pas.');
@@ -9932,26 +9933,26 @@ header .container { overflow:visible; }
         'Vérifie que le nom affiché ci-dessus correspond bien au fonds visé.');
     }
     if (res.mesures && res.mesures.annees < 3 && res.note !== null) {
-      h += alerte('jaune', '<strong>Historique court.</strong> Ce fonds a moins de 3 ans de données : Sharpe, tendance et recul maximal reposent sur peu de points, et la note est moins fiable.');
+      h += alerte('jaune', '<strong>Historique court.</strong> Ce fonds a moins de 3 ans de données : Sharpe, tendance et recul maximal reposent sur peu de points, et la conformité calculée est moins fiable.');
     }
     if (nbSaisi > 0) {
-      h += alerte('bleu', '<strong>Cette note inclut ' + (nbSaisi === 1 ? 'une donnée saisie par toi' : nbSaisi + ' données saisies par toi') +
+      h += alerte('bleu', '<strong>Ce résultat inclut ' + (nbSaisi === 1 ? 'une donnée saisie par toi' : nbSaisi + ' données saisies par toi') +
         '.</strong> Je n\'en vérifie pas l\'exactitude. Ces données restent dans ton navigateur.');
     }
     if (noteMasquee) {
-      h += alerte('jaune', '<strong>Pas de note.</strong> Seulement ' + Math.round(res.couverture * 100) +
-        ' % des repères ont pu être évalués faute de données. Une note calculée sur si peu de repères ne serait pas comparable à celle d\'un autre fonds. Les repères disponibles sont détaillés plus bas.');
+      h += alerte('jaune', '<strong>Pas de résultat chiffré.</strong> Seulement ' + Math.round(res.couverture * 100) +
+        ' % des repères ont pu être évalués faute de données. Un résultat calculé sur si peu de repères ne serait pas comparable à celui d\'un autre fonds. Les repères disponibles sont détaillés plus bas.');
     }
     var nbBad = 0;
     for (var i = 0; i < res.signes.length; i++) if (res.signes[i].statut === 'bad') nbBad++;
     if (nbBad >= 2) {
-      h += alerte('rouge', '<strong>' + nbBad + ' signes d\'érosion présents dans les données.</strong> La note ci-dessus n\'en tient pas compte. ' +
+      h += alerte('rouge', '<strong>' + nbBad + ' signes d\'érosion présents dans les données.</strong> Le résultat ci-dessus n\'en tient pas compte. ' +
         'Le module « revenu élevé » plus bas donne le détail.');
     }
 
-    h += alerte('bleu', '<strong>Comment lire cette note.</strong> J\'ai choisi huit repères pour comparer les FNB sur une base commune. Ce sont mes hypothèses de travail, pas des normes. ' +
-      'La note indique dans quelle mesure le fonds les respecte. Elle ne tient pas compte de ta situation et ne recommande ni d\'acheter, ni de conserver, ni de vendre. ' +
-      'Mes repères favorisent les fonds très diversifiés, donc un fonds à revenu ou à options obtient souvent une note plus basse. Cela ne juge pas sa qualité.');
+    h += alerte('bleu', '<strong>Comment lire ce résultat.</strong> J\'ai choisi huit repères pour comparer les FNB sur une base commune. Ce sont mes hypothèses de travail, pas des normes. ' +
+      'Le résultat indique dans quelle mesure le fonds les respecte. Il ne tient pas compte de ta situation et ne recommande ni d\'acheter, ni de conserver, ni de vendre. ' +
+      'Mes repères favorisent les fonds très diversifiés, donc un fonds à revenu ou à options s\'écarte souvent davantage de mes repères. Cela ne juge pas sa qualité.');
 
     h += '<div class="card"><h3>Détail des critères</h3><div class="fnb-scroll"><table class="fnb-table"><thead><tr>' +
       '<th>Critère</th><th>Valeur</th><th>Repère</th><th>Points</th><th>Source</th></tr></thead><tbody>';
@@ -9986,10 +9987,8 @@ header .container { overflow:visible; }
       '<li>La fiscalité (retenues à la source étrangères, type de compte) n\'est pas évaluée.</li>' +
       (res.prof.peInverse ? '<li>Le P/E a été converti à partir d\'un rendement des bénéfices fourni par la source.</li>' : '') +
       '</ul></div>';
-    var faible = (res.note !== null && !noteMasquee && res.note < 60) || nbBad >= 2;
-    h += '<div class="passerelle"><p>' + (faible
-      ? '<strong>Cette note invite à vérifier la réalité.</strong> Mesure maintenant ce que ton portefeuille a réellement rendu, et compare-le aux indices.'
-      : '<strong>Prochaine étape.</strong> Mesure maintenant ton rendement réel et compare-le aux indices.') +
+    h += '<div class="passerelle"><p>' +
+      '<strong>Prochaine étape.</strong> Mesure maintenant ton rendement réel et compare-le aux indices.' +
       '</p><button type="button" onclick="changeTab(\'comparateur\')">Mesurer mon rendement</button></div>';
     return h;
   }
