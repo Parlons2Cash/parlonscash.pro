@@ -1312,6 +1312,121 @@ button:hover, .tab-button:hover {
        Règles : 3 items maximum, pas de dates affichées. Pour en ajouter un, retirer le plus ancien.
        Liens externes : target="_blank" rel="noopener". Lien interne optionnel : changeTab('nom-de-l-onglet').
        Vérifier environ une fois par mois que les liens externes fonctionnent encore. ===== -->
+  <div class="card kz-carte" id="test-connaissances">
+    <style>
+      .kz-carte h3{margin:0 0 4px}
+      .kz-intro{margin:0 0 14px;color:#6b7280;font-size:.95rem}
+      .kz-niveaux{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+      .kz-niv{position:relative;text-align:left;padding:16px 16px 14px;border:2px solid #e5e7eb;border-radius:14px;background:#fff;cursor:pointer;font-family:inherit;color:#1f2937;transition:transform .15s,border-color .15s,box-shadow .15s}
+      .kz-niv:hover,.kz-niv:focus-visible{transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.08);outline:none}
+      .kz-niv b{display:block;font-size:1.1rem;margin-bottom:2px}
+      .kz-niv span{display:block;color:#6b7280;font-size:.88rem;line-height:1.4}
+      .kz-niv i{display:block;font-style:normal;margin-top:8px;font-size:1.1rem;letter-spacing:3px}
+      .kz-niv.facile{border-color:#a7f3d0}.kz-niv.facile:hover{border-color:#10b981}.kz-niv.facile i{color:#10b981}
+      .kz-niv.moyen{border-color:#bfdbfe}.kz-niv.moyen:hover{border-color:#2563eb}.kz-niv.moyen i{color:#2563eb}
+      .kz-niv.difficile{border-color:#ddd6fe}.kz-niv.difficile:hover{border-color:#7c3aed}.kz-niv.difficile i{color:#7c3aed}
+      .kz-haut{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px;flex-wrap:wrap}
+      .kz-badge{display:inline-block;padding:3px 12px;border-radius:999px;font-size:.8rem;font-weight:700;color:#fff}
+      .kz-badge.facile{background:#10b981}.kz-badge.moyen{background:#2563eb}.kz-badge.difficile{background:#7c3aed}
+      .kz-serie{font-size:.85rem;font-weight:700;color:#b45309;background:#fef3c7;border-radius:999px;padding:3px 12px;opacity:0;transition:opacity .2s}
+      .kz-serie.on{opacity:1}
+      .kz-points{display:flex;gap:5px;margin:0 0 12px}
+      .kz-points span{flex:1;height:7px;border-radius:4px;background:#e5e7eb;transition:background .2s}
+      .kz-points span.ok{background:#10b981}
+      .kz-points span.ko{background:#f59e0b}
+      .kz-points span.now{background:#2563eb}
+      .kz-compte{font-size:.85rem;color:#6b7280;margin:0 0 6px}
+      .kz-question{font-size:1.1rem;font-weight:700;color:#1f2937;margin:0 0 14px;line-height:1.4}
+      .kz-choix{display:grid;gap:10px}
+      .kz-choix button{text-align:left;padding:13px 16px;border:2px solid #e5e7eb;border-radius:12px;background:#fff;font-size:1rem;color:#1f2937;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s}
+      .kz-choix button:hover:not(:disabled),.kz-choix button:focus-visible{border-color:#2563eb;background:#eff6ff;outline:none}
+      .kz-choix button:disabled{cursor:default}
+      .kz-choix button.juste{border-color:#10b981;background:#ecfdf5;animation:kzpop .35s}
+      .kz-choix button.faux{border-color:#f59e0b;background:#fffbeb;animation:kzsec .3s}
+      @keyframes kzpop{0%{transform:scale(1)}50%{transform:scale(1.025)}100%{transform:scale(1)}}
+      @keyframes kzsec{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+      .kz-retour{margin-top:14px;padding:14px 16px;border-radius:12px;background:#f3f4f6;color:#1f2937;line-height:1.6;font-size:.95rem}
+      .kz-retour strong{display:block;margin-bottom:2px}
+      .kz-suite{margin-top:14px;padding:11px 20px;border:none;border-radius:10px;background:#2563eb;color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit}
+      .kz-score{border-radius:14px;padding:20px;margin:0 0 14px;color:#fff;text-align:center}
+      .kz-score.facile{background:linear-gradient(135deg,#047857,#10b981)}
+      .kz-score.moyen{background:linear-gradient(135deg,#1e40af,#3b82f6)}
+      .kz-score.difficile{background:linear-gradient(135deg,#5b21b6,#8b5cf6)}
+      .kz-score small{display:block;opacity:.9;font-size:.85rem;margin-bottom:4px}
+      .kz-etoiles{font-size:2rem;letter-spacing:6px;line-height:1.2;margin:2px 0}
+      .kz-etoiles .vide{opacity:.35}
+      .kz-etoiles svg,.kz-niv i svg{vertical-align:-.12em}
+      .kz-niv i .vide{opacity:.3;display:inline}
+      .kz-score strong{font-size:1.35rem;display:block;line-height:1.3}
+      .kz-titre{display:block;margin-top:4px;font-size:1rem;opacity:.95}
+      .kz-revoir{margin:0 0 12px;line-height:1.7;color:#1f2937}
+      .kz-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+      .kz-actions .kz-suite{margin-top:0}
+      .kz-lien{background:none;border:none;color:#2563eb;cursor:pointer;font-size:.9rem;padding:6px 0;font-family:inherit;text-decoration:underline}
+      @media (prefers-reduced-motion:reduce){.kz-choix button.juste,.kz-choix button.faux{animation:none}.kz-niv{transition:none}}
+    </style>
+    <h3 style="color:#2563eb;">Teste tes connaissances en finances personnelles</h3>
+    <p class="kz-intro">Choisis ton niveau. Dix questions, une explication après chaque réponse. Rien n'est enregistré.</p>
+    <div id="kz-zone" aria-live="polite"></div>
+  </div>
+  <script>
+  (function(){
+    var N={"facile": [{"t": "Que signifie le sigle CELI ?", "s": "le CELI", "b": "Compte d'épargne libre d'impôt", "m": ["Certificat d'épargne à long terme investi", "Crédit d'équilibre du logement individuel", "Cotisation d'emploi libre d'intérêts"], "e": "Le CELI est un compte d'épargne libre d'impôt. Le rendement qu'il produit n'est pas imposé."}, {"t": "Que se passe-t-il quand tu retires de l'argent de ton CELI ?", "s": "le CELI", "b": "Le retrait n'est pas imposable et le droit de cotisation revient l'année suivante", "m": ["Le retrait est imposé comme un revenu", "Tu perds ce droit de cotisation pour toujours", "Tu paies une pénalité sur le montant retiré"], "e": "Les retraits d'un CELI ne sont pas imposables. Le montant retiré s'ajoute de nouveau à tes droits de cotisation l'année suivante."}, {"t": "Quel est l'avantage fiscal immédiat d'une cotisation au REER ?", "s": "le REER", "b": "Elle réduit ton revenu imposable de l'année", "m": ["Les retraits sont exempts d'impôt à la retraite", "Elle réduit tes cotisations au RRQ", "Elle donne un remboursement automatique de 20 %"], "e": "La cotisation est déductible de ton revenu. C'est un report d'impôt : les retraits seront imposés au moment où tu les feras."}, {"t": "L'inflation est de 3 % et ton compte d'épargne rapporte 1 %. Que devient ton pouvoir d'achat ?", "s": "l'inflation", "b": "Il diminue d'environ 2 % par année", "m": ["Il augmente de 1 % par année", "Il reste stable", "Il diminue de 3 % par année"], "e": "Ton argent croît de 1 % pendant que les prix montent de 3 %. L'écart, environ 2 %, est la perte de pouvoir d'achat."}, {"t": "Quelle réserve est souvent suggérée comme fonds d'urgence ?", "s": "le fonds d'urgence", "b": "De 3 à 6 mois de dépenses", "m": ["Une semaine de dépenses", "Un an complet de salaire", "Le montant de ta prochaine mise de fonds"], "e": "C'est un repère courant, pas une règle. Avec un revenu variable ou des personnes à charge, plusieurs visent davantage."}, {"t": "Quel élément pèse le plus sur ta cote de crédit ?", "s": "la cote de crédit", "b": "Ton historique de paiement", "m": ["Ton salaire", "Ton âge", "Le nombre de comptes bancaires que tu as"], "e": "Payer à temps est le facteur le plus important. Ton salaire n'est pas inscrit à ton dossier de crédit."}, {"t": "Les intérêts composés, c'est quoi ?", "s": "les intérêts composés", "b": "Des intérêts calculés sur ton capital et sur les intérêts déjà accumulés", "m": ["Des intérêts calculés seulement sur ton capital de départ", "Des intérêts versés une seule fois à la fin du placement", "Des intérêts que la banque ajoute à ta dette"], "e": "Avec le temps, les intérêts produisent eux-mêmes des intérêts. C'est ce qui rend les premières années d'épargne si précieuses."}, {"t": "Quand est-il le plus avantageux de commencer à épargner pour la retraite ?", "s": "le temps et l'épargne", "b": "Le plus tôt possible, même avec de petits montants", "m": ["Seulement après avoir fini de rembourser tous tes prêts", "Quand ton salaire a doublé", "Dix ans avant la retraite"], "e": "Plus tu commences tôt, plus tes placements ont de temps pour croître. De petits montants réguliers au début peuvent peser lourd à long terme."}, {"t": "Tu paies seulement le paiement minimum de ta carte de crédit chaque mois. Que se passe-t-il ?", "s": "le crédit", "b": "Des intérêts élevés s'accumulent et la dette dure longtemps", "m": ["Ta dette disparaît après quelques mois", "Tu ne paies aucun intérêt", "Ta cote de crédit monte automatiquement"], "e": "Le solde non payé porte des intérêts, souvent à un taux élevé. Le paiement minimum couvre surtout ces intérêts et fait traîner la dette."}, {"t": "Dans un bilan personnel, où classes-tu ton hypothèque ?", "s": "le bilan personnel", "b": "Dans les passifs, avec tes dettes", "m": ["Dans les actifs, avec ta maison", "Dans les revenus", "Dans les dépenses mensuelles seulement"], "e": "Ce que tu possèdes (maison, placements) est un actif. Ce que tu dois (hypothèque, prêts, cartes) est un passif. La différence est ta valeur nette."}], "moyen": [{"t": "À un rendement de 6 % par année, en combien de temps un placement double-t-il environ ?", "s": "les intérêts composés", "b": "12 ans", "m": ["6 ans", "18 ans", "30 ans"], "e": "La règle de 72 donne un ordre de grandeur : 72 divisé par le taux de rendement. Ici, 72 ÷ 6 = 12 ans."}, {"t": "Que mesure le RFG (ratio des frais de gestion) d'un fonds ou d'un FNB ?", "s": "les frais de placement", "b": "Les frais annuels, en pourcentage de l'actif du fonds", "m": ["Le rendement moyen des dix dernières années", "Le niveau de risque du fonds", "Le nombre de titres détenus"], "e": "Le RFG est retiré chaque année de la valeur du fonds. Un écart de 1 ou 2 points peut coûter très cher sur 20 ou 30 ans."}, {"t": "Ton revenu franchit le seuil d'une tranche d'imposition plus élevée. Quelle partie de ton revenu est imposée au taux plus élevé ?", "s": "les tranches d'imposition", "b": "Seulement la portion qui dépasse le seuil", "m": ["Tout ton revenu", "La moitié de ton revenu", "Seulement ta prime, peu importe son montant"], "e": "Le taux plus élevé ne s'applique qu'à la partie du revenu au-dessus du seuil. Une augmentation ne peut donc pas réduire ton revenu après impôt."}, {"t": "À qui s'adresse le CELIAPP ?", "s": "le CELIAPP", "b": "Aux premiers acheteurs d'une habitation", "m": ["Aux personnes à la retraite", "Aux étudiants à temps plein", "Aux travailleurs autonomes seulement"], "e": "Le CELIAPP combine une déduction à la cotisation, comme le REER, et des retraits non imposables pour l'achat d'une première habitation admissible, comme le CELI."}, {"t": "Qu'est-ce qu'un FNB indiciel large détient en général ?", "s": "les FNB", "b": "Des centaines, voire des milliers de titres", "m": ["Un seul titre choisi par un gestionnaire", "Une dizaine d'actions soigneusement choisies", "Uniquement des liquidités"], "e": "Un FNB indiciel large reproduit un indice. Il répartit ton argent sur un grand nombre de titres, ce qui réduit le poids d'une seule entreprise."}, {"t": "Quelle est la différence entre ton taux d'imposition marginal et ton taux moyen ?", "s": "les taux d'imposition", "b": "Le marginal s'applique au dernier dollar gagné, le moyen est l'impôt total divisé par le revenu", "m": ["Le marginal est toujours plus bas que le moyen", "Le marginal s'applique seulement aux gains en capital", "Il n'y a aucune différence entre les deux"], "e": "Le taux marginal sert à évaluer l'effet d'une déduction ou d'un revenu additionnel. Le taux moyen donne la part de ton revenu qui part en impôt."}, {"t": "Quelle est la limite de cotisation annuelle au CELI en 2026 ?", "s": "le CELI", "b": "7 000 $", "m": ["5 000 $", "10 000 $", "18 % de ton revenu"], "e": "Le plafond de 2026 est de 7 000 $. Les droits non utilisés s'accumulent d'année en année."}, {"t": "Que doit-on faire de son REER au plus tard à la fin de l'année où l'on a 71 ans ?", "s": "le REER", "b": "Le transformer, par exemple en FERR, ou le retirer", "m": ["Le laisser tel quel pour toujours", "Le transférer automatiquement dans un CELI", "Il disparaît sans impôt"], "e": "Le REER doit être converti, souvent en FERR, ou encaissé. Le FERR impose ensuite un retrait minimum annuel."}, {"t": "Quelle est une différence clé entre un FNB et un fonds commun de placement ?", "s": "les FNB", "b": "Le FNB se négocie en bourse pendant la journée, comme une action", "m": ["Le FNB ne peut jamais détenir d'actions", "Le fonds commun est toujours moins cher", "Le FNB ne peut pas être détenu dans un REER"], "e": "Un FNB s'achète et se vend en bourse au prix du moment. Un fonds commun se transige habituellement une fois par jour, à sa valeur liquidative."}, {"t": "À quel âge peux-tu demander ta rente du RRQ au plus tôt ?", "s": "le RRQ", "b": "60 ans", "m": ["55 ans", "65 ans", "71 ans"], "e": "Tu peux la demander dès 60 ans, mais elle est alors réduite. La reporter après 65 ans l'augmente."}], "difficile": [{"t": "Pourquoi une retenue à la source est-elle prélevée sur un retrait de REER ?", "s": "le REER", "b": "Elle est une avance sur l'impôt que tu devras payer, qui peut différer de ton impôt réel", "m": ["Elle est un frais de gestion de ton institution", "Elle règle définitivement ton impôt sur ce retrait", "Elle est remboursée automatiquement dans les 30 jours"], "e": "La retenue n'est qu'un acompte. Selon ton revenu, ton impôt réel sur le retrait peut être plus élevé ou plus bas, et tu le règles dans ta déclaration."}, {"t": "Un FNB coûte 0,20 % par an et un fonds 2,20 %. Avec un rendement brut de 6 % sur 25 ans, de combien le capital final du fonds est-il inférieur, à peu près ?", "s": "les frais de placement", "b": "D'environ 40 %", "m": ["D'environ 10 %", "D'environ 20 %", "D'environ 60 %"], "e": "Après frais, les rendements nets sont de 5,8 % et de 3,8 %. Sur 25 ans, le premier multiplie le capital par environ 4,1 et le second par environ 2,5, soit près de 38 % de moins."}, {"t": "En général, quelle portion d'un gain en capital est incluse dans le revenu imposable ?", "s": "les gains en capital", "b": "La moitié", "m": ["La totalité", "Le quart", "Aucune portion"], "e": "Au taux d'inclusion de 50 %, seule la moitié du gain est imposée. Dans un REER ou un CELI, la question ne se pose pas de la même façon."}, {"t": "Pourquoi les dividendes canadiens sont-ils souvent moins imposés que les intérêts, hors régime enregistré ?", "s": "la fiscalité des revenus de placement", "b": "À cause du crédit d'impôt pour dividendes", "m": ["Parce qu'ils sont toujours exempts d'impôt", "Parce que les intérêts sont imposés deux fois", "Parce que les dividendes sont réservés au CELI"], "e": "Un dividende de société canadienne est majoré, puis donne droit à un crédit d'impôt. L'effet net dépend du type de dividende et de ton taux marginal."}, {"t": "Qu'est-ce que le risque de séquence des rendements ?", "s": "la retraite et les retraits", "b": "De mauvais rendements en début de retraite nuisent plus que les mêmes en fin de parcours", "m": ["Le risque de perdre ton emploi avant la retraite", "Le risque que l'inflation soit plus élevée que prévu", "Le risque de changer de FNB trop souvent"], "e": "Quand tu retires de l'argent d'un portefeuille qui baisse, tu vends à bas prix. Deux parcours de même rendement moyen peuvent donc donner des résultats très différents."}, {"t": "Un placement perd 50 %, puis gagne 50 %. Où te retrouves-tu par rapport au départ ?", "s": "le rendement composé", "b": "À 75 % de ta mise de départ", "m": ["Au même point qu'au départ", "À 100 % de ta mise, plus un petit gain", "À 25 % de ta mise de départ"], "e": "100 $ deviennent 50 $ après la perte, puis 75 $ après un gain de 50 %. Une perte demande un gain plus grand que son pourcentage pour être effacée."}, {"t": "Dans un FNB à options d'achat couvertes, que se passe-t-il généralement lors d'un très fort marché haussier ?", "s": "les FNB à options", "b": "Le potentiel de hausse est plafonné", "m": ["Le FNB gagne toujours plus que l'indice", "Le capital est garanti", "Les distributions deviennent nulles"], "e": "Le fonds vend des options d'achat et encaisse une prime. En échange, il renonce à une partie de la hausse au-delà du prix convenu."}, {"t": "Pour une cotisation à un REER de conjoint, qui obtient la déduction fiscale ?", "s": "le REER de conjoint", "b": "La personne qui cotise", "m": ["La personne qui détient le compte", "Les deux, à parts égales", "Aucune des deux"], "e": "Le cotisant déduit la cotisation. Le compte appartient à son conjoint, ce qui peut équilibrer les revenus à la retraite, sous certaines règles d'attribution."}, {"t": "Quelle pénalité s'applique en général au remboursement anticipé d'une hypothèque à taux fixe ?", "s": "l'hypothèque", "b": "Le plus élevé de trois mois d'intérêts ou de l'IRD", "m": ["Un montant fixe de 500 $", "Aucune pénalité", "Un pour cent du solde dans tous les cas"], "e": "L'IRD (indemnité de remboursement anticipé) compense la baisse des taux depuis la signature. Elle peut dépasser de beaucoup trois mois d'intérêts."}, {"t": "En quoi le TRI (taux de rendement interne) diffère-t-il d'un rendement pondéré dans le temps ?", "s": "la mesure du rendement", "b": "Le TRI est influencé par le moment et la taille de tes dépôts et retraits", "m": ["Le TRI ignore complètement les dépôts", "Le TRI ne s'applique qu'aux obligations", "Il n'y a aucune différence en pratique"], "e": "Le rendement pondéré dans le temps neutralise tes apports pour juger le placement. Le TRI mesure plutôt ce que ton argent a rapporté, compte tenu de tes choix de moments."}]};
+    var INFO={
+      facile:{nom:'Facile',desc:'Les bases : épargne, CELI, REER, crédit.',titres:['Épargnant en herbe','Épargnant en herbe','Épargnant en herbe','Bon départ','Bon départ','Bon départ','Épargnant avisé','Épargnant avisé','Épargnant avisé','Maître des bases','Maître des bases']},
+      moyen:{nom:'Moyen',desc:'Impôt, frais, FNB, retraite.',titres:['Apprenti investisseur','Apprenti investisseur','Apprenti investisseur','Investisseur en formation','Investisseur en formation','Investisseur en formation','Investisseur averti','Investisseur averti','Investisseur averti','Stratège','Stratège']},
+      difficile:{nom:'Difficile',desc:'Fiscalité fine, risques et mécanique des placements.',titres:['Curieux de la finance','Curieux de la finance','Curieux de la finance','Analyste en devenir','Analyste en devenir','Analyste en devenir','Analyste chevronné','Analyste chevronné','Analyste chevronné','Expert','Expert']}
+    };
+    var ordre=['facile','moyen','difficile'];
+    var niv,Q,n,bons,res,serie,zone;
+    function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+    function melange(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x;}return a;}
+    function etoiles(k,total){var s='<svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></svg>',h='';for(var i=0;i<total;i++)h+=i<k?s:'<span class="vide">'+s+'</span>';return h;}
+    function accueil(){
+      var h='<div class="kz-niveaux">';
+      ordre.forEach(function(k,i){h+='<button type="button" class="kz-niv '+k+'" data-k="'+k+'"><b>'+INFO[k].nom+'</b><span>'+esc(INFO[k].desc)+'</span><i aria-hidden="true">'+etoiles(i+1,3)+'</i></button>';});
+      zone.innerHTML=h+'</div>';
+      zone.querySelectorAll('.kz-niv').forEach(function(b){b.addEventListener('click',function(){demarrer(b.getAttribute('data-k'));});});
+    }
+    function demarrer(k){niv=k;Q=melange(N[k]);n=0;bons=0;res=[];serie=0;question();}
+    function points(){var h='<div class="kz-points" aria-hidden="true">';for(var i=0;i<Q.length;i++){h+='<span class="'+(i<res.length?(res[i]?'ok':'ko'):(i===n?'now':''))+'"></span>';}return h+'</div>';}
+    function question(){
+      var q=Q[n],ch=melange([{l:q.b,ok:true}].concat(q.m.map(function(x){return {l:x,ok:false};})));
+      var h='<div class="kz-haut"><span class="kz-badge '+niv+'">'+INFO[niv].nom+'</span><span class="kz-serie'+(serie>=3?' on':'')+'" id="kz-serie">Série de '+serie+'</span></div>'+points()+'<p class="kz-compte">Question '+(n+1)+' sur '+Q.length+'</p><p class="kz-question">'+esc(q.t)+'</p><div class="kz-choix">';
+      ch.forEach(function(c,i){h+='<button type="button" data-i="'+i+'">'+esc(c.l)+'</button>';});
+      h+='</div><div id="kz-retour"></div>';
+      zone.innerHTML=h;
+      var btns=zone.querySelectorAll('.kz-choix button');
+      btns.forEach(function(b){b.addEventListener('click',function(){
+        var c=ch[+b.getAttribute('data-i')];
+        btns.forEach(function(x,i){x.disabled=true;if(ch[i].ok)x.classList.add('juste');});
+        if(!c.ok)b.classList.add('faux');
+        res.push(c.ok);if(c.ok){bons++;serie++;}else{serie=0;}
+        var se=document.getElementById('kz-serie');se.textContent='Série de '+serie;se.classList.toggle('on',serie>=3);
+        var last=(n===Q.length-1);
+        var pts=zone.querySelectorAll('.kz-points span');pts[n].className=c.ok?'ok':'ko';
+        document.getElementById('kz-retour').innerHTML='<div class="kz-retour"><strong>'+(c.ok?(serie>=3?'Bonne réponse, '+serie+' d\'affilée.':'Bonne réponse.'):'Pas tout à fait.')+'</strong>'+esc(q.e)+'</div><button type="button" class="kz-suite" id="kz-suite">'+(last?'Voir mon résultat':'Question suivante')+'</button>';
+        var s=document.getElementById('kz-suite');s.focus();
+        s.addEventListener('click',function(){if(last){resultat();}else{n++;question();}});
+      });});
+    }
+    function resultat(){
+      var k=bons>=9?3:(bons>=7?2:(bons>=5?1:0));
+      var h='<div class="kz-score '+niv+'"><small>Niveau '+INFO[niv].nom.toLowerCase()+'</small><div class="kz-etoiles" aria-label="'+k+' étoile'+(k>1?'s':'')+' sur 3">'+etoiles(k,3)+'</div><strong>'+bons+' sur '+Q.length+'</strong><span class="kz-titre">'+INFO[niv].titres[bons]+'</span></div>';
+      var rev=[],vus={};res.forEach(function(r,i){if(!r&&!vus[Q[i].s]){vus[Q[i].s]=1;rev.push(Q[i].s);}});
+      h+=rev.length?'<p class="kz-revoir">À revoir : '+rev.map(esc).join(', ')+'. Tu trouveras des réponses dans les <a href="#" onclick="changeTab(\'faq\');window.scrollTo(0,0);return false;">questions fréquentes</a> et dans le <a href="#" onclick="changeTab(\'blog\');window.scrollTo(0,0);return false;">blog</a>.</p>':'<p class="kz-revoir">Aucune erreur. Les calculateurs du site te permettent maintenant de passer à tes propres chiffres.</p>';
+      var i=ordre.indexOf(niv),suiv=(bons>=7&&i<ordre.length-1)?ordre[i+1]:null;
+      h+='<div class="kz-actions">'+(suiv?'<button type="button" class="kz-suite" id="kz-suiv">Passer au niveau '+INFO[suiv].nom.toLowerCase()+'</button>':'')+'<button type="button" class="kz-lien" id="kz-refaire">Refaire ce niveau</button><button type="button" class="kz-lien" id="kz-autre">Choisir un autre niveau</button></div>';
+      zone.innerHTML=h;
+      if(suiv)document.getElementById('kz-suiv').addEventListener('click',function(){demarrer(suiv);});
+      document.getElementById('kz-refaire').addEventListener('click',function(){demarrer(niv);});
+      document.getElementById('kz-autre').addEventListener('click',accueil);
+    }
+    function init(){zone=document.getElementById('kz-zone');if(zone)accueil();}
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  })();
+  </script>
+
   <section class="card surveiller" id="a-surveiller" aria-labelledby="surveiller-titre">
     <h3 id="surveiller-titre" style="color:#2563eb;">À surveiller</h3>
     <ul class="surveiller-liste">
@@ -1360,39 +1475,6 @@ button:hover, .tab-button:hover {
     <div id="assistant-recap" class="hidden"></div>
   </div>
 
-  <div class="card">
-    <h3 style="color:#f59e0b;">🏠 Projet immobilier</h3>
-    <p style="color:#6b7280;font-size:0.9em;margin-bottom:15px;">🔗 Synchronisé avec les onglets Objectifs (achat maison) et Acheter vs Louer.</p>
-    <div class="form-group">
-      <label>Prix de la maison envisagée ($)</label>
-      <input type="number" id="profil-prix-maison" value="0" min="0">
-    </div>
-    <div class="form-group">
-      <label>Taux hypothécaire (%)</label>
-      <input type="number" id="profil-taux-hypo" value="5" step="0.1" min="0">
-    </div>
-    <div class="form-group">
-      <label>Mise de fonds (%)</label>
-      <select id="profil-mise-de-fonds-pct">
-        <option value="5">5%</option>
-        <option value="10">10%</option>
-        <option value="15">15%</option>
-        <option value="20" selected>20%</option>
-        <option value="25">25%</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Période d'amortissement (années)</label>
-      <select id="profil-amortissement">
-        <option value="25" selected>25 ans</option>
-        <option value="26">26 ans</option>
-        <option value="27">27 ans</option>
-        <option value="28">28 ans</option>
-        <option value="29">29 ans</option>
-        <option value="30">30 ans</option>
-      </select>
-    </div>
-  </div>
 </div>
 
 <div id="tab-bilan" class="tab-content">
@@ -1555,7 +1637,7 @@ button:hover, .tab-button:hover {
     <input type="number" id="revenu-brut-menage" value="0" onchange="calcImmobilier()">
   </div>
  <div class="form-group">
-  <label>Mise de fonds (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
+  <label>Mise de fonds (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Acheter vs Louer</span></label>
   <select id="mise-de-fonds-pct" onchange="calcImmobilier()">
     <option value="5">5%</option>
     <option value="10">10%</option>
@@ -1565,11 +1647,11 @@ button:hover, .tab-button:hover {
   </select>
 </div> 
   <div class="form-group">
-    <label>Taux hypothécaire (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
+    <label>Taux hypothécaire (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Acheter vs Louer</span></label>
     <input type="number" id="taux-hypo" value="5" step="0.1" onchange="calcImmobilier()">
   </div>
 <div class="form-group">
-  <label>Période d'amortissement (années) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
+  <label>Période d'amortissement (années) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Acheter vs Louer</span></label>
   <select id="amortissement" onchange="calcImmobilier()">
     <option value="25" selected>25 ans</option>
     <option value="26">26 ans</option>
@@ -1581,7 +1663,7 @@ button:hover, .tab-button:hover {
 </div>
 
   <div class="form-group">
-    <label>Prix de la maison envisagée ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
+    <label>Prix de la maison envisagée ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Acheter vs Louer</span></label>
     <input type="number" id="prix-maison" value="0" onchange="calcImmobilier()">
   </div>
 
@@ -1683,12 +1765,12 @@ button:hover, .tab-button:hover {
     <h3 style="color:#2563eb;">🏡 Scénario ACHAT</h3>
     
     <div class="form-group">
-      <label>Prix d'achat de la maison ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
+      <label>Prix d'achat de la maison ($) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Objectifs</span></label>
       <input type="number" id="al-prix" value="0" min="0" onchange="calcAcheterLouer()">
     </div>
     
     <div class="form-group">
-      <label>Mise de fonds (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
+      <label>Mise de fonds (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Objectifs</span></label>
       <select id="al-mise-fonds-pct" onchange="calcAcheterLouer()">
         <option value="5">5%</option>
         <option value="10">10%</option>
@@ -1699,12 +1781,12 @@ button:hover, .tab-button:hover {
     </div>
     
     <div class="form-group">
-      <label>Taux hypothécaire (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
+      <label>Taux hypothécaire (%) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Objectifs</span></label>
       <input type="number" id="al-taux-hypo" value="5" min="0" max="15" step="0.1" onchange="calcAcheterLouer()">
     </div>
     
     <div class="form-group">
-      <label>Période d'amortissement (années) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Mon profil</span></label>
+      <label>Période d'amortissement (années) <span style="font-weight:400;color:#7c3aed;font-size:0.82em;">🔗 synchronisé avec Objectifs</span></label>
       <select id="al-amortissement" onchange="calcAcheterLouer()">
         <option value="25" selected>25 ans</option>
         <option value="26">26 ans</option>
@@ -2209,6 +2291,99 @@ Historique Québec : 2-4% par an
 
   <h2>💡 Aide à la décision : CELI ou REER ?</h2>
 
+  <div id="qz-boite" class="qz-boite">
+    <style>
+      .qz-boite{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:24px;margin:18px 0 8px}
+      .qz-boite h3{margin:0 0 4px;color:#1e40af;font-size:1.2rem}
+      .qz-intro{margin:0 0 16px;color:#6b7280;font-size:.95rem}
+      .qz-points{display:flex;gap:6px;margin:0 0 14px}
+      .qz-points span{flex:1;height:6px;border-radius:3px;background:#e5e7eb}
+      .qz-points span.fait{background:#2563eb}
+      .qz-compte{font-size:.85rem;color:#6b7280;margin:0 0 6px}
+      .qz-question{font-size:1.15rem;font-weight:700;color:#1f2937;margin:0 0 14px;line-height:1.4}
+      .qz-choix{display:grid;gap:10px}
+      .qz-choix button{text-align:left;padding:14px 16px;border:2px solid #e5e7eb;border-radius:12px;background:#fff;font-size:1rem;color:#1f2937;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s,transform .1s}
+      .qz-choix button:hover,.qz-choix button:focus-visible{border-color:#2563eb;background:#eff6ff;outline:none}
+      .qz-choix button:active{transform:scale(.99)}
+      .qz-choix button small{display:block;color:#6b7280;font-size:.85rem;margin-top:2px}
+      .qz-bas{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+      .qz-lien{background:none;border:none;color:#2563eb;cursor:pointer;font-size:.9rem;padding:6px 0;font-family:inherit;text-decoration:underline}
+      .qz-lien[hidden]{display:none}
+      .qz-verdict{border-radius:14px;padding:18px 20px;margin:0 0 14px;color:#fff}
+      .qz-verdict.celi{background:linear-gradient(135deg,#047857,#10b981)}
+      .qz-verdict.reer{background:linear-gradient(135deg,#1e40af,#3b82f6)}
+      .qz-verdict.deux{background:linear-gradient(135deg,#6d28d9,#8b5cf6)}
+      .qz-verdict small{display:block;opacity:.9;font-size:.85rem;margin-bottom:4px}
+      .qz-verdict strong{font-size:1.4rem;display:block;line-height:1.25}
+      .qz-raisons{margin:0 0 14px;padding-left:20px;line-height:1.7;color:#1f2937}
+      .qz-note{font-size:.9rem;color:#6b7280;line-height:1.6;margin:0 0 10px}
+    </style>
+    <h3>Mini-quiz : CELI, REER ou les deux ?</h3>
+    <p class="qz-intro">Cinq questions, une minute. Rien n'est enregistré.</p>
+    <div id="qz-zone" aria-live="polite"></div>
+  </div>
+  <script>
+  (function(){
+    var Q=[
+      {t:"Ton revenu à la retraite sera-t-il plus bas ou plus élevé qu'aujourd'hui ?",c:[
+        {l:"Plus bas qu'aujourd'hui",s:2,r:"Tu t'attends à un revenu plus bas à la retraite : la déduction REER d'aujourd'hui vaut alors plus que l'impôt payé plus tard."},
+        {l:"À peu près pareil",s:0,r:"Ton taux d'impôt serait semblable aujourd'hui et à la retraite : sur ce point, les deux régimes se valent."},
+        {l:"Plus élevé qu'aujourd'hui",s:-2,r:"Tu t'attends à un revenu plus élevé plus tard : payer l'impôt maintenant, comme avec le CELI, peut coûter moins cher."}]},
+      {t:"Quand penses-tu utiliser cet argent ?",c:[
+        {l:"Dans moins de 5 ans",s:-2,r:"Tu comptes utiliser l'argent d'ici 5 ans : les retraits CELI ne sont pas imposables et le droit de cotisation se récupère."},
+        {l:"Entre 5 et 15 ans",s:0,r:"Ton horizon est moyen : il ne penche clairement ni d'un côté ni de l'autre."},
+        {l:"À la retraite, dans plus de 15 ans",s:1,r:"Ton horizon est long et lié à la retraite : c'est le terrain naturel du REER, même si le CELI y fonctionne aussi."}]},
+      {t:"Où te reste-t-il des droits de cotisation ?",c:[
+        {l:"Dans les deux",s:0,r:null},
+        {l:"Seulement au CELI",s:-3,r:"Il ne te reste de droits que dans le CELI : la question est en bonne partie réglée."},
+        {l:"Seulement au REER",s:3,r:"Il ne te reste de droits que dans le REER : la question est en bonne partie réglée."},
+        {l:"Je ne sais pas",s:0,r:null,sub:"Tu trouves ces montants dans tes avis de cotisation et dans Mon dossier de l'ARC."}]},
+      {t:"Reçois-tu (ou comptes-tu recevoir) des prestations qui dépendent du revenu ?",sub:"Par exemple l'Allocation canadienne pour enfants ou le Supplément de revenu garanti.",c:[
+        {l:"Oui",s:-1,r:"Un retrait de REER fait monter ton revenu imposable et peut réduire ces prestations. Un retrait de CELI n'a pas cet effet."},
+        {l:"Non",s:0,r:null},
+        {l:"Je ne sais pas",s:0,r:null}]},
+      {t:"Pourrais-tu avoir besoin de cet argent avant la retraite ?",c:[
+        {l:"Oui, c'est possible",s:-1,r:"Tu veux garder de la flexibilité : le CELI se retire sans impôt, alors qu'un retrait de REER est imposé."},
+        {l:"Non, c'est bloqué pour la retraite",s:1,r:"Tu ne toucheras pas à cet argent avant la retraite : le REER est conçu pour ça."}]}
+    ];
+    var rep=[],zone;
+    function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+    function points(n){var h='<div class="qz-points" aria-hidden="true">';for(var i=0;i<Q.length;i++)h+='<span'+(i<n?' class="fait"':'')+'></span>';return h+'</div>';}
+    function question(){
+      var n=rep.length,q=Q[n],h=points(n)+'<p class="qz-compte">Question '+(n+1)+' sur '+Q.length+'</p><p class="qz-question">'+esc(q.t)+'</p>';
+      if(q.sub)h+='<p class="qz-note" style="margin-top:-8px">'+esc(q.sub)+'</p>';
+      h+='<div class="qz-choix">';
+      q.c.forEach(function(c,i){h+='<button type="button" data-i="'+i+'">'+esc(c.l)+(c.sub?'<small>'+esc(c.sub)+'</small>':'')+'</button>';});
+      h+='</div><div class="qz-bas"><button type="button" class="qz-lien" id="qz-retour"'+(n?'':' hidden')+'>Question précédente</button></div>';
+      zone.innerHTML=h;
+      zone.querySelectorAll('.qz-choix button').forEach(function(b){b.addEventListener('click',function(){rep.push(+b.getAttribute('data-i'));rep.length<Q.length?question():resultat();});});
+      document.getElementById('qz-retour').addEventListener('click',function(){rep.pop();question();});
+    }
+    function resultat(){
+      var s=0,raisons=[];
+      rep.forEach(function(i,n){var c=Q[n].c[i];s+=c.s;if(c.r)raisons.push(c.r);});
+      var cls,titre,petit;
+      if(rep[2]===1){cls='celi';titre='Le CELI semble avoir l\'avantage';}
+      else if(rep[2]===2){cls='reer';titre='Le REER semble avoir l\'avantage';}
+      else if(s>=2){cls='reer';titre='Le REER semble avoir l\'avantage';}
+      else if(s<=-2){cls='celi';titre='Le CELI semble avoir l\'avantage';}
+      else{cls='deux';titre='Les deux ont du sens pour toi';}
+      petit=cls==='deux'?'Selon tes réponses, rien ne tranche clairement.':'Selon tes réponses, voici ce qui pencherait.';
+      var h=points(Q.length)+'<div class="qz-verdict '+cls+'"><small>'+petit+'</small><strong>'+titre+'</strong></div>';
+      if(raisons.length){h+='<ul class="qz-raisons">'+raisons.map(function(r){return '<li>'+esc(r)+'</li>';}).join('')+'</ul>';}
+      else{h+='<p class="qz-note">Tes réponses ne font ressortir aucun élément qui pèse d\'un côté ou de l\'autre.</p>';}
+      h+='<p class="qz-note">Si tu prévois un premier achat immobilier, regarde aussi le CELIAPP. Ce quiz simplifie ta situation : il éclaire ta réflexion et ne détermine pas un choix. Un conseiller peut valider les détails avec toi.</p>';
+      h+='<div class="qz-bas"><button type="button" class="qz-lien" id="qz-refaire">Refaire le quiz</button></div>';
+      zone.innerHTML=h;
+      document.getElementById('qz-refaire').addEventListener('click',function(){rep=[];question();});
+    }
+    function init(){zone=document.getElementById('qz-zone');if(zone)question();}
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  })();
+  </script>
+
+  <h3 style="margin-top:28px;color:#1e40af;">Les différences en bref</h3>
+
   <p>Voici un aperçu comparatif des deux principaux régimes d'épargne au Canada.</p>
 
   <table style="width:100%;border-collapse:collapse;margin-top:18px;font-size:0.95rem;">
@@ -2256,6 +2431,148 @@ Historique Québec : 2-4% par an
   <!-- Section Budget mensuel -->
   <h2>💰 Gérer son budget mensuel</h2>
   <p>Un budget, c'est avant tout un outil de liberté : il permet de choisir où va ton argent, plutôt que de le subir. Voici quelques principes simples pour mieux gérer tes finances mensuelles.</p>
+
+  <div class="card bj-carte" id="defi-budget" style="margin-top:20px;">
+    <style>
+      .bj-carte h3{margin:0 0 4px;color:#2563eb}
+      .bj-intro{margin:0 0 14px;color:#6b7280;font-size:.95rem}
+      .bj-onglets{display:flex;gap:8px;margin:0 0 16px;flex-wrap:wrap}
+      .bj-onglets button{padding:9px 16px;border:2px solid #e5e7eb;border-radius:999px;background:#fff;color:#374151;font-size:.92rem;font-weight:600;cursor:pointer;font-family:inherit}
+      .bj-onglets button.actif{background:#2563eb;border-color:#2563eb;color:#fff}
+      .bj-revenu{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+      .bj-revenu label{font-weight:600;color:#1f2937}
+      .bj-revenu input{width:120px;padding:9px 10px;border:2px solid #e5e7eb;border-radius:10px;font-size:1rem;font-family:inherit}
+      .bj-barre{display:flex;height:34px;border-radius:10px;overflow:hidden;margin:6px 0 4px;background:#e5e7eb}
+      .bj-barre div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:.82rem;font-weight:700;transition:width .2s;min-width:0;overflow:hidden;white-space:nowrap}
+      .bj-b{background:#2563eb}.bj-e{background:#f59e0b}.bj-s{background:#10b981}
+      .bj-repere{position:relative;height:16px;margin:0 0 14px;font-size:.75rem;color:#6b7280}
+      .bj-repere span{position:absolute;top:0;transform:translateX(-50%)}
+      .bj-repere span:before{content:"";position:absolute;left:50%;top:-6px;width:2px;height:6px;background:#6b7280}
+      .bj-ligne{display:grid;grid-template-columns:130px 1fr 110px;gap:10px;align-items:center;margin:0 0 10px}
+      .bj-ligne b{font-size:.95rem;color:#1f2937}
+      .bj-ligne b small{display:block;font-weight:400;color:#6b7280;font-size:.78rem}
+      .bj-ligne input[type=range]{width:100%;height:28px}
+      .bj-ligne .bj-val{text-align:right;font-size:.92rem;color:#1f2937;white-space:nowrap}
+      .bj-verdict{margin-top:14px;padding:14px 16px;border-radius:12px;background:#f3f4f6;color:#1f2937;line-height:1.65;font-size:.95rem}
+      .bj-verdict ul{margin:6px 0 0;padding-left:20px}
+      .bj-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+      .bj-btn{padding:10px 18px;border:none;border-radius:10px;background:#2563eb;color:#fff;font-size:.92rem;font-weight:600;cursor:pointer;font-family:inherit}
+      .bj-lien{background:none;border:none;color:#2563eb;cursor:pointer;font-size:.9rem;padding:6px 0;font-family:inherit;text-decoration:underline}
+      .bj-ordre{display:grid;gap:10px;margin:0 0 12px}
+      .bj-ordre button{display:flex;align-items:center;gap:12px;text-align:left;padding:13px 16px;border:2px solid #e5e7eb;border-radius:12px;background:#fff;font-size:1rem;color:#1f2937;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s}
+      .bj-ordre button:hover:not(:disabled){border-color:#2563eb;background:#eff6ff}
+      .bj-ordre button:disabled{cursor:default}
+      .bj-rang{flex:none;width:30px;height:30px;border-radius:50%;background:#e5e7eb;color:#6b7280;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+      .bj-ordre button.pris{border-color:#2563eb;background:#eff6ff}
+      .bj-ordre button.pris .bj-rang{background:#2563eb;color:#fff}
+      .bj-ordre button.juste{border-color:#10b981;background:#ecfdf5}
+      .bj-ordre button.juste .bj-rang{background:#10b981;color:#fff}
+      .bj-ordre button.faux{border-color:#f59e0b;background:#fffbeb}
+      .bj-ordre button.faux .bj-rang{background:#f59e0b;color:#fff}
+      .bj-ordre small{display:block;color:#6b7280;font-size:.82rem;margin-top:2px;font-weight:400;line-height:1.5}
+      @media (max-width:560px){.bj-ligne{grid-template-columns:1fr;gap:2px}.bj-ligne .bj-val{text-align:left}}
+    </style>
+    <h3>Défi budget</h3>
+    <p class="bj-intro">Deux petits jeux pour tester ta façon de budgéter. Rien n'est enregistré.</p>
+    <div class="bj-onglets" role="tablist">
+      <button type="button" class="actif" id="bj-t1" role="tab" aria-selected="true">Répartis ton revenu</button>
+      <button type="button" id="bj-t2" role="tab" aria-selected="false">Remets les paiements dans l'ordre</button>
+    </div>
+    <div id="bj-p1">
+      <div class="bj-revenu"><label for="bj-rev">Revenu mensuel net ($)</label><input type="number" id="bj-rev" value="4000" min="0" step="100" inputmode="numeric"></div>
+      <div class="bj-barre" id="bj-barre" aria-hidden="true"><div class="bj-b" id="bj-bb"></div><div class="bj-e" id="bj-be"></div><div class="bj-s" id="bj-bs"></div></div>
+      <div class="bj-repere" aria-hidden="true"><span style="left:50%">fin des besoins visée</span><span style="left:80%">fin des envies visée</span></div>
+      <div class="bj-ligne"><b>Besoins<small>logement, nourriture, transport</small></b><input type="range" min="0" max="100" value="50" id="bj-r0" aria-label="Part des besoins"><span class="bj-val" id="bj-v0"></span></div>
+      <div class="bj-ligne"><b>Envies<small>loisirs, sorties, abonnements</small></b><input type="range" min="0" max="100" value="30" id="bj-r1" aria-label="Part des envies"><span class="bj-val" id="bj-v1"></span></div>
+      <div class="bj-ligne"><b>Épargne et dettes<small>CELI, REER, remboursements</small></b><input type="range" min="0" max="100" value="20" id="bj-r2" aria-label="Part de l'épargne et des dettes"><span class="bj-val" id="bj-v2"></span></div>
+      <div class="bj-verdict" id="bj-verdict" aria-live="polite"></div>
+      <div class="bj-actions"><button type="button" class="bj-btn" id="bj-reset">Revenir à 50 / 30 / 20</button><button type="button" class="bj-lien" id="bj-calc">Faire mon vrai budget dans le calculateur</button></div>
+    </div>
+    <div id="bj-p2" style="display:none">
+      <p class="bj-intro" id="bj-consigne">Ton salaire vient d'entrer. Touche les paiements dans l'ordre où tu les ferais en premier.</p>
+      <div class="bj-ordre" id="bj-liste"></div>
+      <div id="bj-res2" aria-live="polite"></div>
+    </div>
+  </div>
+  <script>
+  (function(){
+    function $(id){return document.getElementById(id);}
+    function fmt(n){return Math.round(n).toLocaleString('fr-CA')+' $';}
+    var cible=[50,30,20],val=[50,30,20];
+    function equilibrer(i,v){
+      v=Math.max(0,Math.min(100,Math.round(v)));
+      var rest=100-v,autres=[0,1,2].filter(function(k){return k!==i;});
+      var somme=val[autres[0]]+val[autres[1]],a,b;
+      if(somme<=0){a=Math.round(rest/2);}else{a=Math.round(rest*val[autres[0]]/somme);}
+      b=rest-a;
+      val[i]=v;val[autres[0]]=a;val[autres[1]]=b;
+    }
+    function maj(){
+      var rev=Math.max(0,parseFloat($('bj-rev').value)||0);
+      [0,1,2].forEach(function(k){$('bj-r'+k).value=val[k];$('bj-v'+k).textContent=val[k]+' % : '+fmt(rev*val[k]/100);});
+      $('bj-bb').style.width=val[0]+'%';$('bj-be').style.width=val[1]+'%';$('bj-bs').style.width=val[2]+'%';
+      $('bj-bb').textContent=val[0]>=8?val[0]+' %':'';$('bj-be').textContent=val[1]>=8?val[1]+' %':'';$('bj-bs').textContent=val[2]>=8?val[2]+' %':'';
+      var m=[];
+      if(val[0]===50&&val[1]===30&&val[2]===20){m.push('Tu es pile sur le repère 50 / 30 / 20. C\'est un point de départ, pas une norme à respecter au dollar près.');}
+      else{
+        if(val[2]>=20){m.push('Épargne et dettes : tu atteins ou dépasses le repère de 20 %.');}
+        else if(val[2]>=10){m.push('Épargne et dettes : tu es entre 10 % et 20 %. Chaque point de plus compte avec le temps.');}
+        else{m.push('Épargne et dettes : moins de 10 % du revenu. Même une petite hausse régulière change la trajectoire.');}
+        if(val[0]>60){m.push('Besoins : plus de 60 % du revenu. Les gros postes, logement, transport et assurances, sont les premiers à regarder.');}
+        else if(val[0]>50){m.push('Besoins : un peu au-dessus du repère de 50 %. Ça arrive souvent quand le logement est cher.');}
+        else{m.push('Besoins : à 50 % ou moins, ce qui laisse de la marge pour le reste.');}
+        if(val[1]>40){m.push('Envies : plus de 40 % du revenu. C\'est là que tu as le plus de souplesse pour libérer de l\'épargne.');}
+        else if(val[1]<15){m.push('Envies : sous 15 %. Un budget trop serré est plus difficile à tenir. Garde un peu de plaisir.');}
+      }
+      $('bj-verdict').innerHTML='<ul>'+m.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul><div style="margin-top:6px;color:#6b7280;font-size:.88rem">Selon ta situation, il peut être réaliste de t\'écarter de ce repère.</div>';
+    }
+    [0,1,2].forEach(function(k){$('bj-r'+k).addEventListener('input',function(){equilibrer(k,+this.value);maj();});});
+    $('bj-rev').addEventListener('input',maj);
+    $('bj-reset').addEventListener('click',function(){val=cible.slice();maj();});
+    $('bj-calc').addEventListener('click',function(){changeTab('budget');window.scrollTo(0,0);});
+    function onglet(n){
+      $('bj-p1').style.display=n===1?'block':'none';$('bj-p2').style.display=n===2?'block':'none';
+      [1,2].forEach(function(k){var b=$('bj-t'+k);b.classList.toggle('actif',k===n);b.setAttribute('aria-selected',k===n?'true':'false');});
+      if(n===2)jeu2();
+    }
+    $('bj-t1').addEventListener('click',function(){onglet(1);});
+    $('bj-t2').addEventListener('click',function(){onglet(2);});
+    var P=[
+      {t:'Logement et factures fixes',e:'Sans toit ni services de base, le reste devient difficile. Ce sont les paiements les plus lourds de conséquences si on les manque.'},
+      {t:'Nourriture et transport',e:'Ils te permettent de manger et d\'aller travailler. Ils viennent juste après les paiements fixes.'},
+      {t:'Dettes à taux élevé',e:'Une carte de crédit ou une marge coûte souvent plus cher que ce que l\'épargne rapporte. Les rembourser équivaut à un rendement égal à leur taux d\'intérêt.'},
+      {t:'Épargne de sécurité',e:'Environ 3 mois de dépenses évitent de retomber dans le crédit au prochain imprévu.'},
+      {t:'Investissements et projets',e:'Ils viennent une fois la base solide. Ce n\'est pas moins important, c\'est plus efficace dans cet ordre.'}
+    ];
+    var choix,ordre;
+    function melange(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x;}return a;}
+    function jeu2(){
+      choix=[];ordre=melange(P.map(function(_,i){return i;}));
+      $('bj-res2').innerHTML='';$('bj-consigne').textContent='Ton salaire vient d\'entrer. Touche les paiements dans l\'ordre où tu les ferais en premier.';
+      var h='';ordre.forEach(function(i){h+='<button type="button" data-i="'+i+'"><span class="bj-rang">·</span><span>'+P[i].t+'</span></button>';});
+      $('bj-liste').innerHTML=h;
+      $('bj-liste').querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){
+        if(b.classList.contains('pris'))return;
+        choix.push(+b.getAttribute('data-i'));b.classList.add('pris');b.querySelector('.bj-rang').textContent=choix.length;
+        if(choix.length===P.length)verifier();
+      });});
+    }
+    function verifier(){
+      var bons=0,btns=$('bj-liste').querySelectorAll('button'),h='';
+      btns.forEach(function(b){
+        var i=+b.getAttribute('data-i'),rang=choix.indexOf(i),ok=rang===i;
+        if(ok)bons++;
+        b.disabled=true;b.classList.remove('pris');b.classList.add(ok?'juste':'faux');
+        b.querySelector('span:last-child').innerHTML=P[i].t+'<small>'+(ok?'Bien placé. ':'Ton rang : '+(rang+1)+', plus juste : '+(i+1)+'. ')+P[i].e+'</small>';
+      });
+      var ordreJuste=P.map(function(p,i){return (i+1)+'. '+p.t;}).join(' · ');
+      $('bj-consigne').textContent=bons===5?'Parfait, les cinq sont bien placés.':(bons>=3?bons+' sur 5 bien placés.':bons+' sur 5 bien placés. Ce n\'est pas facile, relis les explications.');
+      $('bj-res2').innerHTML='<div class="bj-verdict">Ordre suggéré : '+ordreJuste+'</div><div class="bj-actions"><button type="button" class="bj-btn" id="bj-rejouer">Rejouer</button></div>';
+      $('bj-rejouer').addEventListener('click',jeu2);
+    }
+    maj();
+  })();
+  </script>
 
   <div class="card" style="margin-top:20px;">
     <h3>1️⃣ Règle 50 / 30 / 20</h3>
@@ -8369,18 +8686,18 @@ header .container { overflow:visible; }
     'revenu-brut-menage': cbImmobilier
   });
 
-  // Projet immobilier : Mon profil <-> Objectifs <-> Acheter vs Louer
-  lierGroupe(['profil-prix-maison', 'prix-maison', 'al-prix'], {
-    'profil-prix-maison': cbImmobilier, 'prix-maison': cbImmobilier, 'al-prix': cbAcheterLouer
+  // Projet immobilier : Objectifs <-> Acheter vs Louer
+  lierGroupe(['prix-maison', 'al-prix'], {
+    'prix-maison': cbImmobilier, 'al-prix': cbAcheterLouer
   });
-  lierGroupe(['profil-taux-hypo', 'taux-hypo', 'al-taux-hypo'], {
-    'profil-taux-hypo': cbImmobilier, 'taux-hypo': cbImmobilier, 'al-taux-hypo': cbAcheterLouer
+  lierGroupe(['taux-hypo', 'al-taux-hypo'], {
+    'taux-hypo': cbImmobilier, 'al-taux-hypo': cbAcheterLouer
   });
-  lierGroupe(['profil-mise-de-fonds-pct', 'mise-de-fonds-pct', 'al-mise-fonds-pct'], {
-    'profil-mise-de-fonds-pct': cbImmobilier, 'mise-de-fonds-pct': cbImmobilier, 'al-mise-fonds-pct': cbAcheterLouer
+  lierGroupe(['mise-de-fonds-pct', 'al-mise-fonds-pct'], {
+    'mise-de-fonds-pct': cbImmobilier, 'al-mise-fonds-pct': cbAcheterLouer
   });
-  lierGroupe(['profil-amortissement', 'amortissement', 'al-amortissement'], {
-    'profil-amortissement': cbImmobilier, 'amortissement': cbImmobilier, 'al-amortissement': cbAcheterLouer
+  lierGroupe(['amortissement', 'al-amortissement'], {
+    'amortissement': cbImmobilier, 'al-amortissement': cbAcheterLouer
   });
 
   // Budget -> Plaisirs (sens unique, calculé)
@@ -8428,10 +8745,10 @@ header .container { overflow:visible; }
   // Fonction de resynchronisation complète (utilisée après un import CSV)
   window.resynchroniserTousLesOnglets = function () {
     forcerSyncGroupe(groupeRevenuBrut, 'rb');
-    forcerSyncGroupe(['profil-prix-maison', 'prix-maison', 'al-prix'], 'prix-maison');
-    forcerSyncGroupe(['profil-taux-hypo', 'taux-hypo', 'al-taux-hypo'], 'taux-hypo');
-    forcerSyncGroupe(['profil-mise-de-fonds-pct', 'mise-de-fonds-pct', 'al-mise-fonds-pct'], 'mise-de-fonds-pct');
-    forcerSyncGroupe(['profil-amortissement', 'amortissement', 'al-amortissement'], 'amortissement');
+    forcerSyncGroupe(['prix-maison', 'al-prix'], 'prix-maison');
+    forcerSyncGroupe(['taux-hypo', 'al-taux-hypo'], 'taux-hypo');
+    forcerSyncGroupe(['mise-de-fonds-pct', 'al-mise-fonds-pct'], 'mise-de-fonds-pct');
+    forcerSyncGroupe(['amortissement', 'al-amortissement'], 'amortissement');
     syncPlaisirsRevenu();
     syncPlaisirsEssentielles();
     syncCoupleRevenuA();
@@ -9786,16 +10103,34 @@ header .container { overflow:visible; }
     var ctrl = new AbortController();
     var minuteur = setTimeout(function () { ctrl.abort(); }, 20000);
 
-    fetch(url.toString(), { signal: ctrl.signal })
-      .then(function (r) {
+    function essai() {
+      return fetch(url.toString(), { signal: ctrl.signal })
+        .then(function (r) {
+          if (r.status === 400) throw new Error('invalide');
+          if (r.status === 404) throw new Error('introuvable');
+          if (!r.ok) throw new Error('service');
+          return r.json();
+        });
+    }
+    /* Le profil du fonds (sommaire) manque parfois côté relais : on relance jusqu'à 2 fois. */
+    function avecRelances(n) {
+      return essai().then(function (data) {
+        if (data && data.sommaire) return data;
+        if (n <= 0) return data;
+        return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () {
+          return avecRelances(n - 1).catch(function () { return data; });
+        });
+      });
+    }
+
+    avecRelances(2)
+      .then(function (data) {
         clearTimeout(minuteur);
-        if (r.status === 400) throw new Error('invalide');
-        if (r.status === 404) throw new Error('introuvable');
-        if (!r.ok) throw new Error('service');
-        return r.json();
+        if (data && data.sommaire) ecrireCache(t, data);
+        afficher(data);
       })
-      .then(function (data) { ecrireCache(t, data); afficher(data); })
       .catch(function (err) {
+        clearTimeout(minuteur);
         var msg = err && err.message;
         majStatut(msg === 'invalide' ? 'Ce symbole n\'est pas valide.'
           : (msg === 'introuvable' ? 'Aucune donnée trouvée pour ' + t + '. Pour la Bourse de Toronto, ajoute .TO (ex. VFV.TO). Pour une part de fiducie cotée en .UN, écris par exemple EIT-UN.TO.'
