@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- Début : confidentialité et consentement Parlons Cash -->
+<style>
+#pc-privacy-banner{position:fixed;bottom:0;left:0;right:0;z-index:2147483647;background:#fff;color:#172336;box-shadow:0 -4px 25px #0003;padding:19px;max-height:85vh;overflow:auto;font:15px/1.5 system-ui,sans-serif}#pc-privacy-banner[hidden]{display:none!important}#pc-privacy-banner .pc-wrap{max-width:860px;margin:auto}#pc-privacy-banner button,#pc-privacy-settings{font:inherit;cursor:pointer;border-radius:7px;padding:9px 14px;margin:5px;border:1px solid #1859ad}#pc-privacy-banner .pc-primary{background:#1859ad;color:#fff}#pc-privacy-banner .pc-secondary{background:white;color:#1859ad}#pc-privacy-settings{position:fixed;bottom:12px;right:12px;z-index:2147483646;background:#fff;color:#124b91;box-shadow:0 1px 10px #0002;font-size:12px;padding:7px 10px}#pc-privacy-banner label{display:inline-block;margin:5px 18px 5px 0}#pc-privacy-banner input{width:17px;height:17px;vertical-align:middle}
+</style>
+<script>
+(function(){
+ 'use strict';
+ const KEY='parlonscash-consent-v1';
+ const GA='G-8F7MY8T2TC';
+ const ADS='ca-pub-3695467180266092';
+ let choice=null,gaLoaded=false,adsLoaded=false;
+ try { const v=JSON.parse(localStorage.getItem(KEY)); if(v&&typeof v.analytics==='boolean'&&typeof v.ads==='boolean')choice=v; }catch(e){}
+ function script(src,attrs){let s=document.createElement('script');s.async=true;s.src=src;if(attrs){Object.entries(attrs).forEach(([k,v])=>s.setAttribute(k,v));}document.head.appendChild(s);}
+ function loadSelected(){
+   if(choice&&choice.analytics&&!gaLoaded){gaLoaded=true;window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag('js',new Date());gtag('config',GA);script('https://www.googletagmanager.com/gtag/js?id='+GA);}
+   if(choice&&choice.ads&&!adsLoaded){adsLoaded=true;script('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+ADS,{'crossorigin':'anonymous'});}
+ }
+ function save(analytics,ads){choice={analytics:!!analytics,ads:!!ads,updated:new Date().toISOString()};try{localStorage.setItem(KEY,JSON.stringify(choice));}catch(e){} document.getElementById('pc-privacy-banner').hidden=true;
+   if((gaLoaded&&!choice.analytics)||(adsLoaded&&!choice.ads)){location.reload();return;}loadSelected();}
+ function init(){
+   const panel=document.createElement('section');panel.id='pc-privacy-banner';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Choix de confidentialité');panel.innerHTML='<div class="pc-wrap"><strong style="font-size:19px">Vos préférences de confidentialité</strong><p>Parlons Cash souhaite utiliser des témoins facultatifs pour mesurer la fréquentation avec Google Analytics et, séparément, pour la publicité Google AdSense. Rien de facultatif ne se charge tant que vous ne l’avez pas autorisé. Vous pouvez refuser sans perdre l’accès au site.</p><p><label><input type="checkbox" id="pc-analytics"> Statistiques (Google Analytics)</label><label><input type="checkbox" id="pc-ads"> Publicité (Google AdSense)</label></p><div><button type="button" class="pc-secondary" id="pc-reject">Tout refuser</button><button type="button" class="pc-primary" id="pc-save">Enregistrer mes choix</button><button type="button" class="pc-secondary" id="pc-accept">Tout accepter</button></div><small>Vous pouvez modifier vos choix à tout moment avec le bouton « Confidentialité » en bas de page. Pour toute question : azizguellouz@gmail.com.</small></div>';
+   document.body.appendChild(panel);
+   const opener=document.createElement('button');opener.id='pc-privacy-settings';opener.type='button';opener.textContent='Confidentialité';document.body.appendChild(opener);
+   const analytics=panel.querySelector('#pc-analytics'),ads=panel.querySelector('#pc-ads');
+   function show(){analytics.checked=!!(choice&&choice.analytics);ads.checked=!!(choice&&choice.ads);panel.hidden=false;}
+   opener.addEventListener('click',show);
+   panel.querySelector('#pc-reject').addEventListener('click',()=>save(false,false));
+   panel.querySelector('#pc-accept').addEventListener('click',()=>save(true,true));
+   panel.querySelector('#pc-save').addEventListener('click',()=>save(analytics.checked,ads.checked));
+   panel.hidden=!!choice;if(!choice)show();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+ loadSelected();
+})();
+</script>
+<!-- Fin : confidentialité et consentement Parlons Cash -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L’indépendance financière : y arriver, puis y rester | Parlons Cash</title>
+<meta name="description" content="Atteindre l’indépendance financière est une chose. La préserver pendant 40 ans en est une autre. Règle des 4 %, risque de séquence, coûts cachés, imprévus et piège psychologique : les pièges du décaissement et quatre façons de s’en protéger.">
+<meta name="author" content="Aziz Guellouz">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://parlonscash.pro/blog/independance-financiere-y-rester.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Parlons Cash">
+<meta property="og:title" content="L’indépendance financière : y arriver, puis y rester">
+<meta property="og:description" content="Atteindre l’indépendance financière est une chose. La préserver pendant 40 ans en est une autre. Règle des 4 %, risque de séquence, coûts cachés, imprévus et piège psychologique : les pièges du décaissement et quatre façons de s’en protéger.">
+<meta property="og:url" content="https://parlonscash.pro/blog/independance-financiere-y-rester.html">
+<meta property="og:image" content="https://parlonscash.pro/Aziz Guellouz.jpg">
+<meta property="og:locale" content="fr_CA">
+<meta property="article:published_time" content="2026-10-18">
+<meta property="article:author" content="Aziz Guellouz">
+<script type="application/ld+json">
+ {
+   "@context": "https://schema.org",
+   "@type": "BlogPosting",
+   "headline": "L’indépendance financière : y arriver, puis y rester",
+   "description": "Atteindre l’indépendance financière est une chose. La préserver pendant 40 ans en est une autre. Règle des 4 %, risque de séquence, coûts cachés, imprévus et piège psychologique : les pièges du décaissement et quatre façons de s’en protéger.",
+   "url": "https://parlonscash.pro/blog/independance-financiere-y-rester.html",
+   "datePublished": "2026-10-18",
+   "inLanguage": "fr-CA",
+   "author": {"@type": "Person", "name": "Aziz Guellouz", "url": "https://parlonscash.pro/"},
+   "publisher": {"@type": "Person", "name": "Aziz Guellouz"},
+   "keywords": ["indépendance financière", "retraite anticipée", "règle des 4 %", "risque de séquence", "décaissement", "RRQ", "FERR", "remboursement de capital", "Québec"]
+ }
+</script>
+<style>
+   * { box-sizing: border-box; }
+   body { font-family: "Segoe UI", Roboto, Arial, sans-serif; background: #f8f9fa; color: #212529; margin: 0; padding: 0; line-height: 1.7; }
+   header { background: #1e40af; color: white; padding: 32px 10%; }
+   header a.retour { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 16px; }
+   header a.retour:hover { color: white; }
+   .article-header h1 { font-size: 1.9em; margin: 0 0 12px 0; line-height: 1.3; }
+   .article-meta { display: flex; gap: 16px; font-size: 0.88em; opacity: 0.8; flex-wrap: wrap; align-items: center; }
+   .article-categorie { background: rgba(255,255,255,0.2); padding: 3px 12px; border-radius: 20px; font-weight: 700; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.06em; }
+   main { max-width: 720px; margin: 48px auto; padding: 0 24px; }
+   p { margin-bottom: 20px; font-size: 1.05em; }
+   h2 { font-size: 1.35em; color: #1e40af; margin: 40px 0 14px 0; font-weight: 700; }
+   blockquote { border-left: 4px solid #2563eb; background: #eff6ff; margin: 28px 0; padding: 20px 24px; border-radius: 0 10px 10px 0; font-size: 1.05em; font-style: italic; color: #1e40af; line-height: 1.7; }
+   .disclaimer { background: #f3f4f6; border-left: 4px solid #9ca3af; padding: 14px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; color: #6b7280; font-size: 0.9em; font-style: italic; line-height: 1.6; }
+   .article-test-ultime { background: #1e40af; color: white; padding: 24px 28px; border-radius: 12px; margin: 32px 0; font-size: 1.05em; font-weight: 600; line-height: 1.6; text-align: center; }
+   footer { text-align: center; padding: 30px 20px; margin-top: 60px; font-size: 0.9rem; color: #6b7280; border-top: 1px solid #e5e7eb; }
+   footer a { color: #2563eb; text-decoration: none; }
+   .nav-articles { text-align: center; margin-top: 48px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+   .nav-articles a { display: inline-block; background: #1e40af; color: white; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9em; }
+   .nav-articles a.secondary { background: white; color: #1e40af; border: 2px solid #1e40af; }
+   ul, ol { margin: 0 0 20px 0; padding-left: 24px; font-size: 1.05em; }
+   li { margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<header>
+<a class="retour" href="../blog.html">← Retour au blog</a>
+<div class="article-header">
+<h1>L’indépendance financière : y arriver, puis y rester</h1>
+<div class="article-meta">
+<span class="article-categorie">Stratégie</span>
+<span>Octobre 2026</span>
+<span>15 min de lecture</span>
+</div>
+</div>
+</header>
+<main>
+<p>Quitter le marché du travail à 45 ou 50 ans pour vivre de ses placements, c’est un rêve qui semble séduire de plus en plus de gens. Mais accumuler suffisamment d’argent pour arrêter de travailler et réussir à préserver cette liberté pendant 40 ans sont deux exercices radicalement différents.</p>
+<p>Le véritable défi commence le jour où l’on cesse de recevoir un salaire !</p>
+<p>Dans un précédent article, <a href="https://parlonscash.pro/blog/mythe-montant-magique.html"><em>Le mythe du montant magique</em></a>, je défendais une idée simple : il n’existe pas de chiffre universel pour atteindre l’indépendance financière. Tout dépend de nos dépenses, de notre horizon et de notre capacité à accumuler des actifs.</p>
+<p>Mais il y a une question que je n’avais pas suffisamment explorée : que se passe-t-il une fois qu’on a atteint cette fameuse indépendance ?</p>
+<p>Pendant la phase d’accumulation, le temps travaille généralement en notre faveur. On épargne, on investit et on profite des rendements composés. Lorsqu’une crise boursière survient, on peut même y voir une occasion d’acheter des actifs à rabais.</p>
+<p>Pendant la phase de décaissement, les règles changent. Les cotisations cessent, les retraits commencent et une mauvaise année boursière peut avoir des conséquences beaucoup plus importantes. Surtout, le salaire qui permettait d’absorber les imprévus n’est plus là.</p>
+<p>C’est là que les véritables pièges commencent… Voici ceux que j’ai recensés :</p>
+<h2>1. La règle des 4 % : quand le calcul rencontre la réalité</h2>
+<p>J’ai déjà abordé <a href="https://parlonscash.pro/blog/mythe-montant-magique.html">les limites de la règle des 4 %</a>. Pour rappel, elle consiste à retirer 4 % du portefeuille la première année, puis à indexer ce montant à l’inflation. Elle découle des travaux de William Bengen (1994), fondés sur des données historiques américaines et des horizons de 30 ans. Elle ne garantit ni le revenu ni la préservation du capital. Pour quelqu’un qui quitte le marché du travail à 45 ans, financer 40 ou 50 années de dépenses exige une prudence supplémentaire.</p>
+<p>Prenons un exemple : vous disposez de 1,5 million de dollars de placements. À 4 %, cela représente 60 000 $ de retraits la première année.</p>
+<p>Mais s’agit-il de 60 000 $ bruts ou nets ?</p>
+<p>Si vos placements sont principalement dans un REER, chaque dollar retiré est généralement imposable. Si votre argent provient d’un CELI, les retraits sont généralement libres d’impôt. Dans un compte non enregistré, le traitement fiscal dépend notamment des dividendes, des intérêts et des gains en capital réalisés.</p>
+<p>Supposons, pour simplifier, qu’il vous faille retirer 75 000 $ d’un REER pour conserver 60 000 $ après impôts.</p>
+<p>Votre taux de retrait n’est plus de 4 %, mais de 5 %.</p>
+<p>Ajoutons maintenant l’inflation. Avec une inflation annuelle moyenne de 2,5 %, un train de vie qui coûte 60 000 $ aujourd’hui coûtera environ 98 300 $ dans 20 ans et 125 900 $ dans 30 ans.</p>
+<p>Votre portefeuille doit donc générer suffisamment de rendement pour financer les retraits, les frais, les impôts applicables et l’augmentation du coût de la vie. Cela ne veut pas dire qu’il faut absolument préserver chaque dollar de capital initial. Une stratégie de retraite peut parfaitement prévoir de consommer progressivement une partie du patrimoine. Le véritable enjeu est ailleurs : est-ce que notre capital diminuera au rythme que nous avons prévu ou beaucoup plus rapidement ?</p>
+<p>C’est toute la différence entre un décaissement maîtrisé et un appauvrissement subi.</p>
+<h2>2. Le risque de séquence : perdre 30 % à 35 ans ou à 50 ans, ce n’est pas la même chose</h2>
+<p>Imaginez deux investisseurs qui possèdent chacun deux millions de dollars. Le premier a 35 ans, travaille et épargne encore 30 000 $ par année. Le second a 50 ans, vient de quitter son emploi et prévoit retirer 80 000 $ par année pour vivre. Les marchés boursiers perdent soudainement 30 %. Les deux portefeuilles passent de deux millions à 1,4 million de dollars. La perte sur papier est identique : 600 000 $. Mais leurs situations n’ont rien à voir.</p>
+<p>Le premier peut continuer de travailler, de cotiser et d’acheter des titres à des prix plus faibles. Il dispose encore de nombreuses années pour profiter d’une éventuelle reprise. Le second doit financer ses dépenses courantes. S’il retire 80 000 $ après la chute, son portefeuille tombe à 1,32 million de dollars, avant toute reprise des marchés. Pour retrouver ses deux millions initiaux, il lui faudra désormais un rendement d’environ 51,5 %, sans compter les nouveaux retraits, les frais et l’inflation.</p>
+<p>Et si la reprise prend cinq ans ?</p>
+<p>C’est ce qu’on appelle le risque de séquence des rendements. Il ne suffit pas d’obtenir un bon rendement moyen sur 20 ou 30 ans. L’ordre dans lequel surviennent les bonnes et les mauvaises années est déterminant.</p>
+<p><a href="https://www.agf.com/agf-files/en/sound-choices-investor/sol078-seq-returns-en.pdf">AGF</a>, une société canadienne de fonds communs, l’illustre auprès de ses propres clients. Deux investisseurs placent chacun 100 000 $ et obtiennent exactement les mêmes rendements sur 15 ans, mais dans l’ordre inverse. Sans retraits, les deux terminent avec 167 944 $.</p>
+<p>Avec des retraits de 7 000 $ par année, le premier conserve 75 197 $ après 15 ans. Le second est à sec dès la 11e année, parce qu’il a subi les mauvaises années en premier. Même portefeuille, même rendement moyen, mais au moins quatre ans d’écart sur l’horizon. C’est pourquoi je me méfie d’une simulation de retraite qui ne montre qu’un rendement moyen, même préparée par un professionnel.</p>
+<p>Une chute importante au début de la retraite peut obliger à vendre davantage d’actifs à bas prix. Ces actifs vendus ne participeront plus à la reprise éventuelle.</p>
+<p>Le gouvernement fédéral l’a d’ailleurs reconnu en pleine crise financière. En novembre 2008, <a href="https://www.canada.ca/fr/nouvelles/archive/2008/11/gouvernement-canada-empresse-mettre-oeuvre-allegement-fiscal-aines-autres-mesures-suspens.html">Ottawa a réduit de 25 % le retrait minimum obligatoire des FERR</a> pour l’année, afin de permettre aux aînés de garder une plus grande part de leur épargne investie. La même mesure a été reprise en 2020 en pleine crise de la COVID.</p>
+<p>La situation est particulièrement délicate pour les investisseurs qui financent leurs dépenses principalement à partir de distributions de dividendes ou de fonds à haut rendement. En effet, recevoir une distribution mensuelle ne signifie pas nécessairement que le capital est préservé. Certaines distributions peuvent comprendre du remboursement de capital et leur niveau peut diminuer.</p>
+<p>Je l’ai vécu moi-même, avec un petit montant investi par curiosité. Il y a un peu plus de trois ans, j’ai investi 4 100 $ dans TSLY, un FNB américain qui vend des options sur l’action de Tesla. Son taux de distribution affiché dépassait 60 %. Au total, j’ai reçu environ 3 600 $ en distributions. Pendant ce temps, le prix de l’unité a chuté d’environ 84 % et le fonds a dû regrouper ses unités deux fois. J’ai fini par vendre mes unités le 10 août 2026, pour environ 660 $. Additionnées aux distributions, elles m’ont redonné environ 4 250 $, à peine plus que ma mise de départ. Mon rendement total : environ 3,5 % en trois ans. Les distributions m’ont surtout rendu mon propre capital. Si j’avais compté sur ces versements pour vivre, je me serais certainement appauvri, puisqu’il ne me resterait qu’environ 660 $ de mon placement initial. C’est un cas extrême, puisque le fonds repose sur une seule action. Mais il illustre bien le mécanisme.</p>
+<p>Ce qui compte vraiment, c’est le rendement total du portefeuille, après les distributions, les frais et les impôts. Un portefeuille qui distribue 12 % par année mais perd durablement de sa valeur ne produit pas nécessairement 12 % de richesse supplémentaire.</p>
+<p>Certains gestionnaires le reconnaissent eux-mêmes. Dans un <a href="https://www.guardiancapital.com/investmentsolutions/wp-content/uploads/2022/09/Guardian-Capital_Understanding-Series-T-FR.pdf">document publié en 2022</a> sur ses fonds de série T, Guardian Capital, un gestionnaire canadien aujourd’hui propriété de Desjardins, admet que ces versements ne sont presque jamais durables à long terme. Le gestionnaire explique aussi que retirer pendant un marché baissier réduit le capital disponible pour profiter du rebond. C’est le risque de séquence, décrit par ceux qui conçoivent ces produits.</p>
+<p>Au bout du compte, la question est simple : le portefeuille peut-il soutenir les retraits dans le temps ?</p>
+<p>C’est pourquoi les premières années suivant l’arrêt du travail peuvent être beaucoup plus déterminantes qu’on l’imagine.</p>
+<h2>3. Le coût caché de la retraite anticipée : ce qu’on cesse de recevoir</h2>
+<p>Lorsqu’on calcule le montant nécessaire pour atteindre l’indépendance financière, on s’intéresse surtout au salaire qu’on n’aura plus besoin de gagner. Mais on oublie parfois tout ce qui accompagne ce salaire.</p>
+<p>Prenons le Régime de rentes du Québec (RRQ). Le montant de la rente dépend notamment des revenus de travail admissibles accumulés pendant la carrière et de l’âge auquel on commence à recevoir ses prestations. Quelqu’un qui quitte définitivement le marché du travail à 45 ans cesse généralement d’accumuler de nouveaux droits liés à des revenus de travail cotisables.</p>
+<p><a href="https://www.retraitequebec.gouv.qc.ca/fr/tout-simplement/rente-rrq-calculee-avantage">Retraite Québec</a> retire du calcul vos pires années de revenus, jusqu’à environ 7 ans sur une carrière complète. Mais quelqu’un qui arrête de travailler à 45 ans accumule environ 20 années sans revenu avant 65 ans. Une bonne partie de ces années viendra donc réduire sa rente.</p>
+<p>Il faut aussi distinguer le RRQ de la Sécurité de la vieillesse fédérale, qui dépend notamment de l’âge, du revenu et des années de résidence au Canada, et non directement des cotisations de travail.</p>
+<p>Certaines mesures liées au revenu, comme le crédit d’impôt pour solidarité, peuvent même augmenter après une baisse des revenus. Chaque situation mérite donc d’être évaluée.</p>
+<p>Mais le RRQ n’est qu’une partie du problème…</p>
+<p>En quittant son emploi, on peut également renoncer aux cotisations patronales à un régime de retraite, à une assurance collective, à certains avantages sociaux et surtout à la capacité de continuer à alimenter son patrimoine.</p>
+<p>Imaginons quelqu’un qui aurait pu épargner 30 000 $ par année pendant dix années supplémentaires.</p>
+<p>À un rendement hypothétique de 6 % par année, ces cotisations auraient représenté environ 395 000 $ au terme de cette période, si elles avaient été effectuées en fin d’année. Et cela ne tient même pas compte de la croissance possible du capital déjà accumulé.</p>
+<p>Le but de l’indépendance financière est précisément de ne plus avoir à travailler pour gagner de l’argent. Mais il faut comprendre ce à quoi on renonce. Le coût de la retraite anticipée ne se limite pas aux salaires abandonnés. Il comprend également les droits, les protections et les occasions futures d’accumulation perdus. Cela peut représenter un montant considérable, surtout lorsque la retraite commence très tôt.</p>
+<h2>4. Les imprévus : parce que la vie ne fonctionne pas sur Excel (ni sur ChatGPT)</h2>
+<p>C’est probablement le risque que je trouve le plus difficile à modéliser. Dans une simulation financière, les dépenses suivent généralement une trajectoire relativement prévisible. On fixe un budget, on applique un taux d’inflation et on projette les résultats sur 40 ans. Sauf que la vie réelle est beaucoup moins disciplinée.</p>
+<p>Imaginez que vous prenez votre retraite à 50 ans avec un portefeuille qui vous procure un train de vie confortable. Trois ans plus tard, les marchés connaissent une correction importante. Et voilà que votre toit commence à couler.</p>
+<p>La facture des réparations : 25 000 $ !</p>
+<p>Quelques mois plus tard, un parent vieillissant doit recevoir des soins ou aménager son logement. Vous décidez de contribuer à hauteur de 5 000 $.</p>
+<p>En moins d’un an, vous devez trouver 30 000 $ supplémentaires. Si votre budget annuel était de 60 000 $, vos besoins atteignent soudainement 90 000 $. Et il faut financer tout cela au moment même où votre portefeuille a peut-être perdu 20 % ou 30 % de sa valeur.</p>
+<p>Bien sûr, on peut toujours dire qu’il suffit de prévoir un fonds d’urgence. Mais quelle taille devrait-il avoir ?</p>
+<p>Une toiture, un problème de santé, une aide à un enfant adulte, un parent dans le besoin, une séparation ou une dépense exceptionnelle liée au logement : ces événements peuvent être coûteux, et surtout, ils ne surviennent pas nécessairement un à la fois.</p>
+<p>Il y a également une dimension familiale importante. À 35 ans, on peut avoir peu de personnes financièrement dépendantes de nous. À 50 ans, on peut se retrouver avec des adolescents ou de jeunes adultes qui ont encore besoin d’aide, tout en ayant des parents qui avancent en âge. C’est parfois à cette période que les responsabilités financières familiales sont les plus importantes.</p>
+<p>L’indépendance financière ne nous dispense pas de ces obligations morales et affectives.</p>
+<p>De plus, je doute que beaucoup d’entre nous souhaitent répondre à un proche en difficulté qu’il est impossible de l’aider parce que cela ferait passer notre taux de retrait de 4 % à 6 %…</p>
+<p>La véritable liberté financière doit aussi nous permettre de faire face aux besoins de ceux qui comptent pour nous.</p>
+<h2>5. Le piège psychologique : être millionnaire et avoir peur de dépenser</h2>
+<p>Il y a un autre piège dont on parle assez peu : notre rapport à l’argent change lorsqu’on cesse de recevoir un salaire. Pendant 20 ou 25 ans, on a construit une habitude : travailler, recevoir un revenu, épargner et voir progressivement son patrimoine augmenter. Cette accumulation devient presque une seconde nature !</p>
+<p>Puis, du jour au lendemain, le processus s’inverse. Les cotisations disparaissent et les retraits commencent. Reprenez l’investisseur de 50 ans et mettez-vous à sa place. Six mois après votre départ, les marchés chutent de 30 % et vos deux millions ne valent plus que 1,4 million.</p>
+<p>Vous n’êtes pas nécessairement ruiné. Votre plan pourrait encore fonctionner sur le long terme. Mais êtes-vous psychologiquement prêt à voir disparaître 600 000 $ de valeur alors que vous n’avez plus de revenu d’emploi ? Continuerez-vous à voyager ? À sortir au restaurant ? À profiter de ces activités pour lesquelles vous avez précisément choisi de prendre votre retraite ? Ou commencerez-vous à surveiller chaque dépense, chaque baisse boursière, chaque distribution de votre portefeuille ?</p>
+<p>On pourrait se retrouver dans une situation paradoxale : avoir quitté son emploi pour être libre, puis devenir prisonnier de l’évolution quotidienne de ses placements. Je pense que c’est un aspect fondamental de l’indépendance financière. Il ne suffit pas que le plan fonctionne mathématiquement. Il faut également être capable de vivre avec sa volatilité.</p>
+<p>Une stratégie qui nécessite des nerfs d’acier pendant 40 ans n’est peut-être pas aussi confortable qu’elle en a l’air sur papier. Alors, comment rester financièrement indépendant ?</p>
+<p>Face à tous ces risques, la tentation serait de conclure qu’il vaut mieux travailler jusqu’à 65 ans et ne prendre aucun risque. Ce n’est pas du tout ma conclusion.</p>
+<p>Je demeure convaincu que l’indépendance financière est un objectif formidable. Elle nous permet de reprendre le contrôle de notre temps, de poursuivre des projets personnels et de consacrer davantage d’énergie aux personnes et aux activités qui comptent. Mais je crois qu’il faut construire cette liberté avec une véritable marge de sécurité.</p>
+<h2>Première solution : accumuler un capital plus important que le strict minimum</h2>
+<p>Si votre budget annuel est de 60 000 $ et que vous appliquez mécaniquement la règle des 4 %, vous obtenez un capital nécessaire de 1,5 million de dollars. Mais si vous disposez plutôt de deux millions de dollars, vos retraits de 60 000 $ ne représentent plus que 3 % du portefeuille. La différence peut sembler modeste. Elle est pourtant importante.</p>
+<p>Elle signifie que vous sollicitez moins fortement votre patrimoine chaque année, toutes choses égales par ailleurs. Cela n’offre aucune garantie, mais peut améliorer votre résistance aux mauvaises séquences boursières et aux dépenses imprévues.</p>
+<p>Il faut toutefois tenir compte de l’impôt. Un budget de 60 000 $ nets exige généralement un calcul de décaissement plus précis selon la répartition des actifs entre REER, CELI et comptes non enregistrés. L’objectif ne devrait donc pas simplement être d’atteindre le minimum théorique nécessaire pour payer les factures. Il devrait être d’accumuler suffisamment de capital pour que les aléas de la vie ne remettent pas systématiquement en question notre indépendance.</p>
+<h2>Deuxième solution : disposer d’un véritable coussin de liquidités</h2>
+<p>Posséder un patrimoine important, c’est bien. Pouvoir mobiliser rapidement une partie de ce patrimoine sans subir de pertes importantes ou de conséquences fiscales disproportionnées, c’est encore mieux.</p>
+<p>Une maison de grande valeur ne permet pas nécessairement de payer facilement une facture de 30 000 $. Certains régimes de retraite sont immobilisés et leurs retraits sont encadrés. Et vendre des actions en pleine crise n’est pas toujours souhaitable.</p>
+<p>Je crois donc qu’il est judicieux de conserver une réserve financière distincte du portefeuille de croissance. Selon les besoins et la tolérance au risque, on pourrait envisager de garder l’équivalent d’une à trois années de dépenses essentielles dans des actifs liquides et relativement stables : comptes d’épargne à intérêt élevé, titres à court terme ou placements garantis adaptés aux échéances prévues.</p>
+<p>Pour quelqu’un dont les dépenses essentielles atteignent 50 000 $ par année, cela pourrait représenter entre 50 000 $ et 150 000 $ de réserves. Ces sommes font partie du patrimoine total. Elles ne doivent pas être comptées une deuxième fois dans le calcul du capital disponible pour financer la retraite.</p>
+<p>Un coussin de liquidités comporte lui aussi des inconvénients, notamment un rendement potentiellement inférieur à celui des actions et une perte de pouvoir d’achat lorsque l’inflation dépasse les intérêts reçus. Mais son objectif premier n’est pas de maximiser le rendement. Il est de nous donner le choix de ne pas vendre nos placements au pire moment.</p>
+<h2>Troisième solution : vivre en dessous de sa capacité financière</h2>
+<p>Cette solution me semble particulièrement puissante parce qu’elle ne dépend ni des banques centrales, ni des marchés boursiers, ni de la prochaine publication des données sur l’inflation. Elle dépend de nos choix !</p>
+<p>Prenons deux personnes disposant chacune de deux millions de dollars. La première organise son train de vie autour de 80 000 $ de retraits annuels. La seconde se contente de 55 000 $. Dans le premier cas, le retrait initial représente 4 % du portefeuille. Dans le second, il représente seulement 2,75 %. La deuxième personne dispose donc d’une marge de manœuvre considérable. Elle peut absorber des dépenses supplémentaires, réduire ses retraits pendant les mauvaises années ou réinvestir les sommes dont elle n’a pas besoin. Surtout, elle n’est pas obligée de maintenir un rythme de dépenses élevé lorsque les circonstances deviennent défavorables.</p>
+<p>Il ne s’agit pas de passer sa retraite à se priver après avoir travaillé pendant des décennies. Ce serait totalement absurde !</p>
+<p>Mais il y a une différence entre dépenser librement et organiser son train de vie autour du maximum que notre portefeuille semble pouvoir soutenir. Un budget qui laisse de la place aux imprévus vaut parfois davantage qu’un portefeuille légèrement plus performant.</p>
+<h2>Quatrième solution : conserver une capacité d’adaptation</h2>
+<p>L’indépendance financière est souvent présentée comme une rupture définitive avec le marché du travail. On ferme son ordinateur, on quitte son bureau et on ne travaille plus jamais.</p>
+<p>Pourquoi faudrait-il que ce soit aussi radical ?</p>
+<p>Accepter quelques mandats professionnels, développer une petite activité entrepreneuriale ou travailler occasionnellement par plaisir peut constituer une source supplémentaire de sécurité.</p>
+<p>Prenons quelqu’un qui a besoin de 60 000 $ par année pour vivre. S’il peut générer 15 000 $ nets grâce à une activité occasionnelle, ses besoins de financement par le portefeuille diminuent à 45 000 $. Sur un patrimoine de 1,5 million de dollars, son taux de retrait passe de 4 % à 3 %. C’est un quart de moins à retirer chaque année. Cela ne doit pas devenir une obligation. Il serait dangereux de construire tout son plan sur la certitude de retrouver un emploi bien rémunéré après plusieurs années d’absence. Mais avoir la possibilité de générer un revenu supplémentaire peut faire une grande différence, surtout au cours des premières années de retraite.</p>
+<p>La flexibilité peut aussi se traduire autrement : reporter un voyage coûteux après une mauvaise année boursière, ajuster certaines dépenses discrétionnaires ou repousser un achat majeur. À condition que cette flexibilité ne compromette pas les besoins essentiels.</p>
+<h2>La liberté a besoin d’une marge de sécurité</h2>
+<p>Dans mon précédent article, j’expliquais pourquoi il ne fallait pas chercher un montant magique, mais plutôt se fixer une trajectoire d’accumulation. Je reste convaincu de la pertinence de cette approche. Mais une fois l’indépendance financière atteinte, une autre discipline devient nécessaire : celle du décaissement.</p>
+<p>Il ne s’agit plus seulement de faire croître son patrimoine, mais de s’assurer qu’il pourra financer notre mode de vie pendant plusieurs décennies, malgré les crises, l’inflation, les impôts et les mauvaises surprises.</p>
+<p>Pour moi, la véritable indépendance financière repose sur trois piliers : un capital suffisamment important, des réserves accessibles et un niveau de dépenses qui laisse une véritable marge de manœuvre. Car il y a peut-être pire que de travailler quelques années supplémentaires pour atteindre sa liberté financière. C’est de découvrir, dix ans après avoir quitté son emploi, qu’on doit retourner travailler parce qu’on avait sous-estimé ce qu’il fallait pour la préserver.</p>
+<div class="article-test-ultime">L’indépendance financière se mesure aussi à notre capacité de ne jamais être obligé de recommencer.</div>
+<h2>Sources</h2>
+<ul>
+<li>Aziz Guellouz, <a href="https://parlonscash.pro/blog/mythe-montant-magique.html">Le mythe du montant magique</a>, Parlons Cash, mai 2026</li>
+<li>William P. Bengen, « Determining Withdrawal Rates Using Historical Data », <em>Journal of Financial Planning</em>, octobre 1994</li>
+<li><a href="https://www.agf.com/agf-files/en/sound-choices-investor/sol078-seq-returns-en.pdf">AGF, Sequence of returns</a></li>
+<li><a href="https://www.canada.ca/fr/nouvelles/archive/2008/11/gouvernement-canada-empresse-mettre-oeuvre-allegement-fiscal-aines-autres-mesures-suspens.html">Ministère des Finances du Canada, communiqué du 28 novembre 2008</a></li>
+<li><a href="https://www.guardiancapital.com/investmentsolutions/wp-content/uploads/2022/09/Guardian-Capital_Understanding-Series-T-FR.pdf">Guardian Capital, Comprendre la série T (2022)</a></li>
+<li><a href="https://www.retraitequebec.gouv.qc.ca/fr/tout-simplement/rente-rrq-calculee-avantage">Retraite Québec, Une rente du RRQ calculée à votre avantage</a></li>
+</ul>
+</main>
+<div class="nav-articles">
+<a href="../blog.html">← Tous les articles</a>
+<a class="secondary" href="https://parlonscash.pro/">Accéder aux calculateurs</a>
+</div>
+<footer>
+<p>© 2026 <a href="https://parlonscash.pro/">Parlons Cash</a> – Aziz Guellouz</p>
+<p style="margin-top:8px;font-size:0.8em;">Les contenus de ce blog sont à titre éducatif et informatif uniquement. Ils ne constituent pas des conseils financiers personnalisés.</p>
+</footer>
+</body>
+</html>
