@@ -1192,6 +1192,7 @@ button:hover, .tab-button:hover {
       <p style="margin-top:6px;font-size:0.9em;opacity:0.9;">🔒 Tes données financières restent dans ton navigateur. Rien n'est envoyé à nos serveurs.</p>
       <div class="header-actions" style="margin-top:18px">
         <button class="btn-export hero-btn" type="button" onclick="ouvrirDiagnostic()">Commencer mon diagnostic</button>
+        <button class="btn-export btn-fiche" type="button" onclick="genererFicheConseiller()">Fiche pour mon conseiller</button>
         <details class="data-menu" id="data-menu">
           <summary class="btn-export">Mes données</summary>
           <div class="data-menu-list">
@@ -1222,6 +1223,7 @@ button:hover, .tab-button:hover {
 <div class="subnav" id="subnav-calculateurs" style="display:none">
 <button onclick="changeTab('impôts')" id="btn-impôts">Impôts</button>
 <button onclick="changeTab('objectifs')" id="btn-objectifs">Objectifs</button>
+<button onclick="changeTab('decaissement')" id="btn-decaissement">Décaissement</button>
 <button onclick="changeTab('acheter-louer')" id="btn-acheter-louer">Acheter vs Louer</button>
 <button onclick="changeTab('dettes')" id="btn-dettes">Remboursement dettes</button>
 <button onclick="changeTab('plaisirs')" id="btn-plaisirs">Gestion des plaisirs</button>
@@ -1456,6 +1458,15 @@ button:hover, .tab-button:hover {
       <input type="number" id="profil-revenu-brut" value="0" min="0">
       <small style="display:block;margin-top:5px;color:#6b7280;">Utilisé pour l'estimation d'impôts et la capacité d'achat immobilier.</small>
     </div>
+    <div class="form-group">
+      <label for="profil-situation">Situation</label>
+      <select id="profil-situation">
+        <option value="">Choisir</option>
+        <option value="seul">Je vis seul</option>
+        <option value="couple">En couple</option>
+      </select>
+      <small style="display:block;margin-top:5px;color:#6b7280;">Utilisée pour l'impôt dans l'outil de décaissement et pour la fiche conseiller.</small>
+    </div>
   </div>
 
   <div class="card" id="assistant-profil">
@@ -1489,7 +1500,10 @@ button:hover, .tab-button:hover {
 <div class="form-group"><label>CELIAPP</label><input type="number" id="celiapp" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Compte non enregistré</label><input type="number" id="cne" value="0" onchange="calc()"></div>
 <div class="form-group"><label>REER</label><input type="number" id="reer" value="0" onchange="calc()"></div>
-<div class="form-group"><label>Immobilisations</label><input type="number" id="immob" value="0" onchange="calc()"></div>
+<div class="form-group"><label>CRI ou FRV (immobilisé)</label><input type="number" id="cri" value="0" onchange="calc()"></div>
+<div class="form-group"><label>REEE</label><input type="number" id="reee" value="0" onchange="calc()"><small style="display:block;margin-top:5px;color:#6b7280;">Compté dans ta valeur nette, mais pas dans ton capital de retraite : cet argent est prévu pour les études des enfants.</small></div>
+<div class="form-group"><label>Résidence et immeubles</label><input type="number" id="immob" value="0" onchange="calc()"></div>
+<div class="form-group"><label>Véhicules</label><input type="number" id="vehicules" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Autre</label><input type="number" id="autre-actif" value="0" onchange="calc()"></div>
 <div class="total-row green"><span>Total actifs</span><span class="value" id="ta">0 $</span></div>
 </div>
@@ -1497,8 +1511,10 @@ button:hover, .tab-button:hover {
 <h3 class="red">PASSIFS</h3>
 <div class="form-group"><label>Cartes de crédit</label><input type="number" id="cc" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Marge de crédit</label><input type="number" id="mc" value="0" onchange="calc()"></div>
+<div class="form-group bilan-detail"><label>Limite autorisée de la marge</label><input type="number" id="mc-limite" value="0"></div>
 <div class="form-group"><label>Prêt automobile</label><input type="number" id="pa" value="0" onchange="calc()"></div>
 <div class="form-group"><label>Hypothèque</label><input type="number" id="hypo" value="0" onchange="calc()"></div>
+<div class="grid-2 bilan-detail" style="gap:10px;"><div class="form-group"><label>Taux hypothécaire (%)</label><input type="number" id="hypo-taux" value="" step="0.01" min="0"></div><div class="form-group"><label>Échéance du terme (année)</label><input type="number" id="hypo-echeance" value="" min="2000"></div></div>
 <div class="form-group"><label>Autre</label><input type="number" id="autre-passif" value="0" onchange="calc()"></div>
 <div class="total-row red"><span>Total passifs</span><span class="value" id="tp">0 $</span></div>
 <div class="summary-box"><div class="summary-row"><strong>Valeur nette</strong><strong class="blue" style="font-size:1.5em" id="vn">0 $</strong></div></div>
@@ -1722,6 +1738,25 @@ button:hover, .tab-button:hover {
     Revenu annuel estimé de ton régime de retraite d'employeur (si applicable)
   </small>
 </div>
+<div class="form-group">
+  <label for="rente-pension-type">Type de régime d'employeur</label>
+  <select id="rente-pension-type">
+    <option value="">Choisir</option>
+    <option value="aucun">Aucun</option>
+    <option value="pd">À prestations déterminées (rente garantie)</option>
+    <option value="cd">À cotisations déterminées</option>
+    <option value="rver">RVER ou REER collectif</option>
+  </select>
+</div>
+<div class="form-group">
+  <label for="rente-pension-index">Indexation de la rente d'employeur (% de l'inflation)</label>
+  <input type="number" id="rente-pension-index" value="" min="0" max="100" placeholder="Ex. 50">
+  <small style="display:block;margin-top:5px;color:#6b7280;">100 = pleinement indexée, 0 = pas indexée. Le relevé annuel du régime l'indique.</small>
+</div>
+<div class="grid-2" style="gap:10px;">
+  <div class="form-group"><label for="age-rrq">Âge prévu pour demander le RRQ</label><input type="number" id="age-rrq" value="65" min="60" max="72"></div>
+  <div class="form-group"><label for="age-psv">Âge prévu pour demander la PSV</label><input type="number" id="age-psv" value="65" min="65" max="70"></div>
+</div>
 <div class="form-group"><label>Revenu annuel désiré (en dollars d'aujourd'hui)</label><input type="number" id="revenu-retraite" value="50000" oninput="calcRetraite()"></div>
 <div class="form-group">
   <label style="display:flex;align-items:center;gap:10px;">
@@ -1754,6 +1789,120 @@ button:hover, .tab-button:hover {
 
 
 <!-- Fin de tab-objectifs -->
+
+<!-- Onglet Décaissement -->
+<div id="tab-decaissement" class="tab-content">
+  <h2>Décaissement : combien de temps ton argent va-t-il durer ?</h2>
+
+  <p style="color:#6b7280;font-size:0.9em;margin-bottom:20px;">
+    Accumuler est une chose. Vivre de son capital pendant des décennies en est une autre. Cet outil simule, année par année, à quel âge ton capital s'épuise selon tes dépenses, tes rentes et leur indexation. Une rente mal indexée perd du pouvoir d'achat chaque année, et c'est ton capital qui doit combler l'écart.
+  </p>
+
+  <div class="card">
+    <div id="dec-lien" class="frais-lien"></div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label for="dec-age">Ton âge aujourd'hui</label>
+        <input type="text" id="dec-age" inputmode="numeric" placeholder="Ex. 50" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="dec-reer">REER, FERR et CRI ($)</label>
+        <input type="text" id="dec-reer" inputmode="decimal" placeholder="Ex. 500000" autocomplete="off">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Ce que tu as aujourd'hui. Chaque retrait est imposable.</small>
+      </div>
+      <div class="form-group">
+        <label for="dec-cri">CRI et FRV ($)</label>
+        <input type="text" id="dec-cri" inputmode="decimal" placeholder="Ex. 80000" autocomplete="off">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Fonds immobilisés. Au Québec, retraits libres à partir de 55 ans une fois transférés dans un FRV. Imposables comme un REER.</small>
+      </div>
+      <div class="form-group">
+        <label for="dec-celi">CELI ($)</label>
+        <input type="text" id="dec-celi" inputmode="decimal" placeholder="Ex. 150000" autocomplete="off">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Les retraits ne sont pas imposables.</small>
+      </div>
+      <div class="form-group">
+        <label for="dec-ne">Non enregistré ($)</label>
+        <input type="text" id="dec-ne" inputmode="decimal" placeholder="Ex. 100000" autocomplete="off">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Seule la moitié du gain en capital est imposable, lors de la vente. Pas ta maison.</small>
+      </div>
+      <div class="form-group">
+        <label for="dec-ne-dist">Distributions du non enregistré (% par année)</label>
+        <input type="text" id="dec-ne-dist" inputmode="decimal" placeholder="0" autocomplete="off">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Imposées chaque année, même réinvesties. Elles font partie du rendement, elles ne s'y ajoutent pas.</small>
+        <select id="dec-ne-type" style="margin-top:8px;" aria-label="Nature des distributions">
+          <option value="ordinaire">Intérêts ou revenu étranger (imposés à 100 %)</option>
+          <option value="dividendes">Dividendes canadiens déterminés</option>
+          <option value="gains">Gains en capital (imposés à 50 %)</option>
+          <option value="rc">Remboursement de capital (non imposé, réduit le PBR)</option>
+          <option value="mixte">Mixte : un tiers dividendes, gains, remboursement de capital</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="dec-retraite">Âge où tu arrêtes de travailler</label>
+        <input type="text" id="dec-retraite" inputmode="numeric" placeholder="Vide si tu es déjà à la retraite" autocomplete="off">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Les retraits commencent à cet âge. D'ici là, ton capital continue de croître.</small>
+      </div>
+      <div class="form-group">
+        <label for="dec-epargne">Épargne annuelle d'ici là ($)</label>
+        <input type="text" id="dec-epargne" inputmode="decimal" placeholder="0" autocomplete="off">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Ce que tu ajoutes chaque année à ton capital jusqu'à la retraite, en dollars d'aujourd'hui.</small>
+      </div>
+      <div class="form-group">
+        <label for="dec-depenses">Dépenses annuelles, après impôt ($)</label>
+        <input type="text" id="dec-depenses" inputmode="decimal" placeholder="Ex. 55000" autocomplete="off">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Ce que tu dépenses vraiment chaque année, en dollars d'aujourd'hui. L'outil calcule l'impôt à payer en plus. On suppose que tes dépenses suivent l'inflation.</small>
+      </div>
+      <div class="form-group">
+        <label for="dec-rendement">Rendement annuel du capital (%)</label>
+        <input type="text" id="dec-rendement" inputmode="decimal" value="5" autocomplete="off">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Après frais. Une hypothèse de travail, pas une prévision.</small>
+      </div>
+      <div class="form-group">
+        <label for="dec-inflation">Inflation annuelle (%)</label>
+        <input type="text" id="dec-inflation" inputmode="decimal" value="2,5" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="dec-horizon">Planifier jusqu'à quel âge ?</label>
+        <input type="text" id="dec-horizon" inputmode="numeric" value="95" autocomplete="off">
+        <small style="display:block;margin-top:5px;color:#6b7280;">Mieux vaut viser plus loin que l'espérance de vie moyenne.</small>
+      </div>
+      <div class="form-group">
+        <label id="dec-ordre-titre">Ordre de décaissement</label>
+        <input type="hidden" id="dec-ordre" value="reer,cri,ne,celi">
+        <ol id="dec-ordre-liste" class="dec-ordre" aria-labelledby="dec-ordre-titre"></ol>
+        <small style="display:block;margin-top:5px;color:#6b7280;">Utilise les flèches pour choisir le compte à vider en premier. L'ordre change l'impôt total payé. Le CRI est sauté tant que tu n'as pas 55 ans.</small>
+      </div>
+      <div class="form-group">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-top:28px;">
+          <input type="checkbox" id="dec-seul" style="width:auto;">
+          <span>Je vis seul</span>
+        </label>
+        <small style="display:block;margin-top:5px;color:#6b7280;">Donne droit au montant pour personne vivant seule au Québec. L'outil calcule l'impôt d'une personne. Pour un couple, le fractionnement du revenu de pension peut réduire l'impôt.</small>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:10px;">Tes rentes</div>
+    <p style="color:#6b7280;font-size:0.9em;margin:0 0 14px;">Montants annuels avant impôt, en dollars d'aujourd'hui. Toutes les rentes sont imposables. L'indexation indique quelle part de l'inflation la rente suit chaque année : 100 % garde le pouvoir d'achat, 0 % le laisse fondre. Le RRQ et la PSV sont pleinement indexés. Pour une rente d'employeur, vérifie le taux dans ton relevé de régime.</p>
+    <p style="color:#6b7280;font-size:0.9em;margin:0 0 14px;">Pour le RRQ et la PSV, entre le montant prévu <strong>à 65 ans</strong>. Pour le RRQ, il figure sur ton <a href="https://www.retraitequebec.gouv.qc.ca/fr/services-ligne-et-outils/consultation-releves-participation" target="_blank" rel="noopener">relevé de participation</a>, dans Mon dossier de Retraite Québec. Pour la PSV, utilise l'<a href="https://estimateursv-oasestimator.digital.service.canada.ca/fr" target="_blank" rel="noopener">estimateur de Service Canada</a>. L'outil l'ajuste selon l'âge de début : le RRQ peut commencer entre 60 et 72 ans (réduit de 0,5 % à 0,6 % par mois avant 65 ans selon ta rente, l'outil retient 0,6 %, et bonifié de 0,7 % par mois après), la PSV entre 65 et 70 ans (bonifiée de 0,6 % par mois de report), avec une hausse de 10 % à 75 ans. Si tu reçois déjà ces rentes, entre le montant actuel.</p>
+    <div class="dec-rente-tete" aria-hidden="true"><span>Rente</span><span>Type</span><span>Montant annuel ($)</span><span>Début (âge)</span><span>Indexation (%)</span><span></span></div>
+    <div id="dec-rentes"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;">
+      <button type="button" class="btn-secondary" id="dec-ajouter">Ajouter une rente</button>
+      <button type="button" class="btn-secondary" id="dec-exemple">Voir un exemple</button>
+      <button type="button" class="btn-secondary" id="dec-reprendre">Reprendre mes données du profil</button>
+    </div>
+  </div>
+
+  <div id="dec-resultat" aria-live="polite"></div>
+
+  <div style="background:#f9fafb;border-top:2px solid #e5e7eb;padding:20px;margin-top:30px;border-radius:8px;">
+    <p style="margin:0;font-size:0.85em;color:#6b7280;line-height:1.7;">
+      <strong>Avertissement :</strong> cet outil est à des fins éducatives seulement. Il ne constitue pas un conseil financier personnalisé.
+      Le rendement est supposé constant chaque année, ce que les marchés ne font jamais. L'impôt est une estimation selon les règles 2026, pour une personne seule. La valeur de ta maison n'est pas modélisée. Tout se calcule dans ton navigateur, rien n'est envoyé.
+    </p>
+  </div>
+</div>
+<!-- Fin de tab-decaissement -->
 
 <!-- Onglet Acheter vs Louer -->
 <div id="tab-acheter-louer" class="tab-content">
@@ -4248,7 +4397,7 @@ function blogFiltrer(cat, btn) {
 
 blogAfficherListe();
 
-var TAB_GROUPS={calculateurs:['impôts','objectifs','acheter-louer','dettes','plaisirs','besoin','couple'],investissement:['fnb','comparateur','frais','psychologie','aide']};
+var TAB_GROUPS={calculateurs:['impôts','objectifs','decaissement','acheter-louer','dettes','plaisirs','besoin','couple'],investissement:['fnb','comparateur','frais','psychologie','aide']};
 var lastTab={calculateurs:'impôts',investissement:'fnb'};
 function changeTab(t){
   var panel=document.getElementById('tab-'+t);
@@ -4281,7 +4430,7 @@ function changeTab(t){
 // Cacher les bandeaux d'avertissement
 var warnings = document.querySelectorAll('.warning-box, .danger-box');
 for(var i = 0; i < warnings.length; i++) {
-  if(t === 'apropos' || t === 'confidentialite' || t === 'aide' || t === 'besoin' || t === 'couple' || t === 'plaisirs' || t === 'acheter-louer' || t === 'blog' || t === 'psychologie' || t === 'fnb' || t === 'comparateur' || t === 'frais' || t === 'faq') {
+  if(t === 'apropos' || t === 'confidentialite' || t === 'aide' || t === 'besoin' || t === 'couple' || t === 'plaisirs' || t === 'acheter-louer' || t === 'blog' || t === 'psychologie' || t === 'fnb' || t === 'comparateur' || t === 'frais' || t === 'faq' || t === 'decaissement') {
     warnings[i].style.display = 'none';
   } else {
     warnings[i].style.display = 'block';
@@ -4289,6 +4438,7 @@ for(var i = 0; i < warnings.length; i++) {
 }
   
   if(t === 'frais' && typeof window.fraisSync === 'function') { window.fraisSync(); }
+  if(t === 'decaissement' && typeof window.__decCalculer === 'function') { window.__decCalculer(); }
   // Recalcul automatique quand on arrive sur l'onglet "En as-tu besoin?"
   if(t === 'besoin') {
     calcBesoin();
@@ -4319,12 +4469,15 @@ var a3=parseFloat(document.getElementById('cne').value)||0;
 var a4=parseFloat(document.getElementById('reer').value)||0;
 var a5=parseFloat(document.getElementById('immob').value)||0;
 var a6=parseFloat(document.getElementById('autre-actif').value)||0;
+var a7=parseFloat(document.getElementById('cri').value)||0;
+var a8=parseFloat(document.getElementById('reee').value)||0;
+var a9=parseFloat(document.getElementById('vehicules').value)||0;
 var p1=parseFloat(document.getElementById('cc').value)||0;
 var p2=parseFloat(document.getElementById('mc').value)||0;
 var p3=parseFloat(document.getElementById('pa').value)||0;
 var p4=parseFloat(document.getElementById('hypo').value)||0;
 var p5=parseFloat(document.getElementById('autre-passif').value)||0;
-DATA.totalA=a1+a2+a2b+a3+a4+a5+a6;
+DATA.totalA=a1+a2+a2b+a3+a4+a5+a6+a7+a8+a9;
 DATA.totalP=p1+p2+p3+p4+p5;
 DATA.vn=DATA.totalA-DATA.totalP;
 DATA.cb=a1;
@@ -4583,7 +4736,8 @@ capitalNecessaire = capitalNecessaireAujourdhui * Math.pow(1 + tauxInflation, an
     (parseFloat(document.getElementById('celi').value) || 0) +
     (parseFloat(document.getElementById('celiapp').value) || 0) +
     (parseFloat(document.getElementById('cne').value) || 0) +
-    (parseFloat(document.getElementById('reer').value) || 0);
+    (parseFloat(document.getElementById('reer').value) || 0) +
+    (parseFloat(document.getElementById('cri').value) || 0); // REEE exclu : il sert aux études des enfants
 
 // Valeur future du capital actuel
 var valeurFuture = capAct * Math.pow(1 + tauxRendementAvant, annees);
@@ -5451,7 +5605,8 @@ function construireCSVDonnees() {
     rows.push([section, id, val]);
   }
 
-  ['cb','celi','celi-liquide-pct','celiapp','cne','reer','immob','autre-actif','cc','mc','pa','hypo','autre-passif'].forEach(function(id){ add('Bilan', id); });
+  ['cb','celi','celi-liquide-pct','celiapp','cne','reer','cri','reee','immob','vehicules','autre-actif','cc','mc','mc-limite','pa','hypo','hypo-taux','hypo-echeance','autre-passif'].forEach(function(id){ add('Bilan', id); });
+  ['profil-situation','profil-revenu-brut','rente-pension-type','rente-pension-index','age-rrq','age-psv'].forEach(function(id){ add('Profil', id); });
   ['revenu','rev-loyer','autre-revenu','statut-resid','loyer','paiement-hypo','taxes-entretien','d2','d3','d4','d5','d6','d7'].forEach(function(id){ add('Budget', id); });
   ['rb','cr','ad'].forEach(function(id){ add('Impots', id); });
   ['obj-montant','obj-date','taux-rendement-objectif'].forEach(function(id){ add('Objectifs', id); });
@@ -5485,6 +5640,24 @@ function construireCSVDonnees() {
 
   ['cmp-vdebut','cmp-ddebut','cmp-vfin','cmp-dfin','cmp-versements','cmp-distrib'].forEach(function(id){ add('Comparateur', id); });
   ['frais-valeur','frais-cotis','frais-horizon','frais-brut','frais-actuels','frais-alt'].forEach(function(id){ add('Frais', id); });
+  ['dec-age','dec-reer','dec-cri','dec-celi','dec-ne','dec-ne-dist','dec-ne-type','dec-ordre','dec-seul','dec-retraite','dec-epargne','dec-depenses','dec-rendement','dec-inflation','dec-horizon'].forEach(function(id){ add('Decaissement', id); });
+  if (typeof window.__decRentesPourSauvegarde === 'function') {
+    var decRentes = window.__decRentesPourSauvegarde();
+    rows.push(['DecRente', 'dec-rentes-nombre', String(decRentes.length)]);
+    if (typeof window.__decEtatAuto === 'function') {
+      var decEtat = window.__decEtatAuto();
+      rows.push(['DecEtat', 'dec-auto', decEtat.champs.join(',')]);
+      rows.push(['DecEtat', 'dec-rentes-auto', decEtat.rentesAuto ? 'true' : 'false']);
+    }
+    decRentes.forEach(function(r, i){
+      var n = i + 1;
+      rows.push(['DecRente', 'dec-rente-' + n + '-nom', r.nom]);
+      rows.push(['DecRente', 'dec-rente-' + n + '-montant', r.montant]);
+      rows.push(['DecRente', 'dec-rente-' + n + '-debut', r.debut]);
+      rows.push(['DecRente', 'dec-rente-' + n + '-index', r.index]);
+      rows.push(['DecRente', 'dec-rente-' + n + '-type', r.type]);
+    });
+  }
 
   return rows.map(function(r){ return r.map(csvVal).join(';'); }).join('\r\n');
 }
@@ -5536,6 +5709,8 @@ function appliquerCSV(text) {
   if (lines.length < 2) throw new Error('Fichier vide ou invalide');
 
   var dettesImportees = {};
+  var decRentesImportees = null;
+  var decEtatImporte = null;
 
   for (var i = 1; i < lines.length; i++) {
     var cols = parseCSVLine(lines[i]);
@@ -5548,6 +5723,23 @@ function appliquerCSV(text) {
         var idx = m[1], champ = m[2];
         if (!dettesImportees[idx]) dettesImportees[idx] = {};
         dettesImportees[idx][champ] = valeur;
+      }
+      continue;
+    }
+
+    if (section === 'DecEtat') {
+      if (!decEtatImporte) decEtatImporte = { champs: [], rentesAuto: true };
+      if (id === 'dec-auto') decEtatImporte.champs = valeur ? valeur.split(',') : [];
+      if (id === 'dec-rentes-auto') decEtatImporte.rentesAuto = (valeur === 'true');
+      continue;
+    }
+    if (section === 'DecRente') {
+      if (!decRentesImportees) decRentesImportees = { nombre: 0, lignes: {} };
+      if (id === 'dec-rentes-nombre') { decRentesImportees.nombre = parseInt(valeur, 10) || 0; continue; }
+      var mr = id.match(/^dec-rente-(\d+)-(nom|montant|debut|index|type)$/);
+      if (mr) {
+        if (!decRentesImportees.lignes[mr[1]]) decRentesImportees.lignes[mr[1]] = {};
+        decRentesImportees.lignes[mr[1]][mr[2]] = valeur;
       }
       continue;
     }
@@ -5584,6 +5776,15 @@ function appliquerCSV(text) {
   var contribSection = document.getElementById('contribution-actuelle-section');
   if (contribToggle && contribSection) {
     contribSection.classList.toggle('hidden', !contribToggle.checked);
+  }
+
+  if (typeof window.__decRestaurer === 'function') {
+    var listeDec = null;
+    if (decRentesImportees) {
+      listeDec = [];
+      for (var nr = 1; nr <= decRentesImportees.nombre; nr++) listeDec.push(decRentesImportees.lignes[nr] || {});
+    }
+    window.__decRestaurer(listeDec, decEtatImporte);
   }
 
   calc();
@@ -7808,7 +8009,7 @@ function closeModal() {
   function somme(ids){var t=0;for(var i=0;i<ids.length;i++){t+=Math.abs(v(ids[i]));}return t;}
   function allerAssistant(){var a=document.getElementById('assistant-profil');if(a){a.scrollIntoView({behavior:'smooth',block:'start'});}}
   function etat(){
-    var bilan=somme(['cb','celi','celiapp','cne','reer','immob','autre-actif','cc','mc','pa','hypo','autre-passif'])>0;
+    var bilan=somme(['cb','celi','celiapp','cne','reer','cri','reee','immob','vehicules','autre-actif','cc','mc','pa','hypo','autre-passif'])>0;
     var budget=v('revenu')>0 && somme(['loyer','paiement-hypo','d2','d3','d4','d5','d6','d7'])>0;
     var obj=somme(['prix-maison','obj-montant','age-actuel','contribution-mensuelle-actuelle'])>0;
     return [bilan,budget,obj];
@@ -7978,6 +8179,668 @@ function closeModal() {
     document.addEventListener('input', surSaisie);
     $('frais-reprendre').addEventListener('click', function () { synchroniser(true); });
     synchroniser(false);
+  });
+}());
+</script>
+
+<script>
+/* Outil de décaissement : combien de temps le capital dure-t-il ?
+   Simulation annuelle, retraits en début d'année, montants en dollars d'aujourd'hui. */
+(function () {
+  'use strict';
+  var COUL_A = '#2563eb', COUL_B = '#c2410c';
+  function $(id) { return document.getElementById(id); }
+  function lireNombre(v) {
+    v = String(v == null ? '' : v).trim().replace(/[\s  $%]/g, '').replace(',', '.');
+    if (v === '') return null;
+    var n = Number(v);
+    return isFinite(n) ? n : NaN;
+  }
+  function nombre(id) { var el = $(id); return el ? lireNombre(el.value) : null; }
+  function argent(n) { return Math.round(n).toLocaleString('fr-CA') + ' $'; }
+  function pct(n, d) { return n.toLocaleString('fr-CA', { minimumFractionDigits: d, maximumFractionDigits: d }) + ' %'; }
+  function court(n) {
+    var a = Math.abs(n);
+    if (a >= 1e6) return (n / 1e6).toLocaleString('fr-CA', { maximumFractionDigits: 1 }) + ' M$';
+    if (a >= 1e3) return Math.round(n / 1e3).toLocaleString('fr-CA') + ' k$';
+    return Math.round(n) + ' $';
+  }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  /* ---------- Rentes ---------- */
+  var DEFAUT = [
+    { nom: 'RRQ', type: 'rrq', montant: '', debut: '65', index: '100' },
+    { nom: 'PSV', type: 'psv', montant: '', debut: '65', index: '100' },
+    { nom: "Rente d'employeur", type: 'autre', montant: '', debut: '65', index: '50' }
+  ];
+  // Ajustements selon l'âge de début (Retraite Québec et Service Canada, vérifiés en octobre 2026).
+  var PSV_MAX_65 = 9150; // 762,50 $ par mois, octobre à décembre 2026 (Service Canada)
+  var RRQ_REDUCTION_MOIS = 0.006, RRQ_BONIF_MOIS = 0.007, PSV_BONIF_MOIS = 0.006, PSV_HAUSSE_75 = 0.10;
+  function facteurDebut(type, debut) {
+    if (type === 'rrq') return debut < 65 ? 1 - RRQ_REDUCTION_MOIS * (65 - debut) * 12 : 1 + RRQ_BONIF_MOIS * (Math.min(debut, 72) - 65) * 12;
+    if (type === 'psv') return 1 + PSV_BONIF_MOIS * (Math.min(debut, 70) - 65) * 12;
+    return 1;
+  }
+  function ligneRente(r) {
+    var d = document.createElement('div');
+    d.className = 'dec-rente';
+    d.innerHTML =
+      '<label><span class="dec-mini">Rente</span><input type="text" class="dec-r-nom" autocomplete="off" aria-label="Nom de la rente"></label>' +
+      '<label><span class="dec-mini">Type</span><select class="dec-r-type" aria-label="Type de rente"><option value="autre">Autre rente</option><option value="rrq">RRQ</option><option value="psv">PSV</option></select></label>' +
+      '<label><span class="dec-mini">Montant annuel ($)</span><input type="text" class="dec-r-montant" inputmode="decimal" placeholder="0" autocomplete="off" aria-label="Montant annuel"></label>' +
+      '<label><span class="dec-mini">Début (âge)</span><input type="text" class="dec-r-debut" inputmode="numeric" autocomplete="off" aria-label="Âge de début"></label>' +
+      '<label><span class="dec-mini">Indexation (%)</span><input type="text" class="dec-r-index" inputmode="decimal" autocomplete="off" aria-label="Indexation en pourcentage de l\'inflation"></label>' +
+      '<button type="button" class="dec-suppr" aria-label="Retirer cette rente" title="Retirer">×</button>';
+    d.querySelector('.dec-r-nom').value = r.nom || '';
+    d.querySelector('.dec-r-type').value = (r.type === 'rrq' || r.type === 'psv') ? r.type : 'autre';
+    d.querySelector('.dec-r-montant').value = r.montant || '';
+    d.querySelector('.dec-r-debut').value = r.debut || '';
+    d.querySelector('.dec-r-index').value = r.index != null ? r.index : '100';
+    return d;
+  }
+  function remplirRentes(liste) {
+    var zone = $('dec-rentes');
+    zone.innerHTML = '';
+    for (var i = 0; i < liste.length; i++) zone.appendChild(ligneRente(liste[i]));
+  }
+  function lireRentes(ageActuel) {
+    var lignes = document.querySelectorAll('#dec-rentes .dec-rente'), out = [], err = null;
+    for (var i = 0; i < lignes.length; i++) {
+      var L = lignes[i];
+      var m = lireNombre(L.querySelector('.dec-r-montant').value);
+      if (m === null || m === 0) continue;
+      var deb = lireNombre(L.querySelector('.dec-r-debut').value);
+      var idx = lireNombre(L.querySelector('.dec-r-index').value);
+      var nom = L.querySelector('.dec-r-nom').value.trim() || ('Rente ' + (i + 1));
+      if (isNaN(m) || m < 0) { err = 'Le montant de « ' + nom + ' » n\'est pas valide.'; break; }
+      if (deb === null) deb = 0;
+      if (isNaN(deb) || deb < 0 || deb > 110) { err = 'L\'âge de début de « ' + nom + ' » doit se situer entre 0 et 110 ans.'; break; }
+      if (idx === null) idx = 100;
+      if (isNaN(idx) || idx < 0 || idx > 100) { err = 'L\'indexation de « ' + nom + ' » doit se situer entre 0 % et 100 %.'; break; }
+      var type = L.querySelector('.dec-r-type').value, dejaRecue = ageActuel != null && deb < ageActuel, f = 1;
+      if (type === 'rrq' && !dejaRecue) {
+        if (deb < 60 || deb > 72 || Math.round(deb) !== deb) { err = 'Le RRQ peut commencer entre 60 et 72 ans. Corrige l\'âge de début de « ' + nom + ' ».'; break; }
+        f = facteurDebut('rrq', deb);
+      }
+      if (type === 'psv' && !dejaRecue) {
+        if (deb < 65 || deb > 70 || Math.round(deb) !== deb) { err = 'La PSV peut commencer entre 65 et 70 ans. Corrige l\'âge de début de « ' + nom + ' ».'; break; }
+        f = facteurDebut('psv', deb);
+      }
+      out.push({ nom: nom, type: type, montant: m, debut: deb, index: idx / 100, facteur: f, dejaRecue: dejaRecue, hausse75: type === 'psv' && ageActuel != null && ageActuel < 75 });
+    }
+    return { rentes: out, err: err };
+  }
+
+  /* ---------- Impôt 2026 (Québec), en dollars d'aujourd'hui ----------
+     Sources vérifiées en octobre 2026 : ARC (T4032QC 2026, paliers fédéraux et abattement de 16,5 %),
+     ministère des Finances du Québec (paramètres 2026), KPMG (crédits fédéraux 2026),
+     Service Canada (récupération de la PSV, année de revenu 2026), ARC (facteurs FERR),
+     table d'impôt 2026 de l'UQTR (dividendes), Retraite Québec (FRV : retraits libres dès 55 ans).
+     On suppose que tous les seuils suivent l'inflation, ce qui permet de calculer en dollars d'aujourd'hui. */
+  var FISC = {
+    fed: { seuils: [58523, 117045, 181440, 258482], taux: [0.14, 0.205, 0.26, 0.29, 0.33], credit: 0.14,
+      base: 16452, baseMin: 14829, baseDe: 181440, baseA: 258482, age: 9208, ageSeuil: 46432, ageReduc: 0.15, pension: 2000, abattement: 0.165 },
+    qc: { seuils: [54345, 108680, 132245], taux: [0.14, 0.19, 0.24, 0.2575], credit: 0.14,
+      base: 18952, age: 3986, retraite: 3541, seul: 2172, seuil: 42955, reduc: 0.1875 },
+    psv: { seuil: 95323, taux: 0.15 },
+    div: { majoration: 0.38, creditFed: 0.1502, creditQc: 0.117 },
+    criAge: 55
+  };
+  var FERR = { 71: 5.28, 72: 5.40, 73: 5.53, 74: 5.67, 75: 5.82, 76: 5.98, 77: 6.17, 78: 6.36, 79: 6.58, 80: 6.82, 81: 7.08, 82: 7.38, 83: 7.71, 84: 8.08, 85: 8.51, 86: 8.99, 87: 9.55, 88: 10.21, 89: 10.99, 90: 11.92, 91: 13.06, 92: 14.49, 93: 16.34, 94: 18.79 };
+  function facteurFerr(age) { return age >= 95 ? 0.20 : FERR[age] ? FERR[age] / 100 : 1 / (90 - age); }
+  function progressif(rev, seuils, taux) {
+    var t = 0, bas = 0;
+    for (var i = 0; i < taux.length; i++) {
+      var haut = i < seuils.length ? seuils[i] : Infinity;
+      if (rev > bas) t += (Math.min(rev, haut) - bas) * taux[i];
+      bas = haut;
+    }
+    return t;
+  }
+  // rev : revenu imposable (dividendes majorés inclus); pension : revenu admissible au crédit pour revenu de pension;
+  // psv : PSV reçue; divMaj : dividendes déterminés majorés.
+  function impots(rev, pension, age, seul, psv, divMaj) {
+    var F = FISC.fed, Q = FISC.qc, D = FISC.div;
+    divMaj = divMaj || 0;
+    var base = rev <= F.baseDe ? F.base : rev >= F.baseA ? F.baseMin : F.base - (F.base - F.baseMin) * (rev - F.baseDe) / (F.baseA - F.baseDe);
+    var montantsF = base + (age >= 65 ? Math.max(0, F.age - F.ageReduc * Math.max(0, rev - F.ageSeuil)) : 0) + Math.min(F.pension, pension);
+    var fed = Math.max(0, progressif(rev, F.seuils, F.taux) - F.credit * montantsF - D.creditFed * divMaj) * (1 - F.abattement);
+    var montantsQ = (age >= 65 ? Q.age : 0) + Math.min(Q.retraite, pension) + (seul ? Q.seul : 0);
+    montantsQ = Math.max(0, montantsQ - Q.reduc * Math.max(0, rev - Q.seuil));
+    var qc = Math.max(0, progressif(rev, Q.seuils, Q.taux) - Q.credit * (Q.base + montantsQ) - D.creditQc * divMaj);
+    var recup = psv > 0 ? Math.min(psv, FISC.psv.taux * Math.max(0, rev - FISC.psv.seuil)) : 0;
+    return { fed: fed, qc: qc, recup: recup, total: fed + qc + recup };
+  }
+  window.__decImpots = impots;
+
+  /* ---------- Ordre de décaissement ---------- */
+  var COMPTES = { reer: 'REER/FERR', cri: 'CRI/FRV', ne: 'Non enregistré', celi: 'CELI' };
+  var ORDRE_DEFAUT = ['reer', 'cri', 'ne', 'celi'];
+  function lireOrdre(v) {
+    var anciens = { reer: 'reer,cri,ne,celi', ne: 'ne,reer,cri,celi', celi: 'celi,ne,reer,cri' };
+    var liste = String(anciens[v] || v || '').split(',').filter(function (c) { return COMPTES[c]; });
+    ORDRE_DEFAUT.forEach(function (c) { if (liste.indexOf(c) < 0) liste.push(c); });
+    return liste.filter(function (c, i) { return liste.indexOf(c) === i; });
+  }
+
+  /* ---------- Simulation ---------- */
+  // Une ligne par âge, en dollars d'aujourd'hui. Les dépenses sont après impôt.
+  // Distributions du non enregistré : imposées chaque année selon leur nature, puis réinvesties.
+  var NATURES = {
+    dividendes: { div: 1, ord: 0, gain: 0, rc: 0 },
+    ordinaire: { div: 0, ord: 1, gain: 0, rc: 0 },
+    gains: { div: 0, ord: 0, gain: 1, rc: 0 },
+    rc: { div: 0, ord: 0, gain: 0, rc: 1 },
+    mixte: { div: 1 / 3, ord: 0, gain: 1 / 3, rc: 1 / 3 }
+  };
+  function simuler(p) {
+    var rr = (1 + p.rendement) / (1 + p.inflation) - 1;
+    var B = { reer: p.reer, cri: p.cri || 0, celi: p.celi, ne: p.ne }, acb = p.ne, lignes = [], epuise = null, manqueCri = null;
+    var ordre = lireOrdre(p.ordre), nat = NATURES[p.neNature] || NATURES.ordinaire, dist = Math.max(0, p.neDist || 0);
+    function total() { return B.reer + B.cri + B.celi + B.ne; }
+    // Distribution de l'année : retourne la part imposable, les dividendes majorés et ajuste le PBR.
+    function distribuer() {
+      var D = B.ne * dist, imp = 0, divMaj = 0;
+      if (D <= 0) return { imp: 0, divMaj: 0, montant: 0 };
+      divMaj = D * nat.div * (1 + FISC.div.majoration);
+      imp = divMaj + D * nat.ord + D * nat.gain * 0.5;
+      acb += D * (nat.div + nat.ord + nat.gain);
+      acb -= D * nat.rc;
+      if (acb < 0) { imp += -acb * 0.5; acb = 0; }
+      return { imp: imp, divMaj: divMaj, montant: D };
+    }
+    for (var t = 0; p.age + t <= p.horizon; t++) {
+      var age = p.age + t, capDebut = total();
+      if (age < p.retraite) {
+        distribuer();
+        var lib = B.reer + B.celi + B.ne, parts = lib > 0 ? { reer: B.reer / lib, celi: B.celi / lib, ne: B.ne / lib } : { reer: 1, celi: 0, ne: 0 };
+        B.reer = B.reer * (1 + rr) + p.epargne * parts.reer;
+        B.cri = B.cri * (1 + rr);
+        B.celi = B.celi * (1 + rr) + p.epargne * parts.celi;
+        B.ne = B.ne * (1 + rr) + p.epargne * parts.ne;
+        acb = acb / (1 + p.inflation) + p.epargne * parts.ne;
+        lignes.push({ phase: 'accumulation', age: age, depenses: 0, rentes: 0, retrait: 0, impot: 0, recup: 0, manque: 0, excedent: 0, epargne: p.epargne, capitalDebut: capDebut, capitalFin: total() });
+        continue;
+      }
+      var rentes = 0, psv = 0, pensionRente = 0;
+      for (var k = 0; k < p.rentes.length; k++) {
+        var R = p.rentes[k];
+        if (age < R.debut) continue;
+        var v = R.montant * (R.facteur || 1) * (R.hausse75 && age >= 75 ? 1.10 : 1) * Math.pow((1 + p.inflation * R.index) / (1 + p.inflation), t);
+        rentes += v;
+        if (R.type === 'psv') psv += v;
+        if (R.type === 'autre') pensionRente += v;
+      }
+      var di = distribuer();
+      var minF = { reer: age >= 72 ? B.reer * facteurFerr(age) : 0, cri: age >= 72 ? B.cri * facteurFerr(age) : 0 };
+      var dispo = function (c) { return c === 'cri' && age < FISC.criAge ? 0 : B[c]; };
+      var gainFrac = B.ne > 0 ? Math.max(0, 1 - acb / B.ne) : 0;
+      // Résultat d'un retrait total X réparti selon l'ordre choisi.
+      var essai = function (X) {
+        var reste = X, d = { reer: 0, cri: 0, celi: 0, ne: 0 };
+        for (var o = 0; o < ordre.length; o++) { var c = ordre[o], pris = Math.min(reste, dispo(c)); d[c] = pris; reste -= pris; }
+        d.reer = Math.max(d.reer, Math.min(minF.reer, B.reer));
+        d.cri = Math.max(d.cri, Math.min(minF.cri, B.cri));
+        var imposable = rentes + d.reer + d.cri + d.ne * gainFrac * 0.5 + di.imp;
+        var pension = pensionRente + (age >= 65 ? d.reer + d.cri : 0);
+        var I = impots(imposable, pension, age, p.seul, psv, di.divMaj);
+        return { d: d, imp: I, imposable: imposable, net: rentes + d.reer + d.cri + d.celi + d.ne - I.total };
+      };
+      var accessible = function () { return dispo('reer') + dispo('cri') + dispo('celi') + dispo('ne'); };
+      var r0 = essai(0), res = r0, manque = 0;
+      if (r0.net < p.depenses) {
+        var haut = accessible(), rh = essai(haut);
+        if (rh.net < p.depenses) { res = rh; manque = p.depenses - rh.net; }
+        else {
+          var bas = 0;
+          for (var it = 0; it < 60; it++) { var mil = (bas + haut) / 2; if (essai(mil).net >= p.depenses) haut = mil; else bas = mil; }
+          res = essai(haut);
+        }
+      }
+      var excedent = Math.max(0, res.net - p.depenses);
+      var bloque = age < FISC.criAge && B.cri > 1;
+      if (manque > 0.5 && bloque && manqueCri === null) manqueCri = age;
+      if (manque > 0.5 && !bloque && epuise === null) epuise = age;
+      if (B.ne > 0) acb -= acb * Math.min(1, res.d.ne / B.ne);
+      B.reer -= res.d.reer; B.cri -= res.d.cri; B.celi -= res.d.celi; B.ne -= res.d.ne;
+      B.ne += excedent; acb += excedent;
+      ['reer', 'cri', 'celi', 'ne'].forEach(function (c) { B[c] = Math.max(0, B[c]) * (1 + rr); });
+      acb = Math.max(0, acb) / (1 + p.inflation);
+      lignes.push({ phase: 'retraite', age: age, depenses: p.depenses, rentes: rentes, retrait: res.d.reer + res.d.cri + res.d.celi + res.d.ne,
+        retraitReer: res.d.reer, retraitCri: res.d.cri, retraitCeli: res.d.celi, retraitNe: res.d.ne, distributions: di.montant,
+        impot: res.imp.total, recup: res.imp.recup, imposable: res.imposable, minFerr: minF.reer + minF.cri, excedent: excedent, manque: manque, capitalDebut: capDebut, capitalFin: total(),
+        criBloque: bloque });
+    }
+    return { lignes: lignes, epuise: epuise, manqueCri: manqueCri };
+  }
+  window.__decSimuler = simuler;
+  window.__decCalculer = function () { synchroniser(false); };
+  window.__decRecalculer = function () { calculer(); };
+  window.__decRentesPourSauvegarde = function () {
+    var lignes = document.querySelectorAll('#dec-rentes .dec-rente'), out = [];
+    for (var i = 0; i < lignes.length; i++) {
+      out.push({ type: lignes[i].querySelector('.dec-r-type').value, nom: lignes[i].querySelector('.dec-r-nom').value, montant: lignes[i].querySelector('.dec-r-montant').value, debut: lignes[i].querySelector('.dec-r-debut').value, index: lignes[i].querySelector('.dec-r-index').value });
+    }
+    return out;
+  };
+  var CHAMPS_DEC = ['dec-age', 'dec-reer', 'dec-cri', 'dec-celi', 'dec-ne', 'dec-ne-dist', 'dec-retraite', 'dec-epargne', 'dec-depenses', 'dec-rendement', 'dec-inflation', 'dec-horizon'];
+  // Ce qui vient du profil (ou n'a jamais été touché) reste synchronisé avec le profil après une restauration.
+  window.__decEtatAuto = function () {
+    var champs = CHAMPS_DEC.filter(function (id) { var el = $(id); return el && (el.getAttribute('data-auto') === '1' || !el.hasAttribute('data-touche')); });
+    var lignes = document.querySelectorAll('#dec-rentes .dec-rente'), auto = true;
+    for (var i = 0; i < lignes.length; i++) if (lignes[i].getAttribute('data-auto') !== '1') { var m = lignes[i].querySelector('.dec-r-montant').value.trim(); if (m !== '') auto = false; }
+    return { champs: champs, rentesAuto: auto };
+  };
+  window.__decRestaurer = function (liste, etat) {
+    if (!$('tab-decaissement')) return;
+    if (liste) remplirRentes(liste);
+    afficherOrdre();
+    CHAMPS_DEC.forEach(function (id) {
+      var el = $(id); if (!el || el.value.trim() === '') return;
+      var auto = etat ? etat.champs.indexOf(id) >= 0 : true;
+      if (auto) { el.setAttribute('data-auto', '1'); el.removeAttribute('data-touche'); }
+      else { el.setAttribute('data-touche', '1'); el.removeAttribute('data-auto'); }
+    });
+    if (!etat || etat.rentesAuto) {
+      var lignes = document.querySelectorAll('#dec-rentes .dec-rente');
+      for (var i = 0; i < lignes.length; i++) lignes[i].setAttribute('data-auto', '1');
+    }
+    calculer();
+  };
+  // Résumé des hypothèses pour le rapport PDF (null si rien n'est rempli).
+  window.__decResume = function () {
+    largeurForcee = 640;
+    calculer();
+    largeurForcee = null;
+    var zone = $('dec-resultat');
+    if (!zone || zone.innerHTML.indexOf('Ton capital') < 0) return null;
+    var lignes = [], v = function (id) { return $(id).value.trim(); };
+    lignes.push(['Âge aujourd\'hui', v('dec-age') + ' ans']);
+    if (v('dec-retraite') !== '' && v('dec-retraite') !== v('dec-age')) lignes.push(['Arrêt du travail', v('dec-retraite') + ' ans']);
+    lignes.push(['REER/FERR, CRI/FRV, CELI, non enregistré', [nombre('dec-reer'), nombre('dec-cri'), nombre('dec-celi'), nombre('dec-ne')].map(function (x) { return argent(x || 0); }).join(', ')]);
+    if ((nombre('dec-ne-dist') || 0) > 0) lignes.push(['Distributions du non enregistré', v('dec-ne-dist') + ' % par année, ' + esc($('dec-ne-type').options[$('dec-ne-type').selectedIndex].text)]);
+    lignes.push(['Ordre de décaissement', lireOrdre($('dec-ordre').value).map(function (c, i) { return i && c === 'ne' ? 'non enregistré' : COMPTES[c]; }).join(', puis ') + ($('dec-seul').checked ? '. Vit seul' : '')]);
+    if ((nombre('dec-epargne') || 0) > 0) lignes.push(['Épargne annuelle d\'ici la retraite', argent(nombre('dec-epargne'))]);
+    lignes.push(['Dépenses annuelles après impôt', argent(nombre('dec-depenses'))]);
+    lignes.push(['Rendement / inflation', v('dec-rendement') + ' % / ' + v('dec-inflation') + ' %']);
+    lireRentes(nombre('dec-age')).rentes.forEach(function (r) {
+      var aj = r.facteur && Math.abs(r.facteur - 1) > 1e-9 ? ' (ajustée à ' + argent(r.montant * r.facteur) + ')' : '';
+      lignes.push([esc(r.nom), argent(r.montant) + aj + ' par année dès ' + r.debut + ' ans, indexée à ' + Math.round(r.index * 100) + ' %' + (r.hausse75 ? ', +10 % dès 75 ans' : '')]);
+    });
+    var html = zone.innerHTML.replace(/<div class="passerelle">[\s\S]*?<\/div>/g, '').replace(/<div class="dec-tip"[^>]*>[\s\S]*?<\/div>/g, '');
+    calculer();
+    return { lignes: lignes, html: html };
+  };
+  function signalerChangement() {
+    var el = $('dec-age');
+    if (el) el.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  /* ---------- Graphique en ligne (SVG) ---------- */
+  function pasJoli(max) {
+    var brut = max / 4, p = Math.pow(10, Math.floor(Math.log10(brut))), r = brut / p;
+    return (r <= 1 ? 1 : r <= 2 ? 2 : r <= 2.5 ? 2.5 : r <= 5 ? 5 : 10) * p;
+  }
+  var largeurForcee = null;
+  function graphique(cont, xs, series, opts) {
+    var W = largeurForcee || Math.max(300, Math.round(cont.getBoundingClientRect().width) || 640), H = 260, mg = { l: 58, r: series.length > 1 ? 96 : 20, t: 14, b: 32 };
+    var pw = W - mg.l - mg.r, ph = H - mg.t - mg.b, max = 0;
+    series.forEach(function (s) { s.valeurs.forEach(function (v) { if (v > max) max = v; }); });
+    if (max <= 0) max = 1;
+    var pas = pasJoli(max * 1.05), ymax = pas * Math.ceil(max * 1.05 / pas);
+    var x0 = xs[0], x1 = xs[xs.length - 1] === x0 ? x0 + 1 : xs[xs.length - 1];
+    function X(a) { return mg.l + (a - x0) / (x1 - x0) * pw; }
+    function Y(v) { return mg.t + ph - v / ymax * ph; }
+    var NS = 'http://www.w3.org/2000/svg', h = '';
+    for (var v = 0; v <= ymax + 1e-9; v += pas) {
+      h += '<line x1="' + mg.l + '" x2="' + (W - mg.r) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="' + (v === 0 ? '#9ca3af' : '#eef0f3') + '" stroke-width="1"/>';
+      h += '<text x="' + (mg.l - 8) + '" y="' + (Y(v) + 4) + '" text-anchor="end" font-size="11" fill="#6b7280">' + court(v) + '</text>';
+    }
+    var pasX = (x1 - x0) <= 15 ? 1 : (x1 - x0) <= 40 ? 5 : 10;
+    for (var a = Math.ceil(x0 / pasX) * pasX; a <= x1; a += pasX) {
+      h += '<text x="' + X(a) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" fill="#6b7280">' + a + '</text>';
+    }
+    series.forEach(function (s) {
+      var d = '';
+      s.valeurs.forEach(function (val, i) { d += (i ? 'L' : 'M') + X(xs[i]).toFixed(1) + ' ' + Y(val).toFixed(1); });
+      h += '<path d="' + d + '" fill="none" stroke="' + s.couleur + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+      if (series.length > 1) {
+        var last = s.valeurs[s.valeurs.length - 1];
+        h += '<text x="' + (X(x1) + 8) + '" y="' + (Y(last) + 4 + (s.decal || 0)) + '" font-size="12" fill="#374151">' + esc(s.nom) + '</text>';
+      }
+    });
+    ((opts && opts.marques) || []).forEach(function (m, n) {
+      var mx = X(m.x), my = m.y != null ? Y(m.y) : Y(0);
+      h += '<line x1="' + mx + '" x2="' + mx + '" y1="' + mg.t + '" y2="' + (mg.t + ph) + '" stroke="#9ca3af" stroke-dasharray="4 4"/>';
+      h += '<circle cx="' + mx + '" cy="' + my + '" r="5" fill="' + (m.couleur || '#b91c1c') + '" stroke="#fff" stroke-width="2"/>';
+      var anc = (mx + 8 + m.texte.length * 7 > W - 4) ? 'end' : 'start', dx = anc === 'end' ? -8 : 8;
+      h += '<text x="' + (mx + dx) + '" y="' + (mg.t + 14 + n * 18) + '" text-anchor="' + anc + '" font-size="12" font-weight="600" fill="#374151">' + esc(m.texte) + '</text>';
+    });
+    h += '<line class="dec-hair" x1="0" x2="0" y1="' + mg.t + '" y2="' + (mg.t + ph) + '" stroke="#374151" stroke-width="1" visibility="hidden"/>';
+    series.forEach(function (s, i) { h += '<circle class="dec-pt" data-i="' + i + '" r="5" fill="' + s.couleur + '" stroke="#fff" stroke-width="2" visibility="hidden"/>'; });
+    h += '<rect class="dec-hit" x="' + mg.l + '" y="' + mg.t + '" width="' + pw + '" height="' + ph + '" fill="transparent"/>';
+
+    var leg = '';
+    if (series.length > 1) {
+      leg = '<div class="dec-legende">';
+      series.forEach(function (s) { leg += '<span><i style="background:' + s.couleur + '"></i>' + esc(s.nom) + '</span>'; });
+      leg += '</div>';
+    }
+    cont.innerHTML = leg + '<div class="dec-graph"><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" tabindex="0" aria-label="' + esc(opts.titre) + '. Survole ou utilise les flèches pour lire les valeurs. Le tableau plus bas donne les mêmes chiffres." xmlns="' + NS + '">' + h + '</svg><div class="dec-tip" role="status"></div></div>';
+
+    var svg = cont.querySelector('svg'), tip = cont.querySelector('.dec-tip'), hair = svg.querySelector('.dec-hair'), pts = svg.querySelectorAll('.dec-pt'), idx = -1;
+    function montrer(i) {
+      idx = Math.max(0, Math.min(xs.length - 1, i));
+      var x = X(xs[idx]);
+      hair.setAttribute('x1', x); hair.setAttribute('x2', x); hair.setAttribute('visibility', 'visible');
+      for (var k = 0; k < pts.length; k++) { pts[k].setAttribute('cx', x); pts[k].setAttribute('cy', Y(series[k].valeurs[idx])); pts[k].setAttribute('visibility', 'visible'); }
+      tip.textContent = '';
+      var t = document.createElement('div'); t.className = 'dec-tip-titre'; t.textContent = xs[idx] + ' ans'; tip.appendChild(t);
+      series.forEach(function (s) {
+        var l = document.createElement('div'), b = document.createElement('strong'), sw = document.createElement('i');
+        sw.style.background = s.couleur; l.appendChild(sw);
+        b.textContent = argent(s.valeurs[idx]); l.appendChild(b);
+        l.appendChild(document.createTextNode(' ' + s.nom)); tip.appendChild(l);
+      });
+      tip.style.display = 'block';
+      var r = svg.getBoundingClientRect(), k = r.width / W, px = x * k, tw = tip.offsetWidth;
+      tip.style.left = Math.max(0, Math.min(r.width - tw, px + (px > r.width / 2 ? -tw - 12 : 12))) + 'px';
+      tip.style.top = (mg.t * k) + 'px';
+    }
+    function cacher() { hair.setAttribute('visibility', 'hidden'); for (var k = 0; k < pts.length; k++) pts[k].setAttribute('visibility', 'hidden'); tip.style.display = 'none'; }
+    function surPointeur(e) {
+      var r = svg.getBoundingClientRect(), vx = (e.clientX - r.left) / r.width * W;
+      montrer(Math.round((vx - mg.l) / pw * (x1 - x0)));
+    }
+    svg.addEventListener('pointermove', surPointeur);
+    svg.addEventListener('pointerdown', surPointeur);
+    svg.addEventListener('pointerleave', cacher);
+    svg.addEventListener('blur', cacher);
+    svg.addEventListener('focus', function () { montrer(idx < 0 ? 0 : idx); });
+    svg.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { montrer(idx + 1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft') { montrer(idx - 1); e.preventDefault(); }
+      else if (e.key === 'Escape') cacher();
+    });
+  }
+
+  /* ---------- Calcul et affichage ---------- */
+  function afficherOrdre() {
+    var liste = lireOrdre($('dec-ordre').value), ol = $('dec-ordre-liste');
+    $('dec-ordre').value = liste.join(',');
+    ol.innerHTML = '';
+    liste.forEach(function (c, i) {
+      var li = document.createElement('li'), s = document.createElement('span');
+      s.textContent = COMPTES[c]; li.appendChild(s);
+      [['↑', -1, 'Monter '], ['↓', 1, 'Descendre ']].forEach(function (b) {
+        var bt = document.createElement('button'); bt.type = 'button'; bt.textContent = b[0];
+        bt.setAttribute('aria-label', b[2] + COMPTES[c]); bt.setAttribute('data-c', c); bt.setAttribute('data-sens', b[1]);
+        if ((b[1] < 0 && i === 0) || (b[1] > 0 && i === liste.length - 1)) bt.disabled = true;
+        li.appendChild(bt);
+      });
+      ol.appendChild(li);
+    });
+  }
+  function calculer() {
+    var zone = $('dec-resultat');
+    var age = nombre('dec-age'), reer = nombre('dec-reer'), cri = nombre('dec-cri'), celi = nombre('dec-celi'), ne = nombre('dec-ne'), dep = nombre('dec-depenses');
+    var neDist = nombre('dec-ne-dist');
+    var rend = nombre('dec-rendement'), infl = nombre('dec-inflation'), hor = nombre('dec-horizon');
+    var ret = nombre('dec-retraite'), epa = nombre('dec-epargne');
+    var champs = [age, reer, cri, celi, ne, neDist, dep, rend, infl, hor, ret, epa];
+    for (var i = 0; i < champs.length; i++) if (champs[i] !== null && isNaN(champs[i])) { zone.innerHTML = '<div class="frais-alerte">Un des champs n\'est pas un nombre valide.</div>'; return; }
+    if (age === null || dep === null || rend === null || infl === null || hor === null) { zone.innerHTML = '<div class="frais-alerte bleu">Remplis au moins ton âge, tes dépenses annuelles, le rendement, l\'inflation et l\'âge de planification pour voir le résultat.</div>'; return; }
+    reer = reer || 0; cri = cri || 0; celi = celi || 0; ne = ne || 0; neDist = neDist || 0;
+    var capital = reer + cri + celi + ne;
+    if (age < 18 || age > 100 || Math.round(age) !== age) { zone.innerHTML = '<div class="frais-alerte">Ton âge doit être un nombre entier entre 18 et 100.</div>'; return; }
+    if (hor <= age || hor > 110 || Math.round(hor) !== hor) { zone.innerHTML = '<div class="frais-alerte">L\'âge de planification doit être un nombre entier plus grand que ton âge, jusqu\'à 110.</div>'; return; }
+    if (ret === null) ret = age;
+    if (epa === null) epa = 0;
+    if (Math.round(ret) !== ret || ret < age || ret >= hor) { zone.innerHTML = '<div class="frais-alerte">L\'âge où tu arrêtes de travailler doit être un nombre entier, au moins égal à ton âge et plus petit que l\'âge de planification. Laisse-le vide si tu es déjà à la retraite.</div>'; return; }
+    if (epa < 0) { zone.innerHTML = '<div class="frais-alerte">L\'épargne annuelle ne peut pas être négative.</div>'; return; }
+    if (neDist < 0 || neDist > 20) { zone.innerHTML = '<div class="frais-alerte">Les distributions du non enregistré doivent se situer entre 0 % et 20 % par année.</div>'; return; }
+    if (reer < 0 || cri < 0 || celi < 0 || ne < 0 || dep <= 0) { zone.innerHTML = '<div class="frais-alerte">Les comptes ne peuvent pas être négatifs et les dépenses doivent être plus grandes que zéro.</div>'; return; }
+    if (rend < -10 || rend > 15) { zone.innerHTML = '<div class="frais-alerte">Le rendement doit se situer entre -10 % et 15 %.</div>'; return; }
+    if (infl < 0 || infl > 10) { zone.innerHTML = '<div class="frais-alerte">L\'inflation doit se situer entre 0 % et 10 %.</div>'; return; }
+    var lr = lireRentes(age);
+    if (lr.err) { zone.innerHTML = '<div class="frais-alerte">' + esc(lr.err) + '</div>'; return; }
+
+    var p = { age: age, reer: reer, cri: cri, celi: celi, ne: ne, neDist: neDist / 100, neNature: $('dec-ne-type').value, depenses: dep, rendement: rend / 100, inflation: infl / 100, horizon: hor, rentes: lr.rentes, retraite: ret, epargne: epa, ordre: $('dec-ordre').value, seul: $('dec-seul').checked };
+    var S = simuler(p), L = S.lignes, premier = null;
+    for (var z = 0; z < L.length; z++) if (L[z].phase === 'retraite') { premier = L[z]; break; }
+    var LR = L.filter(function (l) { return l.phase === 'retraite'; });
+    var capR = premier.capitalDebut, avant = ret > age;
+    var besoin0 = premier.retrait;
+    var impotTotal = 0, recupMax = 0, excedentFerr = null;
+    LR.forEach(function (l) { impotTotal += l.impot; if (l.recup > recupMax) recupMax = l.recup; if (excedentFerr === null && l.excedent > 1 && l.minFerr > 0 && l.retraitReer + l.retraitCri >= l.minFerr - 1 && l.rentes < l.depenses) excedentFerr = l.age; });
+    var h = '<div class="card"><h3>Résultat</h3>';
+    if (S.epuise !== null) {
+      h += '<div class="frais-grand frais-neg">Ton capital s\'épuise vers ' + S.epuise + ' ans</div>';
+      h += '<div class="frais-sous">Cette année-là, il ne couvre plus qu\'une partie de tes besoins. À ' + hor + ' ans, il manquerait environ ' + argent(L[L.length - 1].manque) + ' par année, en dollars d\'aujourd\'hui.</div>';
+    } else {
+      var fin = L[L.length - 1].capitalFin;
+      h += '<div class="frais-grand">Ton capital dure au-delà de ' + hor + ' ans</div>';
+      h += '<div class="frais-sous">Il te resterait environ ' + argent(fin) + ' à ' + hor + ' ans, en dollars d\'aujourd\'hui.</div>';
+    }
+    if (avant) h += '<p style="margin:14px 0 0;">À ta retraite, à ' + ret + ' ans, ton capital vaudrait environ <strong>' + argent(capR) + '</strong> en dollars d\'aujourd\'hui.</p>';
+    if (capR > 0 && besoin0 > 0) {
+      var taux = besoin0 / capR * 100;
+      h += '<p style="margin:14px 0 0;">' + (avant ? 'La première année de retraite' : 'Cette année') + ', pour avoir <strong>' + argent(premier.depenses) + '</strong> à dépenser, tu dois retirer <strong>' + argent(besoin0) + '</strong> de tes comptes et payer environ <strong>' + argent(premier.impot) + '</strong> d\'impôt. Ton taux de retrait est de <strong>' + pct(taux, 1) + '</strong>.' +
+        (taux > 5 ? ' C\'est nettement au-dessus de la règle des 4 %, qui a été pensée pour 30 ans de retraite.' : taux > 4 ? ' C\'est un peu au-dessus de la règle des 4 %.' : '') + '</p>';
+    } else if (besoin0 <= 0) {
+      h += '<p style="margin:14px 0 0;">' + (avant ? 'Dès ta retraite' : 'Cette année') + ', tes rentes couvrent toutes tes dépenses après impôt. L\'excédent est ajouté à ton compte non enregistré dans la simulation.</p>';
+    }
+    if (S.manqueCri !== null) h += '<div class="frais-alerte" style="margin:14px 0 0;">Dès ' + S.manqueCri + ' ans, l\'argent accessible ne suffit plus, alors que ton CRI reste bloqué jusqu\'à 55 ans. Il te faudrait plus d\'épargne hors CRI, ou un revenu temporaire du FRV, qui est plafonné avant 55 ans.</div>';
+    h += '<p style="margin:14px 0 0;">Impôt total payé pendant la retraite, jusqu\'à ' + hor + ' ans : <strong>' + argent(impotTotal) + '</strong>, en dollars d\'aujourd\'hui. Change l\'ordre des comptes pour comparer.</p>';
+    if (recupMax > 1) h += '<p style="margin:10px 0 0;">Ton revenu dépasse le seuil de récupération de la PSV. Certaines années, tu rembourses jusqu\'à <strong>' + argent(recupMax) + '</strong> de ta PSV.</p>';
+    if (excedentFerr !== null) h += '<p style="margin:10px 0 0;">À partir de ' + excedentFerr + ' ans, le retrait minimum obligatoire du FERR t\'oblige à retirer plus que nécessaire. L\'excédent, imposé, est replacé dans ton compte non enregistré.</p>';
+    h += '</div>';
+
+    // Comparaison de l'âge de début du RRQ
+    var rrqLibres = lr.rentes.filter(function (r) { return r.type === 'rrq' && !r.dejaRecue; });
+    if (rrqLibres.length) {
+      var choixActuel = rrqLibres[0].debut, ages = [60, 65, 70, 72];
+      if (ages.indexOf(choixActuel) < 0) { ages.push(choixActuel); ages.sort(function (a, b) { return a - b; }); }
+      h += '<div class="card"><h3>À quel âge commencer ton RRQ ?</h3><p class="frais-sous" style="margin:0 0 10px;">La même simulation, en changeant seulement l\'âge de début du RRQ. Tout le reste est identique. En dollars d\'aujourd\'hui.</p>';
+      h += '<div class="frais-scroll"><table class="frais-table"><thead><tr><th>RRQ à</th><th>Rente annuelle</th><th>Capital épuisé</th><th>Capital à ' + hor + ' ans</th><th>Impôt total</th></tr></thead><tbody>';
+      ages.forEach(function (a) {
+        var q = JSON.parse(JSON.stringify(p));
+        q.rentes.forEach(function (r) { if (r.type === 'rrq' && !r.dejaRecue) { r.debut = a; r.facteur = facteurDebut('rrq', a); } });
+        var Sq = simuler(q), Lq = Sq.lignes, imp = 0;
+        Lq.forEach(function (l) { imp += l.impot || 0; });
+        var rente = 0; q.rentes.forEach(function (r) { if (r.type === 'rrq' && !r.dejaRecue) rente += r.montant * r.facteur; });
+        h += '<tr' + (a === choixActuel ? ' class="frais-moi"' : '') + '><td>' + a + ' ans' + (a === choixActuel ? '<span class="frais-sous">ton choix</span>' : '') + '</td><td>' + argent(rente) + '</td><td>' + (Sq.epuise !== null ? 'vers ' + Sq.epuise + ' ans' : 'après ' + hor + ' ans') + '</td><td>' + argent(Lq[Lq.length - 1].capitalFin) + '</td><td>' + argent(imp) + '</td></tr>';
+      });
+      h += '</tbody></table></div><p class="frais-sous" style="margin-top:10px;">Reporter le RRQ augmente la rente de 0,7 % par mois, mais il faut puiser davantage dans ton capital en attendant. Plus tu vis longtemps, plus le report rapporte. Le montant de la rente est celui de la ligne RRQ, ajusté selon l\'âge.</p></div>';
+    }
+
+    // Pouvoir d'achat des rentes
+    var partielles = lr.rentes.filter(function (r) { return r.index < 1; });
+    if (lr.rentes.length) {
+      h += '<div class="card"><h3>Tes dépenses et tes rentes</h3>';
+      var ajust = [];
+      lr.rentes.forEach(function (r) {
+        if (r.type === 'rrq' && Math.abs(r.facteur - 1) > 1e-9) ajust.push(esc(r.nom) + ' à ' + r.debut + ' ans : ' + (r.facteur < 1 ? 'réduite de ' : 'bonifiée de ') + pct(Math.abs(r.facteur - 1) * 100, 1) + ', soit ' + argent(r.montant * r.facteur) + ' par année');
+        if (r.type === 'psv' && Math.abs(r.facteur - 1) > 1e-9) ajust.push(esc(r.nom) + ' à ' + r.debut + ' ans : bonifiée de ' + pct((r.facteur - 1) * 100, 1) + ', soit ' + argent(r.montant * r.facteur) + ' par année');
+        if (r.hausse75) ajust.push(esc(r.nom) + ' : hausse permanente de 10 % à partir de 75 ans');
+      });
+      if (ajust.length) h += '<p style="margin:0 0 10px;"><strong>Ajustements appliqués selon l\'âge :</strong></p><ul style="margin:0 0 12px 20px;line-height:1.7;">' + ajust.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>';
+      if (partielles.length && p.inflation > 0) {
+        var cible = Math.min(hor, ret + 10);
+        var perte = 0;
+        partielles.forEach(function (r) {
+          var t = cible - age;
+          perte += r.montant - r.montant * Math.pow(1 + p.inflation * r.index, t) / Math.pow(1 + p.inflation, t);
+        });
+        h += '<p style="margin:0 0 10px;">Tes rentes partiellement indexées auront perdu environ <strong>' + argent(perte) + ' par année</strong> de pouvoir d\'achat d\'ici ' + cible + ' ans. C\'est ton capital qui doit combler cet écart, en plus du reste.</p>';
+      }
+      h += '<p class="frais-sous" style="margin:0 0 6px;">À partir de ta retraite, en dollars d\'aujourd\'hui. Dépenses après impôt, rentes avant impôt. Une ligne de rentes qui descend, c\'est du pouvoir d\'achat perdu.</p>';
+      h += '<div id="dec-g-flux"></div></div>';
+    }
+
+    h += '<div class="card"><h3>Ton capital, année après année</h3><p class="frais-sous" style="margin:0 0 6px;">En dollars d\'aujourd\'hui, au début de chaque année.</p><div id="dec-g-capital"></div></div>';
+
+    // Tableau
+    h += '<div class="card"><h3>Le détail</h3><div class="frais-scroll"><table class="frais-table"><thead><tr><th>Âge</th><th>Dépenses après impôt</th><th>Rentes</th><th>Retraits des comptes</th><th>Impôt</th><th>Capital en début d\'année</th></tr></thead><tbody>';
+    var pasT = L.length <= 12 ? 1 : 5;
+    for (var k = 0; k < L.length; k++) {
+      var l = L[k];
+      if (!(k === 0 || k === L.length - 1 || (l.age - age) % pasT === 0 || l.age === S.epuise || (avant && l.age === ret))) continue;
+      if (l.phase === 'accumulation') {
+        h += '<tr><td>' + l.age + '</td><td>&ndash;</td><td>&ndash;</td><td>' + (l.epargne > 0 ? '<span class="frais-pos">+ ' + argent(l.epargne) + ' épargnés</span>' : '&ndash;') + '</td><td>&ndash;</td><td>' + argent(l.capitalDebut) + '</td></tr>';
+        continue;
+      }
+      h += '<tr' + (l.age === S.epuise ? ' class="dec-epuise"' : (avant && l.age === ret ? ' class="frais-moi"' : '')) + '><td>' + l.age + (avant && l.age === ret ? '<span class="frais-sous">retraite</span>' : '') + '</td><td>' + argent(l.depenses) + '</td><td>' + argent(l.rentes) + '</td><td>' + argent(Math.max(0, l.retrait)) + (l.manque > 0.5 ? '<span class="frais-sous frais-neg">manque ' + argent(l.manque) + '</span>' : '') + (l.excedent > 1 ? '<span class="frais-sous">dont ' + argent(l.excedent) + ' replacés</span>' : '') + (l.criBloque && l.manque > 0.5 ? '<span class="frais-sous">CRI bloqué</span>' : '') + '</td><td>' + argent(l.impot) + (l.recup > 1 ? '<span class="frais-sous">dont PSV ' + argent(l.recup) + '</span>' : '') + '</td><td>' + argent(l.capitalDebut) + '</td></tr>';
+    }
+    h += '</tbody></table></div><p class="frais-sous" style="margin-top:12px;">Tous les montants sont en dollars d\'aujourd\'hui. Les rentes et les retraits sont avant impôt, les dépenses après impôt. Les retraits se font en début d\'année.' + (avant ? ' Avant la retraite, on suppose que ton salaire paie tes dépenses. Tes rentes ne comptent qu\'à partir de ta retraite.' : '') + '</p></div>';
+
+    h += '<div class="frais-alerte bleu"><strong>Comment lire ce résultat.</strong><ul style="margin:8px 0 0 20px;line-height:1.7;">' +
+      '<li>Le rendement est le même chaque année. Dans la réalité, une mauvaise année au début de la retraite peut raccourcir l\'horizon de plusieurs années. C\'est le risque de séquence.</li>' +
+      '<li>Une rente indexée à 100 % garde son pouvoir d\'achat. À 50 %, elle n\'en suit que la moitié. À 0 %, son montant reste fixe pendant que les prix montent.</li>' +
+      '<li>L\'impôt suit les règles 2026 du fédéral et du Québec pour une personne seule : paliers, montant personnel de base, montants pour âge et pour revenus de retraite, récupération de la PSV. Les crédits remboursables (solidarité, soutien aux aînés) et le fractionnement du revenu de pension entre conjoints ne sont pas inclus.</li>' +
+      '<li>Dans le non enregistré, les distributions sont imposées chaque année selon leur nature, puis réinvesties. Le reste du rendement est un gain en capital, imposé à 50 % lors de la vente. La valeur de ta maison n\'est pas modélisée.</li>' +
+      '<li>Le CRI devient accessible à 55 ans, sans plafond une fois transféré dans un FRV. Le revenu temporaire offert avant 55 ans n\'est pas modélisé. Le retrait minimum s\'applique au FERR et au FRV à partir de 72 ans.</li>' +
+      '</ul></div>';
+    h += '<div class="passerelle"><p><strong>Pourquoi le décaissement est-il plus difficile que l\'accumulation ?</strong> Les pièges qui guettent après l\'arrêt du travail.</p><button type="button" onclick="window.location.href=\'blog/independance-financiere-y-rester.html\'">Lire l\'article</button></div>';
+    h += '<div class="passerelle"><p><strong>Tu rencontres un conseiller ?</strong> Imprime une fiche avec tes chiffres, tes hypothèses, les questions à poser et les documents à apporter.</p><button type="button" onclick="genererFicheConseiller()">Fiche pour mon conseiller</button></div>';
+    zone.innerHTML = h;
+
+    var ages = L.map(function (l) { return l.age; });
+    if (lr.rentes.length) {
+      var agesR = LR.map(function (l) { return l.age; });
+      var dv = LR.map(function (l) { return l.depenses; }), rv = LR.map(function (l) { return l.rentes; });
+      var proches = Math.abs(dv[dv.length - 1] - rv[rv.length - 1]) < (Math.max(dv[dv.length - 1], 1) * 0.08);
+      graphique($('dec-g-flux'), agesR, [
+        { nom: 'Dépenses', couleur: COUL_B, valeurs: dv, decal: proches && dv[dv.length - 1] >= rv[rv.length - 1] ? -8 : (proches ? 8 : 0) },
+        { nom: 'Rentes', couleur: COUL_A, valeurs: rv, decal: proches && rv[rv.length - 1] > dv[dv.length - 1] ? -8 : (proches ? 8 : 0) }
+      ], { titre: 'Dépenses et rentes par âge, en dollars d\'aujourd\'hui' });
+    }
+    graphique($('dec-g-capital'), ages, [{ nom: 'Capital', couleur: COUL_A, valeurs: L.map(function (l) { return l.capitalDebut; }) }],
+      { titre: 'Capital en début d\'année par âge, en dollars d\'aujourd\'hui', marques: (avant ? [{ x: ret, y: capR, couleur: '#6b7280', texte: 'Retraite à ' + ret + ' ans' }] : []).concat(S.epuise !== null ? [{ x: S.epuise, texte: 'Épuisé vers ' + S.epuise + ' ans' }] : []) });
+  }
+
+  /* ---------- Reprise des données du profil (assistant, Bilan, Objectifs) ---------- */
+  function source(id) { var el = document.getElementById(id); if (!el) return null; var n = lireNombre(el.value); return (n === null || isNaN(n)) ? null : n; }
+  function libre(id) { var el = $(id); return el.value.trim() === '' || el.getAttribute('data-auto') === '1' || !el.hasAttribute('data-touche'); }
+  function ecrire(id, v) { var el = $(id); el.value = v; el.setAttribute('data-auto', '1'); }
+  function rentesVides() {
+    var m = document.querySelectorAll('#dec-rentes .dec-r-montant');
+    for (var i = 0; i < m.length; i++) if (m[i].value.trim() !== '' && m[i].closest('.dec-rente').getAttribute('data-auto') !== '1') return false;
+    return true;
+  }
+  function synchroniser(force) {
+    var repris = [], lien = $('dec-lien');
+    var a = source('age-actuel'), ar = source('age-retraite-souhaite');
+    if (a > 0 && (force || libre('dec-age'))) { ecrire('dec-age', String(Math.round(a))); repris.push('ton âge'); }
+    var compt = [['reer', 'dec-reer'], ['celi', 'dec-celi'], ['cne', 'dec-ne']], prisComptes = false;
+    compt.forEach(function (c) { var v = source(c[0]); if (v > 0 && (force || libre(c[1]))) { ecrire(c[1], String(Math.round(v))); prisComptes = true; } });
+    var criB = source('cri');
+    if (criB > 0 && (force || libre('dec-cri'))) { ecrire('dec-cri', String(Math.round(criB))); prisComptes = true; }
+    if (prisComptes) repris.push(criB > 0 ? 'tes REER, CRI, CELI et non enregistré' : 'tes REER, CELI et non enregistré');
+    var sit = document.getElementById('profil-situation'), ds = $('dec-seul');
+    if (sit && sit.value && (force || !ds.hasAttribute('data-touche'))) { ds.checked = sit.value === 'seul'; repris.push(sit.value === 'seul' ? 'ta situation (seul)' : 'ta situation (en couple)'); }
+    if (ar > 0 && a > 0 && ar > a && (force || libre('dec-retraite'))) { ecrire('dec-retraite', String(Math.round(ar))); repris.push('ton âge de retraite'); }
+    var tog = document.getElementById('contribution-actuelle-toggle'), cm = source('contribution-mensuelle-actuelle');
+    if (tog && tog.checked && cm > 0 && (force || libre('dec-epargne'))) { ecrire('dec-epargne', String(Math.round(cm * 12))); repris.push('ton épargne (12 fois ta contribution mensuelle)'); }
+    var dep = source('revenu-retraite');
+    if (dep > 0 && (force || libre('dec-depenses'))) { ecrire('dec-depenses', String(Math.round(dep))); repris.push('le revenu désiré à la retraite comme dépenses'); }
+    var r = source('taux-rendement-pendant-retraite');
+    if (r !== null && (force || libre('dec-rendement'))) { ecrire('dec-rendement', String(r).replace('.', ',')); repris.push('le rendement pendant la retraite'); }
+    var pp = source('pension-publique'), rp = source('rente-pension'), separe = false;
+    var borne = function (v, a, b) { return v >= a && v <= b ? String(Math.round(v)) : '65'; };
+    var aRrq = borne(source('age-rrq'), 60, 72), aPsv = borne(source('age-psv'), 65, 70);
+    var idx = source('rente-pension-index'), idxConnu = idx !== null && document.getElementById('rente-pension-index').value.trim() !== '' && idx >= 0 && idx <= 100;
+    if ((pp > 0 || rp > 0) && (force || rentesVides())) {
+      var liste = [];
+      // Le profil donne RRQ et PSV ensemble : on attribue à la PSV au plus son maximum à 65 ans, le reste au RRQ.
+      if (pp > 0) {
+        var psvEst = Math.min(pp, PSV_MAX_65), rrqEst = pp - psvEst;
+        if (rrqEst > 0) liste.push({ nom: 'RRQ (estimation à 65 ans)', type: 'rrq', montant: String(Math.round(rrqEst)), debut: aRrq, index: '100' });
+        liste.push({ nom: 'PSV (estimation à 65 ans)', type: 'psv', montant: String(Math.round(psvEst)), debut: aPsv, index: '100' });
+        separe = true;
+      }
+      else { liste.push(DEFAUT[0]); liste.push(DEFAUT[1]); }
+      liste.push({ nom: "Rente d'employeur", montant: rp > 0 ? String(Math.round(rp)) : '', debut: String(ar > 0 ? Math.round(ar) : 65), index: idxConnu ? String(Math.round(idx)) : '50' });
+      remplirRentes(liste);
+      var lignes = document.querySelectorAll('#dec-rentes .dec-rente');
+      for (var i = 0; i < lignes.length; i++) lignes[i].setAttribute('data-auto', '1');
+      repris.push('tes rentes');
+    }
+    if (repris.length) {
+      var txt = 'Repris de ton profil : ' + repris.join(', ') + '. Tu peux tout modifier.';
+      if (rp > 0 && !idxConnu) txt += ' L\'indexation de 50 % de ta rente d\'employeur est un exemple : vérifie-la dans ton relevé.';
+      if (separe) txt += ' Ton estimation RRQ et PSV a été séparée : la PSV à son maximum à 65 ans (environ ' + argent(PSV_MAX_65) + ' par année), le reste au RRQ. Ajuste avec tes relevés.';
+      lien.textContent = txt; lien.style.display = 'block';
+    } else if (force) {
+      lien.textContent = 'Aucune donnée à reprendre. Remplis ton bilan et l\'onglet Objectifs, ou passe par l\'assistant de « Mon profil ».';
+      lien.style.display = 'block';
+    }
+    calculer();
+  }
+
+  function exemple() {
+    $('dec-ordre').value = ORDRE_DEFAUT.join(','); afficherOrdre(); $('dec-seul').checked = true; $('dec-ne-type').value = 'ordinaire';
+    var v = { 'dec-retraite': '', 'dec-epargne': '', 'dec-age': '73', 'dec-reer': '236256', 'dec-cri': '', 'dec-celi': '3400', 'dec-ne': '', 'dec-ne-dist': '', 'dec-depenses': '62000', 'dec-rendement': '5', 'dec-inflation': '2,5', 'dec-horizon': '95' };
+    for (var k in v) { $(k).value = v[k]; $(k).removeAttribute('data-auto'); $(k).setAttribute('data-touche', '1'); }
+    remplirRentes([
+      { nom: 'Rente de retraite', montant: '22255', debut: '73', index: '50' },
+      { nom: 'Rente du conjoint décédé', montant: '4097', debut: '73', index: '50' },
+      { nom: 'RRQ', type: 'rrq', montant: '12725', debut: '65', index: '100' },
+      { nom: 'RRQ du conjoint décédé', montant: '1554', debut: '65', index: '100' },
+      { nom: 'PSV', type: 'psv', montant: '8908', debut: '65', index: '100' }
+    ]);
+    var lien = $('dec-lien');
+    lien.textContent = 'Exemple : une retraitée de 73 ans dont la rente d\'employeur est partiellement indexée. L\'indexation de 50 % est une hypothèse. Remplace ces chiffres par les tiens.';
+    lien.style.display = 'block';
+    calculer();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!$('tab-decaissement')) return;
+    remplirRentes(DEFAUT);
+    $('tab-decaissement').addEventListener('input', function (e) {
+      if (e.target.tagName !== 'INPUT') return;
+      e.target.setAttribute('data-touche', '1'); e.target.removeAttribute('data-auto');
+      var lr = e.target.closest('.dec-rente'); if (lr) lr.removeAttribute('data-auto');
+      calculer();
+    });
+    $('dec-reprendre').addEventListener('click', function () { synchroniser(true); signalerChangement(); });
+    afficherOrdre();
+    $('dec-ordre-liste').addEventListener('click', function (e) {
+      var bt = e.target.closest('button'); if (!bt) return;
+      var liste = lireOrdre($('dec-ordre').value), c = bt.getAttribute('data-c'), i = liste.indexOf(c), j = i + Number(bt.getAttribute('data-sens'));
+      if (j < 0 || j >= liste.length) return;
+      liste[i] = liste[j]; liste[j] = c; $('dec-ordre').value = liste.join(',');
+      afficherOrdre(); calculer(); signalerChangement();
+      var nb = $('dec-ordre-liste').querySelector('button[data-c="' + c + '"][data-sens="' + bt.getAttribute('data-sens') + '"]');
+      if (nb && !nb.disabled) nb.focus();
+    });
+    $('dec-ne-type').addEventListener('change', function () { calculer(); });
+    $('dec-seul').addEventListener('change', function () { calculer(); });
+    $('dec-rentes').addEventListener('change', function (e) {
+      if (!e.target.classList.contains('dec-r-type')) return;
+      var lr = e.target.closest('.dec-rente'); lr.removeAttribute('data-auto');
+      if (e.target.value !== 'autre') lr.querySelector('.dec-r-index').value = '100';
+      calculer();
+    });
+    $('dec-rentes').addEventListener('click', function (e) {
+      var b = e.target.closest('.dec-suppr');
+      if (b) { b.parentNode.parentNode.removeChild(b.parentNode); calculer(); signalerChangement(); }
+    });
+    $('dec-ajouter').addEventListener('click', function () {
+      var r = ligneRente({ nom: '', montant: '', debut: '65', index: '100' });
+      $('dec-rentes').appendChild(r); r.querySelector('.dec-r-nom').focus(); signalerChangement();
+    });
+    $('dec-exemple').addEventListener('click', function () { exemple(); signalerChangement(); });
+    var minuteur = null, largeur = 0;
+    window.addEventListener('resize', function () {
+      clearTimeout(minuteur);
+      minuteur = setTimeout(function () {
+        var t = $('tab-decaissement');
+        if (t.classList.contains('active') && t.offsetWidth !== largeur) { largeur = t.offsetWidth; calculer(); }
+      }, 200);
+    });
+    calculer();
   });
 }());
 </script>
@@ -8537,6 +9400,8 @@ header .container { overflow:visible; }
 @media (max-width:650px) { .data-menu-list { left:0; right:auto; } }
 .header-actions { display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap; position:relative; }
 .hero-btn { background:#059669 !important; font-size:1.05em; padding:.8rem 1.4rem; }
+.btn-fiche { background:transparent !important; padding:.7rem 1.1rem; border-radius:.55rem; }
+.btn-fiche:hover { background:#fff !important; color:var(--brand); }
 .data-menu { position:relative; }
 .data-menu summary { list-style:none; cursor:pointer; display:inline-flex; align-items:center; padding:.7rem 1.1rem; border-radius:.55rem; background:transparent; }
 .data-menu summary::-webkit-details-marker { display:none; }
@@ -8648,6 +9513,39 @@ header .container { overflow:visible; }
 .frais-table td { padding:10px; border-bottom:1px solid #e5e7eb; vertical-align:top; }
 .frais-table tr.frais-moi td { background:#eff6ff; font-weight:600; }
 .frais-alerte { padding:14px 18px; border-radius:10px; margin:16px 0; border-left:5px solid #dc2626; background:#fef2f2; color:#7f1d1d; font-size:.95em; line-height:1.6; }
+#tab-decaissement .frais-lien { display:none; background:#f5f3ff; border:1px solid #ddd6fe; color:#5b21b6; border-radius:8px; padding:10px 14px; margin-bottom:16px; font-size:.9em; }
+.dec-rente-tete, .dec-rente { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,.95fr) minmax(0,1fr) minmax(0,.75fr) minmax(0,.75fr) 2.75rem; gap:10px; align-items:end; }
+.dec-rente-tete { font-size:.82em; color:#6b7280; font-weight:600; margin-bottom:6px; }
+.dec-rente { margin-bottom:10px; }
+.dec-rente label { display:block; margin:0; }
+.dec-rente select { width:100%; padding:12px 8px; border:1px solid #aab7c4; border-radius:8px; font-size:1em; min-height:2.75rem; background:#fff; color:var(--ink); }
+.dec-rente input { width:100%; padding:12px; border:1px solid #aab7c4; border-radius:8px; font-size:1em; min-height:2.75rem; background:#fff; color:var(--ink); }
+.dec-rente input:focus { border-color:var(--brand); outline:3px solid rgba(245,159,0,.38); outline-offset:1px; }
+.dec-mini { display:none; font-size:.8em; color:#6b7280; font-weight:600; margin-bottom:4px; }
+.dec-suppr { background:#fff; border:1px solid #e5e7eb; border-radius:8px; color:#6b7280; cursor:pointer; font-size:1.2em; line-height:1; padding:0; width:2.75rem; }
+.dec-suppr:hover { border-color:#b91c1c; color:#b91c1c; }
+.dec-graph { position:relative; }
+.dec-graph svg { width:100%; height:auto; display:block; touch-action:pan-y; outline:none; }
+.dec-graph svg:focus-visible { outline:2px solid #2563eb; outline-offset:4px; border-radius:6px; }
+.dec-tip { position:absolute; display:none; pointer-events:none; background:#fff; border:1px solid #e5e7eb; border-radius:8px; box-shadow:0 4px 14px rgba(0,0,0,.1); padding:8px 10px; font-size:.85em; color:#374151; white-space:nowrap; z-index:2; line-height:1.6; }
+.dec-tip-titre { color:#6b7280; font-weight:600; }
+.dec-tip i, .dec-legende i { display:inline-block; width:12px; height:3px; border-radius:2px; vertical-align:middle; margin-right:6px; }
+.dec-tip strong { color:#111827; }
+.dec-ordre { list-style:none; margin:6px 0 0; padding:0; counter-reset:ordre; }
+.dec-ordre li { display:flex; align-items:center; gap:8px; border:1px solid #e5e7eb; border-radius:8px; padding:6px 8px; margin-bottom:6px; background:#fff; counter-increment:ordre; }
+.dec-ordre li::before { content:counter(ordre); font-weight:700; color:#1e40af; width:1.4em; text-align:center; }
+.dec-ordre li span { flex:1; }
+.dec-ordre button { background:#fff; border:1px solid #d1d5db; border-radius:6px; cursor:pointer; min-height:2.25rem; min-width:2.25rem; padding:0; color:#374151; }
+.dec-ordre button:disabled { opacity:.35; cursor:default; }
+.dec-legende { display:flex; gap:16px; flex-wrap:wrap; font-size:.85em; color:#374151; margin:4px 0 6px; }
+.frais-table tr.dec-epuise td { background:#fef2f2; font-weight:600; }
+@media (max-width:650px) {
+  .dec-rente-tete { display:none; }
+  .dec-rente { grid-template-columns:1fr 1fr; padding:12px; border:1px solid #e5e7eb; border-radius:10px; position:relative; }
+  .dec-rente label:first-child { grid-column:1 / -1; padding-right:3.25rem; }
+  .dec-rente .dec-suppr { position:absolute; top:12px; right:12px; }
+  .dec-mini { display:block; }
+}
 .frais-alerte.bleu { border-color:#2563eb; background:#eff6ff; color:#1e3a8a; }
 #rapport-imprimable .frais-table { min-width:0; }
 #tab-comparateur .cmp-pos, #rapport-imprimable .cmp-pos { color: #047857; font-weight: 700; }
@@ -8930,6 +9828,34 @@ header .container { overflow:visible; }
     color: #6b7280;
     text-align: center;
   }
+  #rapport-imprimable .fiche-vide { display:inline-block; min-width:180px; border-bottom:1px solid #9ca3af; height:1.1em; vertical-align:bottom; }
+  #rapport-imprimable .rapport-table tr { break-inside:avoid; page-break-inside:avoid; }
+  #rapport-imprimable .fiche-note { border-bottom:1px solid #d1d5db; height:1.9em; }
+  #rapport-imprimable .fiche-cases { list-style:none; margin:6px 0; padding:0; columns:1; }
+  #rapport-imprimable .fiche-cases li { margin:5px 0; line-height:1.45; break-inside:avoid; }
+  #rapport-imprimable .fiche-case { display:inline-block; width:12px; height:12px; border:1.5px solid #374151; border-radius:2px; margin-right:8px; vertical-align:-1px; }
+  #rapport-imprimable .fiche-case.coche { background:#1e40af; border-color:#1e40af; box-shadow:inset 0 0 0 2px #fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  #rapport-imprimable .fiche-aide { color:#6b7280; font-size:.88em; margin:6px 0 0; }
+  #rapport-imprimable .fiche-resultat { margin:8px 0 0; }
+  #rapport-imprimable h3 { font-size:1em; margin:12px 0 6px; color:#1f2937; }
+  #rapport-imprimable .fiche-grille { width:100%; border-collapse:collapse; margin:6px 0 8px; font-size:.86em; }
+  #rapport-imprimable .fiche-grille th { text-align:left; font-weight:600; color:#374151; background:#f3f4f6; border:1px solid #d1d5db; padding:4px 6px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  #rapport-imprimable .fiche-grille td { border:1px solid #d1d5db; padding:4px 6px; height:1.7em; vertical-align:top; }
+  #rapport-imprimable .fiche-grille td.fiche-lib { color:#1f2937; }
+  #rapport-imprimable .fiche-grille.fiche-fixe { table-layout:fixed; }
+  #rapport-imprimable .fiche-grille th { vertical-align:bottom; line-height:1.25; }
+  #rapport-imprimable .fiche-grille td { height:2em; vertical-align:middle; }
+  #rapport-imprimable .fiche-grille .fiche-num { text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  #rapport-imprimable .fiche-vide.fiche-court { min-width:70px; }
+  #rapport-imprimable .fiche-grille tr { break-inside:avoid; page-break-inside:avoid; }
+  #rapport-imprimable h2, #rapport-imprimable h3, #rapport-imprimable .fiche-aide { break-after:avoid; page-break-after:avoid; }
+  .bilan-detail { margin-left:14px; margin-top:-6px; }
+  .bilan-detail label { font-size:0.85em; color:#6b7280; font-weight:500; }
+  #rapport-imprimable .fiche-petit { color:#6b7280; font-size:.92em; }
+  #rapport-imprimable .fiche-choix { display:inline-block; margin-right:14px; white-space:nowrap; }
+  #rapport-imprimable .fiche-choix .fiche-case { margin-right:5px; }
+  #rapport-imprimable .fiche-partie { font-size:1.15em; margin:22px 0 4px; padding:6px 10px; background:#eef2ff; color:#1e3a8a; border-radius:4px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  @media print { #rapport-imprimable .fiche-saut { break-before:page; page-break-before:always; } }
   @media print {
     body.impression-rapport > *:not(#rapport-imprimable) { display: none !important; }
     body.impression-rapport #rapport-imprimable { display: block !important; }
@@ -9071,7 +9997,10 @@ header .container { overflow:visible; }
         ['CELIAPP', fmtFn(nombreChamp('celiapp')) + ' $'],
         ['Compte non enregistré', fmtFn(nombreChamp('cne')) + ' $'],
         ['REER', fmtFn(nombreChamp('reer')) + ' $'],
-        ['Immobilisations', fmtFn(nombreChamp('immob')) + ' $'],
+        ['CRI ou FRV', fmtFn(nombreChamp('cri')) + ' $'],
+        ['REEE', fmtFn(nombreChamp('reee')) + ' $'],
+        ['Résidence et immeubles', fmtFn(nombreChamp('immob')) + ' $'],
+        ['Véhicules', fmtFn(nombreChamp('vehicules')) + ' $'],
         ['Cartes de crédit', fmtFn(nombreChamp('cc')) + ' $'],
         ['Marge de crédit', fmtFn(nombreChamp('mc')) + ' $'],
         ['Prêt automobile', fmtFn(nombreChamp('pa')) + ' $'],
@@ -9145,6 +10074,11 @@ header .container { overflow:visible; }
       html += section("Frais d'investissement", fraisHTML).replace('class="rapport-section"', 'class="rapport-section cmp-rapport"');
     }
 
+    if (typeof window.__decResume === 'function') {
+      var dec = window.__decResume();
+      if (dec) html += section('Décaissement', '<h3>Hypothèses</h3>' + tableRapport(dec.lignes) + dec.html).replace('class="rapport-section"', 'class="rapport-section cmp-rapport"');
+    }
+
     var plaisirsHTML = contenuElement('resultats-plaisirs');
     if (plaisirsHTML && plaisirsHTML.trim()) {
       html += section('Gestion des plaisirs', plaisirsHTML);
@@ -9159,6 +10093,266 @@ header .container { overflow:visible; }
     document.body.classList.add('impression-rapport');
     var titreOriginal = document.title;
     document.title = 'Rapport personnel - Parlons Cash';
+    window.print();
+    setTimeout(function () { document.title = titreOriginal; }, 1000);
+  };
+
+  /* Fiche à apporter à une rencontre avec un conseiller ou un planificateur financier.
+     Partie 1 : situation personnelle et familiale. Partie 2 : situation financière.
+     Reprend ce que la personne a saisi, laisse des cases vides pour le reste (moi et conjoint). */
+  function ligneVide() { return '<span class="fiche-vide"></span>'; }
+  function fmtN(n) { return (typeof window.fmt === 'function') ? window.fmt(n) : Math.round(n).toLocaleString('fr-CA'); }
+  function montant(id, mensuel) {
+    var n = nombreChamp(id);
+    if (!(n > 0)) return ligneVide();
+    return fmtN(n) + ' $' + (mensuel ? ' / mois' : '');
+  }
+  function montantOuBlanc(id, mensuel) { var n = nombreChamp(id); return n > 0 ? fmtN(n) + ' $' + (mensuel ? ' / mois' : '') : ''; }
+  function argentF(n) { return Math.round(n).toLocaleString('fr-CA') + ' $'; }
+  function texteOuVide(v, suffixe) { return (v !== '' && v != null && String(v).trim() !== '' && String(v) !== '0') ? String(v) + (suffixe || '') : ligneVide(); }
+  function cases(liste, coche) {
+    return '<ul class="fiche-cases">' + liste.map(function (x, i) { return '<li><span class="fiche-case' + (i === coche ? ' coche' : '') + '"></span>' + x + '</li>'; }).join('') + '</ul>';
+  }
+  function choix(liste, coche) { return liste.map(function (x, i) { return '<span class="fiche-choix"><span class="fiche-case' + (i === coche ? ' coche' : '') + '"></span>' + x + '</span>'; }).join(''); }
+  function ouiNon() { return choix(['Oui', 'Non']); }
+  function lignesNotes(n) { var h = ''; for (var i = 0; i < n; i++) h += '<div class="fiche-note"></div>'; return h; }
+  // Grille à colonnes : en-têtes, puis lignes (chaque cellule vide devient une case à remplir).
+  // largeurs : pourcentages optionnels par colonne. Les montants et les taux sont alignés à droite, sans retour à la ligne.
+  function grille(entetes, lignes, vides, largeurs) {
+    var nums = {};
+    lignes.forEach(function (l) { l.forEach(function (c, i) { if (i > 0 && /^[\d\s\u00a0\u202f.,]+ ?(\$|%)/.test(String(c || ''))) nums[i] = true; }); });
+    var col = largeurs ? '<colgroup>' + largeurs.map(function (w) { return '<col style="width:' + w + '%">'; }).join('') + '</colgroup>' : '';
+    var h = '<table class="fiche-grille' + (largeurs ? ' fiche-fixe' : '') + '">' + col + '<thead><tr>' + entetes.map(function (e, i) { return '<th' + (nums[i] ? ' class="fiche-num"' : '') + '>' + e + '</th>'; }).join('') + '</tr></thead><tbody>';
+    lignes.forEach(function (l) { h += '<tr>' + entetes.map(function (e, i) { return '<td' + (i === 0 ? ' class="fiche-lib"' : (nums[i] ? ' class="fiche-num"' : '')) + '>' + (l[i] || '') + '</td>'; }).join('') + '</tr>'; });
+    for (var v = 0; v < (vides || 0); v++) h += '<tr>' + entetes.map(function () { return '<td></td>'; }).join('') + '</tr>';
+    return h + '</tbody></table>';
+  }
+  // Grille « Moi / Conjoint ».
+  function duo(lignes) { return grille(['', 'Moi', 'Conjoint'], lignes); }
+
+  function ageRente(type) {
+    var rs = (typeof window.__decRentesPourSauvegarde === 'function') ? window.__decRentesPourSauvegarde() : [];
+    for (var i = 0; i < rs.length; i++) if (rs[i].type === type && String(rs[i].montant).trim() !== '' && String(rs[i].debut).trim() !== '') return rs[i].debut + ' ans (ma simulation)';
+    var champ = document.getElementById(type === 'rrq' ? 'age-rrq' : 'age-psv');
+    return champ && champ.value.trim() !== '' && champ.value !== '0' ? champ.value + ' ans' : '';
+  }
+  window.genererFicheConseiller = function () {
+    appeler('calc');
+    var html = '', proprio = valeurChamp('statut-resid') === 'proprio';
+    var dateStr = new Date().toLocaleDateString('fr-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+    var age = valeurChamp('age-actuel'), ageRet = valeurChamp('age-retraite-souhaite'), sit = valeurChamp('profil-situation');
+    var vide = function (v, s) { return (v !== '' && v != null && String(v).trim() !== '' && String(v) !== '0') ? String(v) + (s || '') : ''; };
+    html += '<div class="rapport-entete"><h1>Ma fiche pour mon conseiller</h1>';
+    html += '<p>Préparée le ' + dateStr + ' avec Parlons Cash. Les montants sont ceux que j\'ai saisis, à valider ensemble. Les cases vides sont à compléter. Ce qui ne s\'applique pas peut rester vide.</p></div>';
+
+    /* ===== Partie 1 : situation personnelle et familiale ===== */
+    html += '<h2 class="fiche-partie">Partie 1 · Ma situation personnelle et familiale</h2>';
+
+    html += section('1. Renseignements généraux', duo([
+      ['Nom'], ['Date de naissance (âge)', vide(age, ' ans')], ['État civil', sit === 'seul' ? 'Je vis seul' : (sit === 'couple' ? 'En couple' : '')], ['Profession'], ['Employeur'], ['Téléphone et courriel']
+    ]) + '<p>Cette planification concerne : ' + choix(['moi seul', 'notre couple'], sit === 'seul' ? 0 : (sit === 'couple' ? 1 : -1)) + '</p>'
+      + '<h3>Professionnels que je consulte déjà</h3>' + grille(['Profession', 'Nom', 'Coordonnées'], [['Comptable'], ['Notaire ou avocat'], ['Courtier ou conseiller en assurance'], ['Autre']]));
+
+    html += section('2. Ma famille', '<h3>Enfants et personnes à ma charge</h3>'
+      + grille(['Prénom', 'Âge', 'Je prévois l\'aider jusqu\'à quel âge ?', 'A un compte à son nom (montant)'], [], 4)
+      + '<p>Autre personne à charge (parent, proche) : ' + ligneVide() + '</p>'
+      + '<p>D\'autres enfants prévus ? ' + ouiNon() + ' Combien : ' + ligneVide() + '</p>'
+      + tableRapport([
+        ['Allocations pour enfants reçues (fédérale et Québec)', ligneVide() + ' / mois'],
+        ['REEE pour mes enfants', nombreChamp('reee') > 0 ? montantOuBlanc('reee') : ouiNon() + ' Je prévois en ouvrir un : ' + ouiNon()],
+        ['Dépenses annuelles liées aux enfants (déjà incluses au coût de la vie)', ligneVide()],
+        ['Montant à prévoir pour leurs études, en cas de décès', ligneVide()]
+      ]));
+
+    // Coût de la vie : les totaux du budget Parlons Cash, détaillés à compléter au besoin.
+    var logement = proprio ? nombreChamp('paiement-hypo') + nombreChamp('taxes-entretien') : nombreChamp('loyer');
+    var mois = function (n) { return n > 0 ? argentF(n) : ''; };
+    var groupes = [
+      ['Logement', proprio ? 'hypothèque, taxes, entretien, électricité, chauffage, télécom, assurance habitation, ameublement' : 'loyer, électricité, chauffage, télécom, assurance habitation, ameublement', logement],
+      ['Transport', 'paiements ou location, essence, entretien, assurance, immatriculation, stationnement, transport en commun', nombreChamp('d3')],
+      ['Alimentation et restaurants', 'épicerie, restaurants', nombreChamp('d2')],
+      ['Famille et santé', 'vêtements, garde, scolarité, activités des enfants, pharmacie, dentiste, optométriste', 0],
+      ['Assurances de personnes', 'vie, invalidité, maladie', nombreChamp('d4')],
+      ['Loisirs et voyages', 'sports, sorties, abonnements, vacances', nombreChamp('d5')],
+      ['Divers', 'dons, cadeaux, aide ménagère, pension alimentaire versée, tabac et alcool', nombreChamp('d6')],
+      ['Remboursement de dettes', 'hors hypothèque', nombreChamp('d7')]
+    ];
+    var totalMois = groupes.reduce(function (s, g) { return s + g[2]; }, 0);
+    var cout = grille(['Catégorie', 'Ce que ça comprend', 'Par mois'], groupes.map(function (g) { return [g[0], '<span class="fiche-petit">' + g[1] + '</span>', mois(g[2])]; }));
+    cout += tableRapport([
+      ['<strong>Total par mois</strong>', totalMois > 0 ? '<strong>' + argentF(totalMois) + '</strong>' : ligneVide()],
+      ['<strong>Total par année</strong>', totalMois > 0 ? '<strong>' + argentF(totalMois * 12) + '</strong>' : ligneVide()],
+      ['Coussin pour les imprévus (par exemple 5 %)', totalMois > 0 ? argentF(totalMois * 12 * 0.05) + ' / an' : ligneVide()]
+    ]);
+    html += section('3. Mon coût de la vie pour la prochaine année', cout);
+
+    html += section('4. Mes projets des cinq prochaines années', '<p class="fiche-aide">Les dépenses spéciales qui ne sont pas déjà dans mon coût de la vie.</p>'
+      + grille(['Projet', 'Année', 'Coût', 'Commentaires'], [['Voyage'], ['Rénovations'], ['Achat d\'une maison, d\'un condo ou d\'un chalet'], ['Automobile'], ['Études'], ['Aide à un enfant ou à un parent'], ['Autre']]));
+
+    var ret = [
+      ['Âge actuel', vide(age, ' ans')],
+      ['Âge visé pour la retraite (premier choix)', vide(ageRet, ' ans')],
+      ['Âge visé (deuxième choix)'],
+      ['Revenu annuel souhaité à la retraite', montantOuBlanc('revenu-retraite')],
+      ['Somme à prévoir pour projets et imprévus à la retraite'],
+      ['Âge prévu pour demander le RRQ', ageRente('rrq')],
+      ['Âge prévu pour demander la PSV', ageRente('psv')]
+    ];
+    var decHTML = '';
+    if (typeof window.__decResume === 'function') {
+      var dec = window.__decResume();
+      if (dec) {
+        var grand = document.querySelector('#dec-resultat .frais-grand');
+        decHTML = '<h3>Ma simulation de décaissement</h3>' + tableRapport(dec.lignes) + (grand ? '<p class="fiche-resultat">Résultat selon ces hypothèses : <strong>' + grand.textContent + '</strong>.</p>' : '');
+      }
+    }
+    html += section('5. Ma retraite', duo(ret)
+      + '<p>Un changement important est-il prévu dans ma vie familiale ou professionnelle ? D\'ici cinq ans : ' + ligneVide() + ' Plus tard : ' + ligneVide() + '</p>' + decHTML);
+
+    var brut = nombreChamp('profil-revenu-brut') > 0 ? 'profil-revenu-brut' : 'rb';
+    html += section('6. Mes revenus', duo([
+      ['Salaire brut annuel', montantOuBlanc(brut)],
+      ['Retenues à la source'],
+      ['Salaire net', montantOuBlanc('revenu', true) || montantOuBlanc('couple-revenu-a', true), montantOuBlanc('couple-revenu-b', true)],
+      ['Hausse de salaire prévue (% par an, deux prochaines années)'],
+      ['Pension alimentaire reçue'],
+      ['Autres revenus (travail autonome, dividendes d\'entreprise, etc.)', montantOuBlanc('autre-revenu', true)]
+    ]) + '<p>Ce que je fais dans la vie, en quelques mots : ' + ligneVide() + '</p>');
+
+    var loyer = nombreChamp('rev-loyer');
+    html += section('7. Immeuble à revenus', '<p>' + choix(['Sans objet', 'J\'habite l\'immeuble', 'Je n\'y habite pas']) + '</p>'
+      + tableRapport([
+        ['Propriétaire(s)', ligneVide()], ['Type d\'immeuble (nombre de logements)', ligneVide()], ['Date et prix d\'achat (bâtiment et terrain)', ligneVide()],
+        ['Valeur marchande actuelle', ligneVide()], ['Solde, taux et échéance de l\'hypothèque', ligneVide()], ['Paiement hypothécaire mensuel', ligneVide()],
+        ['Loyers mensuels (actuels et au renouvellement des baux)', loyer > 0 ? argentF(loyer) + ' / mois' : ligneVide()],
+        ['Dépenses mensuelles (taxes, assurances, entretien)', ligneVide()], ['Part que j\'occupe (%)', ligneVide()],
+        ['Amortissement fiscal réclamé à ce jour', ligneVide()], ['Si je décède, l\'immeuble est', choix(['conservé', 'vendu'])]
+      ]));
+
+    var obj = [];
+    if (nombreChamp('obj-montant') > 0) obj.push(['Objectif d\'épargne', montant('obj-montant') + (valeurChamp('obj-date') ? ' d\'ici le ' + valeurChamp('obj-date') : '')]);
+    html += section('8. Mes objectifs', (obj.length ? tableRapport(obj) : '') + '<p>Ce que l\'indépendance financière veut dire pour moi :</p>' + lignesNotes(3)
+      + '<p>Ce que je recherche dans mes placements, à part le rendement (stabilité, revenu, simplicité, valeurs) :</p>' + lignesNotes(2));
+
+    html += section('9. Ma succession', tableRapport([
+      ['Date du mariage ou de l\'union, régime matrimonial', ligneVide()],
+      ['Contrat de mariage ou de vie commune', ouiNon()]
+    ]) + duo([
+      ['Testament (avec clause de décès simultané ?)', ouiNon(), ouiNon()],
+      ['Mandat de protection et procuration', ouiNon(), ouiNon()],
+      ['Héritage possible (montant approximatif, quand)'],
+      ['Fiducie testamentaire envisagée', ouiNon(), ouiNon()]
+    ]) + '<p>Mes objectifs pour ma succession et ce qui me préoccupe :</p>' + lignesNotes(2));
+
+    html += section('10. Mes assurances', duo([
+      ['État de santé', choix(['Bon', 'Moyen', 'À discuter']), choix(['Bon', 'Moyen', 'À discuter'])],
+      ['Fumeur', ouiNon(), ouiNon()],
+      ['Assurance invalidité (% du salaire)'],
+      ['Assurance collective au travail'],
+      ['Montant d\'assurance vie minimal souhaité'],
+      ['Besoin d\'assurance vie après 65 ans ?', ouiNon(), ouiNon()],
+      ['Hypothèque ou prêts assurés', ouiNon(), ouiNon()],
+      ['Si mon conjoint décède : baisse prévue du coût de la vie'],
+      ['Bénéficiaire autre que le conjoint ?', ouiNon(), ouiNon()]
+    ]) + '<h3>Mes polices d\'assurance vie</h3>' + grille(['Assuré', 'Bénéficiaire', 'Compagnie', 'Type', 'Prime annuelle', 'Valeur de rachat', 'Protection'], [], 3));
+
+    html += section('11. Notes personnelles', lignesNotes(3));
+
+    /* ===== Partie 2 : situation financière ===== */
+    html += '<h2 class="fiche-partie fiche-saut">Partie 2 · Ma situation financière</h2>';
+
+    var reg = function (id, nom) { var v = montantOuBlanc(id); return [nom, '', v]; };
+    var placements = [
+      reg('cb', 'Comptes bancaires'), reg('celi', 'CELI'), reg('celiapp', 'CELIAPP'), reg('reer', 'REER ou FERR'),
+      reg(nombreChamp('cri') > 0 ? 'cri' : 'dec-cri', 'CRI ou FRV'), reg('cne', 'Non enregistré')
+    ];
+    html += section('12. Mes liquidités et mes placements', '<p class="fiche-aide">Une ligne par compte ou par placement (CPG, obligations, actions, fonds, FNB). Le relevé suffit souvent.</p>'
+      + grille(['Compte', 'Institution et placements', 'Valeur actuelle', 'Titulaire', 'Rendement ou échéance'], placements, 3, [20, 30, 16, 14, 20])
+      + tableRapport([
+        ['Sommes que d\'autres me doivent (prêts consentis, comptes à recevoir)', ligneVide()],
+        ['Valeur de rachat de mes assurances vie', ligneVide()]
+      ]));
+
+    html += section('13. REEE', grille(['Souscripteur', 'Bénéficiaires', 'Type (individuel ou familial)', 'Cotisé à ce jour', 'Valeur actuelle'], nombreChamp('reee') > 0 ? [['', '', '', '', montantOuBlanc('reee')]] : [], nombreChamp('reee') > 0 ? 1 : 2));
+
+    html += section('14. Mon régime de retraite d\'employeur', duo([
+      ['Nom du régime'], ['Type (prestations déterminées, cotisations déterminées, RVER, RRS)', { pd: 'Prestations déterminées', cd: 'Cotisations déterminées', rver: 'RVER ou REER collectif', aucun: 'Aucun' }[valeurChamp('rente-pension-type')] || ''],
+      ['Ma cotisation annuelle'], ['Cotisation de l\'employeur'], ['Rente estimée à la retraite et indexation', montantOuBlanc('rente-pension') + (valeurChamp('rente-pension-index') !== '' && montantOuBlanc('rente-pension') ? ', indexée à ' + valeurChamp('rente-pension-index') + ' %' : '')],
+      ['Valeur actuelle ou de transfert']
+    ]));
+
+    html += section('15. Mes biens', grille(['Bien', 'Titulaire', 'Coût', 'Valeur actuelle', 'Ma part (%)'], [
+      ['Résidence principale', '', '', proprio ? montantOuBlanc('immob') : ''], ['Chalet ou résidence secondaire'], ['Automobiles', '', '', montantOuBlanc('vehicules')],
+      ['Autres (terrain, bateau, collections, bijoux, métaux précieux)', '', '', montantOuBlanc('autre-actif')]
+    ]));
+
+    html += section('16. Mes hypothèques', grille(['', 'Résidence principale', 'Résidence secondaire'], [
+      ['Prêteur'], ['Date du prêt et échéance du terme', proprio && valeurChamp('hypo-echeance') ? 'Échéance : ' + valeurChamp('hypo-echeance') : ''], ['Amortissement restant'], ['Montant initial'],
+      ['Solde actuel', proprio ? montantOuBlanc('hypo') : ''], ['Taux d\'intérêt', proprio && nombreChamp('hypo-taux') > 0 ? String(valeurChamp('hypo-taux')).replace('.', ',') + ' %' : ''], ['Paiement mensuel', proprio ? montantOuBlanc('paiement-hypo') : ''], ['Solde assuré ?', ouiNon(), ouiNon()]
+    ]));
+
+    var dettes = [];
+    var liste = (typeof listeDettes !== 'undefined') ? listeDettes.filter(function (d) { return (d.solde || 0) > 0; }) : [];
+    liste.forEach(function (d) { dettes.push([d.nom || 'Dette', '', argentF(d.solde), (d.taux || 0) + ' %', d.paiementMin > 0 ? argentF(d.paiementMin) : '']); });
+    if (!liste.length) {
+      if (nombreChamp('cc') > 0) dettes.push(['Cartes de crédit', '', montantOuBlanc('cc')]);
+      if (nombreChamp('mc') > 0) dettes.push(['Marge de crédit<br><span class="fiche-petit">Limite : ' + (montantOuBlanc('mc-limite') || '<span class="fiche-vide fiche-court"></span>') + '</span>', '', montantOuBlanc('mc')]);
+      if (nombreChamp('pa') > 0) dettes.push(['Prêt automobile', '', montantOuBlanc('pa')]);
+      if (nombreChamp('autre-passif') > 0) dettes.push(['Autres dettes', '', montantOuBlanc('autre-passif')]);
+    }
+    html += section('17. Mes autres dettes', '<p class="fiche-aide">Cartes, marges (avec la limite autorisée), prêts auto, étudiants ou personnels.</p>'
+      + grille(['Dette', 'Prêteur et raison', 'Solde', 'Taux', 'Paiement mensuel', 'Échéance', 'Assurée'], dettes, 3, [22, 21, 13, 8, 13, 12, 11]));
+
+    html += section('18. Impôt et dettes à venir', tableRapport([
+      ['Impôt encore à payer (année, montant)', ligneVide()],
+      ['Acomptes provisionnels versés cette année', ligneVide()],
+      ['Emprunt prévu (montant, date, raison)', ligneVide()],
+      ['Événement de l\'année qui touchera mes impôts (vente de placements ou d\'immeuble, retrait REER, don, travail autonome)', ouiNon()]
+    ]) + lignesNotes(2));
+
+    var prof = '<p><strong>À remplir par le conseiller.</strong> Le profil d\'investisseur est établi par le conseiller selon ses obligations de connaissance du client, avec son propre questionnaire.</p>' + cases(['Prudent', 'Équilibré', 'Audacieux']);
+    var fa = nombreChamp('frais-actuels');
+    if (fa > 0) prof += '<p>Frais annuels que je pense payer : <strong>' + String(valeurChamp('frais-actuels')).replace('.', ',') + ' %</strong>, à confirmer.</p>';
+    prof += '<p>Pour en discuter : la baisse de mes placements qui me ferait perdre le sommeil, environ ' + ligneVide() + ' %.</p>';
+    html += section('19. Mon profil d\'investisseur', prof);
+
+    html += section('20. Mes questions pour mon conseiller', cases([
+      'Combien je paie en frais au total, en pourcentage et en dollars par année ?',
+      'Quel a été mon rendement après frais, comparé à un indice semblable ?',
+      'Comment êtes-vous rémunéré : commissions, honoraires ou salaire ? Quel est votre titre professionnel ?',
+      'Votre projection tient-elle compte d\'une mauvaise année au début de ma retraite (risque de séquence) ?',
+      'Mes rentes sont-elles indexées, et à quel taux ?',
+      'À quel âge devrais-je demander mon RRQ et ma PSV, et pourquoi ?',
+      'Dans quel ordre retirer de mes comptes (REER, CRI, CELI, non enregistré) pour payer moins d\'impôt ?',
+      'Mon revenu à la retraite risque-t-il de déclencher la récupération de la PSV ?',
+      'Quelle réserve de liquidités devrais-je garder ?',
+      'Mes assurances, mon testament et mon mandat de protection sont-ils à jour ?'
+    ]));
+
+    html += section('21. Documents à apporter', cases([
+      'Avis de cotisation fédéral et du Québec des trois dernières années (moi et mon conjoint)',
+      'Relevé de participation au RRQ (Mon dossier, Retraite Québec) et estimation de la PSV (Service Canada)',
+      'Relevés de placements récents : comptes bancaires, REER, FERR, CRI, FRV, CELI, CELIAPP, REEE, non enregistré',
+      'Relevé du régime de retraite de l\'employeur',
+      'Dernier relevé de paie',
+      'Relevés hypothécaires et détails des autres dettes',
+      'Polices d\'assurance vie, invalidité et collective',
+      'Testament, mandat de protection, contrat de mariage ou de vie commune, jugement de divorce',
+      'Si j\'ai une entreprise : états financiers et convention entre associés',
+      'Acte de fiducie, s\'il y a lieu'
+    ]));
+
+    html += section('Notes de la rencontre', lignesNotes(6));
+    html += '<p class="rapport-pied">Fiche préparée avec Parlons Cash (parlonscash.pro) à partir des données saisies par la personne. ';
+    html += 'Elle sert à préparer une rencontre et ne constitue pas un conseil financier, fiscal ou juridique personnalisé.</p>';
+
+    html = html.replace(/class="rapport-section"/g, 'class="rapport-section cmp-rapport"');
+    var conteneur = document.getElementById('rapport-imprimable');
+    if (!conteneur) return;
+    conteneur.innerHTML = html;
+    document.body.classList.add('impression-rapport');
+    var titreOriginal = document.title;
+    document.title = 'Fiche pour mon conseiller - Parlons Cash';
     window.print();
     setTimeout(function () { document.title = titreOriginal; }, 1000);
   };
@@ -9180,10 +10374,19 @@ header .container { overflow:visible; }
     { id: 'taux-rendement-pendant-retraite', label: 'Et pendant la retraite, quel rendement annuel moyen prévois-tu sur tes placements ? (par défaut 5%)', type: 'nombre', section: 'Retraite' },
     { id: 'revenu-retraite', label: 'Quel revenu annuel désires-tu à la retraite (en dollars d\'aujourd\'hui) ? (par défaut 50 000$)', type: 'nombre', section: 'Retraite' },
     { id: 'pension-publique', label: 'À combien estimes-tu tes rentes publiques (RRQ, PSV) par année à la retraite ? Mets 0 si tu ne sais pas encore.', type: 'nombre', section: 'Retraite' },
-    { id: 'rente-pension', label: 'As-tu un régime de retraite d\'employeur ? Si oui, à combien par année ? Mets 0 si non.', type: 'nombre', section: 'Retraite' },
+    { id: 'age-rrq', label: 'À quel âge prévois-tu demander ton RRQ ? Entre 60 et 72 ans. Laisse 65 si tu ne sais pas.', type: 'nombre', section: 'Retraite' },
+    { id: 'age-psv', label: 'À quel âge prévois-tu demander ta PSV ? Entre 65 et 70 ans. Laisse 65 si tu ne sais pas.', type: 'nombre', section: 'Retraite' },
+    { id: 'rente-pension-type', label: 'As-tu un régime de retraite d\'employeur ?', type: 'choix', section: 'Retraite',
+      choix: [['aucun', 'Non'], ['pd', 'Oui, à prestations déterminées (rente garantie)'], ['cd', 'Oui, à cotisations déterminées'], ['rver', 'Oui, un RVER ou un REER collectif']] },
+    { id: 'rente-pension', label: 'À combien par année estimes-tu la rente de ton régime d\'employeur ? Ton relevé annuel l\'indique.', type: 'nombre', section: 'Retraite',
+      condition: function () { return valeur('rente-pension-type') === 'pd' || (valeur('rente-pension-type') === '' && (parseFloat(valeur('rente-pension')) || 0) > 0); } },
+    { id: 'rente-pension-index', label: 'Ta rente d\'employeur est indexée à quel pourcentage de l\'inflation ? 100 si pleinement, 0 si pas du tout. Ton relevé l\'indique.', type: 'nombre', section: 'Retraite',
+      condition: function () { return (parseFloat(valeur('rente-pension')) || 0) > 0 && valeur('rente-pension-type') !== 'aucun'; } },
     { id: 'contribution-actuelle-toggle', label: 'Épargnes-tu déjà pour ta retraite ?', type: 'oui-non', section: 'Retraite' },
     { id: 'contribution-mensuelle-actuelle', label: 'Combien épargnes-tu par mois pour ta retraite ?', type: 'nombre', section: 'Retraite',
       condition: function () { var el = document.getElementById('contribution-actuelle-toggle'); return el && el.checked; } },
+    { id: 'profil-situation', label: 'Vis-tu seul ou en couple ?', type: 'choix', section: 'Revenu et logement', choix: [['seul', 'Je vis seul'], ['couple', 'En couple']] },
+    { id: 'profil-revenu-brut', label: 'Quel est ton revenu brut annuel (avant impôts) ?', type: 'nombre', section: 'Revenu et logement' },
     { id: 'revenu', label: 'Quel est ton revenu net mensuel (après impôts) ?', type: 'nombre', section: 'Revenu et logement' },
     { id: 'autre-revenu', label: 'As-tu un autre revenu mensuel (travail autonome, pension, etc.) ? Mets 0 si non.', type: 'nombre', section: 'Revenu et logement' },
     { id: 'rev-loyer', label: 'As-tu un revenu de loyer mensuel ? Mets 0 si non.', type: 'nombre', section: 'Revenu et logement' },
@@ -9208,13 +10411,21 @@ header .container { overflow:visible; }
     { id: 'celiapp', label: 'Combien as-tu dans ton CELIAPP ? Mets 0 si tu n\'en as pas.', type: 'nombre', section: 'Actifs' },
     { id: 'reer', label: 'Combien as-tu dans ton REER ? Mets 0 si tu n\'en as pas.', type: 'nombre', section: 'Actifs' },
     { id: 'cne', label: 'Combien as-tu dans un compte de placement non enregistré ? Mets 0 si aucun.', type: 'nombre', section: 'Actifs' },
-    { id: 'immob', label: 'Quelle est la valeur de tes immobilisations (maison, auto, etc.) ?', type: 'nombre', section: 'Actifs' },
+    { id: 'cri', label: 'Combien as-tu dans un CRI ou un FRV (fonds de retraite immobilisé, souvent un ancien régime d\'employeur) ? Mets 0 si aucun.', type: 'nombre', section: 'Actifs' },
+    { id: 'reee', label: 'Combien as-tu dans un REEE pour tes enfants ? Mets 0 si aucun.', type: 'nombre', section: 'Actifs' },
+    { id: 'immob', label: 'Quelle est la valeur de ta résidence et de tes autres immeubles ? Mets 0 si aucun.', type: 'nombre', section: 'Actifs' },
+    { id: 'vehicules', label: 'Quelle est la valeur de tes véhicules ? Mets 0 si aucun.', type: 'nombre', section: 'Actifs' },
     { id: 'autre-actif', label: 'As-tu d\'autres actifs ? Mets 0 si non.', type: 'nombre', section: 'Actifs' },
     { id: 'cc', label: 'Quel est le solde de tes cartes de crédit ?', type: 'nombre', section: 'Dettes' },
     { id: 'mc', label: 'Quel est le solde de ta marge de crédit ?', type: 'nombre', section: 'Dettes' },
+    { id: 'mc-limite', label: 'Quelle est la limite autorisée de ta marge de crédit ? Mets 0 si tu n\'en as pas.', type: 'nombre', section: 'Dettes' },
     { id: 'pa', label: 'Quel est le solde de ton prêt automobile ?', type: 'nombre', section: 'Dettes' },
     { id: 'hypo', label: 'Quel est le solde restant de ton hypothèque ?', type: 'nombre', section: 'Dettes',
       condition: function () { return valeur('statut-resid') === 'proprio'; } },
+    { id: 'hypo-taux', label: 'Quel est le taux d\'intérêt de ton hypothèque (en %) ?', type: 'nombre', section: 'Dettes',
+      condition: function () { return valeur('statut-resid') === 'proprio' && (parseFloat(valeur('hypo')) || 0) > 0; } },
+    { id: 'hypo-echeance', label: 'En quelle année ton terme hypothécaire arrive-t-il à échéance ?', type: 'nombre', section: 'Dettes',
+      condition: function () { return valeur('statut-resid') === 'proprio' && (parseFloat(valeur('hypo')) || 0) > 0; } },
     { id: 'autre-passif', label: 'As-tu d\'autres dettes non listées ici ? Mets 0 si non.', type: 'nombre', section: 'Dettes' },
     { id: 'taux-rendement-objectif', label: 'Pour ton objectif d\'épargne, quel rendement annuel moyen espères-tu sur tes placements ? (par défaut 3%)', type: 'nombre', section: 'Objectif d\'épargne',
       condition: function () { return (parseFloat(document.getElementById('obj-montant').value) || 0) > 0; } }
@@ -9229,7 +10440,9 @@ header .container { overflow:visible; }
 
   function definirValeur(id, val) {
     var el = document.getElementById(id);
-    if (el) el.value = val;
+    if (!el) return;
+    el.value = val;
+    el.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
   function appeler(nomFonction) {
