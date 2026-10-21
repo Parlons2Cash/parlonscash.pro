@@ -1284,34 +1284,21 @@ button:hover, .tab-button:hover {
   <h2>👤 Mon profil</h2>
     <p style="font-size:0.88em;color:#6b7280;margin:-8px 0 20px;">🔒 Tes données sont sauvegardées sur cet appareil seulement, pas sur nos serveurs.</p>
 
+  <!-- ===== BLOC « À SURVEILLER » : seule zone à modifier pour le mettre à jour =====
+       Règles : 3 items maximum, pas de dates affichées. Pour en ajouter un, retirer le plus ancien.
+       Liens externes : target="_blank" rel="noopener". Lien interne optionnel : changeTab('nom-de-l-onglet').
+       Vérifier environ une fois par mois que les liens externes fonctionnent encore. ===== -->
   <div class="card start-here" id="par-ou-commencer">
     <h3 style="color:#2563eb;">Commence ici</h3>
-    <p class="start-intro">Trois étapes, dans cet ordre. Compte environ 15 minutes en tout. Tu peux t'arrêter et revenir, tout est gardé sur cet appareil.</p>
-    <div class="start-progress"><div class="start-progress-bar"><div id="start-fill" style="width:0%"></div></div><span id="start-compteur">0 sur 3 étapes faites</span></div>
     <ol class="start-steps">
       <li id="step-bilan" class="start-step">
         <span class="start-num">1</span>
         <div class="start-body"><strong>Ton bilan</strong><span>Ce que tu as et ce que tu dois. L'assistant te pose une question à la fois.</span></div>
         <button type="button" class="start-go" id="step-bilan-btn"></button>
       </li>
-      <li id="step-budget" class="start-step">
-        <span class="start-num">2</span>
-        <div class="start-body"><strong>Ton budget</strong><span>Ce qui entre et ce qui sort chaque mois. Le même assistant remplit aussi cette partie.</span></div>
-        <button type="button" class="start-go" id="step-budget-btn"></button>
-      </li>
-      <li id="step-objectifs" class="start-step">
-        <span class="start-num">3</span>
-        <div class="start-body"><strong>Tes objectifs</strong><span>Une maison, un projet ou la retraite. Tu vois ce qu'il faut mettre de côté.</span></div>
-        <button type="button" class="start-go" id="step-objectifs-btn"></button>
-      </li>
     </ol>
-    <p class="start-autres">Pas envie de suivre le parcours ? <a href="#" onclick="ouvrirDiagnostic();return false;">Fais le diagnostic rapide</a> ou <a href="#" onclick="changeTab('impôts');return false;">va directement aux calculateurs</a>.</p>
   </div>
 
-  <!-- ===== BLOC « À SURVEILLER » : seule zone à modifier pour le mettre à jour =====
-       Règles : 3 items maximum, pas de dates affichées. Pour en ajouter un, retirer le plus ancien.
-       Liens externes : target="_blank" rel="noopener". Lien interne optionnel : changeTab('nom-de-l-onglet').
-       Vérifier environ une fois par mois que les liens externes fonctionnent encore. ===== -->
   <div class="card sit-carte" id="situations">
     <style>
       .sit-carte{border:2px solid #2563eb;background:linear-gradient(180deg,#eff6ff 0%,#fff 60%);box-shadow:0 6px 22px rgba(37,99,235,.18)}
@@ -7775,8 +7762,6 @@ function closeModal() {
       b.textContent=e[j]?cfg[j].faite:cfg[j].aFaire;
       b.setAttribute('aria-label',(e[j]?'Étape faite. ':'')+b.textContent);
     }
-    document.getElementById('start-fill').style.width=Math.round(faites/3*100)+'%';
-    document.getElementById('start-compteur').textContent=faites===3?'Les 3 étapes sont faites':faites+' sur 3 étapes faites';
   }
   for(var k=0;k<cfg.length;k++){(function(c){
     var b=document.getElementById(c.btn);
